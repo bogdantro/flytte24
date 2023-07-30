@@ -11,7 +11,7 @@ html, body {
   overflow-x: hidden;
   scroll-behavior: smooth;
   margin: auto;
-  background: rgb(248, 248, 248) !important;
+  background: rgb(248, 248, 248);
 }
 
 .page {

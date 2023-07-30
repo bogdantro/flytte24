@@ -16,9 +16,14 @@ $txt: #183b56;
     top: 0;
     z-index: 10000000000000000000;
     transition: .0s;
-    border-bottom: 1px solid rgba(100,100,100,0.15);
-    background: white;
     &.sticky{
+        background: white;
+        border-bottom: 1px solid rgba(100,100,100,0.15);
+        transition: 0s;
+    }
+    &.menu{
+        background: white;
+        border-bottom: 1px solid rgba(100,100,100,0.15);
         transition: 0s;
     }
     .logo{
@@ -29,7 +34,7 @@ $txt: #183b56;
         z-index: 1000;
         img{
         width: 100px;
-        transform: translateX(-6px);
+        transform: translateX(-29px);
         height: auto;
         transition: .3s;
         &:hover{

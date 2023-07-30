@@ -7,7 +7,7 @@
 }
 .cover .content {
   padding-inline: 20px;
-  padding-top: 38px;
+  padding-top: 30px;
   padding-bottom: 40px;
   height: -moz-max-content;
   height: max-content;
@@ -15,13 +15,13 @@
 }
 .cover .content .cover-image {
   display: block;
-  width: 365px;
+  width: 352px;
   height: auto;
   position: relative;
   left: 50%;
   transform: translateX(-50%);
   margin: -100px;
-  margin-left: -3px;
+  margin-left: -4px;
 }
 .cover .content .text {
   text-align: left;

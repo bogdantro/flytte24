@@ -13,26 +13,62 @@ $txt: #183b56;
     background: rgb(253,253,253);
     border-top: 1px solid rgba(0,0,0,0.1);
     padding-inline: 20px;
+    .hours{
+        background: #F4F4F4;
+        width: 100%;
+        padding: 13px;
+        .info-heading{
+            color: $black;
+            font-size: 19px;
+            margin-bottom: 3px;
+            font-weight: 500;
+        }
+        a{
+            display: block;
+            color: $black;
+            font-size: 16px;
+            width: max-content;
+            padding-right: 5px;
+            margin-block: 8px;
+            &:first-child{
+                margin-top: 0;
+            }
+        }
+    }
+    .contact-info{
+        .info-heading{
+            color: $black;
+            font-size: 19px;
+            margin-bottom: 3px;
+            font-weight: 500;
+        }
+        a{
+            display: block;
+            color: $black;
+            font-size: 16px;
+            width: max-content;
+            padding-right: 5px;
+            margin-block: 8px;
+            &:first-child{
+                margin-top: 0;
+            }
+        }
+    }
     .links{
         p{
             margin-bottom: 0;
         }
         .business-heading{
-            color: $txt;
+            color: $black;
             font-size: 19px;
             margin-bottom: 3px;
             font-weight: 500;
         }
         .info-heading{
-            color: $txt;
+            color: $black;
             font-size: 19px;
             margin-bottom: 3px;
             font-weight: 500;
-        }
-        .business-text{
-            margin-top: 0;
-            color: $txt;
-            font-size: 15px;
         }
         button{
             background: $primBtn;
@@ -64,20 +100,20 @@ $txt: #183b56;
         align-items: center;
         justify-content: space-between;
         opacity: 0.85;
-        .logo{
-            img{
-                width: 92px;
-                height: auto;
-                transition: .3s;
-                cursor: pointer;
-            }
+        .copyright{
+            color: $black;
+            font-size: 13px;
         }
         .social-icons{
             i{
-                color: $txt;
-                font-size: 21px;
+                color: $black;
+                font-size: 20px;
                 margin-inline: 2px;
                 padding: 8px;
+                transition: .2s;
+                &:hover{
+                    color: $primBtn;
+                }
             }
         }
     }

@@ -8,15 +8,15 @@ $txt: #183b56;
     height: auto;
     position: relative;
     padding-bottom: 5px;
-    background: linear-gradient(to bottom right, #fff7d623, #fff7d623, rgba(255, 240, 180, 0.247));
+    background: linear-gradient(to bottom right, rgba(255, 240, 180, 0.185), transparent);
     .content{
       padding-inline: 20px;
-      padding-top: 30px;
+      padding-top: 70px;
       padding-bottom: 40px;
       height: max-content;
       position: relative;
       .cover-image{
-        display: block;
+        display: none;
         width: 352px;
         height: auto;
         position: relative;
@@ -47,7 +47,7 @@ $txt: #183b56;
         text-align: center;
         button{
           border: 1px solid transparent;
-          border-radius: 10px;
+          border-radius: 25px;
           outline: none;
           background: $primBtn;
           color: white;
@@ -55,7 +55,7 @@ $txt: #183b56;
           font-size: 17px;
           width: 100%;
           display: block;
-          height: 49px;
+          height: 47px;
           &.secondary{
             border-color: $primBtn;
             color: $primBtn;
@@ -112,6 +112,108 @@ $txt: #183b56;
         font-weight: 600;
         margin-bottom: 10px;
       }
+    }
+    .proccess-card{
+      margin-block: 25px;
+      transition: 1s;
+      transform: translateY(0);
+      &.active{
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .proccess-image{
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+      border-top-left-radius: 25px;
+      border-top-right-radius: 25px;
+      border-bottom-right-radius: 25px;
+      border-bottom-left-radius: 6px;
+      width: 100%;
+      img{
+        box-shadow: 0 0 3px rgba(0, 0, 0, 0.164);
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        border-top-left-radius: 25px;
+        border-top-right-radius: 25px;
+        border-bottom-right-radius: 25px;
+        border-bottom-left-radius: 6px;
+        filter: brightness(90%);
+        margin: 15px auto;
+      }
+      .ribbon-number{
+        position: absolute;
+        right: 30px;
+        top: -5px;
+        width: 40px;
+        height: 40px;
+        padding: 10px;
+        background: $primBtn;
+        font-size: 22px;
+        color: white;
+        z-index: 10;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 4px;
+      }
+    }
+    .proccess-image-text{
+      width: 100%;
+      transform: translateY(3px);
+      h1{
+        font-size: 20px;
+        font-weight: 500;
+        color: $black;
+      }
+      p{
+        transform: translateY(-3px);
+        opacity: 1;
+        font-size: 16px;
+        font-weight: 400;
+        color: $black;
+        padding-right: 30px;
+      }
+    }
+  }
+}
+
+.book-now{
+  padding-block: 70px;
+  background: $primBtn;
+  position: relative;
+  width: 100%;
+  .content{
+    padding-inline: 20px;
+    position: relative;
+    text-align: center;
+    h1{
+      color: white;
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    p{
+      color: white;
+      font-weight: 500;
+      font-size: 17px;
+    }
+    button{
+      margin-top: 30px;
+      border: 1px solid transparent;
+      border-radius: 25px;
+      outline: none;
+      color: white;
+      font-weight: 500;
+      font-size: 17px;
+      width: 100%;
+      display: block;
+      height: 47px;
+      border-color: $primBtn;
+      color: $primBtn;
+      background: white;
     }
   }
 }
@@ -198,6 +300,33 @@ $txt: #183b56;
 }
 
 .reviews{
+  width: 100%;
+  height: auto;
+  padding-block: 50px;
+  position: relative;
+  .content{
+    padding-inline: 20px;
+    position: relative;
+    .text{
+      text-align: left;
+      margin-top: 28px;
+      h1{
+        color: $black;
+        font-size: 27px;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+    }
+    .video{
+      margin-top: 25px;
+      width: 100%;
+      height: 150px;
+      background: lightgray;
+    }
+  }
+}
+
+.faq{
   width: 100%;
   height: auto;
   padding-block: 50px;

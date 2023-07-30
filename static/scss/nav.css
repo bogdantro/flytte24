@@ -9,17 +9,16 @@
   position: fixed;
   top: 0;
   z-index: 10000000000000000000;
-  transition: 0s;
+  transition: 0.2s;
+  border-bottom: 1px solid transparent;
 }
 #mobileNav.sticky {
   background: white;
   border-bottom: 1px solid rgba(100, 100, 100, 0.15);
-  transition: 0s;
 }
 #mobileNav.menu {
   background: white;
   border-bottom: 1px solid rgba(100, 100, 100, 0.15);
-  transition: 0s;
 }
 #mobileNav .logo {
   transition: 0.8s;

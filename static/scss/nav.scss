@@ -34,11 +34,11 @@ $txt: #183b56;
         z-index: 1000;
         img{
         width: 100px;
-        transform: translateX(-29px);
         height: auto;
         transition: .3s;
+        transform: translateX(-29px);
         &:hover{
-            transform: scale(1.05);
+            transform: translateX(-29px) scale(0.93);
         }
         }
     }

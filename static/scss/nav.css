@@ -30,12 +30,12 @@
 }
 #mobileNav .logo img {
   width: 100px;
-  transform: translateX(-29px);
   height: auto;
   transition: 0.3s;
+  transform: translateX(-29px);
 }
 #mobileNav .logo img:hover {
-  transform: scale(1.05);
+  transform: translateX(-29px) scale(0.93);
 }
 #mobileNav .hamburger {
   padding: 5px;

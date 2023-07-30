@@ -8,7 +8,7 @@ $txt: #183b56;
     height: auto;
     position: relative;
     padding-bottom: 5px;
-    background: linear-gradient(to bottom, #fff7d623, #fff7d623, rgba(255, 240, 180, 0.247));
+    background: linear-gradient(to bottom right, #fff7d623, #fff7d623, rgba(255, 240, 180, 0.247));
     .content{
       padding-inline: 20px;
       padding-top: 30px;
@@ -171,6 +171,33 @@ $txt: #183b56;
 }
 
 .location{
+  width: 100%;
+  height: auto;
+  padding-block: 50px;
+  position: relative;
+  .content{
+    padding-inline: 20px;
+    position: relative;
+    .text{
+      text-align: left;
+      margin-top: 28px;
+      h1{
+        color: $black;
+        font-size: 27px;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+    }
+    .video{
+      margin-top: 25px;
+      width: 100%;
+      height: 150px;
+      background: lightgray;
+    }
+  }
+}
+
+.reviews{
   width: 100%;
   height: auto;
   padding-block: 50px;

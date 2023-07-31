@@ -10,9 +10,9 @@
   padding-inline: 20px;
 }
 #footerMob .hours {
-  background: #F4F4F4;
+  background: #ebebeb;
   width: 100%;
-  padding: 13px;
+  padding: 13px 8px;
 }
 #footerMob .hours .info-heading {
   color: #1F1F1F;

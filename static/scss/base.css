@@ -14,7 +14,7 @@
   position: relative;
 }
 .cover .content .cover-image {
-  display: none;
+  display: block;
   width: 352px;
   height: auto;
   position: relative;

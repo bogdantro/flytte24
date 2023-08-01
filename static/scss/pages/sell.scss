@@ -1,0 +1,234 @@
+$black: #1F1F1F;
+$white: rgb(246,246,246);
+$primBtn: #f0a432;
+$txt: #183b56;
+
+.cover{
+    width: 100%;
+    min-height: max-content;
+    position: relative;
+    padding-bottom: 5px;
+    background: linear-gradient(to bottom right, rgba(255, 240, 180, 0.185), transparent);
+    .content{
+      padding-inline: 20px;
+      padding-top: 72px;
+      padding-bottom: 40px;
+      height: max-content;
+      position: relative;
+      .text{
+        text-align: left;
+        margin-top: 28px;
+        .cover-h1{
+          color: $black;
+          font-size: 36px;
+          font-weight: 600;
+          margin-bottom: 10px;
+          max-width: 300px;
+        }
+        .cover-p{
+            max-width: 270px;
+          font-size: 18px;
+          margin-bottom: 0;
+          color: $black;
+          font-weight: 500;
+        }
+      }
+      .cover-actions{
+        margin-top: 24px;
+        width: 100%;
+        text-align: center;
+        button{
+          border: 1px solid transparent;
+          border-radius: 6px;
+          outline: none;
+          background: $primBtn;
+          color: white;
+          font-weight: 500;
+          font-size: 17px;
+          width: 230px;
+          display: block;
+          height: 47px;
+          &.secondary{
+            border-color: $primBtn;
+            color: $primBtn;
+            background: white;
+            margin-right: 0;
+            margin-top: 15px;
+          }
+        }
+      }
+    }
+}
+
+
+.page{
+    .sell-car{
+        padding-inline: 20px;
+        .card{
+            border: 1px solid lightgray;
+            width: 100%;
+            height: 200px;
+            background: transparent;
+            border-radius: 6px;
+            .top{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                border-bottom: 1px solid lightgray;
+                    .left{
+                        border-right: 1px solid lightgray;
+                        width: 45%;
+                        padding: 17px 18px;
+                    }
+                    .right{
+                        padding-block: 17px;
+                        padding-left: 4px;
+                        width: 50%;
+                    }
+                }
+                .bottom{
+                    padding: 17px 18px;
+            }
+        }
+        .steps{
+            padding-block: 40px;
+            padding-bottom: 0;
+            .content{
+                position: relative;
+                .text{
+                  text-align: left;
+                  margin-top: 28px;
+                  h1{
+                    color: $black;
+                    font-size: 27px;
+                    font-weight: 600;
+                    margin-bottom: 10px;
+                  }
+                }
+                .proccess-card{
+                    margin-block: 25px;
+                    transition: 1s;
+                    transform: translateY(0);
+                    &.active{
+                      opacity: 1;
+                      transform: translateY(0);
+                    }
+                  }
+                  .proccess-image-text{
+                    width: 100%;
+                    transform: translateY(3px);
+                    background: rgb(241,241,241);
+                    border-right: 10px solid $primBtn;
+                    padding-right: 12px;
+                    padding: 10px 4px;
+                    h1{
+                      font-size: 20px;
+                      font-weight: 500;
+                      color: $black;
+                    }
+                    p{
+                      transform: translateY(-3px);
+                      opacity: 1;
+                      font-size: 16px;
+                      font-weight: 400;
+                      color: $black;
+                      padding-right: 30px;
+                    }
+                  }
+            }
+        }
+        .why-us{
+            padding-top:20px;
+            .content{
+                position: relative;
+                .text{
+                  text-align: left;
+                  margin-top: 28px;
+                  h1{
+                    color: $black;
+                    font-size: 27px;
+                    font-weight: 600;
+                    margin-bottom: 10px;
+                  }
+                  p{
+                    font-size: 16px;
+                    margin-bottom: 0;
+                    color: $black;
+                    font-weight: 500;
+                  }
+                }
+                button{
+                  border: 1px solid transparent;
+                  border-radius: 6px;
+                  outline: none;
+                  background: $primBtn;
+                  color: white;
+                  font-weight: 500;
+                  font-size: 17px;
+                  width: 200px;
+                  display: block;
+                  height: 40px;
+                  margin-top: 25px;
+                }
+            }
+        }
+        .undo-orders{
+            padding-top:55px;
+            .content{
+                position: relative;
+                .text{
+                  text-align: left;
+                  margin-top: 28px;
+                  h1{
+                    color: $black;
+                    font-size: 27px;
+                    font-weight: 600;
+                    margin-bottom: 10px;
+                  }
+                  p{
+                    font-size: 16px;
+                    margin-bottom: 0;
+                    color: $black;
+                    font-weight: 500;
+                  }
+                }
+            }
+        }
+        .contact-info{
+            padding-block:55px;
+            padding-top: 30px;
+            .content{
+                position: relative;
+                .text{
+                  text-align: left;
+                  margin-top: 28px;
+                  h1{
+                    color: $black;
+                    font-size: 27px;
+                    font-weight: 600;
+                    margin-bottom: 10px;
+                  }
+                  p{
+                    font-size: 16px;
+                    margin-bottom: 0;
+                    color: $black;
+                    font-weight: 500;
+                  }
+                }
+                button{
+                  border: 1px solid transparent;
+                  border-radius: 6px;
+                  outline: none;
+                  background: $primBtn;
+                  color: white;
+                  font-weight: 500;
+                  font-size: 17px;
+                  width: 200px;
+                  display: block;
+                  height: 40px;
+                  margin-top: 25px;
+                }
+            }
+        }
+    }
+}

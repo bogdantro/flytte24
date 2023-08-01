@@ -22,3 +22,14 @@ $txt: #183b56;
   .page{
     min-height: 80vh;
   }
+
+  button{
+    transition: .2s;
+    &:hover{
+      filter: brightness(89%);
+    }
+    &:focus{
+      filter: brightness(89%);
+      transform: scale(0.95);
+    }
+  }

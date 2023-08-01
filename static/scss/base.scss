@@ -5,7 +5,7 @@ $txt: #183b56;
 
 .cover{
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     position: relative;
     padding-bottom: 5px;
     background: linear-gradient(to bottom right, rgba(255, 240, 180, 0.185), transparent);
@@ -47,7 +47,7 @@ $txt: #183b56;
         text-align: center;
         button{
           border: 1px solid transparent;
-          border-radius: 25px;
+          border-radius: 6px;
           outline: none;
           background: $primBtn;
           color: white;
@@ -91,6 +91,27 @@ $txt: #183b56;
       width: 100%;
       height: 150px;
       background: lightgray;
+    }
+  }
+}
+
+.verdivurdering{
+  width: 100%;
+  height: auto;
+  padding-block: 50px;
+  position: relative;
+  .content{
+    padding-inline: 20px;
+    position: relative;
+    .text{
+      text-align: left;
+      margin-top: 28px;
+      h1{
+        color: $black;
+        font-size: 27px;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
     }
   }
 }
@@ -203,7 +224,7 @@ $txt: #183b56;
     button{
       margin-top: 30px;
       border: 1px solid transparent;
-      border-radius: 25px;
+      border-radius: 6px;
       outline: none;
       color: white;
       font-weight: 500;

@@ -10,3 +10,13 @@ class Profile(models.Model):
 
     def __str__(self):
         return f'{self.user.username} sin profil'
+
+
+
+class Booking(models.Model):
+    date = models.DateField()
+    location = models.CharField(max_length=1000)
+    helper = models.CharField(max_length=1000)
+
+    def __str__(self):
+        return self.date

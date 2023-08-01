@@ -16,4 +16,15 @@ html, body {
 
 .page {
   min-height: 80vh;
+}
+
+button {
+  transition: 0.2s;
+}
+button:hover {
+  filter: brightness(89%);
+}
+button:focus {
+  filter: brightness(89%);
+  transform: scale(0.95);
 }/*# sourceMappingURL=global.css.map */

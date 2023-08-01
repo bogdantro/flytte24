@@ -1,6 +1,6 @@
 .cover {
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   position: relative;
   padding-bottom: 5px;
   background: linear-gradient(to bottom right, rgba(255, 240, 180, 0.185), transparent);
@@ -46,7 +46,7 @@
 }
 .cover .content .cover-actions button {
   border: 1px solid transparent;
-  border-radius: 25px;
+  border-radius: 6px;
   outline: none;
   background: #f0a432;
   color: white;
@@ -89,6 +89,27 @@
   width: 100%;
   height: 150px;
   background: lightgray;
+}
+
+.verdivurdering {
+  width: 100%;
+  height: auto;
+  padding-block: 50px;
+  position: relative;
+}
+.verdivurdering .content {
+  padding-inline: 20px;
+  position: relative;
+}
+.verdivurdering .content .text {
+  text-align: left;
+  margin-top: 28px;
+}
+.verdivurdering .content .text h1 {
+  color: #1F1F1F;
+  font-size: 27px;
+  font-weight: 600;
+  margin-bottom: 10px;
 }
 
 .proccess {
@@ -202,7 +223,7 @@
 .book-now .content button {
   margin-top: 30px;
   border: 1px solid transparent;
-  border-radius: 25px;
+  border-radius: 6px;
   outline: none;
   color: white;
   font-weight: 500;

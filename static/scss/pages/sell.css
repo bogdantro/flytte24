@@ -1,0 +1,228 @@
+.cover {
+  width: 100%;
+  min-height: -moz-max-content;
+  min-height: max-content;
+  position: relative;
+  padding-bottom: 5px;
+  background: linear-gradient(to bottom right, rgba(255, 240, 180, 0.185), transparent);
+}
+.cover .content {
+  padding-inline: 20px;
+  padding-top: 72px;
+  padding-bottom: 40px;
+  height: -moz-max-content;
+  height: max-content;
+  position: relative;
+}
+.cover .content .text {
+  text-align: left;
+  margin-top: 28px;
+}
+.cover .content .text .cover-h1 {
+  color: #1F1F1F;
+  font-size: 36px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  max-width: 300px;
+}
+.cover .content .text .cover-p {
+  max-width: 270px;
+  font-size: 18px;
+  margin-bottom: 0;
+  color: #1F1F1F;
+  font-weight: 500;
+}
+.cover .content .cover-actions {
+  margin-top: 24px;
+  width: 100%;
+  text-align: center;
+}
+.cover .content .cover-actions button {
+  border: 1px solid transparent;
+  border-radius: 6px;
+  outline: none;
+  background: #f0a432;
+  color: white;
+  font-weight: 500;
+  font-size: 17px;
+  width: 230px;
+  display: block;
+  height: 47px;
+}
+.cover .content .cover-actions button.secondary {
+  border-color: #f0a432;
+  color: #f0a432;
+  background: white;
+  margin-right: 0;
+  margin-top: 15px;
+}
+
+.page .sell-car {
+  padding-inline: 20px;
+}
+.page .sell-car .card {
+  border: 1px solid lightgray;
+  width: 100%;
+  height: 200px;
+  background: transparent;
+  border-radius: 6px;
+}
+.page .sell-car .card .top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid lightgray;
+}
+.page .sell-car .card .top .left {
+  border-right: 1px solid lightgray;
+  width: 45%;
+  padding: 17px 18px;
+}
+.page .sell-car .card .top .right {
+  padding-block: 17px;
+  padding-left: 4px;
+  width: 50%;
+}
+.page .sell-car .card .bottom {
+  padding: 17px 18px;
+}
+.page .sell-car .steps {
+  padding-block: 40px;
+  padding-bottom: 0;
+}
+.page .sell-car .steps .content {
+  position: relative;
+}
+.page .sell-car .steps .content .text {
+  text-align: left;
+  margin-top: 28px;
+}
+.page .sell-car .steps .content .text h1 {
+  color: #1F1F1F;
+  font-size: 27px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.page .sell-car .steps .content .proccess-card {
+  margin-block: 25px;
+  transition: 1s;
+  transform: translateY(0);
+}
+.page .sell-car .steps .content .proccess-card.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+.page .sell-car .steps .content .proccess-image-text {
+  width: 100%;
+  transform: translateY(3px);
+  background: rgb(241, 241, 241);
+  border-right: 10px solid #f0a432;
+  padding-right: 12px;
+  padding: 10px 4px;
+}
+.page .sell-car .steps .content .proccess-image-text h1 {
+  font-size: 20px;
+  font-weight: 500;
+  color: #1F1F1F;
+}
+.page .sell-car .steps .content .proccess-image-text p {
+  transform: translateY(-3px);
+  opacity: 1;
+  font-size: 16px;
+  font-weight: 400;
+  color: #1F1F1F;
+  padding-right: 30px;
+}
+.page .sell-car .why-us {
+  padding-top: 20px;
+}
+.page .sell-car .why-us .content {
+  position: relative;
+}
+.page .sell-car .why-us .content .text {
+  text-align: left;
+  margin-top: 28px;
+}
+.page .sell-car .why-us .content .text h1 {
+  color: #1F1F1F;
+  font-size: 27px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.page .sell-car .why-us .content .text p {
+  font-size: 16px;
+  margin-bottom: 0;
+  color: #1F1F1F;
+  font-weight: 500;
+}
+.page .sell-car .why-us .content button {
+  border: 1px solid transparent;
+  border-radius: 6px;
+  outline: none;
+  background: #f0a432;
+  color: white;
+  font-weight: 500;
+  font-size: 17px;
+  width: 200px;
+  display: block;
+  height: 40px;
+  margin-top: 25px;
+}
+.page .sell-car .undo-orders {
+  padding-top: 55px;
+}
+.page .sell-car .undo-orders .content {
+  position: relative;
+}
+.page .sell-car .undo-orders .content .text {
+  text-align: left;
+  margin-top: 28px;
+}
+.page .sell-car .undo-orders .content .text h1 {
+  color: #1F1F1F;
+  font-size: 27px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.page .sell-car .undo-orders .content .text p {
+  font-size: 16px;
+  margin-bottom: 0;
+  color: #1F1F1F;
+  font-weight: 500;
+}
+.page .sell-car .contact-info {
+  padding-block: 55px;
+  padding-top: 30px;
+}
+.page .sell-car .contact-info .content {
+  position: relative;
+}
+.page .sell-car .contact-info .content .text {
+  text-align: left;
+  margin-top: 28px;
+}
+.page .sell-car .contact-info .content .text h1 {
+  color: #1F1F1F;
+  font-size: 27px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.page .sell-car .contact-info .content .text p {
+  font-size: 16px;
+  margin-bottom: 0;
+  color: #1F1F1F;
+  font-weight: 500;
+}
+.page .sell-car .contact-info .content button {
+  border: 1px solid transparent;
+  border-radius: 6px;
+  outline: none;
+  background: #f0a432;
+  color: white;
+  font-weight: 500;
+  font-size: 17px;
+  width: 200px;
+  display: block;
+  height: 40px;
+  margin-top: 25px;
+}/*# sourceMappingURL=sell.css.map */

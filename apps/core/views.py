@@ -15,11 +15,33 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from .models import *
+from .forms import *
 
 
 def home(request):      
 
     return render(request, 'core/home.html')  
+
+
+def sell(request):      
+    return render(request, 'pages/sell.html')  
+
+def book_time(request):      
+    today = date.today()
+    booked_dates = Booking.objects.filter(date__gte=today).values_list('date', flat=True)
+    
+    if request.method == 'POST':
+        form = BookingForm(request.POST)
+        if form.is_valid():
+            selected_date = form.cleaned_data['date']
+            # Process the booking (e.g., save it to the database)
+            Booking.objects.create(date=selected_date)
+            return redirect('book_time')
+    else:
+        form = BookingForm()
+    
+    context = {'booked_dates': booked_dates, 'form': form}
+    return render(request, 'pages/book.html', context)  
 
 
 

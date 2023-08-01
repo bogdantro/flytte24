@@ -1,0 +1,40 @@
+$black: #1F1F1F;
+$white: rgb(246,246,246);
+$primBtn: #f0a432;
+$txt: #183b56;
+
+.cover{
+    width: 100%;
+    min-height: max-content;
+    position: relative;
+    padding-bottom: 5px;
+    background: linear-gradient(to bottom right, rgba(255, 240, 180, 0.185), transparent);
+    .content{
+      padding-inline: 20px;
+      padding-top: 72px;
+      padding-bottom: 40px;
+      height: max-content;
+      position: relative;
+      .text{
+        text-align: left;
+        margin-top: 28px;
+        .cover-h1{
+          color: $black;
+          font-size: 36px;
+          font-weight: 600;
+          margin-bottom: 10px;
+        }
+        .cover-p{
+            max-width: 270px;
+          font-size: 18px;
+          margin-bottom: 0;
+          color: $black;
+          font-weight: 500;
+        }
+      }
+    }
+}
+
+.page{
+
+}

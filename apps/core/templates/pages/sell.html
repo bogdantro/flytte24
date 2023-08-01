@@ -1,0 +1,148 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static '/scss/pages/sell.css' %}" type="text/css">
+
+<div class="page">
+    <div class="cover">
+        <div class="content">
+            <div class="text">
+                <h1 class="cover-h1">Selg bilen din med oss</h1>
+                <p class="cover-p">La oss vise deg prossesen av å selge bilen din</p>
+            </div>
+            <div class="cover-actions">
+                <button onclick="window.location.href='/selg-bilen/book-time/'">Book nå</button>
+             </div>   
+        </div>
+    </div>
+
+    <div class="sell-car">
+        <div class="card">
+            <div class="top">
+                <div class="left">2t</div>
+                <div class="right">kr 1 990</div>
+            </div>
+            <div class="bottom">
+                Kristiansand (Sørlandsparken)&nbsp; |&nbsp; Lillestrøm&nbsp; |&nbsp; Oslo (Kontor)&nbsp; |&nbsp; Oslo (Skøyen)&nbsp; |&nbsp; Arendal (Stoaveien)
+            </div>
+        </div>
+
+        <div class="steps">
+            <div class="content">
+                <div class="text">
+                    <h1>Så enkelt er det</h1>
+                </div>
+                <div class="proccess-card" id="processCard1">
+                    <div class="proccess-image-text">
+                       <h1>Velg tidspunkt</h1>
+                       <p>Book det tidspunktet som passer best</p>
+                    </div>
+                 </div>
+                 <div class="proccess-card" id="processCard2">
+                    <div class="proccess-image-text">
+                       <h1>Levering</h1>
+                       <p>Lever bilen til nærmestelokasjon</p>
+                    </div>
+                 </div>
+                 <div class="proccess-card" id="processCard3">
+                    <div class="proccess-image-text">
+                       <h1>Henting</h1>
+                       <p>Hent bilen samme dag før klokken 16:00</p>
+                    </div>
+                 </div>
+                 <div class="proccess-card" id="processCard4">
+                    <div class="proccess-image-text">
+                        <h1>Vi finner kjøper</h1>
+                        <p>Vent til vi har en kjøper</p>         
+                     </div>
+                    </div>
+                 </div>
+        </div>
+
+        <div class="why-us">
+            <div class="content">
+                <div class="text">
+                    <h1>Hvorfor velge Bilmeglerne</h1>
+                    <p>
+                        En av mange fordeler ved å selge bilen gjennom Bilmeglerne er at du får en profesjonell presentasjon av bilen som fører til et raskere salg til en høyere salgspris noe som utligner kostnaden ved å bruke oss.
+                        <br>
+                        <br>
+                        Se vårt nye annonse design her: <a href="https://www.finn.no/291333884">https://www.finn.no/291333884</a>
+                        <br>
+                        <br>
+                        Vi ser ingen grunn til å avertere bilen selv eller å ta bilen i innbytte når du har Bilmeglerne.no som skaffer deg markedspris!
+                    </p>
+                </div>
+                <button onclick="window.location.href='/selg-bilen/book-time/'">Book nå</button>
+            </div>
+        </div>
+
+        <div class="undo-orders">
+            <div class="content">
+                <div class="text">
+                    <h1>Avbestillingsregler</h1>
+                    <p>
+                        Vennligst kontakt oss 48 timer i forveien for å kansellere eller flytte timen.
+                        <br>
+                        <br>
+                        For å angre bookingen sender du mail til Booking@bilmeglerne.no senest 48 timer før booket time.
+                        <br>
+                        <br>
+                        Du belastes kr 0 ved kansellering av timen senest 48 timer før timen starter. Du kan da be om ny time med tidspunkt ikke lenger enn 30 dager frem i tid eller om refusjon. Ved kansellering senere enn 48 timer før timen starter vil ikke pengene bli refundert og rettigheten til å booke ny time kostnadsfritt vil bortfalle.
+                        <br>
+                        <br>
+                        Les mer om angreretten i <a href="/">salgsbetingelsene</a>.                    
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="contact-info">
+            <div class="content">
+                <div class="text">
+                    <h1>Kontaktinformasjon</h1>
+                    <p>
+                        Skibåsen 33, 4636 Kristiansand, Norge
+                        <br>
+                        +47 40179859
+                        <br>
+                        kontakt@bilmeglerne.no
+                        <br>
+                        <br>
+                        Tærudgata 2, 2004 Lillestrøm, Norway
+                        <br>
+                        +47 40179859
+                        <br>
+                        post@bilmeglerne.no
+                        <br>
+                        <br>
+                        Drammensveien 39, Oslo, Norge
+                        <br>
+                        +47 40179859
+                        <br>
+                        post@bilmeglerne.no
+                        <br>
+                        <br>
+                        Bygdøy allé 119, 0273 Oslo, Norge
+                        <br>
+                        +4740179859
+                        <br>
+                        post@bilmeglerne.no
+                        <br>
+                        <br>
+                        Stoaveien 2, Arendal, Norge
+                        <br>
+                        +47 40179859
+                        <br>
+                        kontakt@bilmeglerne.no    
+                        <button onclick="window.location.href='/selg-bilen/book-time/'">Book nå</button>             
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
+</div>
+{% endblock %}

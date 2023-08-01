@@ -46,4 +46,9 @@ $txt: #183b56;
     pointer-events: none;
     z-index: 9999; /* Ensure it's on top of other elements */
     transition: opacity 0.5s ease; /* You can adjust the transition duration */
+    &.hide{
+      background: none;
+      pointer-events: none;
+      opacity: 0;
+    }
 }

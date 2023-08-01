@@ -40,4 +40,9 @@ button:focus {
   pointer-events: none;
   z-index: 9999; /* Ensure it's on top of other elements */
   transition: opacity 0.5s ease; /* You can adjust the transition duration */
+}
+.page-overlay.hide {
+  background: none;
+  pointer-events: none;
+  opacity: 0;
 }/*# sourceMappingURL=global.css.map */

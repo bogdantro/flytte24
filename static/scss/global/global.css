@@ -27,4 +27,17 @@ button:hover {
 button:focus {
   filter: brightness(89%);
   transform: scale(0.95);
+}
+
+.page-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 9999; /* Ensure it's on top of other elements */
+  transition: opacity 0.5s ease; /* You can adjust the transition duration */
 }/*# sourceMappingURL=global.css.map */

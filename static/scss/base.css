@@ -1,6 +1,8 @@
 .cover {
   width: 100%;
-  min-height: 100vh;
+  min-height: -moz-max-content;
+  min-height: max-content;
+  margin-bottom: 20px;
   position: relative;
   padding-bottom: 5px;
   background: linear-gradient(to bottom right, rgba(255, 240, 180, 0.185), transparent);
@@ -68,6 +70,7 @@
   width: 100%;
   height: auto;
   padding-block: 50px;
+  padding-top: 20px;
   position: relative;
 }
 .sell-with-us .content {

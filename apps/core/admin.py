@@ -3,4 +3,5 @@ from .models import *
 from django.utils import timezone
 from django.db.models import Sum
 
-admin.site.register(Booking)
+admin.site.register(Contact)
+admin.site.register(Verdivurdering)

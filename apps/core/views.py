@@ -16,58 +16,67 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from .models import *
 from .forms import *
-
+from django.utils import timezone
+from datetime import timedelta
+from .utils import *  # Import the function from utils.py
+from django.shortcuts import render, redirect
+from .forms import *
+from .models import *
+from datetime import datetime
+from django.http import HttpResponseForbidden
 
 def home(request):      
+    if request.method=='POST' and 'verdivurdering' in request.POST:
+        name = request.POST.get('name', )
+        email = request.POST.get('email', '')
+        telefon = request.POST.get('telefon', '')
+        vilkaar = request.POST.get('vilkaar', '')
+        reg_nr = request.POST.get('reg_nr', '')
+        km = request.POST.get('km', '')
+        if vilkaar == 'on':
+            vilkaar = True
+        else:
+            vilkaar = False
 
+        verdivurdering = Verdivurdering.objects.create(name=name, telefon=telefon, email=email, vilkaar=vilkaar, reg_nr=reg_nr, km=km)
+        return redirect('success')
     return render(request, 'core/home.html')  
 
 
 def sell(request):      
-    return render(request, 'pages/sell.html')  
+    return render(request, 'pages/book/sell.html')  
 
-def book_time(request):      
-    today = date.today()
-    booked_dates = Booking.objects.filter(date__gte=today).values_list('date', flat=True)
-    
-    if request.method == 'POST':
-        form = BookingForm(request.POST)
-        if form.is_valid():
-            selected_date = form.cleaned_data['date']
-            # Process the booking (e.g., save it to the database)
-            Booking.objects.create(date=selected_date)
-            return redirect('book_time')
-    else:
-        form = BookingForm()
-    
-    context = {'booked_dates': booked_dates, 'form': form}
-    return render(request, 'pages/book.html', context)  
+def book_time(request):
 
+    return render(request, 'pages/book/book.html')
 
+def success(request):
+    return render(request, 'pages/contact/success.html')
+
+def contact(request):
+    if request.method=='POST' and 'contact' in request.POST:
+        name = request.POST.get('name', )
+        email = request.POST.get('email', '')
+        message = request.POST.get('message', '')
+
+        contact = Contact.objects.create(name=name, message=message, email=email)
+        return redirect('success')
+    return render(request, 'pages/contact/contact.html')  
 
 
+def verdivurdering(request):
+    if request.method=='POST' and 'verdivurdering' in request.POST:
+        name = request.POST.get('name', )
+        email = request.POST.get('email', '')
+        telefon = request.POST.get('telefon', '')
+        vilkaar = request.POST.get('vilkaar', '')
+        reg_nr = request.POST.get('reg_nr', '')
+        km = request.POST.get('km', '')
+        if vilkaar == 'on':
+            vilkaar = True
+        else:
+            vilkaar = False
 
-
-# def contact(request):
-#     if request.method=='POST' and 'contact' in request.POST:
-#         navn = request.POST.get('navn')
-#         email = request.POST.get('email')
-#         message = request.POST.get('message')
-
-#         captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
-
-#         data = {
-#             'navn': navn,
-#             'email': email,
-#             'message': message,
-#         }
-#         message = dedent('''
-#         Fra: {}
-
-#         Navn: {}
-
-#         Beskjed: {}
-#         ''').format(data['email'], data['navn'], data['message'], )
-#         send_mail('Epost fra portfolio', message, '', ['sabertoothtri@gmail.com'])
-#         return redirect('/')
-#     return render(request, 'pages/contact.html')  
+        verdivurdering = Verdivurdering.objects.create(name=name, telefon=telefon, email=email, vilkaar=vilkaar, reg_nr=reg_nr, km=km)
+        return redirect('success')
+    return render(request, 'pages/contact/verdivurdering.html')  

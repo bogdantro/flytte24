@@ -1,0 +1,70 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static '/scss/pages/verdi.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static '/scss/pages/page.css' %}" type="text/css">
+
+<div class="page">
+    <div class="cover">
+        <div class="content" style="padding-bottom: 23px;">
+            <div class="text">
+                <h1 class="cover-h1">Gratis verdivurdering</h1>
+                <p class="cover-p">Se hva din bil kan selges for. Vi analyserer markedet for deg!</p>
+            </div>  
+        </div>
+    </div>
+    <form id="verdivurdering" action="" method="POST">
+        {% csrf_token %}
+        {{form.errors}}
+        <br>
+        <div class="inputs-labels">
+            <div class="step-one">
+                <div class="reg-nr">
+                    <img src="{% static 'images/other/skilt-no.svg' %}" alt="">
+                    <input required type="text" name="reg_nr" id="reg_nr" placeholder="AB12345" maxlength="7">
+                </div>
+                <br>
+                <div class="km">
+                    <p>km</p>
+                    <input required type="text" id="km" name="km" placeholder="130000" name="" id="">
+                </div>
+            </div>
+            <br>
+            <div id="stepTwo">
+                <label for="navn">Navn</label>
+                <br>
+                <input type="text" name="name" id="name" required  oninput="this.setCustomValidity('')">
+                <br>
+                <br>
+                <label for="email">Epost</label>
+                <br>
+                <input type="email" name="email" id="email"  required oninput="this.setCustomValidity('')">
+                <br>
+                <br>
+                <label for="telefon">Telefon</label>
+                <br>
+                <input type="number" name="telefon" id="telefon"  required oninput="this.setCustomValidity('')">
+                <br>
+            </div>
+           <div class="checkbox">
+             <input required type="checkbox" name="vilkaar" id="vilkaar">
+             <p>Jeg godtar <a href="">vilkårene og betingelsene</a></p>
+           </div>
+
+          </div>
+        <div class="form-actions">
+          <button class="primary" type="submit" name="verdivurdering" value="verdivurdering">Sjekk verdi</button>
+        </div>
+    </form>
+</div>
+
+
+
+{% endblock %}
+
+
+
+
+

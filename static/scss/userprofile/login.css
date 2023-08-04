@@ -61,7 +61,7 @@
   max-width: 400px;
 }
 .login #loginForm .inputs-labels label {
-  color: #183b56;
+  color: #1F1F1F;
   font-size: 15px;
   font-weight: 500;
 }
@@ -105,7 +105,7 @@
   border: 1px solid lightgray;
   outline: none;
   padding: 8px;
-  color: #183b56;
+  color: #1F1F1F;
   font-size: 16px;
   cursor: pointer;
   background: rgba(255, 255, 255, 0.7);

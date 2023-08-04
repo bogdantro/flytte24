@@ -1,3 +1,4 @@
+import datetime
 from django.db import models
 from datetime import date
 from django.contrib.auth.models import User
@@ -12,11 +13,23 @@ class Profile(models.Model):
         return f'{self.user.username} sin profil'
 
 
-
-class Booking(models.Model):
-    date = models.DateField()
-    location = models.CharField(max_length=1000)
-    helper = models.CharField(max_length=1000)
+class Contact(models.Model):
+    name = models.CharField(max_length=400, blank=False)
+    email = models.EmailField(max_length=100, blank=False)
+    message = models.TextField(blank=False)
+    is_answered = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.date
+        return self.name  
+
+class Verdivurdering(models.Model):
+    reg_nr = models.CharField(max_length=200)
+    km = models.CharField(max_length=200)
+    name = models.CharField(max_length=400, blank=False)
+    email = models.EmailField(max_length=100, blank=False)
+    telefon = models.CharField(max_length=100, blank=False)
+    vilkaar = models.BooleanField(default=False)
+    is_answered = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name  

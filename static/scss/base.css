@@ -95,24 +95,147 @@
 }
 
 .verdivurdering {
+  margin-top: 25px;
   width: 100%;
   height: auto;
-  padding-block: 50px;
   position: relative;
 }
 .verdivurdering .content {
   padding-inline: 20px;
+  padding-top: 35px;
+  padding-bottom: 80px;
   position: relative;
+  background: #f0a432;
 }
 .verdivurdering .content .text {
-  text-align: left;
+  text-align: center;
   margin-top: 28px;
 }
 .verdivurdering .content .text h1 {
-  color: #1F1F1F;
-  font-size: 27px;
+  color: white;
+  font-size: 29px;
   font-weight: 600;
-  margin-bottom: 10px;
+  margin-bottom: -8px;
+}
+.verdivurdering .content .text h2 {
+  color: white;
+  font-size: 25px;
+  font-weight: 500;
+}
+.verdivurdering .content form {
+  background: white;
+  border-radius: 12px;
+  padding-inline: 30px;
+  padding-block: 13px;
+  padding-bottom: 23px;
+  margin-top: 25px;
+}
+.verdivurdering .content form .inputs-labels .step-one input {
+  height: 54px;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 23px;
+}
+.verdivurdering .content form .inputs-labels .step-one input:focus, .verdivurdering .content form .inputs-labels .step-one input:active {
+  border: 1px solid rgb(172, 172, 172);
+  cursor: text;
+  background: rgb(255, 255, 255);
+}
+.verdivurdering .content form .inputs-labels .step-one input::-moz-placeholder {
+  font-size: 23px;
+}
+.verdivurdering .content form .inputs-labels .step-one input::placeholder {
+  font-size: 23px;
+}
+.verdivurdering .content form .inputs-labels .step-one .reg-nr {
+  display: flex;
+  position: relative;
+}
+.verdivurdering .content form .inputs-labels .step-one .reg-nr input {
+  text-transform: uppercase;
+}
+.verdivurdering .content form .inputs-labels .step-one .reg-nr img {
+  position: absolute;
+  left: 0;
+  height: 54px;
+  width: auto;
+  border-bottom-left-radius: 12px;
+  border-top-left-radius: 12px;
+}
+.verdivurdering .content form .inputs-labels .step-one .km {
+  position: relative;
+  display: flex;
+}
+.verdivurdering .content form .inputs-labels .step-one .km p {
+  position: absolute;
+  right: 11px;
+  bottom: -5px;
+  color: #1F1F1F;
+  opacity: 0.95;
+  font-size: 16px;
+  font-weight: 500;
+}
+.verdivurdering .content form .inputs-labels label {
+  font-size: 16px;
+  color: #1F1F1F;
+  font-weight: 500;
+}
+.verdivurdering .content form .inputs-labels input {
+  width: 100%;
+  height: 45px;
+  border: 1px solid lightgray;
+  outline: none;
+  padding: 8px;
+  color: #1F1F1F;
+  font-size: 16px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 7px;
+}
+.verdivurdering .content form .inputs-labels input:focus, .verdivurdering .content form .inputs-labels input:active {
+  border: 2px solid #f0a432;
+  cursor: text;
+  background: rgb(255, 255, 255);
+}
+.verdivurdering .content form .inputs-labels input::-moz-placeholder {
+  color: #1F1F1F;
+  opacity: 0.6;
+}
+.verdivurdering .content form .inputs-labels input::placeholder {
+  color: #1F1F1F;
+  opacity: 0.6;
+}
+.verdivurdering .content form .inputs-labels .checkbox {
+  display: flex;
+  align-items: center;
+  margin-top: 18px;
+  margin-bottom: 15px;
+}
+.verdivurdering .content form .inputs-labels .checkbox p {
+  margin-bottom: 0;
+  margin-left: 15px;
+  font-size: 14px;
+  color: #1F1F1F;
+}
+.verdivurdering .content form .inputs-labels .checkbox p a {
+  text-decoration: underline;
+}
+.verdivurdering .content form .inputs-labels .checkbox input {
+  width: 20px;
+  height: 20px;
+}
+.verdivurdering .content form .form-actions button {
+  border: 1px solid transparent;
+  border-radius: 6px;
+  outline: none;
+  background: #f0a432;
+  color: white;
+  font-weight: 500;
+  font-size: 17px;
+  width: 100%;
+  display: block;
+  height: 44px;
+  margin-top: 32px;
 }
 
 .proccess {

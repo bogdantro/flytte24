@@ -1,0 +1,130 @@
+.page {
+  padding-inline: 20px;
+  padding-bottom: 60px;
+}
+.page .cover {
+  background: transparent;
+}
+.page .cover .content {
+  padding-inline: 0;
+}
+.page .cover .content .text {
+  text-align: center;
+}
+.page .cover .content .text p {
+  margin: auto;
+}
+.page form {
+  background: white;
+  border-radius: 12px;
+  padding-inline: 30px;
+  padding-block: 16px;
+  padding-bottom: 26px;
+}
+.page form .inputs-labels .step-one input {
+  height: 60px;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 26px;
+}
+.page form .inputs-labels .step-one input:focus, .page form .inputs-labels .step-one input:active {
+  border: 1px solid rgb(172, 172, 172);
+  cursor: text;
+  background: rgb(255, 255, 255);
+}
+.page form .inputs-labels .step-one input::-moz-placeholder {
+  font-size: 26px;
+}
+.page form .inputs-labels .step-one input::placeholder {
+  font-size: 26px;
+}
+.page form .inputs-labels .step-one .reg-nr {
+  display: flex;
+  position: relative;
+}
+.page form .inputs-labels .step-one .reg-nr input {
+  text-transform: uppercase;
+}
+.page form .inputs-labels .step-one .reg-nr img {
+  position: absolute;
+  left: 0;
+  height: 60px;
+  width: auto;
+  border-bottom-left-radius: 12px;
+  border-top-left-radius: 12px;
+}
+.page form .inputs-labels .step-one .km {
+  position: relative;
+  display: flex;
+}
+.page form .inputs-labels .step-one .km p {
+  position: absolute;
+  right: 7px;
+  bottom: -4px;
+  color: #1F1F1F;
+  opacity: 0.95;
+  font-size: 16px;
+  font-weight: 500;
+}
+.page form .inputs-labels label {
+  font-size: 16px;
+  color: #1F1F1F;
+  font-weight: 500;
+}
+.page form .inputs-labels input {
+  width: 100%;
+  height: 48px;
+  border: 1px solid lightgray;
+  outline: none;
+  padding: 8px;
+  color: #1F1F1F;
+  font-size: 16px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 7px;
+}
+.page form .inputs-labels input:focus, .page form .inputs-labels input:active {
+  border: 2px solid #f0a432;
+  cursor: text;
+  background: rgb(255, 255, 255);
+}
+.page form .inputs-labels input::-moz-placeholder {
+  color: #1F1F1F;
+  opacity: 0.6;
+}
+.page form .inputs-labels input::placeholder {
+  color: #1F1F1F;
+  opacity: 0.6;
+}
+.page form .inputs-labels .checkbox {
+  display: flex;
+  align-items: center;
+  margin-top: 18px;
+  margin-bottom: 15px;
+}
+.page form .inputs-labels .checkbox p {
+  margin-bottom: 0;
+  margin-left: 15px;
+  font-size: 14px;
+  color: #1F1F1F;
+}
+.page form .inputs-labels .checkbox p a {
+  text-decoration: underline;
+}
+.page form .inputs-labels .checkbox input {
+  width: 20px;
+  height: 20px;
+}
+.page form .form-actions button {
+  border: 1px solid transparent;
+  border-radius: 6px;
+  outline: none;
+  background: #f0a432;
+  color: white;
+  font-weight: 500;
+  font-size: 17px;
+  width: 100%;
+  display: block;
+  height: 44px;
+  margin-top: 32px;
+}/*# sourceMappingURL=verdi.css.map */

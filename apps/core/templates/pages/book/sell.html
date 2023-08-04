@@ -146,3 +146,6 @@
     
 </div>
 {% endblock %}
+
+
+I want to make a booking system in django, where only the following dates are available for customers to book: All weekdays are available, but only 08:00, 10:00, 12:00 and 14:00 are available to book. On saturdays, only 10:00, 12:00 and 14:00 should be available to book. Sunday should not be available to book at all. If a customer books, lets say 10:00 on tuesday 02.05.2023, that exact date should become unvailable. So only one customer per date and time. I need this information from the user, when he books a date and time: Location, Preference, Full name, Email, Mobile number, Reg nr, Km, 3 checboxes and Car name and model

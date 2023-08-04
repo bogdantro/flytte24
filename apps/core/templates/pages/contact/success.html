@@ -1,0 +1,55 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static '/scss/pages/verdi.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static '/scss/pages/page.css' %}" type="text/css">
+
+<div class="page" style="padding-inline: 0;">
+    <div class="cover">
+        <div class="content" style="padding-inline: 20px; text-align: center; background: linear-gradient(to bottom right, rgba(255, 240, 180, 0.185), transparent);">
+            <div class="text" style="text-align: center;">
+                <h1 class="cover-h1">Vi kommer tilbake til deg!</h1>
+                <p style="width: 100%; max-width: 100%;" class="cover-p">Vi har motatt din henvendelse, og vil kontakte deg så fort som mulig. Tusen takk!</p>
+            </div>  
+            <button onclick="window.location.href='/'">Til hjemmesiden</button>
+        </div>
+    </div>
+</div>
+
+<style type="text/css">
+        button{
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+                  border: 1px solid transparent;
+                  border-radius: 6px;
+                  outline: none !important;
+                  background: #f0a432;
+                  color: white;
+                  font-weight: 500;
+                  font-size: 17px;
+                  width: 240px;
+                  display: block;
+                  height: 43px;
+                  margin-top: 29px;
+                }
+                  button:hover{
+                    filter: brightness(89%);
+                    transform: translateX(-50%);
+                }
+                    button:focus{
+                    filter: brightness(89%);
+                    transform: scale(0.95) translateX(-53%);
+                    }
+</style>
+
+
+
+{% endblock %}
+
+
+
+
+

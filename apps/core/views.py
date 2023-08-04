@@ -24,8 +24,13 @@ from .forms import *
 from .models import *
 from datetime import datetime
 from django.http import HttpResponseForbidden
+from django.conf import settings
 
 def home(request):      
+    mapbox_access_token = settings.MAP_BOX_ACCESS_TOKEN 
+
+    locations = Location.objects.all()
+
     if request.method=='POST' and 'verdivurdering' in request.POST:
         name = request.POST.get('name', )
         email = request.POST.get('email', '')
@@ -40,7 +45,12 @@ def home(request):
 
         verdivurdering = Verdivurdering.objects.create(name=name, telefon=telefon, email=email, vilkaar=vilkaar, reg_nr=reg_nr, km=km)
         return redirect('success')
-    return render(request, 'core/home.html')  
+    
+    context = {
+        'locations': locations,
+        'mapbox_access_token': mapbox_access_token
+    }
+    return render(request, 'core/home.html', context)  
 
 
 def sell(request):      

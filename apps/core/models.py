@@ -33,3 +33,12 @@ class Verdivurdering(models.Model):
 
     def __str__(self):
         return self.name  
+
+
+
+class Location(models.Model):
+    cords1 = models.CharField(max_length=150, blank=True)
+    cords2 = models.CharField(max_length=150, blank=True)
+
+    def __str__(self):
+        return f'{self.cords1}, {self.cords2}'

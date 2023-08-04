@@ -367,14 +367,15 @@
   height: auto;
   padding-block: 50px;
   position: relative;
+  padding-bottom: 38px;
 }
 .services .content {
   padding-inline: 20px;
   position: relative;
+  margin-top: 26px;
 }
 .services .content .text {
   text-align: left;
-  margin-top: 28px;
 }
 .services .content .text h1 {
   color: #1F1F1F;
@@ -382,11 +383,49 @@
   font-weight: 600;
   margin-bottom: 10px;
 }
-.services .content .video {
-  margin-top: 25px;
+.services .content .flex {
+  margin-top: 20px;
+}
+.services .content .flex .service {
   width: 100%;
-  height: 150px;
-  background: lightgray;
+  min-height: 120px;
+  padding: 20px;
+  position: relative;
+  background: rgb(241, 241, 241);
+  border: 1px solid rgb(246, 246, 246);
+  border-right: 20px solid #f0a432;
+  border-radius: 5px;
+  border-top-right-radius: 18px;
+  border-bottom-right-radius: 18px;
+  display: flex;
+  margin-bottom: 35px;
+}
+.services .content .flex .service:last-child {
+  margin-bottom: 0;
+}
+.services .content .flex .service .left {
+  width: 10%;
+  display: flex;
+  justify-content: center;
+}
+.services .content .flex .service .left i {
+  color: #f0a432;
+  font-size: 26px;
+  transform: translateY(-2px) translateX(-2px);
+}
+.services .content .flex .service .right {
+  width: 90%;
+  margin-left: 25px;
+}
+.services .content .flex .service .right h1 {
+  color: #1F1F1F;
+  font-size: 19px;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+.services .content .flex .service .right p {
+  font-size: 16px;
+  color: #1F1F1F;
 }
 
 .price {
@@ -397,29 +436,47 @@
 }
 .price .content {
   padding-inline: 20px;
+  padding-top: 35px;
+  padding-bottom: 58px;
   position: relative;
+  background: #f0a432;
 }
 .price .content .text {
-  text-align: left;
+  text-align: center;
   margin-top: 28px;
 }
 .price .content .text h1 {
-  color: #1F1F1F;
-  font-size: 27px;
+  color: white;
+  font-size: 28px;
   font-weight: 600;
   margin-bottom: 10px;
 }
-.price .content .video {
-  margin-top: 25px;
+.price .content .text p {
+  color: white;
+  font-weight: 500;
+  font-size: 17px;
+}
+.price .content button {
+  margin-top: 30px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  outline: none;
+  color: white;
+  font-weight: 500;
+  font-size: 17px;
   width: 100%;
-  height: 150px;
-  background: lightgray;
+  display: block;
+  height: 47px;
+  border-color: #f0a432;
+  color: #f0a432;
+  background: white;
 }
 
 .location {
   width: 100%;
   height: auto;
   padding-block: 50px;
+  padding-top: 30px;
   position: relative;
 }
 .location .content {
@@ -434,19 +491,19 @@
   color: #1F1F1F;
   font-size: 27px;
   font-weight: 600;
-  margin-bottom: 10px;
+  margin-bottom: 13px;
 }
-.location .content .video {
-  margin-top: 25px;
-  width: 100%;
-  height: 150px;
-  background: lightgray;
+.location .content .place {
+  color: #1F1F1F;
+  font-size: 16px;
+  text-decoration: underline;
 }
 
 .reviews {
   width: 100%;
   height: auto;
   padding-block: 50px;
+  padding-top: 35px;
   position: relative;
 }
 .reviews .content {
@@ -463,17 +520,62 @@
   font-weight: 600;
   margin-bottom: 10px;
 }
-.reviews .content .video {
-  margin-top: 25px;
+.reviews .content .flex .review {
+  background: rgba(255, 183, 76, 0.1725490196);
   width: 100%;
-  height: 150px;
-  background: lightgray;
+  border-radius: 5px;
+  padding: 17px;
+  min-height: 180px;
+  display: flex;
+  margin-bottom: 25px;
+}
+.reviews .content .flex .review:last-child {
+  margin-bottom: 0;
+}
+.reviews .content .flex .review .left {
+  width: 20%;
+  height: 100%;
+  text-align: center;
+}
+.reviews .content .flex .review .left .icon {
+  width: 35px;
+  height: 35px;
+  border-radius: 100%;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+}
+.reviews .content .flex .review .left .name {
+  color: #1F1F1F;
+  font-size: 14px;
+  margin-top: 3px;
+}
+.reviews .content .flex .review .left .stars {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 7px;
+}
+.reviews .content .flex .review .left .stars i {
+  color: #f0a432;
+  font-size: 13px;
+  margin-inline: 2px;
+}
+.reviews .content .flex .review .right {
+  width: 80%;
+  margin-left: 42px;
+  font-size: 16px;
+  color: #1F1F1F;
+  opacity: 0.95;
 }
 
 .faq {
   width: 100%;
   height: auto;
   padding-block: 50px;
+  padding-top: 30px;
   position: relative;
 }
 .faq .content {
@@ -488,11 +590,26 @@
   color: #1F1F1F;
   font-size: 27px;
   font-weight: 600;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
 }
-.faq .content .video {
-  margin-top: 25px;
+.faq .content .ask {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid lightgray;
   width: 100%;
-  height: 150px;
-  background: lightgray;
+  height: 90px;
+  position: relative;
+}
+.faq .content .ask p {
+  color: #1F1F1F;
+  font-weight: 500;
+  margin-bottom: 0;
+  font-size: 20px;
+}
+.faq .content .ask svg {
+  color: #1F1F1F;
+  font-size: 41px;
+  padding: 8px;
+  margin: -8px;
 }/*# sourceMappingURL=base.css.map */

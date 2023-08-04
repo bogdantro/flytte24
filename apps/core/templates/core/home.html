@@ -5,6 +5,10 @@
 <link rel="stylesheet" href="{% static '/scss/base.css' %}" type="text/css">
 <link rel="stylesheet" href="{% static '/scss/global/global.css' %}" type="text/css">
 <script src="{% static '/js/home.js' %}"></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
+<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.0.9/mapbox-gl-draw.js'></script>
+<script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
 
 
 <div class="cover">
@@ -142,14 +146,54 @@
         <div class="text">
             <h1>Hva gjør vi for deg?</h1>
         </div>
+        <div class="flex">
+            <div class="service">
+                <div class="left">
+                    <i class="fa-solid fa-bath"></i>
+                </div>
+                <div class="right">
+                    <h1>Profesjonell bilvask</h1>
+                    <p>Vi vasker bilen grundig for deg</p>
+                </div>
+            </div>
+            <div class="service">
+                <div class="left">
+                    <i class="fa-solid fa-camera"></i>
+                </div>
+                <div class="right">
+                    <h1>Studio fotografering</h1>
+                    <p>Høy kvalitet bilder tatt i vår studio</p>
+                </div>
+            </div>
+            <div class="service">
+                <div class="left">
+                    <i class="fa-solid fa-car"></i>
+                </div>
+                <div class="right">
+                    <h1>Bruktbiltest</h1>
+                    <p>Vi går gjennom vår sikkerthets kontroll</p>
+                </div>
+            </div>
+            <div class="service">
+                <div class="left">
+                    <i class="fa-solid fa-file-signature"></i>
+                </div>
+                <div class="right">
+                    <h1>Megling, kontrakter og oppgjør</h1>
+                    <p>Vi gjør det enkelt å kjøpe og selge bil</p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 <div class="price">
     <div class="content">
         <div class="text">
-            <h1>Hva koster det?</h1>
+            <h1>Fast lav pris</h1>
+            <p>Ikke tap mer enn nødvendig på din bruktbil. Vi tar en fast lav pris</p>
         </div>
+        <button>Se prisliste</button>
     </div>
 </div>
 
@@ -158,6 +202,15 @@
         <div class="text">
             <h1>Du finner oss her</h1>
         </div>
+        <a href="https://maps.apple.com/place?address=Bygd%C3%B8y%20all%C3%A9%20119,%200273%20Oslo,%20Norge&auid=4990383269909018895&ll=59.918726,10.688676&lsp=9902&q=Den%20Nye%20Sk%C3%B8yen%20Bilpleie%20AS&t=h" class="place">Bygdøy allé 119, 0273 Oslo</a>
+        <hr style="border-color: transparent; margin-block: 5px;">
+        <a href="https://maps.apple.com/place?address=Bygd%C3%B8y%20all%C3%A9%20119,%200273%20Oslo,%20Norge&auid=4990383269909018895&ll=59.918726,10.688676&lsp=9902&q=Den%20Nye%20Sk%C3%B8yen%20Bilpleie%20AS&t=h" class="place">Tærudgata 2, 2004 Lillestrøm</a>
+        <hr style="border-color: transparent; margin-block: 5px;">
+        <a href="https://www.google.no/maps/place/Skib%C3%A5sen+33C,+4636+Kristiansand/@58.1786637,8.1212099,17z/data=!3m1!4b1!4m6!3m5!1s0x46380119ae48c66f:0x8ca23c625acc8b69!8m2!3d58.1786637!4d8.1212099!16s%2Fg%2F11c2dc4ddx?hl=no&entry=ttu" class="place">Skibåsen 33C, 4636 Kristiansand</a>
+        <hr style="border-color: transparent; margin-block: 5px;">
+        <a href="https://www.google.no/maps/place/%C3%85sbieveien+14,+4848+Arendal/@58.4584131,8.7181547,17z/data=!3m1!4b1!4m6!3m5!1s0x464794a6ab4572e3:0xe7f16eb7afd26e11!8m2!3d58.4584131!4d8.7181547!16s%2Fg%2F11c26smxkk?hl=no&entry=ttu" class="place">Stoaveien 2, 4848 Arendal</a>
+
+        <div id="map" style="width: 100%; height: 430px; margin-top: 13px;"></div>
     </div>
 </div>
 
@@ -165,6 +218,56 @@
     <div class="content">
         <div class="text">
             <h1>Hva kundene har å si</h1>
+        </div>
+        <div class="flex">
+            <div class="review">
+                <div class="left">
+                    <div class="icon" style="background: rgba(7, 150, 7, 0.644);">B</div>
+                    <div class="name">Bogdan</div>
+                    <div class="stars">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                </div>
+                <div class="right">
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Illum, dolores illo rerum corrupti, natus reprehenderit, explicabo nostrum quibusdam recusandae quis molestiae nesciunt id ipsa! Cupiditate sed quasi ab repudiandae fugiat.
+                </div>
+            </div>
+            <div class="review">
+                <div class="left">
+                    <div class="icon" style="background: rgba(228, 231, 28, 0.644);">Ø</div>
+                    <div class="name">Øystein</div>
+                    <div class="stars">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                </div>
+                <div class="right">
+                    Lorem ipsum dolor sitrerum corrupti, natus reprehenderit, explicabo nostrum quibusdam recusandae quis molestiae nesciunt id ipsa! Cupiditate sed quasi ab repudiandae fugiat.
+                </div>
+            </div>
+            <div class="review">
+                <div class="left">
+                    <div class="icon" style="background: rgba(69, 7, 150, 0.644);">E</div>
+                    <div class="name">Elon</div>
+                    <div class="stars">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                </div>
+                <div class="right">
+                    Lorem ipsum dolor sit amsciunt id ipsa! Cupiditate sed quasi ab
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -174,8 +277,68 @@
         <div class="text">
             <h1>Ofte stilte spørsmål</h1>
         </div>
+        <div class="ask" style="border-top: 1px solid lightgray;">
+            <p>Spørsmål her</p>
+            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
+        </div>
+        <div class="ask">
+            <p>Spørsmål her</p>
+            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
+        </div>
     </div>
 </div>
 
+
+<script type="text/javascript">
+
+    function searchIconSubmit(){
+       document.getElementById("searchForm").submit();
+    }
+ 
+ 
+    mapboxgl.accessToken = '{{mapbox_access_token}}';
+     const map = new mapboxgl.Map({
+       container: 'map', // Specify the container ID
+       style: 'mapbox://styles/bogdantro/cld3lse3v000301lidywd9qfs',
+       center: [10.776038, 59.912196], // Specify the starting position
+       zoom: 6.6, // Specify the starting zoom
+     });
+   
+     map.on('load', () => {
+ map.addSource('places', {
+    // This GeoJSON contains features that include an "icon"
+    // property. The value of the "icon" property corresponds
+    // to an image in the Mapbox Streets style's sprite.
+    'type': 'geojson',
+    'data': {
+       'type': 'FeatureCollection',
+       'features': [
+          '{% for locations in locations %}',
+    {
+    'geometry': {
+       'type': 'Point',
+       'coordinates': ['{{locations.cords1}}', '{{locations.cords2}}']
+    },
+    },
+    '{% endfor %}',
+    ]
+    }
+    });
+ // Add a layer showing the places.
+ map.addLayer({
+ 'id': 'places',
+ 'type': 'symbol',
+ 'source': 'places',
+ 'layout': {
+ "icon-image": "marker-editor",
+ 'icon-allow-overlap': true,
+ 'icon-size': 0.9,
+ }
+ });
+  
+
+ });
+ 
+   </script>
 {% endblock %}
  

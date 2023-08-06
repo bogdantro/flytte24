@@ -22,8 +22,10 @@ urlpatterns = [
     path('kontakt-oss/', contact, name='contact'),
     path('verdivurdering/', verdivurdering, name='verdivurdering'),
     
-    path('/success/', success, name='success'),
+    path('success/', success, name='success'),
 
+    path('om-oss/', about, name='about'),
+    
     # Auth
     path('logg-inn/', views.LoginView.as_view(template_name='core/login.html'), name='login'),
     path('snodrivlagbruker123456/', signup, name='signup'),

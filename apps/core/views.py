@@ -90,3 +90,22 @@ def verdivurdering(request):
         verdivurdering = Verdivurdering.objects.create(name=name, telefon=telefon, email=email, vilkaar=vilkaar, reg_nr=reg_nr, km=km)
         return redirect('success')
     return render(request, 'pages/contact/verdivurdering.html')  
+
+
+
+def about(request):
+    if request.method=='POST' and 'verdivurdering' in request.POST:
+        name = request.POST.get('name', )
+        email = request.POST.get('email', '')
+        telefon = request.POST.get('telefon', '')
+        vilkaar = request.POST.get('vilkaar', '')
+        reg_nr = request.POST.get('reg_nr', '')
+        km = request.POST.get('km', '')
+        if vilkaar == 'on':
+            vilkaar = True
+        else:
+            vilkaar = False
+
+        verdivurdering = Verdivurdering.objects.create(name=name, telefon=telefon, email=email, vilkaar=vilkaar, reg_nr=reg_nr, km=km)
+        return redirect('success')
+    return render(request, 'pages/about/about.html')

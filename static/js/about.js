@@ -1,13 +1,3 @@
-window.onload = () => {
-    async function onPageLoadFunc(){
-        setTimeout(() => {
-            document.getElementById('onPageLoad').classList.add('hide');
-        }, 500);
-    }
-    onPageLoadFunc();
-}
-
-
 function faqFunc1(){
     const answer = document.getElementById('answer1');
     const ask = document.getElementById('ask1');
@@ -61,6 +51,8 @@ function faqFunc3(){
         faqMinus.style.display = 'none';
     }
 }
+
+
 
 
 

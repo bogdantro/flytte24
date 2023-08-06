@@ -5,19 +5,186 @@
 
 <link rel="stylesheet" href="{% static '/scss/pages/about.css' %}" type="text/css">
 <link rel="stylesheet" href="{% static '/scss/pages/page.css' %}" type="text/css">
+<script src="{% static '/js/about.js' %}"></script>
 
 <div class="page" style="padding-inline: 0;">
     <div class="cover">
         <div class="content">
             <div class="text">
                 <h1 class="cover-h1">Om oss</h1>
-                <p style="width: 100%; max-width: 100%;" class="cover-p">Vi har motatt din henvendelse, og vil kontakte deg så fort som mulig. Tusen takk!</p>
+                <p class="cover-p">Bilmeglerne har spesialisert seg på salg av bil. Vi har utviklet denne tjenesten for å gjøre deg trygg på at bilsalget foregår i henhold til gjeldende lover og forskrifter</p>
             </div>  
-            <button onclick="window.location.href='/'">Til hjemmesiden</button>
+            <button onclick="window.location.href='/'">Book time</button>
+        </div>
+    </div>
+
+    <div class="about-us">
+        <div class="first-div">
+            <div class="text">
+                <h1>Kvalitet og trygghet for deg som kunde</h1>
+                <p>
+                    Bilmeglerne har spesialisert seg på salg av bil. Vi vet at det lønner seg å selge bil igjennom oss om du ikke har erfaring fra salg av kjøretøy. Vi prissetter bilene til riktig verdi. Det vil si at vi får mer for bilen enn du ville gjort. 
+                    <br>
+                    <br>
+                    Det vi ønsker er at kundene skal tjene på å bruke oss ved at vi får mer for bilen enn hva du ville gjort selv, men også fordi de vil spare mye tid. Våre profesjonelle bilselgere har vært i bransjen lenge som sikrer kvalitet og trygghet for deg som kunde
+                </p>
+            </div>
+        </div>
+        <div class="second-div">
+            <div class="text">
+                <h1>Vår team</h1>
+            </div>
+            <div class="persons">
+                <div class="person">
+                    <div class="left">
+                        <img src="{% static 'images/default.png' %}" alt="">
+                    </div>
+                    <div class="right">
+                        <h1>Øystein Helgheim</h1>
+                        <p>Stilling</p>
+                    </div>
+                </div>
+                <div class="person">
+                    <div class="left">
+                        <img src="{% static 'images/default.png' %}" alt="">
+                    </div>
+                    <div class="right">
+                        <h1>Øystein Helgheim 2</h1>
+                        <p>Stilling</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="verdivurdering">
+            <div class="content">
+                <div class="text">
+                    <h1>Få en verdivurdering</h1> <br> <h2>Vi gir deg en gratis verdivurdering!</h2>
+                </div>
+                <form id="verdivurdering" action="" method="POST">
+                    {% csrf_token %}
+                    {{form.errors}}
+                    <br>
+                    <div class="inputs-labels">
+                        <div class="step-one">
+                            <div class="reg-nr">
+                                <img src="{% static 'images/other/skilt-no.svg' %}" alt="">
+                                <input required type="text" name="reg_nr" id="reg_nr" placeholder="AB12345" maxlength="7">
+                            </div>
+                            <br>
+                            <div class="km">
+                                <p>km</p>
+                                <input required type="text" id="km" name="km" placeholder="130000" name="" id="">
+                            </div>
+                        </div>
+                        <br>
+                        <div id="stepTwo">
+                            <label for="navn">Navn</label>
+                            <br>
+                            <input type="text" name="name" id="name" required  oninput="this.setCustomValidity('')">
+                            <br>
+                            <br>
+                            <label for="email">Epost</label>
+                            <br>
+                            <input type="email" name="email" id="email"  required oninput="this.setCustomValidity('')">
+                            <br>
+                            <br>
+                            <label for="telefon">Telefon</label>
+                            <br>
+                            <input type="number" name="telefon" id="telefon"  required oninput="this.setCustomValidity('')">
+                            <br>
+                        </div>
+                       <div class="checkbox">
+                         <input required type="checkbox" name="vilkaar" id="vilkaar">
+                         <p>Jeg godtar <a href="">vilkårene og betingelsene</a></p>
+                       </div>
+            
+                      </div>
+                    <div class="form-actions">
+                      <button class="primary" type="submit" name="verdivurdering" value="verdivurdering">Sjekk verdi</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="vision">
+            <div class="text">
+                <h1>Vår visjon</h1>
+                <p>
+                    Vi tar en fast lav pris for å redusere risikoen, samt forenkle prosessen ved kjøp eller salg av bil. Vi trygger en bransje full av heftige salgsteknikker og mange useriøse aktører som bare søker maksimal profitt på forbrukernes, altså din bekostning. 
+                    <br>
+                    <br>
+                    Vi gjør kjøp eller salg av bruktbil tryggere og enklere. 
+                    Bilmeglerne er et selskap med forbrukerens interesse som første prioritet. Sammen med våre samarbeidspartnere gjør vi bruktbilhandel tryggere.
+                </p>
+            </div>
+        </div>
+        <div class="our-local">
+            <div class="text">
+                <h1>Utforsk lokalet våres</h1>
+                <div class="video">video av lokalet (Valgfritt)</div>
+            </div>
+        </div>
+        <div class="faq" id="faq">
+            <div class="content">
+                <div class="text">
+                    <h1>Ofte stilte spørsmål</h1>
+                    ----alle spm går her----
+                </div>
+        
+                <div class="ask" id="ask1" style="border-top: 1px solid lightgray;" onclick="faqFunc1()">
+                    <p>Spørsmål her</p>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="plus" id="faqPlus1" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="minus" style="transform: translateY(-7px);" id="faqMinus1" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M32 416c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H32z"/></svg>
+                </div>
+                <div class="answer" id="answer1"onclick="faqFunc1()">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate cod, quis provident dolorem labore architecto odit? Saepe illum sequi recusandae quas.</p>
+                </div>
+        
+                <div class="ask" id="ask2" onclick="faqFunc2()">
+                    <p>Spørsmål her</p>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="plus"  id="faqPlus2" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="minus" style="transform: translateY(-7px);" id="faqMinus2" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M32 416c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H32z"/></svg>
+                </div>
+                <div class="answer" id="answer2"onclick="faqFunc2()">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate cod, quis provident dolorem labore architecto odit? Saepe illum sequi recusandae quas.</p>
+                </div>
+        
+                <div class="ask" id="ask3" onclick="faqFunc3()">
+                    <p>Spørsmål her</p>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="plus"  id="faqPlus3" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="minus" style="transform: translateY(-7px);" id="faqMinus3" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M32 416c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H32z"/></svg>
+                </div>
+                <div class="answer" id="answer3"onclick="faqFunc3()">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate cod, quis provident dolorem labore architecto odit? Saepe illum sequi recusandae quas.</p>
+                </div>
+        
+            </div>
         </div>
     </div>
 </div>
 
+
+<style type="text/css">
+    button{
+              border: 1px solid transparent;
+              border-radius: 6px;
+              outline: none !important;
+              background: linear-gradient(to bottom right, #f0a432, #ffb649);
+              color: white;
+              font-weight: 500;
+              font-size: 17px;
+              width: 220px;
+              display: block;
+              height: 43px;
+              margin-top: 23px;
+            }
+              button:hover{
+                filter: brightness(89%);
+            }
+                button:focus{
+                filter: brightness(89%);
+                transform: scale(0.95) ;
+                }
+</style>
 {% endblock %}
 
 

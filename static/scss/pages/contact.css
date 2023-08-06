@@ -81,7 +81,7 @@
   border: 1px solid transparent;
   border-radius: 6px;
   outline: none;
-  background: #f0a432;
+  background: linear-gradient(to bottom right, #f0a432, #ffb649);
   color: white;
   font-weight: 500;
   font-size: 17px;

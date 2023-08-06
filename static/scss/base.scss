@@ -50,7 +50,7 @@ $txt: #183b56;
           border: 1px solid transparent;
           border-radius: 6px;
           outline: none;
-          background: $primBtn;
+          background: linear-gradient(to bottom right, $primBtn, #ffb649);
           color: white;
           font-weight: 500;
           font-size: 17px;
@@ -227,7 +227,7 @@ $txt: #183b56;
               border: 1px solid transparent;
               border-radius: 6px;
               outline: none;
-              background: $primBtn;
+              background: linear-gradient(to bottom right, $primBtn, #ffb649);
               color: white;
               font-weight: 500;
               font-size: 17px;
@@ -384,7 +384,7 @@ $txt: #183b56;
       }
     }
     .flex{
-      margin-top: 25px;
+      margin-top: 20px;
       .service{
         width: 100%;
         min-height: 120px;

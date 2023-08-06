@@ -115,7 +115,7 @@ $txt: #183b56;
         color: white;
         font-size: 29px;
         font-weight: 600;
-        margin-bottom: -8px;
+        margin-bottom: -10px;
       }
       h2{
         color: white;
@@ -384,7 +384,7 @@ $txt: #183b56;
       }
     }
     .flex{
-      margin-top: 20px;
+      margin-top: 25px;
       .service{
         width: 100%;
         min-height: 120px;
@@ -579,7 +579,7 @@ $txt: #183b56;
   width: 100%;
   height: auto;
   padding-block: 50px;
-  padding-top: 30px;
+  padding-top: 20px;
   position: relative;
   .content{
     padding-inline: 20px;
@@ -613,6 +613,31 @@ $txt: #183b56;
         font-size: 41px;
         padding: 8px;
         margin: -8px;
+      }
+      .plus{
+        display: block;
+      }
+      .minus{
+        display: none;
+      }
+    }
+    .answer{
+      padding: 8px;
+      transform: translateY(-21px);
+      border-radius: 2px;
+      height: 0;
+      transition: .2s;
+      pointer-events: none;
+      opacity: 0;
+      &.active{
+        pointer-events: visible;
+        opacity: 1;
+        height: 140px;
+      }
+      p{
+        font-size: 16px;
+        font-weight: 500;
+        color: $black;
       }
     }
   }

@@ -1,0 +1,26 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static '/scss/pages/about.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static '/scss/pages/page.css' %}" type="text/css">
+
+<div class="page" style="padding-inline: 0;">
+    <div class="cover">
+        <div class="content">
+            <div class="text">
+                <h1 class="cover-h1">Om oss</h1>
+                <p style="width: 100%; max-width: 100%;" class="cover-p">Vi har motatt din henvendelse, og vil kontakte deg så fort som mulig. Tusen takk!</p>
+            </div>  
+            <button onclick="window.location.href='/'">Til hjemmesiden</button>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+
+

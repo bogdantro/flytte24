@@ -115,7 +115,7 @@
   color: white;
   font-size: 29px;
   font-weight: 600;
-  margin-bottom: -8px;
+  margin-bottom: -10px;
 }
 .verdivurdering .content .text h2 {
   color: white;
@@ -384,7 +384,7 @@
   margin-bottom: 10px;
 }
 .services .content .flex {
-  margin-top: 20px;
+  margin-top: 25px;
 }
 .services .content .flex .service {
   width: 100%;
@@ -575,7 +575,7 @@
   width: 100%;
   height: auto;
   padding-block: 50px;
-  padding-top: 30px;
+  padding-top: 20px;
   position: relative;
 }
 .faq .content {
@@ -612,4 +612,29 @@
   font-size: 41px;
   padding: 8px;
   margin: -8px;
+}
+.faq .content .ask .plus {
+  display: block;
+}
+.faq .content .ask .minus {
+  display: none;
+}
+.faq .content .answer {
+  padding: 8px;
+  transform: translateY(-21px);
+  border-radius: 2px;
+  height: 0;
+  transition: 0.2s;
+  pointer-events: none;
+  opacity: 0;
+}
+.faq .content .answer.active {
+  pointer-events: visible;
+  opacity: 1;
+  height: 140px;
+}
+.faq .content .answer p {
+  font-size: 16px;
+  font-weight: 500;
+  color: #1F1F1F;
 }/*# sourceMappingURL=base.css.map */

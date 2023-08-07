@@ -25,7 +25,11 @@ urlpatterns = [
     path('success/', success, name='success'),
 
     path('om-oss/', about, name='about'),
+
+    path('personvernerklaering/', personerk, name='personerk'),
     
+    path('priser/', price, name='price'),
+
     # Auth
     path('logg-inn/', views.LoginView.as_view(template_name='core/login.html'), name='login'),
     path('snodrivlagbruker123456/', signup, name='signup'),

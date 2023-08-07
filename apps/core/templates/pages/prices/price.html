@@ -1,0 +1,178 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static '/scss/pages/price.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static '/scss/pages/page.css' %}" type="text/css">
+
+<div class="page">
+    <div class="cover">
+        <div class="content">
+            <div class="text" style="padding-block: 0;">
+                <h1 class="cover-h1">Hva koster tjenesten til Bilmeglerne?</h1>
+                <p class="cover-p">Du betaler bare for klargjøring hos Bilmeglerne. Når bilen er solgt trekker vi en fast lav pris fra oppgjøret. Om bilen ikke selges eller du velger å beholde bilen, har Bilmeglerne ingen avbrytningskostnad</p>
+            </div>
+            <!-- <div class="cover-actions">
+                <button onclick="window.location.href='/selg-bilen/book-time/'">Book time</button>
+             </div>    -->
+        </div>
+    </div>
+
+    <div class="prices">
+        <div class="price">
+            <div class="top">
+                <div class="name">Trygt salg</div>
+                <div class="prices2">
+                    <div class="one">
+                        <p>Om bilen ikke selges</p>
+                        <p>0,-</p>
+                    </div>
+                    <div class="two">
+                        <p>Når bilen er solgt</p>
+                        <p>13.990,-</p>
+                    </div>
+                    <div class="three">
+                        <p>Klargjøring</p>
+                        <p>4.990,-</p>
+                    </div>
+                </div>
+
+                <hr style="margin-block: 0px; margin-bottom: 19px;"> 
+
+                <div class="prices3">
+
+                    <div>
+                        <p>Bruktbil test</p>
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+
+                    <div>
+                        <p>Profesjonell bilvask</p>
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+
+                    <div>
+                        <p>Studio fotografering</p>
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+
+                    <div>
+                        <p>Avertering</p>
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+
+                    <div>
+                        <p>Kontrakter</p>
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+
+                    <div>
+                        <p>Megling</p>
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+
+                    <div>
+                        <p>Oppgjør</p>
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+
+                    <div>
+                        <p>Forsikring</p>
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+
+                    <div>
+                        <p>Finansiering</p>
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <br>
+        <br>
+        <div class="price">
+            <div class="top">
+                <div class="name">Enkel salg</div>
+                <div class="prices2">
+                    <div class="one">
+                        <p>Om bilen ikke selges</p>
+                        <p>0,-</p>
+                    </div>
+                    <div class="two">
+                        <p>Når bilen er solgt</p>
+                        <p>12.990,-</p>
+                    </div>
+                    <div class="three">
+                        <p>Klargjøring</p>
+                        <p>1.990,-</p>
+                    </div>
+                </div>
+
+                <hr style="margin-block: 0px; margin-bottom: 19px;"> 
+
+                <div class="prices3">
+
+                    <div>
+                        <p>Bruktbil test</p>
+                        <i style="background: rgba(230, 23, 23, 0.411); padding: 6px 9px; font-size: 18px;" class="fa-solid fa-x"></i> 
+                    </div>
+
+                    <div>
+                        <p>Profesjonell bilvask</p>
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+
+                    <div>
+                        <p>Studio fotografering</p>
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+
+                    <div>
+                        <p>Avertering</p>
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+
+                    <div>
+                        <p>Kontrakter</p>
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+
+                    <div>
+                        <p>Megling</p>
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+
+                    <div>
+                        <p>Oppgjør</p>
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+
+                    <div>
+                        <p>Forsikring</p>
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+
+                    <div>
+                        <p>Finansiering</p>
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="text">
+            <h1>Om bilen ikke blir solgt</h1>
+            <p>Om bilen ikke selges innenfor avtalt averteringstid eller du ønsker å avbryte prosessen har Bilmeglerne ingen avbrytningskostnad! 
+                <br>
+                <br>
+                Ønsker du at vi skal fortsette å selge bilen for deg etter endt avtaletid vil dette medføre en ny engangskostnad.</p>
+        </div>
+        <div class="text" style="padding-top: 20px;">
+            <h1>Hvorfor bruke Bilmeglerne</h1>
+            <p>Når bilen er solgt trekker Bilmeglerne en fast lav pris fra oppgjøret. I steden for å ta bilen i innbytte hjelper vi dere å selge bilen til riktig pris. Dette sparer dere både for både tid og penger! </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

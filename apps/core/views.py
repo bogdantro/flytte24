@@ -109,3 +109,12 @@ def about(request):
         verdivurdering = Verdivurdering.objects.create(name=name, telefon=telefon, email=email, vilkaar=vilkaar, reg_nr=reg_nr, km=km)
         return redirect('success')
     return render(request, 'pages/about/about.html')
+
+
+def personerk(request):
+    return render(request, 'pages/legal/personerk.html')
+
+
+
+def price(request):
+    return render(request, 'pages/prices/price.html')

@@ -1,0 +1,132 @@
+$black: #1F1F1F;
+$white: rgb(246,246,246);
+$primBtn: #f0a432;
+$txt: #183b56;
+
+.cover{
+    background: linear-gradient(to bottom right, rgba(255, 240, 180, 0.185),transparent,transparent) !important;
+    .content{
+        .cover-actions{
+            margin-top: 24px;
+            width: 100%;
+            text-align: center;
+            button{
+              border: 1px solid transparent;
+              border-radius: 6px;
+              outline: none;
+              background: linear-gradient(to bottom right, $primBtn, #ffb649);
+              color: white;
+              font-weight: 500;
+              font-size: 17px;
+              width: 230px;
+              display: block;
+              height: 47px;
+              &.secondary{
+                border-color: $primBtn;
+                color: $primBtn;
+                background: white;
+                margin-right: 0;
+                margin-top: 15px;
+              }
+            }
+          }
+    }
+}
+
+.prices{
+    padding: 20px;
+    .price{
+        width: 100%;
+        height: auto;
+        border-radius: 4px;
+        position: relative;
+        overflow: hidden;
+        background: #ffe6c01f;
+        .top{
+            .name{
+                background: $primBtn;
+                color: white;
+                font-size: 22px;
+                font-weight: 500;
+                padding: 10px;
+                text-align: center;
+            }
+            .prices2{
+                margin-top: 25px;
+                padding-inline: 7px;
+                .one{
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    p{
+                        font-size: 17px;
+                        color: $black;
+                        font-weight: 500;
+                    }
+                }
+                .two{
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    p{
+                        font-size: 17px;
+                        color: $black;
+                        font-weight: 500;
+                    }
+                }
+                .three{
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    p{
+                        font-size: 17px;
+                        color: $black;
+                        font-weight: 500;
+                    }
+                }
+            }
+            .prices3{
+                padding-inline: 7px;
+                div{
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    margin-bottom: 10px;
+                    p{
+                        font-size: 17px;
+                        color: $black;
+                        font-weight: 500;
+                    }
+                    i{
+                        color: $black;
+                        font-size: 20px;
+                        padding: 5px;
+                        margin: -5px;
+                        transform: translateX(-17px) translateY(-8px);
+                        background: rgba(19, 194, 19, 0.452);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        text-align: center;
+                        float: right;
+                        border-radius: 100%;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.text{
+    text-align: left;
+    padding-block: 25px;
+    h1{
+        color: $black;
+        font-weight: 600;
+        font-size: 26px;
+    }
+    p{
+        color: $black;
+        font-size: 16px;
+    }
+}

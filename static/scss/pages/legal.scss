@@ -1,0 +1,21 @@
+$black: #1F1F1F;
+$white: rgb(246,246,246);
+$primBtn: #f0a432;
+$txt: #183b56;
+
+.legal{
+    padding-inline: 20px;
+    .text{
+        text-align: left;
+        padding-block: 25px;
+        h1{
+            color: $black;
+            font-weight: 600;
+            font-size: 26px;
+        }
+        p{
+            color: $black;
+            font-size: 16px;
+        }
+    }
+}

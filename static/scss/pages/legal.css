@@ -1,0 +1,16 @@
+.legal {
+  padding-inline: 20px;
+}
+.legal .text {
+  text-align: left;
+  padding-block: 25px;
+}
+.legal .text h1 {
+  color: #1F1F1F;
+  font-weight: 600;
+  font-size: 26px;
+}
+.legal .text p {
+  color: #1F1F1F;
+  font-size: 16px;
+}/*# sourceMappingURL=legal.css.map */

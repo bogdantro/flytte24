@@ -1,42 +1,16 @@
 .myaccount {
-  width: 100%;
-  min-height: 88vh;
-  background: transparent;
-  margin-bottom: 0;
+  padding-top: 105px;
+  min-height: 80vh;
+  padding-bottom: 30px;
+  padding-inline: 20px;
 }
-.myaccount .top {
-  background: rgba(255, 255, 255, 0.8);
+.myaccount .text {
   text-align: center;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 25px 18px;
 }
-.myaccount .top .back-to-home {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-}
-.myaccount .top .back-to-home p {
-  margin-bottom: 0;
-  color: #183b56;
-  font-size: 17px;
+.myaccount .text .heading {
+  color: #1F1F1F;
   font-weight: 600;
-  margin-left: 10px;
-}
-.myaccount .top .back-to-home span {
-  background: #183b56;
-  width: 55px;
-  height: 2px;
-  display: block;
-  position: relative;
-  border-radius: 4px;
-}
-.myaccount .top .heading {
-  color: #183b56;
-  font-size: 25px;
-  font-weight: 600;
-  margin-bottom: 0;
+  font-size: 33px;
 }
 .myaccount .flex {
   display: unset;
@@ -47,135 +21,66 @@
   background: transparent;
   width: 100%;
   max-width: 900px;
-  padding: 20px;
+  padding: 0;
   border-radius: 7px;
 }
 .myaccount .account-card .your-info {
-  display: inline-block;
-  margin-block: 12px;
-  margin-left: 0;
-  text-align: center;
   background: white;
-  width: 100%;
-  height: auto;
-  max-width: 340px;
-  padding: 28px;
+  border-radius: 12px;
+  padding-inline: 14px;
+  padding-block: 34px;
   position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-}
-.myaccount .account-card .your-info .user-profile {
-  width: -moz-max-content;
-  width: max-content;
-  height: -moz-max-content;
-  height: max-content;
-  margin: auto;
-  position: relative;
-}
-.myaccount .account-card .your-info .user-profile img {
-  width: 90px;
-  border-radius: 100%;
-  height: 95px;
-  -o-object-fit: fill;
-     object-fit: fill;
-}
-.myaccount .account-card .your-info .user-profile i {
-  position: absolute;
-  right: -45px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 22px;
-  color: #183b56;
-  cursor: pointer;
-}
-.myaccount .account-card .your-info .user-profile #changeProfilePic {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-block: 15px;
-  padding-block: 5px;
-  width: -moz-max-content;
-  width: max-content;
-  max-width: 250px;
-  pointer-events: visible;
-  z-index: 100000;
-}
-.myaccount .account-card .your-info .user-profile #changeProfilePic label {
-  color: #183b56;
-  font-size: 17px;
-  font-weight: 500;
-}
-.myaccount .account-card .your-info .user-profile #changeProfilePic input {
-  width: 100%;
-  height: 53px;
-  outline: none;
-  padding: 8px;
-  color: #183b56;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 4px;
-}
-.myaccount .account-card .your-info .user-profile #changeProfilePic button {
-  margin-top: 15px;
-  width: 100%;
-  height: 40px;
-  border: 1px solid transparent;
-  outline: none;
-  border-radius: 4px;
-  background: #08A1CF;
-  color: rgb(246, 246, 246);
-  font-weight: 400;
+  margin-top: 20px;
 }
 .myaccount .account-card .your-info .user-info {
   text-align: left;
-  margin-top: 220px;
 }
 .myaccount .account-card .your-info .user-info label {
-  color: #183b56;
-  font-size: 17px;
+  color: #1F1F1F;
+  font-size: 15px;
   font-weight: 500;
 }
 .myaccount .account-card .your-info .user-info input {
   width: 100%;
-  height: 53px;
+  height: 48px;
   border: 1px solid lightgray;
   outline: none;
   padding: 8px;
-  color: #183b56;
+  color: #1F1F1F;
   font-size: 16px;
   cursor: pointer;
   background: rgba(255, 255, 255, 0.7);
-  border-radius: 4px;
+  border-radius: 7px;
+}
+.myaccount .account-card .your-info .user-info input:focus, .myaccount .account-card .your-info .user-info input:active {
+  border: 2px solid #f0a432;
+  cursor: text;
+  background: rgb(255, 255, 255);
+}
+.myaccount .account-card .your-info .user-info input::-moz-placeholder {
+  color: #183B56;
+  opacity: 0.6;
+}
+.myaccount .account-card .your-info .user-info input::placeholder {
+  color: #183B56;
+  opacity: 0.6;
 }
 .myaccount .account-card .your-info .user-info button {
-  margin-top: 25px;
   width: 100%;
-  height: 50px;
-  border: 1px solid transparent;
-  outline: none;
-  border-radius: 4px;
-  background: #08A1CF;
+  height: 42px;
+  background: linear-gradient(to bottom right, #f0a432, #ffb649);
   color: rgb(246, 246, 246);
+  border-radius: 7px;
+  font-size: 16px;
+  padding: 3px;
+  cursor: pointer;
+  transition: 0.4s;
+  border: none;
+  outline: none;
   font-weight: 400;
 }
-.myaccount .account-card .your-info .user-won-comp .heading {
-  color: #183b56;
-  font-size: 24px;
-  font-weight: 0;
-  margin-bottom: 0;
-  text-align: center;
-}
-.myaccount .account-card .your-info .user-won-comp .comps-sec {
-  margin-top: 12px;
-}
-.myaccount .account-card .your-info .user-won-comp .comps-sec .empty h1 {
-  margin-bottom: 5px;
-  color: #183b56;
-  font-size: 18px;
-}
-.myaccount .account-card .your-info .user-won-comp .comps-sec .empty p {
-  color: #183b56;
-  font-size: 15px;
+.myaccount .account-card .your-info .user-info button:hover {
+  transform: scale(1.01);
 }
 
 @media only screen and (min-device-width: 1140px) {
@@ -300,7 +205,7 @@
     border: 1px solid transparent;
     outline: none;
     border-radius: 4px;
-    background: #08A1CF;
+    background: #f0a432;
     color: rgb(246, 246, 246);
     font-weight: 400;
   }
@@ -332,7 +237,7 @@
     border: 1px solid transparent;
     outline: none;
     border-radius: 4px;
-    background: #08A1CF;
+    background: #f0a432;
     color: rgb(246, 246, 246);
     font-weight: 400;
   }

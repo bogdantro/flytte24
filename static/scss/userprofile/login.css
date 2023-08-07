@@ -12,7 +12,7 @@
   text-align: center;
 }
 .login #loginForm .text .heading {
-  color: #183b56;
+  color: #1F1F1F;
   font-weight: 600;
   font-size: 33px;
 }
@@ -65,40 +65,6 @@
   font-size: 15px;
   font-weight: 500;
 }
-.login #loginForm .inputs-labels .phone-input {
-  display: flex;
-  align-items: center;
-}
-.login #loginForm .inputs-labels .phone-input input {
-  width: 85%;
-  margin-bottom: 0;
-  border-bottom-left-radius: 0;
-  border-top-left-radius: 0;
-}
-.login #loginForm .inputs-labels .phone-input input:focus, .login #loginForm .inputs-labels .phone-input input:active {
-  border: 1px solid #f0a432;
-  cursor: text;
-  background: rgb(255, 255, 255);
-}
-.login #loginForm .inputs-labels .phone-input .code {
-  width: 16%;
-  background: #f8f7f2;
-  border-bottom-left-radius: 7px;
-  border-top-left-radius: 7px;
-  border: 1px solid lightgray;
-  border-right: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 48px;
-}
-.login #loginForm .inputs-labels .phone-input .code p {
-  color: #183b56;
-  font-weight: 500;
-  padding: 16px;
-  font-size: 15px;
-  margin-bottom: 0 !important;
-}
 .login #loginForm .inputs-labels input {
   width: 100%;
   height: 48px;
@@ -130,8 +96,8 @@
 }
 .login #loginForm .form-actions button {
   width: 100%;
-  height: 40px;
-  background: #f0a432;
+  height: 42px;
+  background: linear-gradient(to bottom right, #f0a432, #ffb649);
   color: rgb(246, 246, 246);
   border-radius: 7px;
   font-size: 16px;

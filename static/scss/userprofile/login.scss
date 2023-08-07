@@ -16,7 +16,7 @@ $txt: #183b56;
         .text{
             text-align: center;
             .heading{
-                color: $txt;
+                color: $black;
                 font-weight: 600;
                 font-size: 33px;
             }
@@ -69,40 +69,6 @@ $txt: #183b56;
                 font-size: 15px;
                 font-weight: 500;
             }
-            .phone-input{
-                display: flex;
-                align-items: center;
-                input{
-                    width: 85%;
-                    margin-bottom: 0;
-                    border-bottom-left-radius: 0;
-                    border-top-left-radius: 0;
-                    &:focus, &:active{
-                        border: 1px solid $primBtn;
-                        cursor: text;
-                        background: rgba(255,255,255,1);
-                    }
-                }
-                .code{
-                    width: 16%;
-                    background: #f8f7f2;
-                    border-bottom-left-radius: 7px;
-                    border-top-left-radius: 7px;
-                    border: 1px solid lightgray;
-                    border-right: 0;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    height: 48px;
-                    p{
-                        color: $txt;
-                        font-weight: 500;
-                        padding: 16px;
-                        font-size: 15px;
-                        margin-bottom: 0 !important;
-                    }
-                }
-            }
             input{
                 width: 100%;
                 height: 48px;
@@ -130,8 +96,8 @@ $txt: #183b56;
             margin-top: 25px;
             button{
                 width: 100%;
-                height: 40px;
-                background: $primBtn;
+                height: 42px;
+                background: linear-gradient(to bottom right, $primBtn, #ffb649);
                 color: $white;
                 border-radius: 7px;
                 font-size: 16px;

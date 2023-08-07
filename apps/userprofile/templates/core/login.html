@@ -13,16 +13,16 @@
     <form id="loginForm" method="post" autocomplete="off">
         <div class="text">
             <h1 class="heading">Logg inn</h1>
-            <p style="font-weight: 500;">Eller <a style="font-weight: 600;" href="">bli kunde</a></p>
+            <p style="font-weight: 500;">Eller <a style="font-weight: 600;" href="/lag-bruker/">bli kunde</a></p>
         </div>
         {% csrf_token %}
         <div class="form">
-            <button class="vipps">Logg inn med vipps</button>
+            <!-- <button class="vipps">Logg inn med vipps</button>
             <div class="or-vipps">
                 <span></span>
                 <p>Eller bruk</p>
                 <span></span>
-            </div>
+            </div> -->
             <div class="inputs-labels">
                 {% if form.errors %}
                     <div class="alert alert-danger">
@@ -30,14 +30,9 @@
                     </div>
                 {% endif %}
                 <!-- NAME -->
-                <label for="username">Telefonnummer</label>
+                <label for="username">Brukernavn</label>
                 <br>
-                <div class="phone-input">
-                    <div class="code">
-                        <p>+47</p>
-                    </div>
-                    <input type="text" id="phone" name="phone" autocomplete="off" required oninvalid="this.setCustomValidity('Kan ikke være tom')" oninput="this.setCustomValidity('')">
-                </div>
+                <input type="text" name="username" id="username" autocomplete="off" required oninvalid="this.setCustomValidity('Kan ikke være tom')" oninput="this.setCustomValidity('')">
                 <hr style="border-color: transparent; margin-block: 17px;">
                 <!-- PASSWORD -->
                 <label for="password">Passord</label>
@@ -48,7 +43,7 @@
             <div class="form-actions">
                 <button type='submit'>Logg inn</button>
             </div>
-            <a style="font-weight: 500; position: relative; top: 15px; font-size: 14px; opacity: 0.8;" href="">Glemt passordet?</a>
+            <a style="font-weight: 500; position: relative; top: 15px; font-size: 14px; opacity: 0.8;" href="/passord-reset/">Glemt passordet?</a>
         </div>
         <br>
         <!-- <p class="or-signup"><a href="/lag-bruker">Eller lag bruker</a></p> -->

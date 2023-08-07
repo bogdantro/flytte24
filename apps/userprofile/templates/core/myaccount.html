@@ -8,28 +8,12 @@
 
 
 <div class="myaccount">
-    <div class="top">
-        <div class="back-to-home" onclick="window.location.href='/'">
-            <span></span>
-            <p>Hjem</p>
-        </div>
+    <div class="text">
         <h1 class="heading">Min bruker</h1>
     </div>
     <div class="account-card">
         <div class="flex">
             <div class="your-info">
-                <div class="user-profile">
-                    <i onclick="window.location.href='/logg-ut/'" class="fa-solid fa-right-from-bracket" title="Logg ut"></i>
-                    <img class="logo1" src="{{user.profile.image.url}}" alt="user icon avatar myaccount">
-                    <form method="post" id="changeProfilePic" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        {{p_form.errors}}
-                        <label for="image">Profil bilde</label>
-                        <br>
-                        <input type="file" name="image" id="image">
-                        <button type="submit">Endre bilde</button>
-                    </form>
-                </div>
                 <div class="user-info">
                     <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
@@ -53,11 +37,10 @@
                         <br>
                         <input id="email" name="email" type="text" value="{{ request.user.email }}">
                         <br>
+                        <br>
                         <button type="submit">Endre info</button>
                     </form>
                 </div>
-
-                <hr style="margin-block: 35px;">
 
      
             </div>
@@ -65,3 +48,6 @@
     </div>
 </div>
 {% endblock %}
+
+
+<i onclick="window.location.href='/logg-ut/'" class="fa-solid fa-right-from-bracket" title="Logg ut"></i>

@@ -1,6 +1,8 @@
 .signup {
-  padding-top: 25px;
+  padding-top: 105px;
   min-height: 80vh;
+  padding-inline: 20px;
+  padding-bottom: 30px;
 }
 .signup #signUpForm {
   width: auto;
@@ -10,35 +12,40 @@
   text-align: center;
 }
 .signup #signUpForm .text .heading {
-  color: #183b56;
+  color: #1F1F1F;
   font-weight: 600;
   font-size: 33px;
 }
+.signup #signUpForm .form {
+  background: white;
+  border-radius: 12px;
+  padding-inline: 14px;
+  padding-block: 34px;
+  position: relative;
+  margin-top: 20px;
+}
 .signup #signUpForm .inputs-labels {
-  padding-inline: 20px;
   max-width: 400px;
-  padding-block: 28px;
-  padding-top: 4px;
 }
 .signup #signUpForm .inputs-labels label {
-  color: #183b56;
-  font-size: 17px;
+  color: #1F1F1F;
+  font-size: 15px;
   font-weight: 500;
 }
 .signup #signUpForm .inputs-labels input {
   width: 100%;
-  height: 53px;
+  height: 48px;
   border: 1px solid lightgray;
   outline: none;
   padding: 8px;
-  color: #183b56;
+  color: #1F1F1F;
   font-size: 16px;
   cursor: pointer;
   background: rgba(255, 255, 255, 0.7);
-  border-radius: 4px;
+  border-radius: 7px;
 }
 .signup #signUpForm .inputs-labels input:focus, .signup #signUpForm .inputs-labels input:active {
-  border: 2px solid #08A1CF;
+  border: 2px solid #f0a432;
   cursor: text;
   background: rgb(255, 255, 255);
 }
@@ -51,15 +58,15 @@
   opacity: 0.6;
 }
 .signup #signUpForm .form-actions {
-  padding-inline: 20px;
   max-width: 400px;
+  margin-top: 25px;
 }
 .signup #signUpForm .form-actions button {
   width: 100%;
-  height: 57px;
-  background: #08A1CF;
+  height: 42px;
+  background: linear-gradient(to bottom right, #f0a432, #ffb649);
   color: rgb(246, 246, 246);
-  border-radius: 4px;
+  border-radius: 7px;
   font-size: 16px;
   padding: 3px;
   cursor: pointer;
@@ -113,7 +120,7 @@
     border-radius: 4px;
   }
   .signup #signUpForm .inputs-labels input:focus, .signup #signUpForm .inputs-labels input:active {
-    border: 2px solid #08A1CF;
+    border: 2px solid #f0a432;
     cursor: text;
     background: rgb(255, 255, 255);
   }
@@ -135,7 +142,7 @@
   .signup #signUpForm .form-actions button {
     width: 100%;
     height: 57px;
-    background: #08A1CF;
+    background: #f0a432;
     color: rgb(246, 246, 246);
     border-radius: 4px;
     font-size: 16px;

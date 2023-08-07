@@ -11,57 +11,58 @@
     <form id="signUpForm" method="post" autocomplete="off">      
         <div class="text">
             <h1 class="heading">Lag bruker</h1>
+            <p style="font-weight: 500;">Eller <a style="font-weight: 600;" href="/logg-inn/">logg inn</a></p>
         </div>
         {% csrf_token %}
-        <br>
-        <!-- USER SIGNUP FORM INPUTS -->
-        <div class="inputs-labels">
-            {% if form.errors %}
-                {% for field in form %}
-                    {% for error in field.errors %} 
-                        <div class="alert alert-danger">
-                            <strong>{{ error|escape }}</strong>
-                        </div>
+        <div class="form">
+            <div class="inputs-labels">
+                {% if form.errors %}
+                    {% for field in form %}
+                        {% for error in field.errors %} 
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                        {% endfor %}
                     {% endfor %}
-                {% endfor %}
-            {% endif %}
-            <!-- NAME -->
-            <label for="username">Brukernavn</label>
-            <br>
-            <input type="text" id="username" name="username" required oninvalid="this.setCustomValidity('Kan ikke være tom')" oninput="this.setCustomValidity('')">
-            <br>
-            <br>
-            <!-- FIRST NAME -->
-            <label for="first_name" class="form-tag-first_name tag">Fornavn</label>
-            <br>
-            <input type="text" id="first_name" name="first_name" required oninvalid="this.setCustomValidity('Fornavn kan ikke være tom')" oninput="this.setCustomValidity('')">
-            <br>
-            <br>
-            <!-- LAST NAME -->
-            <label for="last_name" class="form-tag-last_name tag">Etternavn</label>
-            <br>
-            <input type="text" id="last_name" name="last_name" required oninvalid="this.setCustomValidity('Etternavn kan ikke være tom')" oninput="this.setCustomValidity('')">
-            <br>
-            <br>
-            <!-- EMAIL -->
-            <label for="email" class="form-tag-email tag">Epost</label>
-            <br>
-            <input type="email" id="email" name="email" required oninvalid="this.setCustomValidity('Skriv din epost her')" oninput="this.setCustomValidity('')">
-            <br>
-            <br>
-            <!-- PASSWORD -->
-            <label for="password1" class="form-tag-password1 tag">Passord</label>
-            <br>
-            <input type="password" autocomplete="new-password" id="password1" name="password1" required oninvalid="this.setCustomValidity('Velg et passord')" oninput="this.setCustomValidity('')">
-            <br>
-            <br>
-            <!-- REPEAT PASSWORD -->
-            <label for="password2" class="form-tag-password2 tag">Gjenta passord</label>
-            <br>
-            <input type="password" id="password2" name="password2" required oninvalid="this.setCustomValidity('Du må gjenta passordet')" oninput="this.setCustomValidity('')">
-        </div> 
-        <div class="form-actions">
-            <button type='submit'>Lag bruker</button>
+                {% endif %}
+                <!-- NAME -->
+                <label for="username">Brukernavn</label>
+                <br>
+                <input type="text" id="username" name="username" required oninvalid="this.setCustomValidity('Kan ikke være tom')" oninput="this.setCustomValidity('')">
+                <br>
+                <br>
+                <!-- FIRST NAME -->
+                <label for="first_name" class="form-tag-first_name tag">Fornavn</label>
+                <br>
+                <input type="text" id="first_name" name="first_name" required oninvalid="this.setCustomValidity('Fornavn kan ikke være tom')" oninput="this.setCustomValidity('')">
+                <br>
+                <br>
+                <!-- LAST NAME -->
+                <label for="last_name" class="form-tag-last_name tag">Etternavn</label>
+                <br>
+                <input type="text" id="last_name" name="last_name" required oninvalid="this.setCustomValidity('Etternavn kan ikke være tom')" oninput="this.setCustomValidity('')">
+                <br>
+                <br>
+                <!-- EMAIL -->
+                <label for="email" class="form-tag-email tag">Epost</label>
+                <br>
+                <input type="email" id="email" name="email" required oninvalid="this.setCustomValidity('Skriv din epost her')" oninput="this.setCustomValidity('')">
+                <br>
+                <br>
+                <!-- PASSWORD -->
+                <label for="password1" class="form-tag-password1 tag">Passord</label>
+                <br>
+                <input type="password" autocomplete="new-password" id="password1" name="password1" required oninvalid="this.setCustomValidity('Velg et passord')" oninput="this.setCustomValidity('')">
+                <br>
+                <br>
+                <!-- REPEAT PASSWORD -->
+                <label for="password2" class="form-tag-password2 tag">Gjenta passord</label>
+                <br>
+                <input type="password" id="password2" name="password2" required oninvalid="this.setCustomValidity('Du må gjenta passordet')" oninput="this.setCustomValidity('')">
+            </div> 
+            <div class="form-actions">
+                <button type='submit'>Lag bruker</button>
+            </div>
         </div>
     </form>
 </div>

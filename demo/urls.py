@@ -27,14 +27,17 @@ urlpatterns = [
     path('om-oss/', about, name='about'),
 
     path('personvernerklaering/', personerk, name='personerk'),
+    path('salgvilkaar/', salgvilkaar, name='salgvilkaar'),
     
     path('priser/', price, name='price'),
 
     # Auth
     path('logg-inn/', views.LoginView.as_view(template_name='core/login.html'), name='login'),
-    path('snodrivlagbruker123456/', signup, name='signup'),
+    path('lag-bruker/', signup, name='signup'),
     path('logg-ut/', views.LogoutView.as_view(), name='logout'),
     path('min-bruker/', myaccount, name='myaccount'),
+    path('passord-reset/', pass_reset, name='pass_reset'),
+
 
 
     

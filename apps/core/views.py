@@ -114,6 +114,9 @@ def about(request):
 def personerk(request):
     return render(request, 'pages/legal/personerk.html')
 
+def salgvilkaar(request):
+    return render(request, 'pages/legal/salgv.html')
+
 
 
 def price(request):

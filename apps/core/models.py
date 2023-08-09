@@ -42,3 +42,21 @@ class Location(models.Model):
 
     def __str__(self):
         return f'{self.cords1}, {self.cords2}'
+    
+
+class Booking(models.Model):
+    location = models.CharField(max_length=100, blank=True, null=True)
+    preference = models.CharField(max_length=100, blank=True, null=True)
+    full_name = models.CharField(max_length=100, blank=True, null=True)
+    email = models.CharField(max_length=100 ,blank=True, null=True)
+    mobile_number = models.CharField(max_length=100, blank=True, null=True)
+    reg_number = models.CharField(max_length=100, blank=True, null=True)
+    km = models.CharField(max_length=100 ,blank=True, null=True)
+    date = models.CharField(max_length=100, blank=True, null=True)
+    time = models.CharField(max_length=100, blank=True, null=True)
+    car_name_model = models.CharField(max_length=100, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_booked = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.full_name} - {self.date} {self.time}"

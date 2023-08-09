@@ -9,7 +9,7 @@
 .cover .content {
   padding-inline: 20px;
   padding-top: 72px;
-  padding-bottom: 40px;
+  padding-bottom: 25px;
   height: -moz-max-content;
   height: max-content;
   position: relative;
@@ -30,4 +30,83 @@
   margin-bottom: 0;
   color: #1F1F1F;
   font-weight: 500;
+}
+
+.page .book-time {
+  padding-bottom: 60px;
+  padding-inline: 20px;
+}
+.page form {
+  background: white;
+  border-radius: 12px;
+  padding-inline: 30px;
+  padding-block: 16px;
+}
+.page form label {
+  font-size: 16px;
+  color: #1F1F1F;
+  font-weight: 500;
+}
+.page form input {
+  width: 100%;
+  height: 48px;
+  border: 1px solid lightgray;
+  outline: none;
+  padding: 8px;
+  color: #1F1F1F;
+  font-size: 16px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 7px;
+}
+.page form input:focus, .page form input:active {
+  border: 2px solid #f0a432;
+  cursor: text;
+  background: rgb(255, 255, 255);
+}
+.page form input::-moz-placeholder {
+  color: #1F1F1F;
+  opacity: 0.6;
+}
+.page form input::placeholder {
+  color: #1F1F1F;
+  opacity: 0.6;
+}
+.page form .time {
+  width: 100%;
+  height: 48px;
+  border: 1px solid lightgray;
+  outline: none;
+  padding: 8px;
+  color: #1F1F1F;
+  font-size: 16px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 7px;
+}
+.page form .time:focus, .page form .time:active {
+  border: 2px solid #f0a432;
+  cursor: text;
+  background: rgb(255, 255, 255);
+}
+.page form .time::-moz-placeholder {
+  color: #1F1F1F;
+  opacity: 0.6;
+}
+.page form .time::placeholder {
+  color: #1F1F1F;
+  opacity: 0.6;
+}
+.page form .form-actions button {
+  border: 1px solid transparent;
+  border-radius: 6px;
+  outline: none;
+  background: linear-gradient(to bottom right, #f0a432, #ffb649);
+  color: white;
+  font-weight: 500;
+  font-size: 17px;
+  width: 100%;
+  display: block;
+  height: 44px;
+  margin-top: 25px;
 }/*# sourceMappingURL=book.css.map */

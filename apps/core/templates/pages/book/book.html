@@ -6,6 +6,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/flatpickr.min.css">
 
 <link rel="stylesheet" href="{% static '/scss/pages/book.css' %}" type="text/css">
 
@@ -19,6 +20,100 @@
         </div>
     </div>
 
+
+    <div class="book-time">
+
+        <form action="" method="POST">
+            <br>
+            {% csrf_token %}
+            <div id="bookTimeStepOne">    
+                <label for="id_date">Date</label>
+                <br>
+                <input type="text" name="date" id="id_date" class="flatpickr">
+                <br>
+                <br>
+                
+                <label for="id_time">Time</label>
+                <br>
+                <select class="time" name="time" id="weekday">
+                    <option value="08:00">08:00</option>
+                    <option value="10:00">10:00</option>
+                    <option value="12:00">12:00</option>
+                    <option value="14:00">14:00</option>
+                </select>
+                <select class="time" name="time" id="saturday">
+                    <option value="10:00">10:00</option>
+                    <option value="12:00">12:00</option>
+                    <option value="14:00">14:00</option>
+                </select>
+                <br>
+                <br>
+                <label for="id_location">Location</label>
+                <br>
+                <input type="text" name="location" id="id_location">
+                <br>
+                <br>
+                <label for="id_preference">Preference</label>
+                <br>
+                <input type="text" name="preference" id="id_preference">
+                <br>
+                <br>
+                <!-- Add other fields here -->
+
+            </div>
+            <div class="form-actions">
+                <button type="submit">Book time</button>
+            </div>
+        </form>
+
+    </div>
+
+
+
+    <script>
+        
+        async function checkDate(){
+            const one = document.getElementById('weekday');
+            const two = document.getElementById('saturday');
+            const dateInput = document.getElementById('id_date')
+            var date = new Date();
+            var day = date.getDay();
+            var ans = (day === 6);
+
+            if (dateInput.value == ans){
+                one.style.display = 'none';
+                two.style.display = 'block';
+            }else{
+                one.style.display = 'block';
+                two.style.display = 'none';
+            }
+        }
+        setInterval(() => {
+            checkDate(); 
+        }, 10);
+    </script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/flatpickr.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+        flatpickr("#id_date", {
+            enable: [
+                function(date) {
+                    return date.getDay() !== 0; // Disable Sundays
+                }
+                // Add other date restrictions here
+            ],
+            dateFormat: "d-m-y",
+            enableTime: false,
+            minDate: tomorrow,
+        });
+    });
+
+    </script>
+    
 </div>
 
 
@@ -29,7 +124,3 @@
 {% endblock %}
 
 Give me full code on how to make to make a booking system in django, where only the following dates are available for customers to book: All weekdays are available, but only 08:00, 10:00, 12:00 and 14:00 are available to book. On saturdays, only 10:00, 12:00 and 14:00 should be available to book. Sunday should not be available to book at all. If a customer books, lets say 10:00 on tuesday 02.05.2023, that exact date should become unvailable. So only one customer per date and time. I need this information from the user, when he books a date and time: Location, Preference, Full name, Email, Mobile number, Reg nr, Km, 3 checboxes and Car name and model.  The date field must be a calender, but sundays cant be clickable at all! The time field has to be a dropdown of the times available for the date chosen in the date field. Note! If a customer picks a date and time, That date and time must be unvailable for other customers to book.
-
-
-
-

@@ -18,13 +18,13 @@ from .models import *
 from .forms import *
 from django.utils import timezone
 from datetime import timedelta
-from .utils import *  # Import the function from utils.py
 from django.shortcuts import render, redirect
 from .forms import *
 from .models import *
 from datetime import datetime
 from django.http import HttpResponseForbidden
 from django.conf import settings
+from datetime import date
 
 def home(request):      
     mapbox_access_token = settings.MAP_BOX_ACCESS_TOKEN 
@@ -56,9 +56,25 @@ def home(request):
 def sell(request):      
     return render(request, 'pages/book/sell.html')  
 
+
+
 def book_time(request):
+    
+    if request.method == 'POST':
+        date = request.POST.get('date', )
+        time = request.POST.get('time', '')
+
+        if Booking.objects.filter(date=date, time=time, is_booked=True).exists():
+            return render(request, 'pages/book/error.html', {'message': 'This time slot is already booked!'})
+        else:
+            booking = Booking.objects.create(time=time, date=date)
+            booking.is_booked = True
+            booking.save()
+        return render(request, 'pages/book/book-success.html', {'booking': booking})
 
     return render(request, 'pages/book/book.html')
+
+
 
 def success(request):
     return render(request, 'pages/contact/success.html')

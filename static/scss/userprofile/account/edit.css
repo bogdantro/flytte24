@@ -10,21 +10,38 @@
   max-width: 900px;
   padding: 0;
   border-radius: 7px;
+  padding-inline: 20px;
+  padding-bottom: 30px;
+  padding-top: 105px;
+}
+.account-card .text {
+  text-align: center;
+}
+.account-card .text .heading {
+  color: #1F1F1F;
+  font-weight: 600;
+  font-size: 33px;
+}
+.account-card .text .sub-heading {
+  color: #1F1F1F;
+  font-weight: 500;
+  font-size: 18px;
+  margin-top: 10px;
 }
 .account-card .your-info {
+  position: relative;
+  margin-top: 30px;
   background: white;
   border-radius: 12px;
-  padding-inline: 14px;
-  padding-block: 34px;
-  position: relative;
-  margin-top: 20px;
+  padding-inline: 30px;
+  padding-block: 16px;
 }
 .account-card .your-info .user-info {
   text-align: left;
 }
 .account-card .your-info .user-info label {
+  font-size: 16px;
   color: #1F1F1F;
-  font-size: 15px;
   font-weight: 500;
 }
 .account-card .your-info .user-info input {
@@ -45,11 +62,11 @@
   background: rgb(255, 255, 255);
 }
 .account-card .your-info .user-info input::-moz-placeholder {
-  color: #183B56;
+  color: #1F1F1F;
   opacity: 0.6;
 }
 .account-card .your-info .user-info input::placeholder {
-  color: #183B56;
+  color: #1F1F1F;
   opacity: 0.6;
 }
 .account-card .your-info .user-info button {

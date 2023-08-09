@@ -16,6 +16,11 @@ from .tokens import *
 
 @login_required
 def myaccount(request):
+   
+    return render(request, 'core/account/myaccount.html')
+
+
+def edit_user_info(request):
     if request.method == 'POST':
         u_form =  UserUpdateForm(request.POST, instance=request.user)
         if u_form.is_valid():
@@ -27,9 +32,8 @@ def myaccount(request):
             u_form.save()
 
         else:
-            u_form = UserUpdateForm()    
-
-    return render(request, 'core/account/myaccount.html')
+            u_form = UserUpdateForm() 
+    return render(request, 'core/account/edit.html')
 
 
 

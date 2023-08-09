@@ -15,19 +15,36 @@ $txt: #183b56;
     max-width: 900px;
     padding: 0;
     border-radius: 7px;
+    padding-inline: 20px;
+    padding-bottom: 30px;
+      padding-top: 105px;
+    .text{
+        text-align: center;
+        .heading{
+            color: $black;
+            font-weight: 600;
+            font-size: 33px;
+        }
+        .sub-heading{
+          color: $black;
+          font-weight: 500;
+          font-size: 18px;
+          margin-top: 10px;
+        }
+    }
       // YOUR INFO
       .your-info{
+        position: relative;
+        margin-top: 30px;
         background: white;
         border-radius: 12px;
-        padding-inline: 14px;
-        padding-block: 34px;
-        position: relative;
-        margin-top: 20px;
+        padding-inline: 30px;
+        padding-block: 16px;
         .user-info{
           text-align: left;
           label{
+            font-size: 16px;
             color: $black;
-            font-size: 15px;
             font-weight: 500;
         }
         input{
@@ -47,7 +64,7 @@ $txt: #183b56;
                 background: rgba(255,255,255,1);
             }
             &::placeholder{
-                color: #183B56;
+                color: $black;
                 opacity: 0.6;
             }
         }

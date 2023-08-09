@@ -35,7 +35,10 @@ urlpatterns = [
     path('logg-inn/', views.LoginView.as_view(template_name='core/login.html'), name='login'),
     path('lag-bruker/', signup, name='signup'),
     path('logg-ut/', views.LogoutView.as_view(), name='logout'),
+
     path('min-bruker/', myaccount, name='myaccount'),
+    path('min-bruker/rediger-min-info/', edit_user_info, name='edit_user_info'),
+
     path('passord-reset/', pass_reset, name='pass_reset'),
 
 

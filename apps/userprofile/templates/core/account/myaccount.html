@@ -8,7 +8,7 @@
 
 
 <div class="account-nav-mob">
-    <div class="logo" onclick="window.location.href='/'">
+    <div class="logo" onclick="window.location.href='/min-bruker/'">
         <img src="{% static 'images/logo/logo2.png' %}" alt="" class="logo-image">
     </div>
     <div class="hamburger" id="Acnthamburger" onclick="Acntmenu()">
@@ -17,10 +17,11 @@
         <span class="lower-span"></span>
     </div>
     <div class="sidebar" id="Acntsidebar">
+        <a href="/">Tilbake hjem</a>
         <a href="/min-bruker/">Mine annonser<i class="fa-solid fa-angle-right"></i></a>
         <a href="/min-bruker/">Mine bud<i class="fa-solid fa-angle-right"></i></a>
         <a href="/min-bruker/">Kommende visninger<i class="fa-solid fa-angle-right"></i></a>
-        <a href="/min-bruker/">Redigere min info<i class="fa-solid fa-angle-right"></i></a>
+        <a href="/min-bruker/">Endre min info<i class="fa-solid fa-angle-right"></i></a>
         <a href="/min-bruker/">Logg ut<i class="fa-solid fa-angle-right"></i></a>
     </div>
 </div>
@@ -34,11 +35,12 @@
   <div class="main-content">
     <h1>Bilmeglerne portal</h1>
     <p>Din egen side som kunde. Her kan du se dine annonser, dine bud, kommende visninger og redigere din info</p>
+    <button class="mainCntnBtn" onclick="window.location.href='/'">Tilbake hjem</button>
     <button class="mainCntnBtn">Mine annonser</button>
     <button class="mainCntnBtn">Mine bud</button>
     <button class="mainCntnBtn">Kommende visninger</button>
-    <button class="mainCntnBtn">Redigere min info</button>
-    <button class="mainCntnBtn">Logg ut</button>
+    <button class="mainCntnBtn" onclick="window.location.href='/min-bruker/rediger-min-info/'">Endre min info</button>
+    <button class="mainCntnBtn" onclick="window.location.href='/logg-ut/'">Logg ut</button>
   </div>
 </div>
 

@@ -1,86 +1,182 @@
+#mobileNav {
+  display: none;
+}
+
+#footerMob {
+  display: none;
+}
+
+.account-nav-mob {
+  width: 100%;
+  height: 68px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 20px;
+  padding-bottom: 3px;
+  position: absolute;
+  top: 0;
+  z-index: 10000000000000000000;
+  transition: 0.2s;
+  border-bottom: 1px solid lightgray;
+  background: white;
+}
+.account-nav-mob .logo {
+  transition: 0.8s;
+  cursor: pointer;
+  width: auto;
+  height: auto;
+  z-index: 1000;
+}
+.account-nav-mob .logo img {
+  width: 100px;
+  height: auto;
+  transition: 0.3s;
+  transform: translateX(-29px);
+}
+.account-nav-mob .logo img:hover {
+  transform: translateX(-29px) scale(0.93);
+}
+.account-nav-mob .hamburger {
+  padding: 5px;
+  margin: -5px;
+  width: auto;
+  height: auto;
+  z-index: 1000;
+  text-align: center;
+  border-radius: 50%;
+}
+.account-nav-mob .hamburger span {
+  height: 3px;
+  width: 26px;
+  background: #1F1F1F;
+  border-radius: 6px;
+  display: block;
+  transition: 0.2s;
+  margin-block: 6px;
+  text-align: center;
+  transform-origin: 25%;
+}
+.account-nav-mob .hamburger.click .upper-span {
+  transform: rotate(45deg);
+}
+.account-nav-mob .hamburger.click .center-span {
+  display: none;
+}
+.account-nav-mob .hamburger.click .lower-span {
+  transform: rotate(-45deg);
+}
+.account-nav-mob .sidebar {
+  background: white;
+  position: absolute;
+  top: 68px;
+  left: -100px;
+  width: 100%;
+  height: calc(100vh - 65px);
+  z-index: 120;
+  opacity: 0;
+  pointer-events: none;
+  display: block;
+  transition: 0.2s;
+}
+.account-nav-mob .sidebar a {
+  padding: 23px 20px;
+  color: #183b56;
+  font-size: 18px;
+  font-weight: 500;
+  display: block;
+  width: 100%;
+  text-decoration: none;
+  position: relative;
+}
+.account-nav-mob .sidebar a:last-child:hover {
+  background: rgba(255, 34, 34, 0.07);
+}
+.account-nav-mob .sidebar a:hover {
+  background: rgba(255, 226, 97, 0.0941176471);
+}
+.account-nav-mob .sidebar a i {
+  float: right;
+  padding-right: 3px;
+  color: #183b56;
+  font-size: 17px;
+  transform: translateY(1px);
+}
+.account-nav-mob .sidebar.active {
+  opacity: 1;
+  pointer-events: visible;
+  transition: 0.4s;
+  left: 0;
+}
+
+.account-footer-mob {
+  position: relative;
+  bottom: 0;
+  height: 60px;
+  margin-top: 60px;
+  width: 100%;
+  background: #f0a432;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.account-footer-mob p {
+  margin-bottom: 0;
+  font-size: 17px;
+  color: #1F1F1F;
+  font-weight: 600;
+}
+
 .myaccount {
-  padding-top: 105px;
-  min-height: 80vh;
-  padding-bottom: 30px;
-  padding-inline: 20px;
+  min-height: 88vh;
 }
 .myaccount .text {
+  padding-inline: 20px;
+  padding-bottom: 30px;
+  padding-top: 105px;
+  background: white;
   text-align: center;
+  border-bottom: 1px solid lightgray;
 }
 .myaccount .text .heading {
   color: #1F1F1F;
   font-weight: 600;
   font-size: 33px;
 }
-.myaccount .flex {
-  display: unset;
-}
-.myaccount .account-card {
-  margin: 0 auto;
-  text-align: left;
-  background: transparent;
-  width: 100%;
-  max-width: 900px;
-  padding: 0;
-  border-radius: 7px;
-}
-.myaccount .account-card .your-info {
-  background: white;
-  border-radius: 12px;
-  padding-inline: 14px;
-  padding-block: 34px;
-  position: relative;
-  margin-top: 20px;
-}
-.myaccount .account-card .your-info .user-info {
-  text-align: left;
-}
-.myaccount .account-card .your-info .user-info label {
+.myaccount .text .sub-heading {
   color: #1F1F1F;
-  font-size: 15px;
   font-weight: 500;
+  font-size: 18px;
+  margin-top: 10px;
 }
-.myaccount .account-card .your-info .user-info input {
-  width: 100%;
-  height: 48px;
-  border: 1px solid lightgray;
-  outline: none;
-  padding: 8px;
+.myaccount .main-content {
+  text-align: center;
+  padding-inline: 20px;
+  padding-top: 40px;
+}
+.myaccount .main-content h1 {
   color: #1F1F1F;
-  font-size: 16px;
-  cursor: pointer;
-  background: rgba(255, 255, 255, 0.7);
-  border-radius: 7px;
+  font-size: 23px;
+  font-weight: 600;
 }
-.myaccount .account-card .your-info .user-info input:focus, .myaccount .account-card .your-info .user-info input:active {
-  border: 2px solid #f0a432;
-  cursor: text;
-  background: rgb(255, 255, 255);
+.myaccount .main-content p {
+  color: #1F1F1F;
+  font-size: 17px;
 }
-.myaccount .account-card .your-info .user-info input::-moz-placeholder {
-  color: #183B56;
-  opacity: 0.6;
-}
-.myaccount .account-card .your-info .user-info input::placeholder {
-  color: #183B56;
-  opacity: 0.6;
-}
-.myaccount .account-card .your-info .user-info button {
+.myaccount .main-content button {
+  margin-block: 15px;
   width: 100%;
-  height: 42px;
-  background: linear-gradient(to bottom right, #f0a432, #ffb649);
-  color: rgb(246, 246, 246);
-  border-radius: 7px;
-  font-size: 16px;
-  padding: 3px;
-  cursor: pointer;
-  transition: 0.4s;
-  border: none;
+  height: 49px;
   outline: none;
-  font-weight: 400;
+  background: #f0a432;
+  border: 1px solid #f0a432;
+  color: white;
+  border-radius: 6px;
 }
-.myaccount .account-card .your-info .user-info button:hover {
-  transform: scale(1.01);
+.myaccount .main-content button:last-child {
+  border-color: rgb(228, 33, 8);
+  color: white;
+  background: rgb(228, 33, 8);
 }
 
 @media only screen and (min-device-width: 1140px) {

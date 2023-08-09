@@ -3,87 +3,195 @@ $white: rgb(246,246,246);
 $primBtn: #f0a432;
 $txt: #183b56;
 
+#mobileNav{
+  display: none;
+}
+#footerMob{
+  display: none;
+}
+
+.account-nav-mob{
+      // NAVBAR CSS
+      width: 100%;
+      height: 68px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 20px;
+      padding-bottom: 3px;
+      position: absolute;
+      top: 0;
+      z-index: 10000000000000000000;
+      transition: .2s;
+      border-bottom: 1px solid lightgray;
+      background: white;
+      .logo{
+          transition: .8s;
+          cursor: pointer;
+          width: auto;
+          height: auto;
+          z-index: 1000;
+          img{
+          width: 100px;
+          height: auto;
+          transition: .3s;
+          transform: translateX(-29px);
+          &:hover{
+              transform: translateX(-29px) scale(0.93);
+          }
+          }
+      }
+      .hamburger{
+          padding: 5px;
+          margin: -5px;
+          width: auto;
+          height: auto;
+          z-index: 1000;
+          text-align: center;
+          border-radius: 50%;
+          span{
+              height: 3px;
+              width: 26px;
+              background: $black;
+              border-radius: 6px;
+              display: block;
+              transition: .2s;
+              margin-block: 6px;
+              text-align: center;
+              transform-origin: 25%; 
+          }
+          .upper-span{
+          }
+          .center-span{
+          }
+          .lower-span{
+          }
+          &.click{
+              .upper-span{
+                  transform: rotate(45deg);
+              }
+              .center-span{
+                  display: none;
+              }
+              .lower-span{
+                  transform: rotate(-45deg);
+              }
+          }
+      }
+      .sidebar{
+          background: white;
+          position: absolute;
+          top: 68px;
+          left: -100px;
+          width: 100%;
+          height: calc(100vh - 65px);
+          z-index: 120;
+          opacity: 0;
+          pointer-events: none;
+          display: block;
+          transition: .2s;
+          a{
+              padding: 23px 20px;
+              color: $txt;
+              font-size: 18px;
+              font-weight: 500;
+              display: block;
+              width: 100%;
+              text-decoration: none;
+              position: relative;
+              &:last-child{
+                &:hover{
+                  background: rgba(255, 34, 34, 0.07);
+              }
+              }
+              &:hover{
+                  background: #ffe26118;
+              }
+              i{
+                  float: right;
+                  padding-right: 3px;
+                  color: $txt;
+                  font-size: 17px;
+                  transform: translateY(1px);
+              }
+          }
+          &.active{
+              opacity: 1;
+              pointer-events: visible;
+              transition: .4s;
+              left: 0;
+          }
+      } 
+}
+
+.account-footer-mob{
+  position: relative;
+  bottom: 0;
+  height: 60px;
+  margin-top: 60px;
+  width: 100%;
+  background: $primBtn;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  p{
+    margin-bottom: 0;
+    font-size: 17px;
+    color: $black;
+    font-weight: 600;
+  }
+}
+
 .myaccount{
-    padding-top: 105px;
-    min-height: 80vh;
-    padding-bottom: 30px;
+  min-height: 88vh;
+  .text{
     padding-inline: 20px;
-    .text{
+    padding-bottom: 30px;
+      padding-top: 105px;
+      background: white;
       text-align: center;
+      border-bottom: 1px solid lightgray;
       .heading{
           color: $black;
           font-weight: 600;
           font-size: 33px;
       }
+      .sub-heading{
+        color: $black;
+        font-weight: 500;
+        font-size: 18px;
+        margin-top: 10px;
+      }
   }
-    .flex{
-      display: unset;
+  .main-content{
+    text-align: center;
+    padding-inline: 20px;
+    padding-top: 40px;
+    h1{
+      color: $black;
+      font-size: 23px;
+      font-weight: 600;
     }
-    // Account section
-    .account-card{
-      margin: 0 auto;
-      text-align: left;
-      background: transparent;
+    p{
+      color: $black;
+      font-size: 17px;
+    }
+    button{
+      margin-block: 15px;
       width: 100%;
-      max-width: 900px;
-      padding: 0;
-      border-radius: 7px;
-        // YOUR INFO
-        .your-info{
-          background: white;
-          border-radius: 12px;
-          padding-inline: 14px;
-          padding-block: 34px;
-          position: relative;
-          margin-top: 20px;
-          .user-info{
-            text-align: left;
-            label{
-              color: $black;
-              font-size: 15px;
-              font-weight: 500;
-          }
-          input{
-              width: 100%;
-              height: 48px;
-              border: 1px solid lightgray;
-              outline: none;
-              padding: 8px;
-              color: $black;
-              font-size: 16px;
-              cursor: pointer;
-              background: rgba(255,255,255,0.7);
-              border-radius: 7px;
-              &:focus, &:active{
-                  border: 2px solid $primBtn;
-                  cursor: text;
-                  background: rgba(255,255,255,1);
-              }
-              &::placeholder{
-                  color: #183B56;
-                  opacity: 0.6;
-              }
-          }
-          button{
-            width: 100%;
-            height: 42px;
-            background: linear-gradient(to bottom right, $primBtn, #ffb649);
-            color: $white;
-            border-radius: 7px;
-            font-size: 16px;
-            padding: 3px;
-            cursor: pointer;
-            transition: .4s;
-            border: none;
-            outline: none;
-            font-weight: 400;
-            &:hover{
-                transform: scale(1.01);
-            }
-        }
-          }
-        }
+      height: 49px;
+      outline: none;
+      background: $primBtn;
+      border: 1px solid $primBtn;
+      color: white;
+      border-radius: 6px;
+      &:last-child{
+        border-color: rgb(228, 33, 8);
+        color: white;
+        background: rgb(228, 33, 8);
+      }
     }
+  }
 }
 
 @media only screen and (min-device-width: 1140px) {

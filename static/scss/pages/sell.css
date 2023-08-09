@@ -60,35 +60,8 @@
 .page .sell-car {
   padding-inline: 20px;
 }
-.page .sell-car .card {
-  border: 1px solid lightgray;
-  width: 100%;
-  height: 200px;
-  background: transparent;
-  border-radius: 6px;
-}
-.page .sell-car .card .top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid lightgray;
-}
-.page .sell-car .card .top .left {
-  border-right: 1px solid lightgray;
-  width: 45%;
-  padding: 17px 18px;
-}
-.page .sell-car .card .top .right {
-  padding-block: 17px;
-  padding-left: 4px;
-  width: 50%;
-}
-.page .sell-car .card .bottom {
-  padding: 17px 18px;
-}
 .page .sell-car .steps {
-  padding-block: 40px;
-  padding-bottom: 0;
+  padding-top: 10px;
 }
 .page .sell-car .steps .content {
   position: relative;

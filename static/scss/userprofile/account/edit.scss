@@ -1,0 +1,73 @@
+$black: #1F1F1F;
+$white: rgb(246,246,246);
+$primBtn: #f0a432;
+$txt: #183b56;
+
+.flex{
+    display: unset;
+  }
+  // Account section
+  .account-card{
+    margin: 0 auto;
+    text-align: left;
+    background: transparent;
+    width: 100%;
+    max-width: 900px;
+    padding: 0;
+    border-radius: 7px;
+      // YOUR INFO
+      .your-info{
+        background: white;
+        border-radius: 12px;
+        padding-inline: 14px;
+        padding-block: 34px;
+        position: relative;
+        margin-top: 20px;
+        .user-info{
+          text-align: left;
+          label{
+            color: $black;
+            font-size: 15px;
+            font-weight: 500;
+        }
+        input{
+            width: 100%;
+            height: 48px;
+            border: 1px solid lightgray;
+            outline: none;
+            padding: 8px;
+            color: $black;
+            font-size: 16px;
+            cursor: pointer;
+            background: rgba(255,255,255,0.7);
+            border-radius: 7px;
+            &:focus, &:active{
+                border: 2px solid $primBtn;
+                cursor: text;
+                background: rgba(255,255,255,1);
+            }
+            &::placeholder{
+                color: #183B56;
+                opacity: 0.6;
+            }
+        }
+        button{
+          width: 100%;
+          height: 42px;
+          background: linear-gradient(to bottom right, $primBtn, #ffb649);
+          color: $white;
+          border-radius: 7px;
+          font-size: 16px;
+          padding: 3px;
+          cursor: pointer;
+          transition: .4s;
+          border: none;
+          outline: none;
+          font-weight: 400;
+          &:hover{
+              transform: scale(1.01);
+          }
+      }
+        }
+      }
+  }

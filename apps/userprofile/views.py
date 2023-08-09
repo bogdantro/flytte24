@@ -16,18 +16,6 @@ from .tokens import *
 
 @login_required
 def myaccount(request):
-
-    if request.method == 'POST':
-        p_form =  ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
-        if p_form.is_valid():
-            image = p_form.cleaned_data['image']
-            
-            p_form.save()
-
-        else:
-            p_form = ProfileUpdateForm() 
-
-
     if request.method == 'POST':
         u_form =  UserUpdateForm(request.POST, instance=request.user)
         if u_form.is_valid():
@@ -41,9 +29,7 @@ def myaccount(request):
         else:
             u_form = UserUpdateForm()    
 
-
-
-    return render(request, 'core/myaccount.html')
+    return render(request, 'core/account/myaccount.html')
 
 
 

@@ -1,0 +1,23 @@
+.page {
+  padding-inline: 20px;
+  padding-bottom: 60px;
+}
+.page .cover {
+  background: transparent;
+}
+.page .cover .content {
+  padding-inline: 0;
+}
+.page .cover .content .text {
+  text-align: center;
+}
+.page .cover .content .text p {
+  margin: auto;
+}
+.page .divivivi {
+  background: white;
+  margin-top: 10px;
+  border-radius: 12px;
+  padding-inline: 30px;
+  padding-block: 16px;
+}/*# sourceMappingURL=book-success.css.map */

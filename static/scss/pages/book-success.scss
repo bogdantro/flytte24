@@ -1,0 +1,28 @@
+$black: #1F1F1F;
+$white: rgb(246,246,246);
+$primBtn: #f0a432;
+$txt: #183b56;
+
+.page{
+    padding-inline: 20px;
+    padding-bottom: 60px;
+    .cover{
+        background: transparent;
+        .content{
+            padding-inline: 0;
+            .text{
+                text-align: center;
+                p{
+                    margin: auto;
+                }
+            }
+        }
+    }
+    .divivivi{
+        background: white;
+        margin-top: 10px;
+        border-radius: 12px;
+        padding-inline: 30px;
+        padding-block: 16px;
+    }
+}

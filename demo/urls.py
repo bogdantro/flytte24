@@ -18,6 +18,7 @@ urlpatterns = [
     path('', home, name='home'),
     path('selg-bilen/', sell, name='sell'),
     path('selg-bilen/book-time/', book_time, name='book_time'),
+    path('selg-bilen/book-time/avbestill-time/', un_book, name='un_book'),
 
     path('kontakt-oss/', contact, name='contact'),
     path('verdivurdering/', verdivurdering, name='verdivurdering'),

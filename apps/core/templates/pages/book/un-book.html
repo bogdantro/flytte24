@@ -1,0 +1,47 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static '/scss/pages/un-book.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static '/scss/pages/page.css' %}" type="text/css">
+
+<div class="page">
+    <div class="cover">
+        <div class="content" style="padding-bottom: 15px;">
+            <div class="text">
+                <h1 class="cover-h1">Avbestill time</h1>
+            </div>  
+        </div>
+    </div>
+    <form id="unBook" action="" method="POST">
+        {% csrf_token %}
+        <br>
+        <div class="inputs-labels">
+           <label for="navn">Fulltnavn</label>
+           <br>
+           <input type="text" name="full_name" id="full_name" required  oninput="this.setCustomValidity('')">
+           <br>
+           <br>
+           <label for="email">Epost</label>
+           <br>
+           <input type="email" name="email" id="email"  required oninput="this.setCustomValidity('')">
+           <br>
+           <br>
+           <label for="message">Grunn (Valgfritt)</label>
+           <br>
+           <textarea name="message" id="message" oninput="this.setCustomValidity('')"></textarea>
+          </div>
+        <div class="form-actions">
+          <button class="primary" type="submit" name="un_book" value="un_book">Avbestill</button>
+        </div>
+      </form>
+</div>
+
+
+
+{% endblock %}
+
+
+
+
+

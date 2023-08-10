@@ -63,16 +63,57 @@ def book_time(request):
     if request.method == 'POST':
         date = request.POST.get('date', )
         time = request.POST.get('time', '')
+        location = request.POST.get('location', '')
+        preference = request.POST.get('preference', '')
+        full_name = request.POST.get('full_name', '')
+        email = request.POST.get('email', '')
+        mobile_number = request.POST.get('mobile_number', '')
+        reg_number = request.POST.get('reg_number', '')
+        km = request.POST.get('km', '')
+        car_name_model = request.POST.get('car_name_model', '')
+        sms_reminder = request.POST.get('sms_reminder', '')
+        car_younger_than_10 = request.POST.get('car_younger_than_10', '')
+        less_than_150000km = request.POST.get('less_than_150000km', '')
+        vilkaar = request.POST.get('vilkaar', '')
 
         if Booking.objects.filter(date=date, time=time, is_booked=True).exists():
             return render(request, 'pages/book/error.html', {'message': 'This time slot is already booked!'})
         else:
-            booking = Booking.objects.create(time=time, date=date)
+            if sms_reminder == 'on':
+                sms_reminder = True
+            else:
+                sms_reminder = False
+
+            if car_younger_than_10 == 'on':
+                car_younger_than_10 = True
+            else:
+                car_younger_than_10 = False
+
+            if less_than_150000km == 'on':
+                less_than_150000km = True
+            else:
+
+                less_than_150000km = False
+            if vilkaar == 'on':
+                vilkaar = True
+            else:
+                vilkaar = False
+            booking = Booking.objects.create(time=time, date=date, location=location, preference=preference, full_name=full_name, email=email, mobile_number=mobile_number, reg_number=reg_number, km=km, car_name_model=car_name_model, sms_reminder=sms_reminder, car_younger_than_10=car_younger_than_10, less_than_150000km=less_than_150000km, vilkaar=vilkaar)
             booking.is_booked = True
             booking.save()
         return render(request, 'pages/book/book-success.html', {'booking': booking})
 
     return render(request, 'pages/book/book.html')
+
+def un_book(request):
+    if request.method=='POST' and 'un_book' in request.POST:
+        full_name = request.POST.get('full_name', )
+        email = request.POST.get('email', '')
+        message = request.POST.get('message', '')
+
+        unbook = UnBook.objects.create(full_name=full_name, message=message, email=email)
+        return redirect('success')
+    return render(request, 'pages/book/un-book.html') 
 
 def success(request):
     return render(request, 'pages/contact/success.html')
@@ -86,7 +127,6 @@ def contact(request):
         contact = Contact.objects.create(name=name, message=message, email=email)
         return redirect('success')
     return render(request, 'pages/contact/contact.html')  
-
 
 def verdivurdering(request):
     if request.method=='POST' and 'verdivurdering' in request.POST:

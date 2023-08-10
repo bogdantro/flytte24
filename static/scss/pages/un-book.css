@@ -1,0 +1,92 @@
+.page {
+  padding-inline: 20px;
+  padding-bottom: 60px;
+}
+.page .cover {
+  background: transparent;
+}
+.page .cover .content {
+  padding-inline: 0;
+}
+.page .cover .content .text {
+  text-align: center;
+}
+.page .cover .content .text p {
+  margin: auto;
+}
+.page form {
+  background: white;
+  border-radius: 12px;
+  padding-inline: 30px;
+  padding-block: 16px;
+  margin-top: 10px;
+}
+.page form .inputs-labels label {
+  font-size: 16px;
+  color: #1F1F1F;
+  font-weight: 500;
+}
+.page form .inputs-labels input {
+  width: 100%;
+  height: 48px;
+  border: 1px solid lightgray;
+  outline: none;
+  padding: 8px;
+  color: #1F1F1F;
+  font-size: 16px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 7px;
+}
+.page form .inputs-labels input:focus, .page form .inputs-labels input:active {
+  border: 2px solid #f0a432;
+  cursor: text;
+  background: rgb(255, 255, 255);
+}
+.page form .inputs-labels input::-moz-placeholder {
+  color: #1F1F1F;
+  opacity: 0.6;
+}
+.page form .inputs-labels input::placeholder {
+  color: #1F1F1F;
+  opacity: 0.6;
+}
+.page form .inputs-labels textarea {
+  min-height: 120px;
+  max-height: 190px;
+  width: 100%;
+  border: 1px solid lightgray;
+  outline: none;
+  padding: 8px;
+  color: #1F1F1F;
+  font-size: 16px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 7px;
+}
+.page form .inputs-labels textarea:focus, .page form .inputs-labels textarea:active {
+  border: 2px solid #f0a432;
+  cursor: text;
+  background: rgb(255, 255, 255);
+}
+.page form .inputs-labels textarea::-moz-placeholder {
+  color: #1F1F1F;
+  opacity: 0.6;
+}
+.page form .inputs-labels textarea::placeholder {
+  color: #1F1F1F;
+  opacity: 0.6;
+}
+.page form .form-actions button {
+  border: 1px solid transparent;
+  border-radius: 6px;
+  outline: none;
+  background: linear-gradient(to bottom right, #f0a432, #ffb649);
+  color: white;
+  font-weight: 500;
+  font-size: 17px;
+  width: 100%;
+  display: block;
+  height: 44px;
+  margin-top: 25px;
+}/*# sourceMappingURL=un-book.css.map */

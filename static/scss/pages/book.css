@@ -87,6 +87,120 @@
 .page form #bookTimeStepTwo {
   display: none;
 }
+.page form #bookTimeStepTwo .mobile_number {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.page form #bookTimeStepTwo .mobile_number .nr {
+  width: 20%;
+  background: rgba(233, 233, 233, 0.699);
+  color: #1F1F1F;
+  font-size: 16px;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  border-top-left-radius: 7px;
+  border-bottom-left-radius: 7px;
+  border: 1px solid lightgray;
+  border-right: 0;
+}
+.page form #bookTimeStepTwo .mobile_number input {
+  width: 80% !important;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.page form #bookTimeStepTwo .mobile_number input:focus, .page form #bookTimeStepTwo .mobile_number input:active {
+  border: 1px solid #f0a432;
+  cursor: text;
+  background: rgb(255, 255, 255);
+}
+.page form #bookTimeStepTwo .checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 22px;
+  margin-bottom: 18px;
+}
+.page form #bookTimeStepTwo .checkbox p {
+  margin-bottom: 0;
+  margin-left: 15px;
+  font-size: 14px;
+  color: #1F1F1F;
+  transform: translateY(1px);
+}
+.page form #bookTimeStepTwo .checkbox p a {
+  text-decoration: underline;
+}
+.page form #bookTimeStepTwo .checkbox input {
+  min-width: 25px !important;
+  max-width: 25px !important;
+  min-height: 25px !important;
+  max-height: 25px !important;
+}
+.page form #bookTimeStepTwo .reg-nr {
+  display: flex;
+  position: relative;
+  margin-top: 30px;
+}
+.page form #bookTimeStepTwo .reg-nr input {
+  height: 60px;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 26px;
+  text-transform: uppercase;
+}
+.page form #bookTimeStepTwo .reg-nr input:focus, .page form #bookTimeStepTwo .reg-nr input:active {
+  border: 1px solid rgb(172, 172, 172);
+  cursor: text;
+  background: rgb(255, 255, 255);
+}
+.page form #bookTimeStepTwo .reg-nr input::-moz-placeholder {
+  font-size: 26px;
+}
+.page form #bookTimeStepTwo .reg-nr input::placeholder {
+  font-size: 26px;
+}
+.page form #bookTimeStepTwo .reg-nr img {
+  position: absolute;
+  left: 0;
+  height: 60px;
+  width: auto;
+  border-bottom-left-radius: 12px;
+  border-top-left-radius: 12px;
+}
+.page form #bookTimeStepTwo .km {
+  position: relative;
+  display: flex;
+}
+.page form #bookTimeStepTwo .km input {
+  height: 60px;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 26px;
+}
+.page form #bookTimeStepTwo .km input:focus, .page form #bookTimeStepTwo .km input:active {
+  border: 1px solid rgb(172, 172, 172);
+  cursor: text;
+  background: rgb(255, 255, 255);
+}
+.page form #bookTimeStepTwo .km input::-moz-placeholder {
+  font-size: 26px;
+}
+.page form #bookTimeStepTwo .km input::placeholder {
+  font-size: 26px;
+}
+.page form #bookTimeStepTwo .km p {
+  position: absolute;
+  right: 7px;
+  bottom: -4px;
+  color: #1F1F1F;
+  opacity: 0.95;
+  font-size: 16px;
+  font-weight: 500;
+}
 .page form label {
   font-size: 16px;
   color: #1F1F1F;
@@ -116,26 +230,6 @@
 .page form input::placeholder {
   color: #1F1F1F;
   opacity: 0.6;
-}
-.page form .checkbox {
-  display: flex;
-  align-items: center;
-  margin-top: 18px;
-  margin-bottom: 15px;
-}
-.page form .checkbox p {
-  margin-bottom: 0;
-  margin-left: 15px;
-  font-size: 14px;
-  color: #1F1F1F;
-  transform: translateY(1px);
-}
-.page form .checkbox p a {
-  text-decoration: underline;
-}
-.page form .checkbox input {
-  width: 36px;
-  height: 36px;
 }
 .page form select {
   width: 100%;

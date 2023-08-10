@@ -45,6 +45,8 @@ class Location(models.Model):
     
 
 class Booking(models.Model):
+    date = models.CharField(max_length=100, blank=True, null=True)
+    time = models.CharField(max_length=100, blank=True, null=True)
     location = models.CharField(max_length=100, blank=True, null=True)
     preference = models.CharField(max_length=100, blank=True, null=True)
     full_name = models.CharField(max_length=100, blank=True, null=True)
@@ -52,11 +54,22 @@ class Booking(models.Model):
     mobile_number = models.CharField(max_length=100, blank=True, null=True)
     reg_number = models.CharField(max_length=100, blank=True, null=True)
     km = models.CharField(max_length=100 ,blank=True, null=True)
-    date = models.CharField(max_length=100, blank=True, null=True)
-    time = models.CharField(max_length=100, blank=True, null=True)
     car_name_model = models.CharField(max_length=100, blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    sms_reminder = models.BooleanField(default=False,blank=True, null=True)
+    car_younger_than_10 = models.BooleanField(default=False,blank=True, null=True)
+    less_than_150000km = models.BooleanField(default=False,blank=True, null=True)
+    vilkaar = models.BooleanField(default=False,blank=True, null=True)
     is_booked = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.full_name} - {self.date} {self.time}"
+
+
+class UnBook(models.Model):
+    full_name = models.CharField(max_length=100, blank=True, null=True)
+    email = models.CharField(max_length=100, blank=True)
+    message = models.TextField(max_length=100, blank=True)
+    
+    def __str__(self):
+        return f"{self.full_name} - {self.email}"

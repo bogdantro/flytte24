@@ -31,12 +31,12 @@
             <br>
             {% csrf_token %}
             <div id="bookTimeStepOne">    
-                <label for="id_date">Date</label>
+                <label for="id_date">Velg dato</label>
                 <br>
                 <input type="text" name="date" id="id_date" class="flatpickr">
                 <br>
                 <br>            
-                <label for="id_time">Time</label>
+                <label for="id_time">Velg tidspunkt</label>
                 <br>
                 <select class="time" name="time" id="weekday">
                     <option value="08:00">08:00</option>
@@ -50,7 +50,7 @@
                     <option value="14:00">14:00</option>
                 </select>
                 <br>
-                <label for="id_preference">Location</label>
+                <label for="id_preference">Plassering</label>
                 <br>
                 <select class="location" name="location" id="location">
                     <option disabled selected value>Plassering</option>
@@ -62,7 +62,7 @@
                 </select>
                 <br>
                 <br>
-                <label for="id_preference">Preference</label>
+                <label for="id_preference">Medarbeider</label>
                 <br>
                 <select class="preference" name="preference" id="preference">
                     <option disabled selected value>Medarbeider</option>
@@ -79,6 +79,55 @@
             </div>
 
             <div id="bookTimeStepTwo">
+                {% if request.user.is_authenticated %}
+                {% else %}
+                <div class="alert alert-info" style="margin-bottom: 28px;">Har du allerede en konto? <a href="/logg-inn/" style="color: unset; font-weight: 500; text-decoration: underline;">Logg inn</a> for raskere bestilling.</div>
+                {% endif %}
+                <label for="full_name">Fulltnavn</label>
+                <br>
+                <input type="text" name="full_name" id="full_name" value="{{request.user.get_full_name}}" required>
+                <br>
+                <br>
+                <label for="email">Epost</label>
+                <br>
+                <input type="email" name="email" id="email" value="{{request.user.email}}" required>
+                <br>
+                <br>
+                <label for="mobile_number">Telefonnummer</label>
+                <br>
+                <div class="mobile_number">
+                    <div class="nr">+47</div>
+                    <input type="text" name="mobile_number" id="mobile_number" required>
+                </div>
+                <div class="checkbox">
+                    <input type="checkbox" id="sms_reminder" name="sms_reminder">
+                    <p onclick="smsCheckBox()">Jeg vil mota en SMS-påminelse før denne økten starter</p>
+                </div>
+                <div class="reg-nr">
+                    <img src="{% static 'images/other/skilt-no.svg' %}" alt="">
+                    <input required type="text" name="reg_number" id="reg_number" placeholder="AB12345" maxlength="7">
+                </div>
+                <br>
+                <div class="km">
+                    <p>km</p>
+                    <input type="text" id="km" name="km" placeholder="130000" name="km" id="km">
+                </div>
+                <div class="checkbox">
+                    <input type="checkbox" id="car_younger_than_10" name="car_younger_than_10" required>
+                    <p onclick="car_younger_than_10CheckBox()">Jeg bekrefter at bilen ikke er eldre enn 10 år</p>
+                </div>
+                <div class="checkbox">
+                    <input type="checkbox" id="less_than_150000km" name="less_than_150000km" required>
+                    <p onclick="less_than_150000kmCheckBox()">Jeg bekrefter at bilen ikke har gått lengre enn 150.000 km</p>
+                </div>
+                <div class="checkbox" style="margin-bottom: 26px;">
+                    <input type="checkbox" id="vilkaar" name="vilkaar" required>
+                    <p onclick="vilkaarCheckBox()">Jeg godtar vilkårene for formidllingssalg. <a href="" style="color: unset; font-weight: 500; text-decoration: underline;">Avale om formidllingssalg</a></p>
+                </div>
+                <label for="car_name_model">Bil og modell</label>
+                <br>
+                <input type="text" name="car_name_model" id="car_name_model">
+                <br>
                 <div class="form-actions">
                     <button type="submit">Book time</button>
                 </div>
@@ -96,6 +145,27 @@
                 document.getElementById('sms_reminder').checked = true;
             }else{
                 document.getElementById('sms_reminder').checked = false;
+            }
+        }
+        function car_younger_than_10CheckBox() {
+            if(document.getElementById('car_younger_than_10').checked==false){
+                document.getElementById('car_younger_than_10').checked = true;
+            }else{
+                document.getElementById('car_younger_than_10').checked = false;
+            }
+        }
+        function less_than_150000kmCheckBox() {
+            if(document.getElementById('less_than_150000km').checked==false){
+                document.getElementById('less_than_150000km').checked = true;
+            }else{
+                document.getElementById('less_than_150000km').checked = false;
+            }
+        }
+        function vilkaarCheckBox() {
+            if(document.getElementById('vilkaar').checked==false){
+                document.getElementById('vilkaar').checked = true;
+            }else{
+                document.getElementById('vilkaar').checked = false;
             }
         }
 

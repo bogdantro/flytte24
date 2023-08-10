@@ -2,5 +2,19 @@
 {% load static %}
 
 {% block content %}
-{{message}}
+<link rel="stylesheet" href="{% static '/scss/pages/book-error.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static '/scss/pages/page.css' %}" type="text/css">
+
+<div class="page">
+    <div class="cover">
+        <div class="content" style="padding-bottom: 15px;">
+            <div class="text">
+                <h1 class="cover-h1">Dato og time er ikke tilgjengelig</h1>
+                <p class="cover-p">Endre dato og tidspunkt og prøv igjen. All data ble lagret, så du trenger ikke å utfylle hele skjemaet på nytt</p>
+            </div>  
+            <button onclick="history.back()">Prøv igjen</button>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

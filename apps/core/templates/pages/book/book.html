@@ -22,8 +22,12 @@
 
 
     <div class="book-time">
+        <div id="overlay"></div>
+        <div id="loader">
+            <div class="load"></div>
+        </div>
 
-        <form action="" method="POST">
+        <form id="form" action="" method="POST">
             <br>
             {% csrf_token %}
             <div id="bookTimeStepOne">    
@@ -31,8 +35,7 @@
                 <br>
                 <input type="text" name="date" id="id_date" class="flatpickr">
                 <br>
-                <br>
-                
+                <br>            
                 <label for="id_time">Time</label>
                 <br>
                 <select class="time" name="time" id="weekday">
@@ -47,22 +50,38 @@
                     <option value="14:00">14:00</option>
                 </select>
                 <br>
+                <label for="id_preference">Location</label>
                 <br>
-                <label for="id_location">Location</label>
-                <br>
-                <input type="text" name="location" id="id_location">
+                <select class="location" name="location" id="location">
+                    <option disabled selected value>Plassering</option>
+                    <option value="Arendal (Stoaveien)">Arendal (Stoaveien)</option>
+                    <option value="Kristiansand (Sørlandsparken)">Kristiansand (Sørlandsparken)</option>
+                    <option value="Lillestrøm">Lillestrøm</option>
+                    <option value="Oslo (Kontor)">Oslo (Kontor)</option>
+                    <option value="Oslo (Skøyen)">Oslo (Skøyen)</option>
+                </select>
                 <br>
                 <br>
                 <label for="id_preference">Preference</label>
                 <br>
-                <input type="text" name="preference" id="id_preference">
+                <select class="preference" name="preference" id="preference">
+                    <option disabled selected value>Medarbeider</option>
+                    <option value="Cecilie Gromsrud">Cecilie Gromsrud</option>
+                    <option value="Fredrik S. von der Lippe">Fredrik S. von der Lippe</option>
+                    <option value="Øystein Helgheim">Øystein Helgheim</option>
+                </select>
                 <br>
+                <div class="form-actions">
+                    <button type="button" onclick="nextStep()">Neste</button>
+                </div>
                 <br>
-                <!-- Add other fields here -->
-
+                <div class="alert alert-danger" role="alert" id="alert" style="display: none;">Alle feltene må fylles inn</div>
             </div>
-            <div class="form-actions">
-                <button type="submit">Book time</button>
+
+            <div id="bookTimeStepTwo">
+                <div class="form-actions">
+                    <button type="submit">Book time</button>
+                </div>
             </div>
         </form>
 
@@ -71,7 +90,46 @@
 
 
     <script>
+
+        function smsCheckBox() {
+            if(document.getElementById('sms_reminder').checked==false){
+                document.getElementById('sms_reminder').checked = true;
+            }else{
+                document.getElementById('sms_reminder').checked = false;
+            }
+        }
+
+        function nextStep(){
+            const first = document.getElementById('bookTimeStepOne');
+            const second = document.getElementById('bookTimeStepTwo');
+            const loader = document.getElementById('loader');
+            const overlay = document.getElementById('overlay');
+            const form = document.getElementById('form');
+            const alert = document.getElementById('alert');
+
+            const id_date = document.getElementById('id_date');
+            const weekday = document.getElementById('weekday');
+            const saturday = document.getElementById('saturday');
+            const location = document.getElementById('location');
+            const preference = document.getElementById('preference');
+
+            if(id_date.value && weekday.value && saturday.value && location.value && preference.value){
+                loader.style.display = 'flex';
+                overlay.style.display = 'block';
+                
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    overlay.style.display = 'none';
+                    first.style.display = 'none'
+                    second.style.display = 'block'
+                }, 1000);
+            }else{
+                alert.style.display = 'block';
+            }
+            
+        }
         
+
         async function checkDate(){
             const one = document.getElementById('weekday');
             const two = document.getElementById('saturday');
@@ -80,7 +138,7 @@
             var day = date.getDay();
             var ans = (day === 6);
 
-            if (dateInput.value == ans){
+            if (ans){
                 one.style.display = 'none';
                 two.style.display = 'block';
             }else{
@@ -88,29 +146,42 @@
                 two.style.display = 'none';
             }
         }
-        setInterval(() => {
             checkDate(); 
-        }, 10);
     </script>
 
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/flatpickr.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1);
-        flatpickr("#id_date", {
-            enable: [
-                function(date) {
-                    return date.getDay() !== 0; // Disable Sundays
-                }
-                // Add other date restrictions here
-            ],
-            dateFormat: "d-m-y",
-            enableTime: false,
-            minDate: tomorrow,
-        });
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const one = document.getElementById('weekday');
+    const two = document.getElementById('saturday');
+
+
+    flatpickr("#id_date", {
+      enable: [
+        function(date) {
+          return date.getDay() !== 0; // Disable Sundays
+        }
+        // Add other date restrictions here
+      ],
+      dateFormat: "d-m-y",
+      enableTime: false,
+      minDate: tomorrow,
+      onClose: function(selectedDates, dateStr, instance) {
+        const selectedDate = selectedDates[0];
+        if (selectedDate && selectedDate.getDay() === 6) { // 6 corresponds to Saturday
+          one.style.display = 'none';
+          two.style.display = 'block';
+        }else{
+            one.style.display = 'block';
+            two.style.display = 'none';
+        }
+      }
     });
+  });
+
 
     </script>
     

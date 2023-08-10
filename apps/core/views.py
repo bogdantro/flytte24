@@ -74,8 +74,6 @@ def book_time(request):
 
     return render(request, 'pages/book/book.html')
 
-
-
 def success(request):
     return render(request, 'pages/contact/success.html')
 

@@ -2,15 +2,16 @@ from django.urls import path
 from apps.core.views import *
 from django.conf.urls.static import *
 from django.conf import *
-from django.contrib import admin
 from django.contrib.auth import views
 
 from apps.core.views import *
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib import admin
 from django.contrib.auth import views
 from apps.userprofile.views import *
+from apps.store.views import *
+
+from django.contrib import admin
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -19,6 +20,8 @@ urlpatterns = [
     path('selg-bilen/', sell, name='sell'),
     path('selg-bilen/book-time/', book_time, name='book_time'),
     path('selg-bilen/book-time/avbestill-time/', un_book, name='un_book'),
+
+    path('kjøp-bil/', buy_car, name='buy_car'),
 
     path('kontakt-oss/', contact, name='contact'),
     path('verdivurdering/', verdivurdering, name='verdivurdering'),

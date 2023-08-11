@@ -129,7 +129,7 @@
                 <input type="text" name="car_name_model" id="car_name_model">
                 <br>
                 <div class="form-actions">
-                    <button type="submit">Book time</button>
+                    <button type="submit" onclick="getLast()">Book time</button>
                 </div>
             </div>
         </form>
@@ -167,6 +167,15 @@
             }else{
                 document.getElementById('vilkaar').checked = false;
             }
+        }
+        
+
+        function getLast(){
+            const first = document.getElementById('bookTimeStepOne');
+            const second = document.getElementById('bookTimeStepTwo');
+
+            first.style.display = 'block'
+            second.style.display = 'none'
         }
 
         function nextStep(){

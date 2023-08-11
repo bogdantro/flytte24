@@ -129,7 +129,7 @@
                 <input type="text" name="car_name_model" id="car_name_model">
                 <br>
                 <div class="form-actions">
-                    <button type="submit" onclick="getLast()">Book time</button>
+                    <button onclick="getLast()">Book time</button>
                 </div>
             </div>
         </form>
@@ -173,9 +173,14 @@
         function getLast(){
             const first = document.getElementById('bookTimeStepOne');
             const second = document.getElementById('bookTimeStepTwo');
+            const form = document.getElementById('form');
 
             first.style.display = 'block'
             second.style.display = 'none'
+
+            setTimeout(() => {
+                form.sumbit();
+            }, 10);
         }
 
         function nextStep(){

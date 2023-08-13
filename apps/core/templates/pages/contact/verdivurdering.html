@@ -35,15 +35,15 @@
             <div id="stepTwo">
                 <label for="navn">Navn</label>
                 <br>
-                <input type="text" name="name" id="name" required  oninput="this.setCustomValidity('')">
+                <input type="text" name="name" id="name" required  oninput="this.setCustomValidity('')" value="{{request.user.get_full_name}}">
                 <br>
                 <br>
                 <label for="email">Epost</label>
                 <br>
-                <input type="email" name="email" id="email"  required oninput="this.setCustomValidity('')">
+                <input type="email" name="email" id="email"  required oninput="this.setCustomValidity('')" value="{{request.user.email}}">
                 <br>
                 <br>
-                <label for="telefon">Telefon</label>
+                <label for="telefon">Telefonnummer</label>
                 <br>
                 <input type="number" name="telefon" id="telefon"  required oninput="this.setCustomValidity('')">
                 <br>

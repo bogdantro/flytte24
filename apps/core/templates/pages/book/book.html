@@ -221,7 +221,7 @@
             const location = document.getElementById('location');
             const preference = document.getElementById('preference');
 
-            if(id_date.value && weekday.value && saturday.value && location.value && preference.value){
+            if(id_date.value || weekday.value || saturday.value && location.value && preference.value){
                 loader.style.display = 'flex';
                 overlay.style.display = 'block';
                 

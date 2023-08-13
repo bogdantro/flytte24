@@ -1,14 +1,20 @@
 from django.contrib import admin
 from .models import *
 from django import forms
-from .widgets import WYMEditor
 from .forms import *
+from ckeditor.widgets import CKEditorWidget
 
 # Register your models here.
 
 
+class CarPostAdminForm(forms.ModelForm):
+    description = forms.CharField(widget=CKEditorWidget())
+    class Meta:
+        model = Car
+        fields = '__all__'
+
 class CarPostAdmin(admin.ModelAdmin):
-    pass
+    form = CarPostAdminForm
 
 admin.site.register(Car,CarPostAdmin)
 

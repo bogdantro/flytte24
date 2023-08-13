@@ -39,12 +39,14 @@
                 <label for="id_time">Velg tidspunkt</label>
                 <br>
                 <select class="time" name="time" id="weekday">
+                    <option disabled selected value>Tidspunkt</option>
                     <option value="08:00">08:00</option>
                     <option value="10:00">10:00</option>
                     <option value="12:00">12:00</option>
                     <option value="14:00">14:00</option>
                 </select>
                 <select class="time" name="time" id="saturday">
+                    <option disabled selected value>Tidspunkt</option>
                     <option value="10:00">10:00</option>
                     <option value="12:00">12:00</option>
                     <option value="14:00">14:00</option>
@@ -129,8 +131,10 @@
                 <input type="text" name="car_name_model" id="car_name_model">
                 <br>
                 <div class="form-actions">
-                    <button onclick="getLast()">Book time</button>
+                    <button type="button" onclick="getLast()">Book time</button>
                 </div>
+                <br>
+                <div class="alert alert-danger" role="alert" id="alert2" style="display: none;">Alle feltene må fylles inn. Du må også bekrefte de 3 feltene ovenfor.</div>
             </div>
         </form>
 
@@ -175,12 +179,32 @@
             const second = document.getElementById('bookTimeStepTwo');
             const form = document.getElementById('form');
 
-            first.style.display = 'block'
-            second.style.display = 'none'
+            const car_younger_than_10 = document.getElementById('car_younger_than_10');
+            const less_than_150000km = document.getElementById('less_than_150000km');
+            const vilkaar = document.getElementById('vilkaar');
+            const reg_number = document.getElementById('reg_number');
+            const mobile_number = document.getElementById('mobile_number');
+            const email = document.getElementById('email');
+            const full_name = document.getElementById('full_name');
+            const alert = document.getElementById('alert2');
+            const loader = document.getElementById('loader');
+            const overlay = document.getElementById('overlay');
 
-            setTimeout(() => {
-                form.sumbit();
-            }, 10);
+            if(car_younger_than_10.checked==true && less_than_150000km.checked==true && vilkaar.checked==true && reg_number.value && mobile_number.value && email.value && full_name.value){
+                first.style.display = 'block'
+                second.style.display = 'none'
+                loader.style.display = 'flex';
+                overlay.style.display = 'block';
+
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+                setTimeout(() => {
+                    form.submit();
+                }, 1500);
+            }else{
+                alert.style.display = 'block';
+            }
+
         }
 
         function nextStep(){

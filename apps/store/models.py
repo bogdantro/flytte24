@@ -1,7 +1,6 @@
 from django.db import models
 from django.conf import settings
 from django.utils.text import slugify
-from tinymce.models import HTMLField
  
 
 class Car(models.Model):
@@ -20,7 +19,7 @@ class Car(models.Model):
     car_brand = models.CharField(max_length=100, blank=True, null=True)
     car_model = models.CharField(max_length=100, blank=True, null=True)
     # Description
-    description = HTMLField()
+    description = models.CharField(max_length=100, blank=True, null=True)
     # Contact
     adress = models.CharField(max_length=100, blank=True, null=True)
     post_nr = models.CharField(max_length=100, blank=True, null=True)
@@ -29,7 +28,7 @@ class Car(models.Model):
     email = models.CharField(max_length=100, blank=True, null=True)
     contact_person = models.CharField(max_length=100, blank=True, null=True)
     # Add ons
-
+    
     # Images
     image1 = models.ImageField(blank=False, default='', upload_to='other/products/')
     image2 = models.ImageField(blank=True, default='', upload_to='other/products/')

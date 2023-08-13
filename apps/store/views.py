@@ -24,25 +24,10 @@ from .forms import *
 
 
 def product_detail(request, slug):
-    product = get_object_or_404(Product, slug=slug)  
-    mapbox_access_token = settings.MAP_BOX_ACCESS_TOKEN 
-
-    num_visits = request.session.get('num_visits', 0)
-    request.session['num_visits'] = num_visits + 1
-
-    if request.method == 'POST':
-        stars = request.POST.get('stars', )
-        title = request.POST.get('title', '')
-        content = request.POST.get('content', '')
-
-        review = ProductReview.objects.create(product=product, stars=stars, title=title, content=content)
-
-        return redirect('product_detail', slug=slug)
+    car = get_object_or_404(Car, slug=slug)  
 
     context = {
-        'product': product,
-        'mapbox_access_token': mapbox_access_token,
-        'num_visits': num_visits,
+        'car': car,
     }
 
     return render(request, 'core/product.html', context)
@@ -62,4 +47,9 @@ def category_detail(request, slug):
 
 
 def buy_car(request):
-    return render(request, 'core/buy.html')
+    car = Car.objects.all() 
+
+    context = {
+        'car': car,
+    }
+    return render(request, 'core/buy.html', context)

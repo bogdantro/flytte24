@@ -1,23 +1,43 @@
+from django.utils import timezone
 from django.db import models
 from django.conf import settings
 from django.utils.text import slugify
  
 
 class Car(models.Model):
+
+    GARANTY_TYPER = [
+        ("Nybilgaranti", "Nybilgaranti"),
+    ]
+
+    PLACE = [
+        ("Norge", "Norge"),
+        ("Utlandet", "Utlandet"),
+    ]
+
+
     # Main
     name = models.CharField(max_length=300)
     slug = models.SlugField(max_length=150)
     description = models.TextField(blank=False)
+    # Viktig
+    expiry_date = models.DateField()
     # Price
     reg_pris = models.CharField(max_length=300, blank=True, null=True)
     fritak_for_reg_pris = models.BooleanField(default=False)
     price = models.FloatField(max_length=300, default=0, blank=True, null=True)
-
+    # Quality
     chasis = models.CharField(max_length=100, blank=True, null=True)
     reg_nr = models.CharField(max_length=100, blank=True, null=True)
     year = models.CharField(max_length=100, blank=True, null=True)
     car_brand = models.CharField(max_length=100, blank=True, null=True)
     car_model = models.CharField(max_length=100, blank=True, null=True)
+    km = models.CharField(max_length=100, blank=True, null=True)
+    first_registered = models.DateField(blank=True, null=True)
+    amount_of_owners = models.CharField(max_length=100, blank=True, null=True)
+    last_EU_accepted = models.CharField(max_length=100, blank=True, null=True)
+    next_EU_test_deadline = models.CharField(max_length=100, blank=True, null=True)
+    garanti_type = models.CharField(max_length=100, choices=GARANTY_TYPER, blank=True, null=True)
     # Description
     description = models.CharField(max_length=100, blank=True, null=True)
     # Contact
@@ -27,7 +47,105 @@ class Car(models.Model):
     mobile_nr = models.CharField(max_length=100, blank=True, null=True)
     email = models.CharField(max_length=100, blank=True, null=True)
     contact_person = models.CharField(max_length=100, blank=True, null=True)
-    # Add ons
+    # Garanti
+    garanti_mnd = models.CharField(max_length=100, blank=True, null=True)
+    garanti_km = models.CharField(max_length=100, blank=True, null=True)
+    fulgt_bilens_vedlikeholdsprogram = models.BooleanField(default=False, blank=True)
+    bytterett = models.BooleanField(default=False, blank=True)
+    # Security
+    ABS_bremser = models.BooleanField(default=False)
+    airbag_foran = models.BooleanField(default=False)
+    alarm = models.BooleanField(default=False)
+    gjenfinningssystem = models.BooleanField(default=False)
+    isofix = models.BooleanField(default=False)
+    sentrallås = models.BooleanField(default=False)
+    sideairbager = models.BooleanField(default=False)
+    startsperre = models.BooleanField(default=False)
+    # Media
+    AUX_inngang = models.BooleanField(default=False)
+    bluetooth = models.BooleanField(default=False)
+    CD_spiller = models.BooleanField(default=False)
+    handsfree_opplegg = models.BooleanField(default=False)
+    head_up_display = models.BooleanField(default=False)
+    kassetspiller = models.BooleanField(default=False)
+    multifunksjonsratt = models.BooleanField(default=False)
+    navigasjonssystem = models.BooleanField(default=False)
+    original_telefon = models.BooleanField(default=False)
+    radio_DAB = models.BooleanField(default=False)
+    radi_FM = models.BooleanField(default=False)
+    TV_skjerm_i_baksetet = models.BooleanField(default=False)
+    # Motor
+    antiskrens = models.BooleanField(default=False)
+    antispin = models.BooleanField(default=False)
+    diesel_partikkelfilter = models.BooleanField(default=False)
+    diffsperre = models.BooleanField(default=False)
+    kjørecomputer = models.BooleanField(default=False)
+    servostyring = models.BooleanField(default=False)
+    # Interior
+    elvinduer = models.BooleanField(default=False)
+    mørke_ruter_bak = models.BooleanField(default=False)
+    seter_i_delskinn = models.BooleanField(default=False)
+    seter_i_helskinn = models.BooleanField(default=False)
+    soltak_eller_glasstak = models.BooleanField(default=False)
+    sportsseter = models.BooleanField(default=False)
+    # Komfort
+    air_Condition = models.BooleanField(default=False)
+    bagasjeromstrekk = models.BooleanField(default=False)
+    cruisekontroll = models.BooleanField(default=False)
+    cruisekontroll_Adaptiv = models.BooleanField(default=False)
+    elektrisk_sete_med_memory = models.BooleanField(default=False)
+    elektrisk_sete_uten_memory = models.BooleanField(default=False)
+    klimaanlegg = models.BooleanField(default=False)
+    kupevarmer = models.BooleanField(default=False)
+    luftfjæring = models.BooleanField(default=False)
+    midtarmlene = models.BooleanField(default=False)
+    motorvarmer = models.BooleanField(default=False)
+    nivåregulering = models.BooleanField(default=False)
+    nøkkelløs_start = models.BooleanField(default=False)
+    oppvarmende_seter = models.BooleanField(default=False)
+    # Eksteriør
+    elektriske_speil = models.BooleanField(default=False)
+    helårsdekk = models.BooleanField(default=False)
+    hengerfeste_eller_svingbart = models.BooleanField(default=False)
+    LED_lys = models.BooleanField(default=False)
+    laserlys = models.BooleanField(default=False)
+    lasterholdere_eller_skistativ = models.BooleanField(default=False)
+    lettmet_felg_sommer = models.BooleanField(default=False)
+    lettmet_felg_vinter = models.BooleanField(default=False)
+    metalic_lakk = models.BooleanField(default=False)
+    sommerhjul = models.BooleanField(default=False)
+    vinterhjul = models.BooleanField(default=False)
+    takrails = models.BooleanField(default=False)
+    xenolys = models.BooleanField(default=False)
+    # Fører
+    fjernlysassitent = models.BooleanField(default=False)
+    lyssensor = models.BooleanField(default=False)
+    parkeringsensor_bak = models.BooleanField(default=False)
+    parkeringsensor_foran = models.BooleanField(default=False)
+    regnesensor = models.BooleanField(default=False)
+    ryggekamera = models.BooleanField(default=False)
+    # Ekstra
+    maks_tilhengervekt_i_kg = models.CharField(max_length=100, blank=True, null=True)
+    hovedfarge = models.CharField(max_length=100, blank=True, null=True)
+    fargebeskrivelse = models.CharField(max_length=100, blank=True, null=True)
+    interiorfarge = models.CharField(max_length=100, blank=True, null=True)
+    # Karosseritype
+    karosseritype = models.CharField(max_length=100, blank=True, null=True)
+    avgiftsklasse = models.CharField(max_length=100, blank=True, null=True)
+    antall_seter = models.CharField(max_length=100, blank=True, null=True)
+    antall_dører = models.CharField(max_length=100, blank=True, null=True)
+    bagasjeromsvolum_i_liter = models.CharField(max_length=100, blank=True, null=True)
+    egenvekt_i_kg = models.CharField(max_length=100, blank=True, null=True)
+    rekkevidde = models.CharField(max_length=100, blank=True, null=True)
+    girkasse = models.CharField(max_length=100, blank=True, null=True)
+    girkassebetegnelse = models.CharField(max_length=100, blank=True, null=True)
+    hjuldrift = models.CharField(max_length=100, blank=True, null=True)
+    hjuldriftbetegnelse = models.CharField(max_length=100, blank=True, null=True)
+    modellspesifikasjon = models.CharField(max_length=100, blank=True, null=True)
+    bilen_står_i = models.CharField(choices=PLACE,max_length=100, blank=True, null=True)
+    drivstoff = models.CharField(max_length=100, blank=True, null=True)
+    effekt_i_hk = models.CharField(max_length=100, blank=True, null=True)
+    batterikapasitet_i_kWh = models.CharField(max_length=100, blank=True, null=True)
     
     # Images
     image1 = models.ImageField(blank=False, default='', upload_to='other/products/')
@@ -41,12 +159,17 @@ class Car(models.Model):
     image9 = models.ImageField(blank=True, default='', upload_to='other/products/')
     image10 = models.ImageField(blank=True, default='', upload_to='other/products/')
     
+    def days_until_expiry(self):
+        today = timezone.now().date()
+        return (self.expiry_date - today).days
+
     def __str__(self):
         return self.name
     
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         return super(Car, self).save(*args, **kwargs)
+        
     
     def get_absolute_url(self):
         return f'/{self.slug}/'
@@ -55,3 +178,19 @@ class Car(models.Model):
     def image_url(self):
         return '%s%s' % (settings.ALLOWED_HOSTS, self.image.url) if self.image else ''    
       
+
+class Bud(models.Model):
+    car = models.ForeignKey(Car, on_delete=models.PROTECT, blank=True, default='')
+    bidder_name = models.CharField(max_length=50, blank=True)
+    bid_amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    expiry_date = models.DateField()
+    declined = models.BooleanField(default=False)
+    accepted = models.BooleanField(default=False)
+
+
+    def __str__(self):
+        return f"Bid of {self.bid_amount} on {self.car}"      
+    
+    def days_until_expiry(self):
+        today = timezone.now().date()
+        return (self.expiry_date - today).days

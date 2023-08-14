@@ -18,10 +18,13 @@
     <ul>
         {% for bud in car.bud_set.all %}
         <li>{{ bud.bidder_name }}: ${{ bud.bid_amount }} ({{ bud.days_until_expiry }})</li>
+        {% empty %}
+        ingen bud enda
         {% endfor %}
     </ul>
 </div>
 <br>
+
 {% endfor %}
 </div>
 

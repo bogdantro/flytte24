@@ -18,11 +18,13 @@
 <br>
  <div class="page">
     {{car.name}} 
-    <h1>Høyste bud</h1>her: {{highest_bid.bid_amount}} <h1>Dager igjen</h1>{{ highest_bid.days_until_expiry }}
+    <h1>Høyste bud</h1>her: {{highest_bid.bid_amount}} <h1>Dager igjen</h1>{{ highest_bid.days_until_expiry }} <p>OBS: her vil høyeste budet komme opp. Både prisen og dato til den går bort kan bli vist. Dette er valgfritt</p>
 <hr>
     <h1>Alle andre bud</h1>
     {% for bud in car.bud_set.all %}
         <li>{{ bud.bidder_name }}: ${{ bud.bid_amount }} ({{ bud.days_until_expiry }})</li>
+    {% empty %}
+    <h1>Ingen bud enda</h1>
     {% endfor %}
 
     <br>

@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from .models import Userprofile
 
 from apps.core.models import Profile
+from apps.store.models import *
 
 
 class UserprofileForm(forms.ModelForm):
@@ -47,3 +48,7 @@ class UserUpdateForm(forms.ModelForm):
 class PasswordResetForm(PasswordResetForm):
      def __init__(self, *args, **kwargs):
         super(PasswordResetForm, self).__init__(*args, **kwargs)
+
+
+class AcceptBidForm(forms.Form):
+    pass     

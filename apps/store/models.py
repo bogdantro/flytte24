@@ -2,7 +2,8 @@ from django.utils import timezone
 from django.db import models
 from django.conf import settings
 from django.utils.text import slugify
- 
+from django.contrib.auth.models import User
+
 
 class Car(models.Model):
 
@@ -15,6 +16,7 @@ class Car(models.Model):
         ("Utlandet", "Utlandet"),
     ]
 
+    user = models.ForeignKey(User, related_name='cars', on_delete=models.SET_NULL, blank=True, null=True)
 
     # Main
     name = models.CharField(max_length=300)
@@ -162,6 +164,10 @@ class Car(models.Model):
     def days_until_expiry(self):
         today = timezone.now().date()
         return (self.expiry_date - today).days
+    
+    def highest_bid_price(self):
+        highest_bid = self.bud_set.aggregate(models.Max('bid_amount'))['bid_amount__max']
+        return highest_bid or 0
 
     def __str__(self):
         return self.name
@@ -181,12 +187,10 @@ class Car(models.Model):
 
 class Bud(models.Model):
     car = models.ForeignKey(Car, on_delete=models.PROTECT, blank=True, default='')
-    bidder_name = models.CharField(max_length=50, blank=True)
-    bid_amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    expiry_date = models.DateField()
-    declined = models.BooleanField(default=False)
-    accepted = models.BooleanField(default=False)
-
+    user = models.ForeignKey(User, related_name='bud', on_delete=models.SET_NULL, blank=True, null=True)
+    bid_amount = models.CharField(max_length=100, blank=True, null=True)
+    expiry_date = models.DateField(blank=True, null=True)
+    status = models.CharField(max_length=20, choices=[('pending', 'Pending'), ('accepted', 'Accepted'), ('declined', 'Declined')], default='pending')
 
     def __str__(self):
         return f"Bid of {self.bid_amount} on {self.car}"      
@@ -194,3 +198,11 @@ class Bud(models.Model):
     def days_until_expiry(self):
         today = timezone.now().date()
         return (self.expiry_date - today).days
+    
+    def accept_bid(self):
+        self.status = 'accepted'
+        self.save()
+
+    def decline_bid(self):
+        self.status = 'declined'
+        self.save()

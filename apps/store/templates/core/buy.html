@@ -11,7 +11,7 @@
     <br>
     <br>
     {% for car in car %}
- <div class="card">
+ <div class="card" onclick="window.location.href='{% url  'car_detail' car.slug  %}'">
     {{car.name}}
     {{car.days_until_expiry}}
     <h2>Bids</h2>

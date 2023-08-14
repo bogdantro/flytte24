@@ -21,30 +21,31 @@ from django.contrib.auth.decorators import *
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from .forms import *
+from datetime import datetime
 
 
-def product_detail(request, slug):
+def car_detail(request, slug):
     car = get_object_or_404(Car, slug=slug)  
+    bids = car.bud_set.all()
+
+    highest_bid = car.bud_set.all().order_by('bid_amount').last() 
+
+
+    if request.method=='POST' and 'make_bid' in request.POST:
+        user = request.user
+        bid_amount = request.POST.get('bid_amount', '')
+        expiry_date = request.POST.get('expiry_date', '')
+
+        car.bud_set.create(user=user, bid_amount=bid_amount, expiry_date=expiry_date)
+        return redirect('/')
 
     context = {
         'car': car,
+        'bids': bids,
+        'highest_bid': highest_bid,
     }
 
     return render(request, 'core/product.html', context)
-
-def category_detail(request, slug):
-    category = get_object_or_404(Category, slug=slug)  
-    product = Product.objects.filter(category=category)
-    mapbox_access_token = settings.MAP_BOX_ACCESS_TOKEN 
-
-    context = {
-        'category': category,
-        'product': product,
-        'mapbox_access_token': mapbox_access_token,
-    }
-
-    return render(request, 'core/category.html', context)
-
 
 def buy_car(request):
     car = Car.objects.all() 

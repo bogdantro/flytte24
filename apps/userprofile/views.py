@@ -13,13 +13,18 @@ from django.contrib.sites.shortcuts import *
 from django.utils.encoding import *
 from django.utils.http import *
 from .tokens import *
+from django.contrib.auth import get_user_model
+from django.db.models import Max
+
+
+
 
 @login_required
 def myaccount(request):
    
     return render(request, 'core/account/myaccount.html')
 
-
+@login_required
 def edit_user_info(request):
     if request.method == 'POST':
         u_form =  UserUpdateForm(request.POST, instance=request.user)
@@ -35,6 +40,44 @@ def edit_user_info(request):
             u_form = UserUpdateForm() 
     return render(request, 'core/account/edit.html')
 
+@login_required
+def mine_bud(request):
+    bud = Bud.objects.filter(user=request.user)
+
+    context={
+        'bud':bud,
+    }
+    return render(request, 'core/account/my-bid.html', context)
+
+
+@login_required
+def mine_annonser(request):
+    highest_bid = request.user.bud.filter().order_by('bid_amount').last() 
+
+    context={
+        'highest_bid':highest_bid,
+    }
+    return render(request, 'core/account/user-cars.html', context)
+
+@login_required
+def kommende_visninger(request):
+    
+    return render(request, 'core/account/timer.html')
+
+
+@login_required
+def accept_bid(request, bud_id):
+    bud = get_object_or_404(Bud, id=bud_id)
+    if request.user == bud.car.user:
+        bud.accept_bid()
+    return redirect('/min-bruker/mine-annonser/', slug=bud.car.slug)
+
+@login_required
+def decline_bid(request, bud_id):
+    bud = get_object_or_404(Bud, id=bud_id)
+    if request.user == bud.car.user:
+        bud.decline_bid()
+    return redirect('/min-bruker/mine-annonser/', slug=bud.car.slug)
 
 
 def signup(request, backend='django.contrib.auth.backends.ModelBackend'):

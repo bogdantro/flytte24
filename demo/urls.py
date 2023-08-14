@@ -22,6 +22,7 @@ urlpatterns = [
     path('selg-bilen/book-time/avbestill-time/', un_book, name='un_book'),
 
     path('kjøp-bil/', buy_car, name='buy_car'),
+    path('bil/:<slug>/', car_detail, name='car_detail'),
 
     path('kontakt-oss/', contact, name='contact'),
     path('verdivurdering/', verdivurdering, name='verdivurdering'),
@@ -42,6 +43,12 @@ urlpatterns = [
 
     path('min-bruker/', myaccount, name='myaccount'),
     path('min-bruker/rediger-min-info/', edit_user_info, name='edit_user_info'),
+    path('min-bruker/mine-annonser/', mine_annonser, name='mine_annonser'),
+    path('min-bruker/mine-bud/', mine_bud, name='mine_bud'),
+    path('min-bruker/kommende-visninger/', kommende_visninger, name='kommende_visninger'),
+
+    path('accept_bid/<int:bud_id>/', accept_bid, name='accept_bid'),
+    path('decline_bid/<int:bud_id>/', decline_bid, name='decline_bid'),
 
     path('passord-reset/', pass_reset, name='pass_reset'),
 

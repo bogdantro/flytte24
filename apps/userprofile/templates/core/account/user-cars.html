@@ -3,9 +3,9 @@
 
 {% block content %}
 <link rel="stylesheet" href="{% static '/scss/userprofile/myaccount.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static '/scss/userprofile/account/car.css' %}" type="text/css">
 <script rel="stylesheet" src="{% static '/js/account.js' %}" type="text/javascript"></script>
 <link rel="stylesheet" href="{% static '/scss/pages/page.css' %}" type="text/css">
-
 
 <div class="account-nav-mob">
     <div class="logo" onclick="window.location.href='/min-bruker/'">
@@ -21,34 +21,53 @@
         <a href="/min-bruker/mine-annonser/">Mine annonser<i class="fa-solid fa-angle-right"></i></a>
         <a href="/min-bruker/mine-bud/">Mine bud<i class="fa-solid fa-angle-right"></i></a>
         <a href="/min-bruker/">Kommende visninger<i class="fa-solid fa-angle-right"></i></a>
-        <a href="/min-bruker/rediger-min-info/">Endre min info<i class="fa-solid fa-angle-right"></i></a>
+        <a href="/min-bruker/">Endre min info<i class="fa-solid fa-angle-right"></i></a>
         <a href="/min-bruker/">Logg ut<i class="fa-solid fa-angle-right"></i></a>
     </div>
 </div>
 
-
 <div class="myaccount">
-    <div class="text">
-        <h1 class="heading">Min bruker</h1>
-        <h2 class="sub-heading">Velkommen {{request.user.get_full_name}}</h2>
-    </div>
-  <div class="main-content">
-    <h1>Bilmeglerne portal</h1>
-    <p>Din egen side som kunde. Her kan du se dine annonser, dine bud, kommende visninger og redigere din info</p>
-    <button class="mainCntnBtn" onclick="window.location.href='/'">Tilbake hjem</button>
-    <button class="mainCntnBtn" onclick="window.location.href='/min-bruker/mine-annonser/'">Mine annonser</button>
-    <button class="mainCntnBtn" onclick="window.location.href='/min-bruker/mine-bud/'">Mine bud</button>
-    <button class="mainCntnBtn" onclick="window.location.href='/min-bruker/kommende-visninger/'">Kommende visninger</button>
-    <button class="mainCntnBtn" onclick="window.location.href='/min-bruker/rediger-min-info/'">Endre min info</button>
-    <button class="mainCntnBtn" onclick="window.location.href='/logg-ut/'">Logg ut</button>
-  </div>
-</div>
 
+<div class="account-card">
+    <div class="text">
+        <h1 class="heading">Mine annonser</h1>
+    </div>
+    {% for highest_bid in request.user.cars.bud %}
+    <hr>
+    <h1>Høyeste bud</h1>
+    {highest_bid}
+    <hr>
+    {% endfor %}
+    
+    {% for car in request.user.cars.all %}  
+        {{car.name}}
+        <br>
+        <br>
+        <br>
+  
+        {% for bud in car.bud_set.all %}
+        <li>{{ bud.bidder_name }}: ${{ bud.bid_amount }} ({{ bud.days_until_expiry }})</li>
+        <hr>
+      {{bud.status}} 
+      <br>
+      {% if bud.status == 'pending' %}
+      <form method="post" action="{% url 'accept_bid' bud.id %}">
+        {% csrf_token %}
+        <button type="submit">Accept Bid</button>
+    </form>
+    <form method="post" action="{% url 'decline_bid' bud.id %}">
+        {% csrf_token %}
+        <button type="submit">Decline Bid</button>
+    </form>
+  {% endif %}
+        <hr>
+        {% endfor %}
+    {% endfor %}
+
+</div>
+</div>
 
 <div class="account-footer-mob">
     <p>&#169; 2023 Bilmeglerne AS</p>
 </div>
 {% endblock %}
-
-
-<i onclick="window.location.href='/logg-ut/'" class="fa-solid fa-right-from-bracket" title="Logg ut"></i>

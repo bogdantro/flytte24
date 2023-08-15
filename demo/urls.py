@@ -47,8 +47,8 @@ urlpatterns = [
     path('min-bruker/mine-bud/', mine_bud, name='mine_bud'),
     path('min-bruker/kommende-visninger/', kommende_visninger, name='kommende_visninger'),
 
-    path('accept_bid/<int:bud_id>/', accept_bid, name='accept_bid'),
-    path('decline_bid/<int:bud_id>/', decline_bid, name='decline_bid'),
+    path('accept_bid/<int:car_id>/', accept_highest_bid, name='accept_highest_bid'),
+    path('decline_bid/<int:car_id>/', decline_highest_bid, name='decline_highest_bid'),
 
     path('passord-reset/', pass_reset, name='pass_reset'),
 

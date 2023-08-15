@@ -83,8 +83,9 @@
             <div id="bookTimeStepTwo">
                 {% if request.user.is_authenticated %}
                 {% else %}
-                <div class="alert alert-info" style="margin-bottom: 28px;">Har du allerede en konto? <a href="/logg-inn/" style="color: unset; font-weight: 500; text-decoration: underline;">Logg inn</a> for raskere bestilling.</div>
+                <div class="alert alert-info" style="margin-bottom: 28px;">Har du allerede en konto? <a href="/logg-inn/?next={% firstof request.path '/' %}" style="color: unset; font-weight: 500; text-decoration: underline;">Logg inn</a> for raskere bestilling.</div>
                 {% endif %}
+                <input type="text" name="user" id="user" style="display: none;" value="{{request.user}}">
                 <label for="full_name">Fulltnavn</label>
                 <br>
                 <input type="text" name="full_name" id="full_name" value="{{request.user.get_full_name}}" required>
@@ -99,7 +100,7 @@
                 <br>
                 <div class="mobile_number">
                     <div class="nr">+47</div>
-                    <input type="text" name="mobile_number" id="mobile_number" required>
+                    <input type="number" name="mobile_number" id="mobile_number" required>
                 </div>
                 <div class="checkbox">
                     <input type="checkbox" id="sms_reminder" name="sms_reminder">
@@ -112,7 +113,7 @@
                 <br>
                 <div class="km">
                     <p>km</p>
-                    <input type="text" id="km" name="km" placeholder="130000" name="km" id="km">
+                    <input type="number" id="km" name="km" placeholder="130000" name="km" id="km">
                 </div>
                 <div class="checkbox">
                     <input type="checkbox" id="car_younger_than_10" name="car_younger_than_10" required>
@@ -221,16 +222,22 @@
             const location = document.getElementById('location');
             const preference = document.getElementById('preference');
 
-            if(id_date.value || weekday.value || saturday.value && location.value && preference.value){
+            if(id_date.value && location.value && preference.value){
+                if(weekday.value || saturday.value){
+
                 loader.style.display = 'flex';
                 overlay.style.display = 'block';
-                
+                window.scrollTo({ top: 0, behavior: 'smooth' });
                 setTimeout(() => {
                     loader.style.display = 'none';
                     overlay.style.display = 'none';
                     first.style.display = 'none'
                     second.style.display = 'block'
                 }, 1000);
+            }
+            else{
+                alert.style.display = 'block';
+            }
             }else{
                 alert.style.display = 'block';
             }

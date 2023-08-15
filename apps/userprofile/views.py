@@ -15,7 +15,7 @@ from django.utils.http import *
 from .tokens import *
 from django.contrib.auth import get_user_model
 from django.db.models import Max
-
+from django.db.models import Subquery, OuterRef
 
 
 
@@ -52,12 +52,52 @@ def mine_bud(request):
 
 @login_required
 def mine_annonser(request):
-    highest_bid = request.user.bud.filter().order_by('bid_amount').last() 
+    user = request.user
+    highest_bid_subquery = Bud.objects.filter(car=OuterRef('pk')).order_by('-bid_amount', '-expiry_date').values('status')[:1]
 
-    context={
-        'highest_bid':highest_bid,
+    cars_with_bids = Car.objects.filter(user=user).annotate(
+        highest_bid=Max('bud__bid_amount'),
+        highest_bid_expiry=Max('bud__expiry_date'),
+        highest_bid_status=Subquery(highest_bid_subquery)
+    )
+
+    for car in cars_with_bids:
+        if car.highest_bid_expiry:
+            remaining_days = (car.highest_bid_expiry - timezone.now().date()).days
+            car.remaining_days = remaining_days
+
+    context = {
+        'cars_with_bids': cars_with_bids,
     }
     return render(request, 'core/account/user-cars.html', context)
+
+
+
+@login_required
+def accept_highest_bid(request, car_id):
+    car = get_object_or_404(Car, id=car_id, user=request.user)
+    highest_bid = car.bud_set.order_by('-bid_amount').first()
+
+    if highest_bid:
+        highest_bid.accept_bid()  # Assuming you have an accept_bid method in your Bud model
+        # Optionally, you can notify the bidder about the accepted bid
+
+    return redirect('/min-bruker/mine-annonser/')
+
+@login_required
+def decline_highest_bid(request, car_id):
+    car = get_object_or_404(Car, id=car_id, user=request.user)
+    highest_bid = car.bud_set.order_by('-bid_amount').first()
+
+    if highest_bid:
+        highest_bid.decline_bid()  # Assuming you have a decline_bid method in your Bud model
+        # Optionally, you can notify the bidder about the declined bid
+
+    return redirect('/min-bruker/mine-annonser/')
+
+
+
+
 
 @login_required
 def kommende_visninger(request):

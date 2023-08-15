@@ -45,6 +45,7 @@ class Location(models.Model):
     
 
 class Booking(models.Model):
+    user = models.ForeignKey(User, related_name='bookings', on_delete=models.SET_NULL, blank=True, null=True)
     date = models.CharField(max_length=100, blank=True, null=True)
     time = models.CharField(max_length=100, blank=True, null=True)
     location = models.CharField(max_length=100, blank=True, null=True)

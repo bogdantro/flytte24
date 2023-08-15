@@ -32,37 +32,35 @@
     <div class="text">
         <h1 class="heading">Mine annonser</h1>
     </div>
-    {% for highest_bid in request.user.cars.bud %}
-    <hr>
-    <h1>Høyeste bud</h1>
-    {highest_bid}
-    <hr>
-    {% endfor %}
-    
+
+
     {% for car in request.user.cars.all %}  
-        {{car.name}}
+
+        <h1>Bil</h1>{{car.name}} {{car.days_until_expiry}}
         <br>
-        <br>
-        <br>
-  
-        {% for bud in car.bud_set.all %}
-        <li>{{ bud.bidder_name }}: ${{ bud.bid_amount }} ({{ bud.days_until_expiry }})</li>
-        <hr>
-      {{bud.status}} 
-      <br>
-      {% if bud.status == 'pending' %}
-      <form method="post" action="{% url 'accept_bid' bud.id %}">
-        {% csrf_token %}
-        <button type="submit">Accept Bid</button>
-    </form>
-    <form method="post" action="{% url 'decline_bid' bud.id %}">
-        {% csrf_token %}
-        <button type="submit">Decline Bid</button>
-    </form>
-  {% endif %}
-        <hr>
-        {% endfor %}
+
     {% endfor %}
+<br>
+    <h1>Høyeste bud</h1>
+    {% for car in cars_with_bids %}
+    <li>
+    <br>
+        {% if car.highest_bid %}
+          Highest Bid: {{ car.highest_bid }}
+          <br>
+          dager igjen: {{ car.remaining_days }} 
+          <br>
+          Bid Status: {{ car.highest_bid_status }}
+          {% if car.highest_bid_status == 'pending' %}
+            <a href="{% url 'accept_highest_bid' car.id %}">Accept Bid</a>
+            <a href="{% url 'decline_highest_bid' car.id %}">Decline Bid</a>
+          {% endif %}
+          <br>
+        {% else %}
+          No Bids Yet
+        {% endif %}
+    </li>
+  {% endfor %}
 
 </div>
 </div>
@@ -71,3 +69,28 @@
     <p>&#169; 2023 Bilmeglerne AS</p>
 </div>
 {% endblock %}
+
+
+
+{% if bud.status == 'pending' %}
+<form method="post" action="{% url 'accept_bid' bud.id %}">
+  {% csrf_token %}
+  <button type="submit">Accept Bid</button>
+</form>
+<form method="post" action="{% url 'decline_bid' bud.id %}">
+  {% csrf_token %}
+  <button type="submit">Decline Bid</button>
+</form>
+{% endif %}
+
+
+
+  
+{% for bud in car.bud_set.all %}
+<li>{{ bud.bidder_name }}: ${{ bud.bid_amount }} ({{ bud.days_until_expiry }})</li>
+<hr>
+{{bud.status}} 
+<br>
+
+<hr>
+{% endfor %}

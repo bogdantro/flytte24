@@ -30,6 +30,9 @@
     <br>
 
     {% if request.user.is_authenticated %}
+    {% if request.user == car.user %}
+    Du kan ikke gi bud på din egen bil
+    {% else %}
     <h2>Place a Bid</h2>
     <form action="" method="POST">
         {% csrf_token %}
@@ -49,6 +52,8 @@
        <input type="date" name="expiry_date" id="expiry_date">
         <button type="submit" name="make_bid" value="make_bid">Place Bid</button>
     </form>
+    {% endif %}
+
     {% else %}
     <h1>logg inn for å gi bud</h1>
     <a href="/logg-inn/">logg inn</a>

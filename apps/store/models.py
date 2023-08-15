@@ -193,7 +193,7 @@ class Bud(models.Model):
     status = models.CharField(max_length=20, choices=[('pending', 'Pending'), ('accepted', 'Accepted'), ('declined', 'Declined')], default='pending')
 
     def __str__(self):
-        return f"Bid of {self.bid_amount} on {self.car}"      
+        return f"Bid på {self.bid_amount}kr,- på {self.car} av {self.user}"      
     
     def days_until_expiry(self):
         today = timezone.now().date()

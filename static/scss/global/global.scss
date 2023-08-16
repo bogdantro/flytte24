@@ -27,6 +27,7 @@ $txt: #183b56;
     transition: .2s;
     &:hover{
       filter: brightness(89%);
+      transform: scale(1.01);
     }
     &:focus{
       filter: brightness(89%);

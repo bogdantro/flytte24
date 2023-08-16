@@ -32,43 +32,80 @@
     <div class="text">
         <h1 class="heading">Mine annonser</h1>
     </div>
+  </div>
 
-
-    {% for car in request.user.cars.all %}  
-
-        <h1>Bil</h1>{{car.name}} {{car.days_until_expiry}}
-        <br>
-
-    {% endfor %}
-<br>
-    <h1>Høyeste bud</h1>
     {% for car in cars_with_bids %}
-    <li>
-    <br>
-        {% if car.highest_bid %}
-          Highest Bid: {{ car.highest_bid }}
-          <br>
-          dager igjen: {{ car.remaining_days }} 
-          <br>
-          Bid Status: {{ car.highest_bid_status }}
-          {% if car.highest_bid_status == 'pending' %}
-            <a href="{% url 'accept_highest_bid' car.id %}">Accept Bid</a>
-            <a href="{% url 'decline_highest_bid' car.id %}">Decline Bid</a>
+    <div class="user-cars">
+      <div class="car">
+        <img src="{{car.image1.url}}" alt="" class="car-image" onclick="window.location.href='{% url  'car_detail' car.slug  %}'">
+        <div class="flex">
+          {% if car.days_until_expiry > 0 %}
+            {% if car.highest_bid_instance == 'accepted' %}
+            <div class="status" id="status" style="background: #ffc876;">Solgt for {{ car.highest_bid }}kr</div>
+            {% else %}
+            <div class="status" id="status">Aktiv</div>
+            <div class="time-left">{{car.days_until_expiry}} dager igjen</div>
+            {% endif %}
+  
+            {% else %}
+            <div class="status" id="status" style="background: #ff8686;">Uaktiv</div>
+            <div class="time-left">{{car.days_until_expiry}} dager igjen</div>
           {% endif %}
-          <br>
-        {% else %}
-          No Bids Yet
-        {% endif %}
-    </li>
-  {% endfor %}
+        </div>
+  
+        <div class="name">{{car.name}}</div>
+        
+        {% if car.highest_bid_instance == 'pending' %}
+        <hr>
 
+        <div class="bids">
+          <h1>Høyeste bud</h1>
+          {% if car.highest_bid %}
+          <div class="flex">
+            <div class="price">{{ car.highest_bid }}kr</div>
+            <div class="time-left">{{car.remaining_days}} dager igjen</div>
+          </div>
+          {% if car.highest_bid_instance == 'pending' %}
+          <div class="actions">
+            <button onclick="window.location.href='{% url 'accept_highest_bid' car.id %}'" style="margin-bottom: 10px; background: #44cf5b;;">Aksepter bud</button>
+            <button onclick="window.location.href='{% url 'decline_highest_bid' car.id %}'" style="background: #ff5e5e;">Avslå bud</button>
+          </div>
+          {% endif %}
+        {% endif %}
+
+        </div>
+
+        {% else %}
+        {% endif %}
+
+        {% if car.highest_bid %}
+        {% else %}
+        <div class="bids">
+          <h1 style="margin-top: 17px; margin-bottom: -20px;">Ingen bud enda...</h1>
+        </div>
+        {% endif %}
+
+        <hr style="margin-top: 40px;">
+      </div>
+
+    </div>
+    {% empty %}
+    <h1 style="color: #1F1F1F; font-size: 22px; font-weight: 500; padding-top: 25px; text-align: center;">Ingen annonser enda...</h1>
+    {% endfor %}
 </div>
-</div>
+
+
 
 <div class="account-footer-mob">
     <p>&#169; 2023 Bilmeglerne AS</p>
 </div>
+
+
 {% endblock %}
+
+
+
+
 
 
 
@@ -84,7 +121,7 @@
 {% endif %}
 
 
-
+for car in request.user.cars.all
   
 {% for bud in car.bud_set.all %}
 <li>{{ bud.bidder_name }}: ${{ bud.bid_amount }} ({{ bud.days_until_expiry }})</li>

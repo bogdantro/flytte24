@@ -27,7 +27,7 @@ class Car(models.Model):
     # Price
     reg_pris = models.CharField(max_length=300, blank=True, null=True)
     fritak_for_reg_pris = models.BooleanField(default=False)
-    price = models.FloatField(max_length=300, default=0, blank=True, null=True)
+    price = models.CharField(max_length=300, default=0, blank=True, null=True)
     # Quality
     chasis = models.CharField(max_length=100, blank=True, null=True)
     reg_nr = models.CharField(max_length=100, blank=True, null=True)

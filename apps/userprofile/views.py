@@ -53,18 +53,20 @@ def mine_bud(request):
 @login_required
 def mine_annonser(request):
     user = request.user
-    highest_bid_subquery = Bud.objects.filter(car=OuterRef('pk')).order_by('-bid_amount', '-expiry_date').values('status')[:1]
-
     cars_with_bids = Car.objects.filter(user=user).annotate(
         highest_bid=Max('bud__bid_amount'),
-        highest_bid_expiry=Max('bud__expiry_date'),
-        highest_bid_status=Subquery(highest_bid_subquery)
+        highest_bid_instance=Subquery(
+            Bud.objects.filter(car=OuterRef('pk')).order_by('-bid_amount', '-expiry_date')[:1].values('status')
+        ),
+        highest_bid_expiry=Subquery(
+            Bud.objects.filter(car=OuterRef('pk')).order_by('-bid_amount', '-expiry_date').values('expiry_date')[:1]
+        ),
     )
 
     for car in cars_with_bids:
         if car.highest_bid_expiry:
             remaining_days = (car.highest_bid_expiry - timezone.now().date()).days
-            car.remaining_days = remaining_days
+            car.remaining_days = max(remaining_days, 0)  # Ensure days left is not negative
 
     context = {
         'cars_with_bids': cars_with_bids,

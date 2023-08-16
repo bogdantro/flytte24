@@ -150,16 +150,16 @@ class Car(models.Model):
     batterikapasitet_i_kWh = models.CharField(max_length=100, blank=True, null=True)
     
     # Images
-    image1 = models.ImageField(blank=False, default='', upload_to='other/products/')
-    image2 = models.ImageField(blank=True, default='', upload_to='other/products/')
-    image3 = models.ImageField(blank=True, default='', upload_to='other/products/')
-    image4 = models.ImageField(blank=True, default='', upload_to='other/products/')
-    image5 = models.ImageField(blank=True, default='', upload_to='other/products/')
-    image6 = models.ImageField(blank=True, default='', upload_to='other/products/')
-    image7 = models.ImageField(blank=True, default='', upload_to='other/products/')
-    image8 = models.ImageField(blank=True, default='', upload_to='other/products/')
-    image9 = models.ImageField(blank=True, default='', upload_to='other/products/')
-    image10 = models.ImageField(blank=True, default='', upload_to='other/products/')
+    image1 = models.ImageField(blank=False, default='', upload_to='static/images/other/cars/')
+    image2 = models.ImageField(blank=True, default='', upload_to='static/images/other/cars/')
+    image3 = models.ImageField(blank=True, default='', upload_to='static/images/other/cars/')
+    image4 = models.ImageField(blank=True, default='', upload_to='static/images/other/cars/')
+    image5 = models.ImageField(blank=True, default='', upload_to='static/images/other/cars/')
+    image6 = models.ImageField(blank=True, default='', upload_to='static/images/other/cars/')
+    image7 = models.ImageField(blank=True, default='', upload_to='static/images/other/cars/')
+    image8 = models.ImageField(blank=True, default='', upload_to='static/images/other/cars/')
+    image9 = models.ImageField(blank=True, default='', upload_to='static/images/other/cars/')
+    image10 = models.ImageField(blank=True, default='', upload_to='static/images/other/cars/')
     
     def days_until_expiry(self):
         today = timezone.now().date()

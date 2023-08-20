@@ -1,0 +1,69 @@
+$black: #1F1F1F;
+$white: rgb(246,246,246);
+$primBtn: #f0a432;
+$txt: #183b56;
+
+.page{
+    .buy{
+        width: auto;
+        height: auto;
+        padding-top: 120px;
+        padding-bottom: 40px;
+        padding-inline: 20px;
+        .text{
+            text-align: center;
+            h1{
+                color: $black;
+                font-size: 36px;
+                font-weight: 500;
+            }
+        }
+        .cars{
+            padding-top: 50px;
+            .car{
+                margin-bottom: 35px;
+                .top{
+                    .car-image{
+                        border-radius: 6px;
+                        width: 100%;
+                        height: 190px;
+                        object-fit: cover;
+                    }
+                }
+                .bottom{
+                    .name{
+                        margin-top: 8px;
+                        color: $black;
+                        font-size: 17px;
+                        font-weight: 500;
+                    }
+                    .flex{
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        padding-inline: 5px;
+                        padding-top: 10px;
+                        .year{
+                            padding: 8px 10px;
+                            color: $black;
+                            font-size: 16px;
+                            border-radius: 100%;
+                        }
+                        .km{
+                            padding: 8px 10px;
+                            color: $black;
+                            font-size: 16px;
+                            border-radius: 100%;
+                        }
+                        .price{
+                            padding: 8px 10px;
+                            color: $black;
+                            font-size: 16px;
+                            border-radius: 100%;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

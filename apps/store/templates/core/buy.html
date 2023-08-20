@@ -3,29 +3,32 @@
 
 {% block content %}
 <link rel="stylesheet" href="{% static '/scss/pages/page.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static '/scss/pages/buy.css' %}" type="text/css">
 
 
 <div class="page">
-    <br>
-    <br>
-    <br>
-    <br>
-    {% for car in car %}
- <div class="card" onclick="window.location.href='{% url  'car_detail' car.slug  %}'">
-    {{car.name}}
-    {{car.days_until_expiry}}
-    <h2>Bids</h2>
-    <ul>
-        {% for bud in car.bud_set.all %}
-        <li>{{ bud.bidder_name }}: ${{ bud.bid_amount }} ({{ bud.days_until_expiry }})</li>
-        {% empty %}
-        ingen bud enda
-        {% endfor %}
-    </ul>
-</div>
-<br>
-
-{% endfor %}
+    <div class="buy">
+        <div class="text">
+            <h1>Biler til salgs</h1>
+        </div>
+        <div class="cars">
+            {% for car in car %}
+            <div class="car">
+                <div class="top">
+                    <img src="{{car.image1.url}}" alt="" class="car-image" onclick="window.location.href='{% url  'car_detail' car.slug  %}'">
+                </div>
+                <div class="bottom">
+                      <div class="name">{{car.name}}</div>
+                      <div class="flex">
+                        <div class="year">{{car.year}}</div>
+                        <div class="km">{{car.km}}km</div>
+                        <div class="price">{{car.price}}</div>
+                      </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 </div>
 
 {% endblock %}

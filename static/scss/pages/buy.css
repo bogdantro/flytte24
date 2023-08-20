@@ -1,0 +1,59 @@
+.page .buy {
+  width: auto;
+  height: auto;
+  padding-top: 120px;
+  padding-bottom: 40px;
+  padding-inline: 20px;
+}
+.page .buy .text {
+  text-align: center;
+}
+.page .buy .text h1 {
+  color: #1F1F1F;
+  font-size: 36px;
+  font-weight: 500;
+}
+.page .buy .cars {
+  padding-top: 50px;
+}
+.page .buy .cars .car {
+  margin-bottom: 35px;
+}
+.page .buy .cars .car .top .car-image {
+  border-radius: 6px;
+  width: 100%;
+  height: 190px;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.page .buy .cars .car .bottom .name {
+  margin-top: 8px;
+  color: #1F1F1F;
+  font-size: 17px;
+  font-weight: 500;
+}
+.page .buy .cars .car .bottom .flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: 5px;
+  padding-top: 10px;
+}
+.page .buy .cars .car .bottom .flex .year {
+  padding: 8px 10px;
+  color: #1F1F1F;
+  font-size: 16px;
+  border-radius: 100%;
+}
+.page .buy .cars .car .bottom .flex .km {
+  padding: 8px 10px;
+  color: #1F1F1F;
+  font-size: 16px;
+  border-radius: 100%;
+}
+.page .buy .cars .car .bottom .flex .price {
+  padding: 8px 10px;
+  color: #1F1F1F;
+  font-size: 16px;
+  border-radius: 100%;
+}/*# sourceMappingURL=buy.css.map */

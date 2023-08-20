@@ -1,0 +1,122 @@
+#mobileNav {
+  background: white !important;
+  border-bottom: 1px solid rgba(100, 100, 100, 0.15) !important;
+}
+
+.page {
+  padding-top: 68px;
+}
+.page #carouselExampleIndicators {
+  display: flex;
+  max-width: 1200px;
+  position: relative;
+  height: -moz-max-content;
+  height: max-content;
+}
+.page #carouselExampleIndicators .overlay {
+  pointer-events: none;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.35), transparent, transparent);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+}
+.page #carouselExampleIndicators .carousel-item {
+  font-size: 0px;
+  cursor: pointer;
+  overflow: hidden;
+  white-space: nowrap;
+  scroll-behavior: smooth;
+}
+.page #carouselExampleIndicators .carousel-item.dragging {
+  cursor: grab;
+  scroll-behavior: auto;
+}
+.page #carouselExampleIndicators .carousel-item.dragging img {
+  pointer-events: none;
+}
+.page #carouselExampleIndicators .carousel-item img {
+  height: 265px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  margin-left: 0;
+  width: 100%;
+  filter: brightness(88%);
+}
+.page #carouselExampleIndicators .carousel-item img:first-child {
+  margin-left: 0px;
+}
+.page .car {
+  padding-inline: 20px;
+}
+.page .car .info .flex {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: -moz-max-content;
+  height: max-content;
+  margin-top: 14px;
+}
+.page .car .info .flex .status {
+  background: #9cffcc;
+  width: -moz-max-content;
+  width: max-content;
+  padding: 3px 10px;
+  font-size: 15px;
+  color: #1F1F1F;
+  border-radius: 5px;
+}
+.page .car .info .flex .time-left {
+  background: #ffd698;
+  width: -moz-max-content;
+  width: max-content;
+  padding: 3px 10px;
+  font-size: 15px;
+  color: #1F1F1F;
+  border-radius: 5px;
+  margin-left: 10px;
+}
+.page .car .info .name {
+  margin-top: 10px;
+  font-size: 19px;
+  color: #1F1F1F;
+  font-weight: 500;
+}
+.page .car .info .price {
+  width: 100%;
+  height: 41px;
+  color: #f0a432;
+  border: 1px solid #f0a432;
+  background: rgba(255, 234, 203, 0.2941176471);
+  font-size: 16px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 7px;
+  margin-top: 12px;
+}
+.page .car .info .table {
+  padding-block: 12px;
+  padding-top: 25px;
+  width: 100%;
+  padding-inline: 20px;
+}
+.page .car .info .table .row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding-bottom: 2px;
+  margin-bottom: 6px;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.3);
+}
+.page .car .info .table .row p {
+  color: #1F1F1F;
+  font-size: 16px;
+  margin-bottom: 0;
+}/*# sourceMappingURL=product.css.map */

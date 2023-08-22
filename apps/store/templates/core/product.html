@@ -23,7 +23,6 @@
  <div class="page">
   <div id="overlay"></div>
    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-     <div class="overlay"></div>
      <div class="carousel-inner">
        <div class="carousel-item active">
          <img class="pr-img" id="productImageSliderOne" src="{{car.image1.url}}" alt="{{car.name}} image1" draggable="false">
@@ -124,25 +123,9 @@
         <br>
         <label for="id_time">Velg tidspunkt</label>
         <br>
-        fra
-        <select class="time" name="fra_1" id="fra_1">
-            <option disabled selected value>Tidspunkt</option>
-            <option value="08:00">08:00</option>
-            <option value="10:00">10:00</option>
-            <option value="12:00">12:00</option>
-            <option value="14:00">14:00</option>
-            <option value="14:00">osv</option>
-        </select>
+        <label for="time">Klokkeslett</label>
         <br>
-        til
-        <select class="time" name="til_1" id="til_1">
-          <option disabled selected value>Tidspunkt</option>
-          <option value="08:00">08:00</option>
-          <option value="10:00">10:00</option>
-          <option value="12:00">12:00</option>
-          <option value="14:00">14:00</option>
-          <option value="14:00">osv</option>
-      </select>
+        <input type="time" name="time1">
         <br>
         <br>
         <label for="id_date">Velg dato2</label>
@@ -152,25 +135,9 @@
           <br>
           <label for="id_time">Velg tidspunkt</label>
           <br>
-          fra
-          <select class="time" name="fra_2" id="fra_2">
-              <option disabled selected value>Tidspunkt</option>
-              <option value="08:00">08:00</option>
-              <option value="10:00">10:00</option>
-              <option value="12:00">12:00</option>
-              <option value="14:00">14:00</option>
-              <option value="14:00">osv</option>
-          </select>
+          <label for="time">Klokkeslett</label>
           <br>
-          til
-          <select class="time" name="til_2" id="til_2">
-            <option disabled selected value>Tidspunkt</option>
-            <option value="08:00">08:00</option>
-            <option value="10:00">10:00</option>
-            <option value="12:00">12:00</option>
-            <option value="14:00">14:00</option>
-            <option value="14:00">osv</option>
-        </select>
+          <input type="time" name="time2">
           <br>
           <br>
          <label for="navn">Navn</label>

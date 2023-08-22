@@ -1,4 +1,16 @@
 
+function verdiStepTwo() {
+    if(document.getElementById('km').value && document.getElementById('reg_nr').value){
+
+        document.getElementById('stepTwo').style.display = 'block';
+    }else{
+        document.getElementById('stepTwo').style.display = 'none';
+    }
+}
+
+setInterval(() => {
+    verdiStepTwo();
+}, 500);
 
 function faqFunc1(){
     const answer = document.getElementById('answer1');

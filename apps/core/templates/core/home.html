@@ -55,8 +55,7 @@
                         <input required type="text" id="km" name="km" placeholder="130000" name="" id="">
                     </div>
                 </div>
-                <br>
-                <div id="stepTwo">
+                <div id="stepTwo" style="margin-top: 37px;">
                     <label for="navn">Navn</label>
                     <br>
                     <input type="text" name="name" id="name" required  oninput="this.setCustomValidity('')" value="{{request.user.get_full_name}}">
@@ -71,11 +70,11 @@
                     <br>
                     <input type="number" name="telefon" id="telefon"  required oninput="this.setCustomValidity('')">
                     <br>
+                    <div class="checkbox">
+                      <input required type="checkbox" name="vilkaar" id="vilkaar">
+                      <p>Jeg godtar <a href="">vilkårene og betingelsene</a></p>
+                    </div>
                 </div>
-               <div class="checkbox">
-                 <input required type="checkbox" name="vilkaar" id="vilkaar">
-                 <p>Jeg godtar <a href="">vilkårene og betingelsene</a></p>
-               </div>
     
               </div>
             <div class="form-actions">

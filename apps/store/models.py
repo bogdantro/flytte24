@@ -214,11 +214,9 @@ class TestDrive(models.Model):
     email = models.EmailField(max_length=100, blank=False)
     message = models.TextField(blank=False)
     date1 = models.CharField(max_length=100, blank=True, null=True)
-    fra_1 = models.CharField(max_length=100, blank=True, null=True)
-    til_1 = models.CharField(max_length=100, blank=True, null=True)
+    time1 = models.CharField(max_length=100, blank=True, null=True)
     date2 = models.CharField(max_length=100, blank=True, null=True)
-    fra_2 = models.CharField(max_length=100, blank=True, null=True)
-    til_2 = models.CharField(max_length=100, blank=True, null=True)
+    time2 = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return f"Prøvekjøring på {self.car} av {self.name}"      

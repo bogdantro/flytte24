@@ -45,6 +45,7 @@ def car_detail(request, slug):
         til_2 = request.POST.get('til_2', '')
 
         testdrive = TestDrive.objects.create(
+            car=car,
             name=name, 
             message=message, 
             email=email,

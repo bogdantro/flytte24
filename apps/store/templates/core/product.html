@@ -107,7 +107,7 @@
       {% if request.user == car.user %}
       {% else %}
       <button onclick="testDrive()" class="secondary">Prøvekjøring</button>
-       <button class="secondary">Kontakt eier</button>
+       <button onclick="contactOwner()" class="secondary">Kontakt eier</button>
        <button onclick="makeBid()" class="secondary">Gi bud</button>
        <button>Kjøp bilen</button>
        {% endif %}
@@ -190,6 +190,26 @@
     <h1>logg inn for å gi bud</h1>
     <a href="/logg-inn/">logg inn</a>
     {% endif %}
+
+    <div id="contactOwner">
+      <div onclick="contactOwnerClose()" class="close"><i class="fa-solid fa-x"></i>Lukk</div>
+      <br>
+      <h1>Kontakt eier</h1>
+      <label for="">Fullt navn</label>
+      <br>
+      {{car.user.get_full_name}}
+      <br>
+      <br>
+      <label for="">Telefonnummer</label>
+      <br>
+      <a href="telto:{{car.owner_mobile_nr}}">{{car.owner_mobile_nr}}</a>
+      <br>
+      <br>
+      <label for="">Epost</label>
+      <br>
+      <a href="mailto:{{car.user.email}}">{{car.user.email}}</a>
+    </div>
+
   </div>
     <hr>
     <h1>Høyste bud</h1>her: {{highest_bid.bid_amount}} <h1>Dager igjen</h1>{{ highest_bid.days_until_expiry }} <p>OBS: her vil høyeste budet komme opp. Både prisen og dato til den går bort kan bli vist. Dette er valgfritt</p>
@@ -302,6 +322,17 @@
 
     function makeBidClose(){
       document.getElementById('makeBid').style.display = 'none';
+      document.getElementById('overlay').style.display = 'none';
+    }
+
+
+    function contactOwner(){
+      document.getElementById('contactOwner').style.display = 'block';
+      document.getElementById('overlay').style.display = 'block';
+    }
+
+    function contactOwnerClose(){
+      document.getElementById('contactOwner').style.display = 'none';
       document.getElementById('overlay').style.display = 'none';
     }
 

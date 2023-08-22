@@ -47,6 +47,7 @@ class Car(models.Model):
     post_nr = models.CharField(max_length=100, blank=True, null=True)
     country = models.CharField(max_length=100, blank=True, null=True)
     mobile_nr = models.CharField(max_length=100, blank=True, null=True)
+    owner_mobile_nr = models.CharField(max_length=100, blank=True, null=True)
     email = models.CharField(max_length=100, blank=True, null=True)
     contact_person = models.CharField(max_length=100, blank=True, null=True)
     # Garanti

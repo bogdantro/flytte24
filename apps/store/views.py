@@ -24,12 +24,38 @@ from .forms import *
 from datetime import datetime
 
 
+
+
 def car_detail(request, slug):
     car = get_object_or_404(Car, slug=slug)  
     bids = car.bud_set.all()
 
     highest_bid = car.bud_set.all().order_by('bid_amount').last() 
 
+
+    if request.method=='POST' and 'testdrive' in request.POST:
+        name = request.POST.get('name', )
+        email = request.POST.get('email', '')
+        message = request.POST.get('message', '')
+        date1 = request.POST.get('date1', '')
+        fra_1 = request.POST.get('fra_1', '')
+        til_1 = request.POST.get('til_1', '')
+        date2 = request.POST.get('date2', '')
+        fra_2 = request.POST.get('fra_2', '')
+        til_2 = request.POST.get('til_2', '')
+
+        testdrive = TestDrive.objects.create(
+            name=name, 
+            message=message, 
+            email=email,
+            date1=date1,
+            fra_1=fra_1,
+            til_1=til_1,
+            date2=date2,
+            fra_2=fra_2,
+            til_2=til_2,
+            )
+        return redirect('/success/')
 
     if request.method=='POST' and 'make_bid' in request.POST:
         user = request.user
@@ -54,3 +80,4 @@ def buy_car(request):
         'car': car,
     }
     return render(request, 'core/buy.html', context)
+

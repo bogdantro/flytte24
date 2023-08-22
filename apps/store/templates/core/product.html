@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="{% static '/scss/page/pages.css' %}" type="text/css">
 <link rel="stylesheet" href="{% static '/scss/pages/product.css' %}" type="text/css">
 <script rel="stylesheet" src="{% static '/js/product.js' %}" type="text/javascript"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/flatpickr.min.css">
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
@@ -20,6 +21,7 @@
 
 
  <div class="page">
+  <div id="overlay"></div>
    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
      <div class="overlay"></div>
      <div class="carousel-inner">
@@ -103,22 +105,96 @@
       </div>
     </div>
     <div class="actions">
-      <button>Forespør prøvekjøring</button>
-      <button>Send melding</button>
-      <button>Bli oppringt</button>
+      <button onclick="testDrive()" class="secondary">Prøvekjøring</button>
+      <button class="secondary">Kontakt eier</button>
+      <button class="secondary">Gi bud</button>
       <button>Kjøp bilen</button>
-      <button>Ring en produktsesialist</button>
     </div>
+    <form id="testDrive" action="" method="POST">
+      {% csrf_token %}
+      <div onclick="testDriveClose()" class="close"><i class="fa-solid fa-x"></i>Lukk</div>
+      <br>
+      <h1>Prøvekjøring</h1>
+      <br>
+      <div class="inputs-labels">
+        <label for="id_date1">Velg dato1</label>
+        <br>
+        <input type="text" name="date1" id="id_date1" class="flatpickr">
+        <br>
+        <br>
+        <label for="id_time">Velg tidspunkt</label>
+        <br>
+        fra
+        <select class="time" name="fra_1" id="fra_1">
+            <option disabled selected value>Tidspunkt</option>
+            <option value="08:00">08:00</option>
+            <option value="10:00">10:00</option>
+            <option value="12:00">12:00</option>
+            <option value="14:00">14:00</option>
+            <option value="14:00">osv</option>
+        </select>
+        <br>
+        til
+        <select class="time" name="til_1" id="til_1">
+          <option disabled selected value>Tidspunkt</option>
+          <option value="08:00">08:00</option>
+          <option value="10:00">10:00</option>
+          <option value="12:00">12:00</option>
+          <option value="14:00">14:00</option>
+          <option value="14:00">osv</option>
+      </select>
+        <br>
+        <br>
+        <label for="id_date">Velg dato2</label>
+        <br>
+        <input type="text" name="date2" id="id_date2" class="flatpickr">
+          <br>
+          <br>
+          <label for="id_time">Velg tidspunkt</label>
+          <br>
+          fra
+          <select class="time" name="fra_2" id="fra_2">
+              <option disabled selected value>Tidspunkt</option>
+              <option value="08:00">08:00</option>
+              <option value="10:00">10:00</option>
+              <option value="12:00">12:00</option>
+              <option value="14:00">14:00</option>
+              <option value="14:00">osv</option>
+          </select>
+          <br>
+          til
+          <select class="time" name="til_2" id="til_2">
+            <option disabled selected value>Tidspunkt</option>
+            <option value="08:00">08:00</option>
+            <option value="10:00">10:00</option>
+            <option value="12:00">12:00</option>
+            <option value="14:00">14:00</option>
+            <option value="14:00">osv</option>
+        </select>
+          <br>
+          <br>
+         <label for="navn">Navn</label>
+         <br>
+         <input type="text" name="name" id="name" required  oninput="this.setCustomValidity('')" value="{{request.user.get_full_name}}">
+         <br>
+         <br>
+         <label for="email">Epost</label>
+         <br>
+         <input type="email" name="email" id="email"  required oninput="this.setCustomValidity('')" value="{{request.user.email}}">
+         <br>
+         <br>
+         <label for="message"></label>
+         <br>
+         <textarea name="message" id="message"  required oninput="this.setCustomValidity('')"></textarea>
+        </div>
+      <div class="form-actions">
+        <button class="primary" type="submit" name="testdrive" value="testdrive">Send</button>
+      </div>
+    </form>
   </div>
     <hr>
     <h1>Høyste bud</h1>her: {{highest_bid.bid_amount}} <h1>Dager igjen</h1>{{ highest_bid.days_until_expiry }} <p>OBS: her vil høyeste budet komme opp. Både prisen og dato til den går bort kan bli vist. Dette er valgfritt</p>
 <hr>
-
-
-
-
-
-
 
 
     <br>
@@ -156,8 +232,41 @@
   </div>
 
   
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/flatpickr.min.js"></script>
+  <script>
+      document.addEventListener('DOMContentLoaded', function() {
 
-  
+        flatpickr("#id_date1", {
+    enable: [
+      function(date) {
+        return date.getDay() !== 0; // Disable Sundays
+      }
+      // Add other date restrictions here
+    ],
+    dateFormat: "d-m-y",
+    enableTime: false,
+    minDate: 'today',
+  });
+});
+  </script>
+
+  <script>
+      document.addEventListener('DOMContentLoaded', function() {
+
+        flatpickr("#id_date2", {
+    enable: [
+      function(date) {
+        return date.getDay() !== 0; // Disable Sundays
+      }
+      // Add other date restrictions here
+    ],
+    dateFormat: "d-m-y",
+    enableTime: false,
+    minDate: 'today',
+  });
+});
+  </script>
+
   <script>
   $('.carousel').on('touchstart', function(event){
       const xClick = event.originalEvent.touches[0].pageX;
@@ -191,6 +300,16 @@
     }
     minPriceValue();
 
+
+    function testDrive(){
+      document.getElementById('testDrive').style.display = 'block';
+      document.getElementById('overlay').style.display = 'block';
+    }
+
+    function testDriveClose(){
+      document.getElementById('testDrive').style.display = 'none';
+      document.getElementById('overlay').style.display = 'none';
+    }
 
     // function restrictValue() {
     //   const input = document.getElementById('bid_amount');

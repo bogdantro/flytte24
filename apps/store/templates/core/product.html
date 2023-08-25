@@ -213,6 +213,7 @@
       <a href="mailto:{{car.user.email}}">{{car.user.email}}</a>
     </div>
 
+    {% if request.user.is_authenticated %}
     <form action="" method="POST" id="confirmBuy">
       {% csrf_token %}
       <div onclick="confirmBuyClose()" class="close"><i class="fa-solid fa-x"></i>Lukk</div>
@@ -231,6 +232,12 @@
         <button type="submit" name="buy" value="buy">Jeg bekrefter</button>
        </div>
     </form>
+    {% else %}
+    <form action="" method="POST" id="confirmBuy">
+      <div onclick="confirmBuyClose()" class="close"><i class="fa-solid fa-x"></i>Lukk</div>
+      <br>
+      <h1>Logg inn for å kjøpe</h1>
+    {% endif %}
 
   </div>
     <hr>

@@ -16,7 +16,7 @@
   padding-bottom: 3px;
   position: absolute;
   top: 0;
-  z-index: 10000000000000000000;
+  z-index: 1000;
   transition: 0.2s;
   border-bottom: 1px solid lightgray;
   background: white;

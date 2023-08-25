@@ -27,21 +27,53 @@
 </div>
 
 <div class="myaccount">
+    <div id="overlay"></div>
     <div class="text">
         <h1 class="heading">Mine kjøp</h1>
     </div>
     <br>
     <div class="car">
+
+
+        {% for purchase in buy %}
+        <form action="" method="POST" id="stepOne" >
+            {% csrf_token %}
+            <div onclick="stepOneClose()" class="close"><i class="fa-solid fa-x"></i>Lukk</div>
+            <br>
+            <h1>Forsikring</h1>
+            <br>
+            <label for="forsikring">Ønsker du forsikring</label>
+            <br>
+            <input type="checkbox" name="forsikring" id="forsikring">
+            <div class="form-actions">
+              <button type="submit" name="stepone">Jeg bekrefter</button>
+             </div>
+          </form>
+          {% endfor %}
+
+
         {% for buy in buy %}
+        {% if buy.steps == 'zero' %}
         <div class="step">
             <div class="left">
                 <i class="fa-solid fa-lock"></i>
                 <h1>Forsikring</h1>
             </div>
             <div class="right">
-                <button>Fullfør</button>
+                <button onclick="stepOne()">Fullfør</button>
             </div>
         </div>
+        {% else %}
+        <div class="step conf">
+            <div class="left">
+                <i class="fa-solid fa-lock"></i>
+                <h1>Forsikring</h1>
+            </div>
+            <div class="right">
+                <i class="fa-solid fa-check check"></i>
+            </div>
+        </div>
+        {% endif %}
     
         <div class="step">
             <div class="left">
@@ -79,6 +111,39 @@
         {% endfor %}
     </div>
 </div>
+
+
+
+<script type="text/javascript">
+     function stepOne(){
+      document.getElementById('stepOne').style.display = 'block';
+      document.getElementById('overlay').style.display = 'block';
+    }
+
+    function stepOneClose(){
+      document.getElementById('stepOne').style.display = 'none';
+      document.getElementById('overlay').style.display = 'none';
+    }
+
+
+    '  {% for purchase in buy %}'
+    function forsikringChecked(){
+        if(document.getElementById('forsikring').checked == true){
+            document.getElementById('stepOne').action = '{% url 'step_one_forsikring' purchase.id %}';
+        }else{
+            document.getElementById('stepOne').action = '{% url 'step_one' purchase.id %}';
+        }
+        
+    }
+    '{% endfor %}'
+
+    setInterval(() => {
+        forsikringChecked();
+    }, 10);
+    
+</script>
+
+
 
 
 <div class="account-footer-mob">

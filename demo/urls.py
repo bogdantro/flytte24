@@ -48,6 +48,9 @@ urlpatterns = [
     path('min-bruker/mine-kjøp/', mine_kjøp, name='mine_kjøp'),
     path('min-bruker/kommende-visninger/', kommende_visninger, name='kommende_visninger'),
 
+    path('step_one/<int:buy_id>/', step_one, name='step_one'),
+    path('step_one_forsikring/<int:buy_id>/', step_one_forsikring, name='step_one_forsikring'),
+
     path('accept_bid/<int:car_id>/', accept_highest_bid, name='accept_highest_bid'),
     path('decline_bid/<int:car_id>/', decline_highest_bid, name='decline_highest_bid'),
 

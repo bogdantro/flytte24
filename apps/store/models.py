@@ -227,6 +227,16 @@ class TestDrive(models.Model):
 class Buy(models.Model):
     car = models.ForeignKey(Car, on_delete=models.PROTECT, blank=True, default='')
     user = models.ForeignKey(User, related_name='buy', on_delete=models.SET_NULL, blank=True, null=True)
+    forsikring = models.CharField(max_length=20, choices=[('no', 'Nei'), ('yes', 'Ja')], default='no')
+    steps = models.CharField(max_length=20, choices=[('zero', '0'), ('one', '1'), ('two', '2'), ('three', '3'), ('four', '4')], default='zero')
 
     def __str__(self):
         return f"Kjøp på {self.car} av {self.user}"      
+
+    def step_one(self):
+        self.steps = 'one'
+        self.save()
+
+    def step_one_forsikring(self):
+        self.forsikring = 'yes'
+        self.save()

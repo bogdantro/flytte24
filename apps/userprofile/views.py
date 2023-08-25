@@ -107,6 +107,9 @@ def kommende_visninger(request):
     return render(request, 'core/account/timer.html')
 
 
+
+
+
 @login_required
 def mine_kjøp(request):
     user = request.user
@@ -116,6 +119,27 @@ def mine_kjøp(request):
         'buy':buy,
     }
     return render(request, 'core/account/buy.html', context)
+
+@login_required
+def step_one(request, buy_id):
+    buy = get_object_or_404(Buy, id=buy_id)
+    
+    if request.user == buy.user:
+        buy.step_one()
+    return redirect('/min-bruker/mine-kjøp/')
+
+@login_required
+def step_one_forsikring(request, buy_id):
+    buy = get_object_or_404(Buy, id=buy_id)
+    
+    if request.user == buy.user:
+        buy.step_one()
+        buy.step_one_forsikring()
+    return redirect('/min-bruker/mine-kjøp/')
+
+
+
+
 
 
 @login_required

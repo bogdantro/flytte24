@@ -1,3 +1,15 @@
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  display: none;
+  pointer-events: none !important;
+}
+
 .car {
   padding-inline: 20px;
 }
@@ -33,4 +45,90 @@
   outline: none;
   border: none;
   font-size: 15px;
+}
+.car .step.conf {
+  background: rgba(167, 255, 167, 0.753);
+}
+.car .step.conf .check {
+  font-size: 23px;
+  border: 2px solid rgb(26, 196, 63);
+  color: rgb(26, 196, 63);
+  padding: 5px;
+  border-radius: 100%;
+}
+.car #stepOne {
+  background: white;
+  border-radius: 12px;
+  padding-inline: 10px;
+  padding-block: 16px;
+  padding-bottom: 26px;
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 95%;
+  height: 100%;
+  overflow-y: scroll !important;
+  display: none;
+  z-index: 10000;
+  padding-bottom: 40px;
+}
+.car #stepOne .close {
+  font-size: 16px;
+  font-weight: 400;
+  border: 1px solid red;
+  background: rgb(255, 169, 169);
+  display: flex;
+  opacity: 1;
+  color: #1F1F1F;
+  padding: 10px;
+  border-radius: 4px;
+}
+.car #stepOne .close i {
+  color: red;
+  font-size: 20px;
+  padding-left: 10px;
+}
+.car #stepOne label {
+  font-size: 16px;
+  color: #1F1F1F;
+  font-weight: 500;
+}
+.car #stepOne input {
+  width: 100%;
+  height: 48px;
+  border: 1px solid lightgray;
+  outline: none;
+  padding: 8px;
+  color: #1F1F1F;
+  font-size: 16px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 7px;
+}
+.car #stepOne input:focus, .car #stepOne input:active {
+  border: 2px solid #f0a432;
+  cursor: text;
+  background: rgb(255, 255, 255);
+}
+.car #stepOne input::-moz-placeholder {
+  color: #1F1F1F;
+  opacity: 0.6;
+}
+.car #stepOne input::placeholder {
+  color: #1F1F1F;
+  opacity: 0.6;
+}
+.car #stepOne .form-actions button {
+  border: 1px solid transparent;
+  border-radius: 6px;
+  outline: none;
+  background: linear-gradient(to bottom right, #f0a432, #ffb649);
+  color: white;
+  font-weight: 500;
+  font-size: 17px;
+  width: 100%;
+  display: block;
+  height: 44px;
+  margin-top: 32px;
 }/*# sourceMappingURL=buy.css.map */

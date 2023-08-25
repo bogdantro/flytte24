@@ -222,3 +222,11 @@ class TestDrive(models.Model):
     def __str__(self):
         return f"Prøvekjøring på {self.car} av {self.name}"      
 
+
+
+class Buy(models.Model):
+    car = models.ForeignKey(Car, on_delete=models.PROTECT, blank=True, default='')
+    user = models.ForeignKey(User, related_name='buy', on_delete=models.SET_NULL, blank=True, null=True)
+
+    def __str__(self):
+        return f"Kjøp på {self.car} av {self.user}"      

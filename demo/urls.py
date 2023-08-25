@@ -45,6 +45,7 @@ urlpatterns = [
     path('min-bruker/rediger-min-info/', edit_user_info, name='edit_user_info'),
     path('min-bruker/mine-annonser/', mine_annonser, name='mine_annonser'),
     path('min-bruker/mine-bud/', mine_bud, name='mine_bud'),
+    path('min-bruker/mine-kjøp/', mine_kjøp, name='mine_kjøp'),
     path('min-bruker/kommende-visninger/', kommende_visninger, name='kommende_visninger'),
 
     path('accept_bid/<int:car_id>/', accept_highest_bid, name='accept_highest_bid'),

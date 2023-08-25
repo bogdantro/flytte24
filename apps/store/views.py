@@ -61,6 +61,13 @@ def car_detail(request, slug):
 
         car.bud_set.create(user=user, bid_amount=bid_amount, expiry_date=expiry_date)
         return redirect('/')
+    
+    if request.method=='POST' and 'buy' in request.POST:
+        user = request.user
+        car = car
+
+        buy = Buy.objects.create(user=user, car=car)
+        return redirect('/min-bruker/mine-kjøp/')
 
     context = {
         'car': car,

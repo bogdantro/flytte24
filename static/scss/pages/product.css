@@ -343,4 +343,80 @@
   font-size: 16px;
   color: #1F1F1F;
   font-weight: 500;
+}
+.page .car #confirmBuy {
+  background: white;
+  border-radius: 12px;
+  padding-inline: 10px;
+  padding-block: 16px;
+  padding-bottom: 26px;
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 95%;
+  height: 100%;
+  overflow-y: scroll !important;
+  display: none;
+  z-index: 1000;
+  padding-bottom: 40px;
+}
+.page .car #confirmBuy .close {
+  font-size: 16px;
+  font-weight: 400;
+  border: 1px solid red;
+  background: rgb(255, 169, 169);
+  display: flex;
+  opacity: 1;
+  color: #1F1F1F;
+  padding: 10px;
+  border-radius: 4px;
+}
+.page .car #confirmBuy .close i {
+  color: red;
+  font-size: 20px;
+  padding-left: 10px;
+}
+.page .car #confirmBuy label {
+  font-size: 16px;
+  color: #1F1F1F;
+  font-weight: 500;
+}
+.page .car #confirmBuy input {
+  width: 100%;
+  height: 48px;
+  border: 1px solid lightgray;
+  outline: none;
+  padding: 8px;
+  color: #1F1F1F;
+  font-size: 16px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 7px;
+}
+.page .car #confirmBuy input:focus, .page .car #confirmBuy input:active {
+  border: 2px solid #f0a432;
+  cursor: text;
+  background: rgb(255, 255, 255);
+}
+.page .car #confirmBuy input::-moz-placeholder {
+  color: #1F1F1F;
+  opacity: 0.6;
+}
+.page .car #confirmBuy input::placeholder {
+  color: #1F1F1F;
+  opacity: 0.6;
+}
+.page .car #confirmBuy .form-actions button {
+  border: 1px solid transparent;
+  border-radius: 6px;
+  outline: none;
+  background: linear-gradient(to bottom right, #f0a432, #ffb649);
+  color: white;
+  font-weight: 500;
+  font-size: 17px;
+  width: 100%;
+  display: block;
+  height: 44px;
+  margin-top: 32px;
 }/*# sourceMappingURL=product.css.map */

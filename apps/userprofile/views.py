@@ -108,6 +108,17 @@ def kommende_visninger(request):
 
 
 @login_required
+def mine_kjøp(request):
+    user = request.user
+    buy = Buy.objects.filter(user=user)
+
+    context = {
+        'buy':buy,
+    }
+    return render(request, 'core/account/buy.html', context)
+
+
+@login_required
 def accept_bid(request, bud_id):
     bud = get_object_or_404(Bud, id=bud_id)
     if request.user == bud.car.user:

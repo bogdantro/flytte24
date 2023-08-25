@@ -109,7 +109,7 @@
       <button onclick="testDrive()" class="secondary">Prøvekjøring</button>
        <button onclick="contactOwner()" class="secondary">Kontakt eier</button>
        <button onclick="makeBid()" class="secondary">Gi bud</button>
-       <button>Kjøp bilen</button>
+       <button onclick="confirmBuy()">Kjøp bilen</button>
        {% endif %}
     </div>
 
@@ -185,10 +185,13 @@
          <button type="submit" name="make_bid" value="make_bid">Gi bud</button>
         </div>
     </form>
-
     {% else %}
-    <h1>logg inn for å gi bud</h1>
-    <a href="/logg-inn/">logg inn</a>
+    <form id="makeBid">
+      <div onclick="makeBidClose()" class="close"><i class="fa-solid fa-x"></i>Lukk</div>
+      <br>
+      <h1>Logg inn for å gi bud</h1>
+      <a href="/logg-inn/">logg inn</a>
+    </form>
     {% endif %}
 
     <div id="contactOwner">
@@ -209,6 +212,25 @@
       <br>
       <a href="mailto:{{car.user.email}}">{{car.user.email}}</a>
     </div>
+
+    <form action="" method="POST" id="confirmBuy">
+      {% csrf_token %}
+      <div onclick="confirmBuyClose()" class="close"><i class="fa-solid fa-x"></i>Lukk</div>
+      <br>
+      <h1>Bekfreft kjøpet</h1>
+      <br>
+      <label for="">Bil</label>
+      <br>
+      {{car.name}}
+      <br>
+      <br>
+      <label for="">Pris</label>
+      <br>
+       {{car.price}}kr
+      <div class="form-actions">
+        <button type="submit" name="buy" value="buy">Jeg bekrefter</button>
+       </div>
+    </form>
 
   </div>
     <hr>
@@ -335,6 +357,19 @@
       document.getElementById('contactOwner').style.display = 'none';
       document.getElementById('overlay').style.display = 'none';
     }
+
+
+    function confirmBuy(){
+      document.getElementById('confirmBuy').style.display = 'block';
+      document.getElementById('overlay').style.display = 'block';
+    }
+
+    function confirmBuyClose(){
+      document.getElementById('confirmBuy').style.display = 'none';
+      document.getElementById('overlay').style.display = 'none';
+    }
+
+
 
     // function restrictValue() {
     //   const input = document.getElementById('bid_amount');

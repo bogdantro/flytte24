@@ -30,3 +30,6 @@ admin.site.register(TestDrive)
     # list_filter = ('is_home_page',)
     # list_editable = ('is_home_page', 'business_name', 'slug', 'address', 'category',)
     # prepopulated_fields = {"slug": ("name","business_name",)}
+
+
+admin.site.register(Buy)

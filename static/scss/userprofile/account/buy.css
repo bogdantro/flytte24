@@ -1,0 +1,36 @@
+.car {
+  padding-inline: 20px;
+}
+.car .step {
+  background: rgb(237, 237, 237);
+  padding: 10px 20px;
+  width: 100%;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  border-radius: 8px;
+}
+.car .step .left {
+  display: flex;
+}
+.car .step .left i {
+  font-size: 24px;
+  color: #1F1F1F;
+}
+.car .step .left h1 {
+  color: #1F1F1F;
+  font-size: 19px;
+  margin-left: 17px;
+}
+.car .step .right button {
+  background: #183b56;
+  width: 80px;
+  height: 40px;
+  color: white;
+  border-radius: 20px;
+  outline: none;
+  border: none;
+  font-size: 15px;
+}/*# sourceMappingURL=buy.css.map */

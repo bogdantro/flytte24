@@ -84,6 +84,12 @@ def accept_highest_bid(request, car_id):
         highest_bid.accept_bid()  # Assuming you have an accept_bid method in your Bud model
         # Optionally, you can notify the bidder about the accepted bid
 
+        user = highest_bid.user
+        car = car
+
+        buy = Buy.objects.create(user=user, car=car)
+        return redirect('/min-bruker/mine-kjøp/')
+
     return redirect('/min-bruker/mine-annonser/')
 
 @login_required

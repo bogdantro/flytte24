@@ -16,6 +16,7 @@
   position: relative;
 }
 .cover .content .cover-image {
+  filter: brightness(100%);
   display: block;
   width: 352px;
   height: auto;

@@ -131,4 +131,232 @@
   display: block;
   height: 44px;
   margin-top: 32px;
+}
+.car #stepTwo {
+  background: white;
+  border-radius: 12px;
+  padding-inline: 10px;
+  padding-block: 16px;
+  padding-bottom: 26px;
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 95%;
+  height: 100%;
+  overflow-y: scroll !important;
+  display: none;
+  z-index: 10000;
+  padding-bottom: 40px;
+}
+.car #stepTwo .close {
+  font-size: 16px;
+  font-weight: 400;
+  border: 1px solid red;
+  background: rgb(255, 169, 169);
+  display: flex;
+  opacity: 1;
+  color: #1F1F1F;
+  padding: 10px;
+  border-radius: 4px;
+}
+.car #stepTwo .close i {
+  color: red;
+  font-size: 20px;
+  padding-left: 10px;
+}
+.car #stepTwo label {
+  font-size: 16px;
+  color: #1F1F1F;
+  font-weight: 500;
+}
+.car #stepTwo input {
+  width: 100%;
+  height: 48px;
+  border: 1px solid lightgray;
+  outline: none;
+  padding: 8px;
+  color: #1F1F1F;
+  font-size: 16px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 7px;
+}
+.car #stepTwo input:focus, .car #stepTwo input:active {
+  border: 2px solid #f0a432;
+  cursor: text;
+  background: rgb(255, 255, 255);
+}
+.car #stepTwo input::-moz-placeholder {
+  color: #1F1F1F;
+  opacity: 0.6;
+}
+.car #stepTwo input::placeholder {
+  color: #1F1F1F;
+  opacity: 0.6;
+}
+.car #stepTwo .form-actions button {
+  border: 1px solid transparent;
+  border-radius: 6px;
+  outline: none;
+  background: linear-gradient(to bottom right, #f0a432, #ffb649);
+  color: white;
+  font-weight: 500;
+  font-size: 17px;
+  width: 100%;
+  display: block;
+  height: 44px;
+  margin-top: 32px;
+}
+.car #stepThree {
+  background: white;
+  border-radius: 12px;
+  padding-inline: 10px;
+  padding-block: 16px;
+  padding-bottom: 26px;
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 95%;
+  height: 100%;
+  overflow-y: scroll !important;
+  display: none;
+  z-index: 10000;
+  padding-bottom: 40px;
+}
+.car #stepThree .close {
+  font-size: 16px;
+  font-weight: 400;
+  border: 1px solid red;
+  background: rgb(255, 169, 169);
+  display: flex;
+  opacity: 1;
+  color: #1F1F1F;
+  padding: 10px;
+  border-radius: 4px;
+}
+.car #stepThree .close i {
+  color: red;
+  font-size: 20px;
+  padding-left: 10px;
+}
+.car #stepThree label {
+  font-size: 16px;
+  color: #1F1F1F;
+  font-weight: 500;
+}
+.car #stepThree input {
+  width: 100%;
+  height: 48px;
+  border: 1px solid lightgray;
+  outline: none;
+  padding: 8px;
+  color: #1F1F1F;
+  font-size: 16px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 7px;
+}
+.car #stepThree input:focus, .car #stepThree input:active {
+  border: 2px solid #f0a432;
+  cursor: text;
+  background: rgb(255, 255, 255);
+}
+.car #stepThree input::-moz-placeholder {
+  color: #1F1F1F;
+  opacity: 0.6;
+}
+.car #stepThree input::placeholder {
+  color: #1F1F1F;
+  opacity: 0.6;
+}
+.car #stepThree .form-actions button {
+  border: 1px solid transparent;
+  border-radius: 6px;
+  outline: none;
+  background: linear-gradient(to bottom right, #f0a432, #ffb649);
+  color: white;
+  font-weight: 500;
+  font-size: 17px;
+  width: 100%;
+  display: block;
+  height: 44px;
+  margin-top: 32px;
+}
+.car #stepFour {
+  background: white;
+  border-radius: 12px;
+  padding-inline: 10px;
+  padding-block: 16px;
+  padding-bottom: 26px;
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 95%;
+  height: 100%;
+  overflow-y: scroll !important;
+  display: none;
+  z-index: 10000;
+  padding-bottom: 40px;
+}
+.car #stepFour .close {
+  font-size: 16px;
+  font-weight: 400;
+  border: 1px solid red;
+  background: rgb(255, 169, 169);
+  display: flex;
+  opacity: 1;
+  color: #1F1F1F;
+  padding: 10px;
+  border-radius: 4px;
+}
+.car #stepFour .close i {
+  color: red;
+  font-size: 20px;
+  padding-left: 10px;
+}
+.car #stepFour label {
+  font-size: 16px;
+  color: #1F1F1F;
+  font-weight: 500;
+}
+.car #stepFour input {
+  width: 100%;
+  height: 48px;
+  border: 1px solid lightgray;
+  outline: none;
+  padding: 8px;
+  color: #1F1F1F;
+  font-size: 16px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 7px;
+}
+.car #stepFour input:focus, .car #stepFour input:active {
+  border: 2px solid #f0a432;
+  cursor: text;
+  background: rgb(255, 255, 255);
+}
+.car #stepFour input::-moz-placeholder {
+  color: #1F1F1F;
+  opacity: 0.6;
+}
+.car #stepFour input::placeholder {
+  color: #1F1F1F;
+  opacity: 0.6;
+}
+.car #stepFour .form-actions button {
+  border: 1px solid transparent;
+  border-radius: 6px;
+  outline: none;
+  background: linear-gradient(to bottom right, #f0a432, #ffb649);
+  color: white;
+  font-weight: 500;
+  font-size: 17px;
+  width: 100%;
+  display: block;
+  height: 44px;
+  margin-top: 32px;
 }/*# sourceMappingURL=buy.css.map */

@@ -138,6 +138,24 @@ def step_one_forsikring(request, buy_id):
     return redirect('/min-bruker/mine-kjøp/')
 
 
+@login_required
+def step_two(request, buy_id):
+    buy = get_object_or_404(Buy, id=buy_id)
+    
+    if request.user == buy.user:
+        buy.step_two()
+    return redirect('/min-bruker/mine-kjøp/')
+
+@login_required
+def step_two_garanti(request, buy_id):
+    buy = get_object_or_404(Buy, id=buy_id)
+    
+    if request.user == buy.user:
+        buy.step_two()
+        buy.step_two_garanti()
+    return redirect('/min-bruker/mine-kjøp/')
+
+
 
 
 

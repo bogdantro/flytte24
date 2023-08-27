@@ -9,6 +9,7 @@ class Car(models.Model):
 
     GARANTY_TYPER = [
         ("Nybilgaranti", "Nybilgaranti"),
+        ("Bruktbilgaranti", "Bruktbilgaranti"),
     ]
 
     PLACE = [
@@ -41,11 +42,11 @@ class Car(models.Model):
     next_EU_test_deadline = models.CharField(max_length=100, blank=True, null=True)
     garanti_type = models.CharField(max_length=100, choices=GARANTY_TYPER, blank=True, null=True)
     # Description
-    description = models.CharField(max_length=100, blank=True, null=True)
+    description = models.CharField(max_length=8000, blank=True, null=True)
     # Contact
     adress = models.CharField(max_length=100, blank=True, null=True)
     post_nr = models.CharField(max_length=100, blank=True, null=True)
-    country = models.CharField(max_length=100, blank=True, null=True)
+    country = models.CharField(max_length=100, blank=True, null=True, default="Norge")
     mobile_nr = models.CharField(max_length=100, blank=True, null=True)
     owner_mobile_nr = models.CharField(max_length=100, blank=True, null=True)
     email = models.CharField(max_length=100, blank=True, null=True)

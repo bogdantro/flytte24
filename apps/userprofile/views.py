@@ -88,7 +88,7 @@ def accept_highest_bid(request, car_id):
         car = car
 
         buy = Buy.objects.create(user=user, car=car)
-        return redirect('/min-bruker/mine-kjøp/')
+        return redirect('/min-bruker/mine-annonser/')
 
     return redirect('/min-bruker/mine-annonser/')
 

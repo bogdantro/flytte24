@@ -13,15 +13,28 @@
 
 <div class="cover">
     <div class="content">
-        <img class="cover-image" src="{% static '/images/covers/cover.png' %}" alt="quote-marks">
-        <div class="text">
-            <h1 class="cover-h1">Enklere og tryggere bilsalg</h1>
-            <p class="cover-p">Bilsalg trenger ikke være så komplisert. Vi gjør all jobben for deg!</p>
+        <div id="onlyOnMob">
+            <img class="cover-image" src="{% static '/images/covers/cover.png' %}" alt="quote-marks">
+            <div class="text">
+                <h1 class="cover-h1">Enklere og tryggere bilsalg</h1>
+                <p class="cover-p">Bilsalg trenger ikke være så komplisert. Vi gjør all jobben for deg!</p>
+                <div class="cover-actions">
+                    <button onclick="window.location.href='/kjøp-bil/'">Kjøp bil</button>
+                    <button onclick="window.location.href='/selg-bilen/'" class="secondary">Selg bil</button>
+                 </div>   
+            </div>
         </div>
-        <div class="cover-actions">
-            <button onclick="window.location.href='/kjøp-bil/'">Kjøp bil</button>
-            <button onclick="window.location.href='/selg-bilen/'" class="secondary">Selg bil</button>
-         </div>   
+        <div id="onlyOnDes">
+            <div class="text">
+                <h1 class="cover-h1">Enklere og tryggere bilsalg</h1>
+                <p class="cover-p">Bilsalg trenger ikke være så komplisert. Vi gjør all jobben for deg!</p>
+                <div class="cover-actions">
+                    <button onclick="window.location.href='/kjøp-bil/'">Kjøp bil</button>
+                    <button onclick="window.location.href='/selg-bilen/'" class="secondary">Selg bil</button>
+                 </div>   
+            </div>
+            <img class="cover-image" src="{% static '/images/covers/cover.png' %}" alt="quote-marks">
+        </div>
     </div>
 </div>
 

@@ -1,3 +1,7 @@
+#desNav {
+  display: none;
+}
+
 #mobileNav {
   width: 100%;
   height: 68px;
@@ -103,4 +107,71 @@
   pointer-events: visible;
   transition: 0.4s;
   left: 0;
+}
+
+@media only screen and (min-device-width: 1140px) {
+  #mobileNav {
+    display: none;
+  }
+  #desNav {
+    display: flex;
+    width: 100%;
+    height: 80px;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: transparent;
+    padding-inline: 35px;
+    z-index: 10000;
+    transition: 0.2s;
+    border-bottom: 1px solid transparent;
+  }
+  #desNav.sticky {
+    background: white;
+    border-bottom: 1px solid rgba(100, 100, 100, 0.15);
+  }
+  #desNav .logo img {
+    cursor: pointer;
+    width: 120px;
+    height: auto;
+    transition: 0.2s;
+    transform: translateX(-35px);
+  }
+  #desNav .logo img:hover {
+    transform: scale(1.1) translateX(-35px);
+  }
+  #desNav .menu {
+    display: flex;
+  }
+  #desNav .menu a {
+    color: #1F1F1F;
+    font-size: 18px;
+    font-weight: 400;
+    margin-inline: 2px;
+    padding: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: 0.3s;
+    border-bottom: 2px solid transparent;
+  }
+  #desNav .menu a:last-child {
+    transform: translateY(2px);
+    background: linear-gradient(to bottom right, #f0a432, #ffb649);
+    color: white;
+    border-radius: 5px;
+    margin-left: 6px;
+    padding: 7px 14px !important;
+    border: none;
+    height: -moz-max-content !important;
+    height: max-content !important;
+    margin-bottom: 0;
+  }
+  #desNav .menu a:last-child:hover {
+    transform: scale(1.05) translateY(2px);
+  }
+  #desNav .menu a:hover {
+    border-bottom: 2px solid #f0a432;
+  }
 }/*# sourceMappingURL=nav.css.map */

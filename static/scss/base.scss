@@ -16,6 +16,12 @@ $txt: #183b56;
       padding-bottom: 40px;
       height: max-content;
       position: relative;
+      #onlyOnMob{
+        display: block;
+      }
+      #onlyOnDes{
+        display: none;
+      }
       .cover-image{
         filter: brightness(100%);
         display: block;
@@ -642,4 +648,85 @@ $txt: #183b56;
       }
     }
   }
+}
+
+
+
+@media only screen and (min-device-width: 1140px) {
+  .cover{
+    width: 100%;
+    min-height: max-content;
+    margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 5px;
+    background: linear-gradient(to bottom right, transparent, #ffeed46a);
+    .content{
+      padding-inline: 35px;
+      padding-top: 100px;
+      padding-bottom: 40px;
+      height: max-content;
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      #onlyOnMob{
+        display: none;
+      }
+      #onlyOnDes{
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+      }
+      .cover-image{
+        filter: brightness(100%);
+        display: block;
+        width: 550px;
+        height: auto;
+        position: unset;
+        margin: -100px;
+        margin-left: -4px;
+        transform: translateY(-58px) translateX(-90px);
+      }
+      .text{
+        text-align: left;
+        margin-top: 28px;
+        .cover-h1{
+          color: $black;
+          font-size: 42px;
+          font-weight: 600;
+          margin-bottom: 10px;
+        }
+        .cover-p{
+          font-size: 20px;
+          margin-bottom: 0;
+          color: $black;
+          font-weight: 500;
+          width: 370px;
+        }
+      }
+      .cover-actions{
+        margin-top: 24px;
+        width: 100%;
+        text-align: center;
+        button{
+          border: 1px solid transparent;
+          border-radius: 6px;
+          outline: none;
+          background: linear-gradient(to bottom right, $primBtn, #ffb649);
+          color: white;
+          font-weight: 500;
+          font-size: 17px;
+          width: 395px;
+          display: block;
+          height: 46px;
+          &.secondary{
+            border-color: $primBtn;
+            color: $primBtn;
+            background: white;
+            margin-right: 0;
+            margin-top: 15px;
+          }
+        }
+      }
+    }
+}
 }

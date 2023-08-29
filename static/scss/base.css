@@ -15,6 +15,12 @@
   height: max-content;
   position: relative;
 }
+.cover .content #onlyOnMob {
+  display: block;
+}
+.cover .content #onlyOnDes {
+  display: none;
+}
 .cover .content .cover-image {
   filter: brightness(100%);
   display: block;
@@ -638,4 +644,85 @@
   font-size: 16px;
   font-weight: 500;
   color: #1F1F1F;
+}
+
+@media only screen and (min-device-width: 1140px) {
+  .cover {
+    width: 100%;
+    min-height: -moz-max-content;
+    min-height: max-content;
+    margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 5px;
+    background: linear-gradient(to bottom right, transparent, rgba(255, 238, 212, 0.4156862745));
+  }
+  .cover .content {
+    padding-inline: 35px;
+    padding-top: 100px;
+    padding-bottom: 40px;
+    height: -moz-max-content;
+    height: max-content;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+  }
+  .cover .content #onlyOnMob {
+    display: none;
+  }
+  .cover .content #onlyOnDes {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  .cover .content .cover-image {
+    filter: brightness(100%);
+    display: block;
+    width: 550px;
+    height: auto;
+    position: unset;
+    margin: -100px;
+    margin-left: -4px;
+    transform: translateY(-58px) translateX(-90px);
+  }
+  .cover .content .text {
+    text-align: left;
+    margin-top: 28px;
+  }
+  .cover .content .text .cover-h1 {
+    color: #1F1F1F;
+    font-size: 42px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .cover .content .text .cover-p {
+    font-size: 20px;
+    margin-bottom: 0;
+    color: #1F1F1F;
+    font-weight: 500;
+    width: 370px;
+  }
+  .cover .content .cover-actions {
+    margin-top: 24px;
+    width: 100%;
+    text-align: center;
+  }
+  .cover .content .cover-actions button {
+    border: 1px solid transparent;
+    border-radius: 6px;
+    outline: none;
+    background: linear-gradient(to bottom right, #f0a432, #ffb649);
+    color: white;
+    font-weight: 500;
+    font-size: 17px;
+    width: 395px;
+    display: block;
+    height: 46px;
+  }
+  .cover .content .cover-actions button.secondary {
+    border-color: #f0a432;
+    color: #f0a432;
+    background: white;
+    margin-right: 0;
+    margin-top: 15px;
+  }
 }/*# sourceMappingURL=base.css.map */

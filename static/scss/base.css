@@ -129,6 +129,9 @@
   font-size: 25px;
   font-weight: 500;
 }
+.verdivurdering .content .text #onlyOnDes {
+  display: none;
+}
 .verdivurdering .content form {
   background: white;
   border-radius: 12px;
@@ -677,7 +680,7 @@
   .cover .content .cover-image {
     filter: brightness(100%);
     display: block;
-    width: 550px;
+    width: 520px;
     height: auto;
     position: unset;
     margin: -100px;
@@ -724,5 +727,202 @@
     background: white;
     margin-right: 0;
     margin-top: 15px;
+  }
+  .sell-with-us {
+    width: 100%;
+    height: auto;
+    padding-block: 120px;
+    padding-top: 50px;
+    position: relative;
+  }
+  .sell-with-us .content {
+    padding-inline: 35px;
+    position: relative;
+  }
+  .sell-with-us .content .text {
+    text-align: center;
+    margin-top: 28px;
+  }
+  .sell-with-us .content .text h1 {
+    color: #1F1F1F;
+    font-size: 34px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .sell-with-us .content .video {
+    margin-inline: auto;
+    margin-top: 35px;
+    width: 420px;
+    height: 190px;
+    background: lightgray;
+  }
+  .verdivurdering {
+    margin-top: 25px;
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .verdivurdering .content {
+    padding-inline: 80px;
+    padding-top: 65px;
+    padding-bottom: 120px;
+    position: relative;
+    background: #f0a432;
+    display: flex;
+    justify-content: space-between;
+  }
+  .verdivurdering .content .text {
+    text-align: left;
+    margin-top: 28px;
+  }
+  .verdivurdering .content .text h1 {
+    color: white;
+    font-size: 34px;
+    font-weight: 600;
+    margin-bottom: -10px;
+  }
+  .verdivurdering .content .text h2 {
+    color: white;
+    font-size: 27px;
+    font-weight: 500;
+  }
+  .verdivurdering .content .text #onlyOnDes {
+    display: block;
+    margin-top: 30px;
+  }
+  .verdivurdering .content .text #onlyOnDes .check {
+    display: flex;
+    margin-bottom: 25px;
+  }
+  .verdivurdering .content .text #onlyOnDes .check i {
+    color: #1efa1e;
+    background: #e0fae0;
+    border-radius: 100%;
+    padding: 10px;
+    font-size: 24px;
+  }
+  .verdivurdering .content .text #onlyOnDes .check p {
+    color: white;
+    font-weight: 500;
+    font-size: 19px;
+    margin-left: 15px;
+    transform: translateY(8px);
+  }
+  .verdivurdering .content form {
+    background: white;
+    border-radius: 12px;
+    padding-inline: 30px;
+    padding-block: 13px;
+    padding-bottom: 23px;
+    margin-top: 25px;
+    width: 380px;
+    margin-inline: auto;
+  }
+  .verdivurdering .content form .inputs-labels .step-one input {
+    height: 54px;
+    border-radius: 12px;
+    text-align: center;
+    font-size: 23px;
+  }
+  .verdivurdering .content form .inputs-labels .step-one input:focus, .verdivurdering .content form .inputs-labels .step-one input:active {
+    border: 1px solid rgb(172, 172, 172);
+    cursor: text;
+    background: rgb(255, 255, 255);
+  }
+  .verdivurdering .content form .inputs-labels .step-one input::-moz-placeholder {
+    font-size: 23px;
+  }
+  .verdivurdering .content form .inputs-labels .step-one input::placeholder {
+    font-size: 23px;
+  }
+  .verdivurdering .content form .inputs-labels .step-one .reg-nr {
+    display: flex;
+    position: relative;
+  }
+  .verdivurdering .content form .inputs-labels .step-one .reg-nr input {
+    text-transform: uppercase;
+  }
+  .verdivurdering .content form .inputs-labels .step-one .reg-nr img {
+    position: absolute;
+    left: 0;
+    height: 54px;
+    width: auto;
+    border-bottom-left-radius: 12px;
+    border-top-left-radius: 12px;
+  }
+  .verdivurdering .content form .inputs-labels .step-one .km {
+    position: relative;
+    display: flex;
+  }
+  .verdivurdering .content form .inputs-labels .step-one .km p {
+    position: absolute;
+    right: 11px;
+    bottom: -5px;
+    color: #1F1F1F;
+    opacity: 0.95;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .verdivurdering .content form .inputs-labels label {
+    font-size: 16px;
+    color: #1F1F1F;
+    font-weight: 500;
+  }
+  .verdivurdering .content form .inputs-labels input {
+    width: 100%;
+    height: 45px;
+    border: 1px solid lightgray;
+    outline: none;
+    padding: 8px;
+    color: #1F1F1F;
+    font-size: 16px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 7px;
+  }
+  .verdivurdering .content form .inputs-labels input:focus, .verdivurdering .content form .inputs-labels input:active {
+    border: 2px solid #f0a432;
+    cursor: text;
+    background: rgb(255, 255, 255);
+  }
+  .verdivurdering .content form .inputs-labels input::-moz-placeholder {
+    color: #1F1F1F;
+    opacity: 0.6;
+  }
+  .verdivurdering .content form .inputs-labels input::placeholder {
+    color: #1F1F1F;
+    opacity: 0.6;
+  }
+  .verdivurdering .content form .inputs-labels .checkbox {
+    display: flex;
+    align-items: center;
+    margin-top: 18px;
+    margin-bottom: 15px;
+  }
+  .verdivurdering .content form .inputs-labels .checkbox p {
+    margin-bottom: 0;
+    margin-left: 15px;
+    font-size: 14px;
+    color: #1F1F1F;
+  }
+  .verdivurdering .content form .inputs-labels .checkbox p a {
+    text-decoration: underline;
+  }
+  .verdivurdering .content form .inputs-labels .checkbox input {
+    width: 20px;
+    height: 20px;
+  }
+  .verdivurdering .content form .form-actions button {
+    border: 1px solid transparent;
+    border-radius: 6px;
+    outline: none;
+    background: linear-gradient(to bottom right, #f0a432, #ffb649);
+    color: white;
+    font-weight: 500;
+    font-size: 17px;
+    width: 100%;
+    display: block;
+    height: 46px;
+    margin-top: 32px;
   }
 }/*# sourceMappingURL=base.css.map */

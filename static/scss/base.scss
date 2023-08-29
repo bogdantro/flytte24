@@ -129,6 +129,9 @@ $txt: #183b56;
         font-size: 25px;
         font-weight: 500;
       }
+      #onlyOnDes{
+        display: none;
+      }
     }
     form{
       background: white;
@@ -679,7 +682,7 @@ $txt: #183b56;
       .cover-image{
         filter: brightness(100%);
         display: block;
-        width: 550px;
+        width: 520px;
         height: auto;
         position: unset;
         margin: -100px;
@@ -728,5 +731,203 @@ $txt: #183b56;
         }
       }
     }
-}
+  }
+  .sell-with-us{
+    width: 100%;
+    height: auto;
+    padding-block: 120px;
+    padding-top: 50px;
+    position: relative;
+    .content{
+      padding-inline: 35px;
+      position: relative;
+      .text{
+        text-align: center;
+        margin-top: 28px;
+        h1{
+          color: $black;
+          font-size: 34px;
+          font-weight: 600;
+          margin-bottom: 10px;
+        }
+      }
+      .video{
+        margin-inline: auto;
+        margin-top: 35px;
+        width: 420px;
+        height: 190px;
+        background: lightgray;
+      }
+    }
+  }
+  .verdivurdering{
+    margin-top: 25px;
+    width: 100%;
+    height: auto;
+    position: relative;
+    .content{
+      padding-inline: 80px;
+      padding-top: 65px;
+      padding-bottom: 120px;
+      position: relative;
+      background: $primBtn;
+      display: flex;
+      justify-content: space-between;
+      .text{
+        text-align: left;
+        margin-top: 28px;
+        h1{
+          color: white;
+          font-size: 34px;
+          font-weight: 600;
+          margin-bottom: -10px;
+        }
+        h2{
+          color: white;
+          font-size: 27px;
+          font-weight: 500;
+        }
+        #onlyOnDes{
+          display: block;
+          margin-top: 30px;
+          .check{
+            display: flex;
+            margin-bottom: 25px;
+            i{
+              color: #1efa1e;
+              background: #e0fae0;
+              border-radius: 100%;
+              padding: 10px;
+              font-size: 24px;
+            }
+            p{
+              color: white;
+              font-weight: 500;
+              font-size: 19px;
+              margin-left: 15px;
+              transform: translateY(8px);
+            }
+          }
+        }
+      }
+      form{
+        background: white;
+        border-radius: 12px;
+        padding-inline: 30px;
+        padding-block: 13px;
+        padding-bottom: 23px;
+        margin-top: 25px;
+        width: 380px;
+        margin-inline: auto;
+        .inputs-labels{
+            .step-one{
+                input{
+                    height: 54px;
+                    border-radius: 12px;
+                    text-align: center;
+                    font-size: 23px;
+                    &:focus, &:active{
+                        border: 1px solid rgb(172, 172, 172);
+                        cursor: text;
+                        background: rgba(255,255,255,1);
+                    }
+                    &::placeholder{
+                        font-size: 23px;
+                    }
+                }
+                .reg-nr{
+                    display: flex;
+                    position: relative;
+                    input{
+                        text-transform: uppercase;
+                    }
+                    img{
+                        position: absolute;
+                        left: 0;
+                        height: 54px;
+                        width: auto;
+                        border-bottom-left-radius: 12px;
+                        border-top-left-radius: 12px;
+                    }
+                }
+                .km{
+                    position: relative;
+                    display: flex;
+                    p{
+                        position: absolute;
+                        right: 11px;
+                        bottom: -5px;
+                        color: $black;
+                        opacity: 0.95;
+                        font-size: 16px;
+                        font-weight: 500;
+                    }
+                }
+            }
+            label{
+                font-size: 16px;
+                color: $black;
+                font-weight: 500;
+            }
+            input{
+                width: 100%;
+                height: 45px;
+                border: 1px solid lightgray;
+                outline: none;
+                padding: 8px;
+                color: $black;
+                font-size: 16px;
+                cursor: pointer;
+                background: rgba(255,255,255,0.7);
+                border-radius: 7px;
+                &:focus, &:active{
+                    border: 2px solid $primBtn;
+                    cursor: text;
+                    background: rgba(255,255,255,1);
+                }
+                &::placeholder{
+                    color: $black;
+                    opacity: 0.6;
+                }
+            }
+            .checkbox{
+                display: flex;
+                align-items: center;
+                margin-top: 18px;
+                margin-bottom: 15px;
+                p{
+                    margin-bottom: 0;
+                    margin-left: 15px;
+                    font-size: 14px;
+                    color: $black;
+                    a{
+                        text-decoration: underline;
+                    }
+                }
+                input{
+                    width: 20px;
+                    height: 20px;
+                }
+            }
+    
+        }
+        .form-actions{
+            button{
+                border: 1px solid transparent;
+                border-radius: 6px;
+                outline: none;
+                background: linear-gradient(to bottom right, $primBtn, #ffb649);
+                color: white;
+                font-weight: 500;
+                font-size: 17px;
+                width: 100%;
+                display: block;
+                height: 46px;
+                margin-top: 32px;
+              }
+        }
+      }  
+    }
+  }
+  
 }

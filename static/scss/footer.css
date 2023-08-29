@@ -110,66 +110,68 @@
 #footerMob .bottom .social-icons i:hover {
   color: #f0a432;
 }
-#footerMob #newsletter {
-  margin-bottom: 15px;
-  width: 100%;
-  height: auto;
-  border-radius: 4px;
-  padding: 32px 30px;
-  background-color: white;
-  text-align: center;
-}
-#footerMob #newsletter h1 {
-  transform: translateY(-10px);
-  color: #183B56;
-  text-shadow: 1px 0 #183B56;
-  letter-spacing: 1px;
-  font-size: 26.5px;
-  font-weight: 800;
-}
-#footerMob #newsletter .content input {
-  border-radius: 0;
-  padding: 5px;
-  border: none;
-  border-bottom: 2px solid rgba(211, 211, 211, 0.611);
-  outline: none;
-  color: #183B56;
-  font-size: 13px;
-  width: 82%;
-  max-width: 500px;
-  font-weight: 600;
-  height: 45px;
-  cursor: pointer;
-}
-#footerMob #newsletter .content input:hover {
-  filter: brightness(95%);
-}
-#footerMob #newsletter .content button {
-  border: none;
-  outline: none;
-  background: transparent;
-}
-#footerMob #newsletter .content button i {
-  transform: translateX(-20px) translateY(2px);
-  z-index: 1000;
-  font-size: 22px;
-  color: #183B56;
-  cursor: pointer;
-  transition: 0.2s;
-}
-#footerMob #newsletter .content button i:hover {
-  filter: brightness(95%);
-}
-#footerMob #newsletter .content button i:focus {
-  cursor: unset;
-  filter: brightness(100%);
-}
-#footerMob #newsletter #footerNewsLetterAlert {
-  margin-top: 15px;
-}
 
 @media only screen and (min-device-width: 1140px) {
-  #footer {
-    display: none;
+  #footerMob {
+    padding-inline: 35px;
+  }
+  #footerMob .hours {
+    background: rgb(242, 242, 242);
+    width: 380px;
+    padding: 13px 8px;
+    height: -moz-max-content;
+    height: max-content;
+  }
+  #footerMob .hours .info-heading {
+    color: #1F1F1F;
+    font-size: 19px;
+    margin-bottom: 3px;
+    font-weight: 500;
+  }
+  #footerMob .hours a {
+    display: block;
+    color: #1F1F1F;
+    font-size: 17px;
+    width: -moz-max-content;
+    width: max-content;
+    padding-right: 5px;
+    margin-block: 8px;
+  }
+  #footerMob .hours a:first-child {
+    margin-top: 0;
+  }
+  #footerMob .flex {
+    display: flex;
+  }
+  #footerMob .flex hr {
+    display: none !important;
+  }
+  #footerMob .flex .links {
+    transform: translateX(80px);
+  }
+  #footerMob .flex .contact-info {
+    transform: translateX(40px);
+  }
+  #footerMob .bottom {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    opacity: 0.85;
+  }
+  #footerMob .bottom .copyright {
+    color: #1F1F1F;
+    font-size: 14px;
+  }
+  #footerMob .bottom .social-icons i {
+    color: #1F1F1F;
+    font-size: 24px;
+    margin-inline: 2px;
+    padding: 8px;
+    transition: 0.2s;
+    cursor: pointer;
+  }
+  #footerMob .bottom .social-icons i:hover {
+    color: #f0a432;
   }
 }/*# sourceMappingURL=footer.css.map */

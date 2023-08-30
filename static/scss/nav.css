@@ -116,12 +116,14 @@
   #desNav {
     display: flex;
     width: 100%;
+    max-width: 1251px;
     height: 80px;
     justify-content: space-between;
     align-items: center;
     position: fixed;
     top: 0;
-    left: 0;
+    left: 50%;
+    transform: translateX(-50%);
     background: transparent;
     padding-inline: 35px;
     z-index: 10000;

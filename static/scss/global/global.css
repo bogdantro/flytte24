@@ -12,6 +12,7 @@ html, body {
   scroll-behavior: smooth;
   margin: auto;
   background: rgb(248, 248, 248);
+  max-width: 1250px;
 }
 
 .page {

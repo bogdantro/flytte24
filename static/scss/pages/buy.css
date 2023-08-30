@@ -18,11 +18,13 @@
 }
 .page .buy .cars .car {
   margin-bottom: 35px;
+  width: 95%;
+  margin-inline: auto;
 }
 .page .buy .cars .car .top .car-image {
   border-radius: 6px;
   width: 100%;
-  height: 190px;
+  height: auto;
   -o-object-fit: cover;
      object-fit: cover;
 }
@@ -32,28 +34,25 @@
   font-size: 17px;
   font-weight: 500;
 }
+.page .buy .cars .car .bottom .adress {
+  margin-top: 4px;
+  color: #1F1F1F;
+  font-size: 15px;
+  font-weight: 400;
+}
 .page .buy .cars .car .bottom .flex {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding-inline: 5px;
   padding-top: 10px;
 }
-.page .buy .cars .car .bottom .flex .year {
-  padding: 8px 10px;
+.page .buy .cars .car .bottom .flex .price {
   color: #1F1F1F;
-  font-size: 16px;
-  border-radius: 100%;
+  font-size: 20px;
+  font-weight: 500;
 }
 .page .buy .cars .car .bottom .flex .km {
-  padding: 8px 10px;
   color: #1F1F1F;
-  font-size: 16px;
-  border-radius: 100%;
-}
-.page .buy .cars .car .bottom .flex .price {
-  padding: 8px 10px;
-  color: #1F1F1F;
-  font-size: 16px;
-  border-radius: 100%;
+  font-size: 19px;
+  font-weight: 500;
+  margin-left: 15px;
 }/*# sourceMappingURL=buy.css.map */

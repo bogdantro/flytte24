@@ -133,17 +133,20 @@ $txt: #183b56;
     #desNav{
         display: flex;
         width: 100%;
+        max-width: 1251px;
         height: 80px;
         justify-content: space-between;
         align-items: center;
         position: fixed;
         top: 0;
-        left: 0;
+        left: 50%;
+        transform: translateX(-50%);
         background: transparent;
         padding-inline: 35px;
         z-index: 10000;
         transition: .2s;
         border-bottom: 1px solid transparent;
+        
         &.sticky{
             background: white;
             border-bottom: 1px solid rgba(100,100,100,0.15);

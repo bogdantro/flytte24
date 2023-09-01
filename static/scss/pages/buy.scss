@@ -24,6 +24,7 @@ $txt: #183b56;
                 margin-bottom: 35px;
                 width: 95%;
                 margin-inline: auto;
+                height: auto;
                 .top{
                     .car-image{
                         border-radius: 6px;
@@ -54,13 +55,6 @@ $txt: #183b56;
                             font-size: 20px;
                             font-weight: 500;
                         }
-                        .km{
-                            color: $black;
-                            font-size: 19px;
-                            font-weight: 500;
-                            margin-left: 15px;
-                        }
-           
                     }
                 }
             }

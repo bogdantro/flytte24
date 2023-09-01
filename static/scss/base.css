@@ -393,6 +393,9 @@
   font-weight: 600;
   margin-bottom: 10px;
 }
+.services .content .text #onlyOnDes {
+  display: none;
+}
 .services .content .flex {
   margin-top: 20px;
 }

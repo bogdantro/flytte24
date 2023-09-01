@@ -17,6 +17,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('', home, name='home'),
+    path('søke-resultater/', home_page_search, name='home_page_search'),
     path('selg-bilen/', sell, name='sell'),
     path('selg-bilen/book-time/', book_time, name='book_time'),
     path('selg-bilen/book-time/avbestill-time/', un_book, name='un_book'),

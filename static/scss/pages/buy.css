@@ -20,6 +20,7 @@
   margin-bottom: 35px;
   width: 95%;
   margin-inline: auto;
+  height: auto;
 }
 .page .buy .cars .car .top .car-image {
   border-radius: 6px;
@@ -49,10 +50,4 @@
   color: #1F1F1F;
   font-size: 20px;
   font-weight: 500;
-}
-.page .buy .cars .car .bottom .flex .km {
-  color: #1F1F1F;
-  font-size: 19px;
-  font-weight: 500;
-  margin-left: 15px;
 }/*# sourceMappingURL=buy.css.map */

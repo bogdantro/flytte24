@@ -1,4 +1,5 @@
 import warnings
+import random
 from urllib import *
 from django.shortcuts import *
 
@@ -26,7 +27,7 @@ from django.http import HttpResponseForbidden
 from django.conf import settings
 from datetime import date
 from django.contrib.auth.models import User
-
+from apps.store.models import *
 
 def home(request):      
     mapbox_access_token = settings.MAP_BOX_ACCESS_TOKEN 
@@ -183,3 +184,25 @@ def salgvilkaar(request):
 
 def price(request):
     return render(request, 'pages/prices/price.html')
+
+
+
+@csrf_exempt
+def home_page_search(request):
+    query = request.GET.get('q','')
+    if query:
+        queryset = (
+            Q(name__icontains=query) |
+            Q(car_model__icontains=query) |
+            Q(description__icontains=query) |
+            Q(adress__icontains=query)
+        )
+
+        results = Car.objects.filter(queryset)
+    else:
+       results = []
+    return render(request, 'core/buy.html', {'results':results, 'query':query})
+
+    #You can also set context = {'results':results, 'query':query} after 
+    #the else: (same indentation as return statement), and 
+    #use render(request, 'home.html', context) if you prefer. 

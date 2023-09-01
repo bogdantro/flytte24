@@ -7,6 +7,34 @@
 
 
 <div class="page">
+    {% if query %}
+
+    <div class="buy">
+        <div class="text">
+            <h1>Biler til salgs</h1>
+            <h2 style="font-size: 24px; margin-top: 6px;">Du søkte for <strong>{{query}}</strong></h2>
+        </div>
+        <div class="cars">
+            {% for car in results %}
+            <div class="car">
+                <div class="top">
+                    <img src="{{car.image1.url}}" alt="" class="car-image" onclick="window.location.href='{% url  'car_detail' car.slug  %}'">
+                </div>
+                <div class="bottom">
+                      <div class="name"><strong style="font-weight: 600 !important;">{{car.year}} {{car.name}}</strong> {{car.car_model}}|{{car.km}}km</div>
+                      <!-- <div class="adress">{{car.adress}}</div> -->
+                      <div class="flex">
+                            <div class="price">{{car.price}}kr</div>
+                      </div>
+                </div>
+            </div>
+            {% empty %}
+            <h1 style="text-align: center; color: black; font-size: 27px; font-weight: 500;">Ingen biler funnet</h1>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% else %}
     <div class="buy">
         <div class="text">
             <h1>Biler til salgs</h1>
@@ -18,17 +46,17 @@
                     <img src="{{car.image1.url}}" alt="" class="car-image" onclick="window.location.href='{% url  'car_detail' car.slug  %}'">
                 </div>
                 <div class="bottom">
-                      <div class="name"><strong style="font-weight: 600 !important;">{{car.year}} {{car.name}}</strong> {{car.car_model}}</div>
+                      <div class="name"><strong style="font-weight: 600 !important;">{{car.year}} {{car.name}}</strong> {{car.car_model}}|{{car.km}}km</div>
                       <!-- <div class="adress">{{car.adress}}</div> -->
                       <div class="flex">
                             <div class="price">{{car.price}}kr</div>
-                            <div class="km">{{car.km}}km</div>
                       </div>
                 </div>
             </div>
             {% endfor %}
         </div>
     </div>
+    {% endif %}
 </div>
 
 {% endblock %}

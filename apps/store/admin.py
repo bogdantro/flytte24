@@ -21,7 +21,7 @@ class CarPostAdminForm(forms.ModelForm):
 class CarPostAdmin(admin.ModelAdmin):
     form = CarPostAdminForm
 
-    list_display = ['id', 'car_brand', 'car_model', 'price']
+    list_display = ['id', 'name', 'car_brand', 'car_model', 'price']
     search_fields = ('id', 'name', 'car_brand', 'car_model', 'km')
 
 

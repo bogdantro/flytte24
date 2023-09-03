@@ -13,26 +13,6 @@ window.addEventListener("scroll", function(){
 
 
 
-function search(){
-  const search = document.getElementById('mobSidebarSearch');
-  const hamburger = document.getElementById('hamburger');
-  const navbar = document.getElementById('mobileNav');
-
-  if (window.getComputedStyle(search,null).getPropertyValue("opacity") == '0'){
-    search.classList.add('active');
-    navbar.classList.add('search')
-    hamburger.style.pointerEvents = 'none';
-    document.body.style.overflow = "hidden";
-    document.documentElement.style.overflow = "hidden";
-  }else{
-    search.classList.remove('active');
-    navbar.classList.remove('search')
-    hamburger.style.pointerEvents = 'visible';
-    document.body.style.overflow = "scroll";
-    document.documentElement.style.overflow = "scroll";
-  }
-}  
-
 
 
 
@@ -42,7 +22,6 @@ function menu(){
   const sidebar = document.getElementById('sidebar');
   const navbar = document.getElementById('mobileNav');
   const hamburger = document.getElementById('hamburger');
-  const search = document.getElementById('mobNavSearchIcon');
 
   const dropdown = document.getElementById('sidebarServDrop');
 
@@ -52,11 +31,9 @@ function menu(){
     navbar.classList.add('menu')  
     hamburger.classList.add('click')  
     sidebar.classList.add('active')
-    search.style.pointerEvents = 'none';
     body.style.overflowY = 'hidden';
     dropdown.classList.remove('active')
   } else{
-    search.style.pointerEvents = 'visible';
     navbar.classList.remove('menu') 
     hamburger.classList.remove('click')  
     sidebar.classList.remove('active')

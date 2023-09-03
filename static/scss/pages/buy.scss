@@ -18,10 +18,90 @@ $txt: #183b56;
                 font-weight: 500;
             }
         }
+        .form-flex{
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            background: white;
+            border-radius: 4px;
+            border: 1px solid rgba(0,0,0,0.1);
+            padding: 14px 7px;
+            margin-top: 25px;
+            #searchForm{
+                display: flex;
+                width: 60%;
+                position: relative;
+                input{
+                    border: none;
+                    border-right: 1px solid rgba(0,0,0,0.1);
+                    outline: none;
+                    background: transparent;
+                    margin-left: 45px;
+                    color: $black;
+                    font-size: 16px;
+                    width: 70%;
+                }
+                i{
+                    padding: 6px;
+                    margin: -6px;
+                    border-radius: 100%;
+                    background: rgba(155, 155, 155, 0.22);
+                    font-size: 14px;
+                    color: #183b56a9;
+                    position: absolute;
+                    left: 9px;
+                    top: 5px;
+                }
+            }
+            #buyFilter{
+                background: transparent;
+                position: relative;
+                width: 40%;
+                .sort{
+                    font-size: 16px;
+                    color: $black;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    i{
+                        font-size: 16px;
+                        transform: translateX(-10px);
+                    }
+                }
+                #filterChoices{
+                    background: white;
+                    width: max-content;
+                    height: max-content;
+                    padding: 10px;
+                    border: 1px solid rgba(0,0,0,0.1);
+                    border-radius: 4px;
+                    position: absolute;
+                    top: 20px;
+                    right: 0;
+                    opacity: 0;
+                    pointer-events: none;
+                    transition: .2s;
+                    text-align: left !important;
+                    div{
+                        color: $black;
+                        font-size: 15px;
+                        padding: 8px;
+                        &:hover{
+                            background: #fffaf3;
+                        }
+                    }
+                    &.active{
+                        top: 40px;
+                        opacity: 1;
+                        pointer-events: visible;
+                    }
+                }
+            }
+        }
         .cars{
-            padding-top: 50px;
+            padding-top: 35px;
             .car{
-                margin-bottom: 35px;
+                margin-bottom: 60px;
                 width: 95%;
                 margin-inline: auto;
                 height: auto;

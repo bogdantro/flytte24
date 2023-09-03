@@ -7,46 +7,36 @@
 
 
 <div class="page">
-    {% if query %}
-
     <div class="buy">
         <div class="text">
             <h1>Biler til salgs</h1>
-            <h2 style="font-size: 24px; margin-top: 6px;">Du søkte for <strong>{{query}}</strong></h2>
+        </div>
+        <div class="form-flex">
+            <form id="searchForm" action="{% url 'home_page_search' %}" method="GET">
+                {% csrf_token %}
+                <i onclick="search()" class="fa-solid fa-magnifying-glass"></i><input name="q" type="text" id="mobNavSearchInput" placeholder="Søk">
+            </form>
+            <form method="get" id="buyFilter">
+                <input name="price_order" id="price_order" style="display: none;">
+                <div onclick="showSort()" class="sort">Sorter<i class="fa-solid fa-chevron-down"></i></div>
+                    <div id="filterChoices">
+                        <div onclick="filterHighToLow()">Pris: høy til lav</div>
+                        <div onclick="filterLowToHigh()">Pris: lav til høy</div>
+                        <div onclick="filterNewestToOldest()">Alder: nyest til eldst</div>
+                        <div onclick="filterOldestToNewest()">Alder: eldst til nyest</div>
+                        <div onclick="filterKmHighToLow()">Km: høy til lav</div>
+                        <div onclick="filterKmLowToHigh()">Km: lav til høy</div>
+                    </div>
+            </form>
         </div>
         <div class="cars">
-            {% for car in results %}
+            {% for car in cars %}
             <div class="car">
                 <div class="top">
                     <img src="{{car.image1.url}}" alt="" class="car-image" onclick="window.location.href='{% url  'car_detail' car.slug  %}'">
                 </div>
                 <div class="bottom">
-                      <div class="name"><strong style="font-weight: 600 !important;">{{car.year}} {{car.name}}</strong> {{car.car_model}}|{{car.km}}km</div>
-                      <!-- <div class="adress">{{car.adress}}</div> -->
-                      <div class="flex">
-                            <div class="price">{{car.price}}kr</div>
-                      </div>
-                </div>
-            </div>
-            {% empty %}
-            <h1 style="text-align: center; color: black; font-size: 27px; font-weight: 500;">Ingen biler funnet</h1>
-            {% endfor %}
-        </div>
-    </div>
-
-    {% else %}
-    <div class="buy">
-        <div class="text">
-            <h1>Biler til salgs</h1>
-        </div>
-        <div class="cars">
-            {% for car in car %}
-            <div class="car">
-                <div class="top">
-                    <img src="{{car.image1.url}}" alt="" class="car-image" onclick="window.location.href='{% url  'car_detail' car.slug  %}'">
-                </div>
-                <div class="bottom">
-                      <div class="name"><strong style="font-weight: 600 !important;">{{car.year}} {{car.name}}</strong> {{car.car_model}}|{{car.km}}km</div>
+                      <div class="name"><strong style="font-weight: 600 !important;">{{car.year}} {{car.km}}km {{car.name}}</strong> {{car.car_model}}</div>
                       <!-- <div class="adress">{{car.adress}}</div> -->
                       <div class="flex">
                             <div class="price">{{car.price}}kr</div>
@@ -56,7 +46,91 @@
             {% endfor %}
         </div>
     </div>
-    {% endif %}
 </div>
 
+
+<script type="text/javascript">
+
+
+    function search(){
+        document.getElementById('searchForm').submit();
+    }
+
+
+    function showSort(){
+        if (window.getComputedStyle(document.getElementById('filterChoices'),null).getPropertyValue("opacity") == '0'){
+            document.getElementById('filterChoices').classList.add('active');
+        }else{
+            document.getElementById('filterChoices').classList.remove('active');
+        }
+
+    }
+
+    function filterHighToLow(){
+        const form = document.getElementById('buyFilter')
+        const price_order = document.getElementById('price_order')
+
+        price_order.value = "high_to_low";
+        console.log(price_order.value);
+        setTimeout(() => {
+            form.submit()
+        }, 300);
+    }
+
+    function filterLowToHigh(){
+        const form = document.getElementById('buyFilter')
+        const price_order = document.getElementById('price_order')
+
+        price_order.value = "low_to_high";
+        console.log(price_order.value);
+        setTimeout(() => {
+            form.submit()
+        }, 300);
+    }
+
+    function filterNewestToOldest(){
+        const form = document.getElementById('buyFilter')
+        const price_order = document.getElementById('price_order')
+
+        price_order.value = "newest_to_oldest";
+        console.log(price_order.value);
+        setTimeout(() => {
+            form.submit()
+        }, 300);
+    }
+
+    function filterOldestToNewest(){
+        const form = document.getElementById('buyFilter')
+        const price_order = document.getElementById('price_order')
+
+        price_order.value = "oldest_to_newest";
+        console.log(price_order.value);
+        setTimeout(() => {
+            form.submit()
+        }, 300);
+    }
+
+    function filterKmHighToLow(){
+        const form = document.getElementById('buyFilter')
+        const price_order = document.getElementById('price_order')
+
+        price_order.value = "km_high_to_low";
+        console.log(price_order.value);
+        setTimeout(() => {
+            form.submit()
+        }, 300);
+    }
+
+    function filterKmLowToHigh(){
+        const form = document.getElementById('buyFilter')
+        const price_order = document.getElementById('price_order')
+
+        price_order.value = "km_low_to_high";
+        console.log(price_order.value);
+        setTimeout(() => {
+            form.submit()
+        }, 300);
+    }
+
+</script>
 {% endblock %}

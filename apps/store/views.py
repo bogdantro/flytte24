@@ -78,10 +78,49 @@ def car_detail(request, slug):
     return render(request, 'core/product.html', context)
 
 def buy_car(request):
-    car = Car.objects.all() 
+    cars = Car.objects.all()
+
+    # Retrieve filtering options from query parameters
+    price_order = request.GET.get('price_order')
+
+    # Apply filters to the queryset
+    if price_order == 'high_to_low':
+        cars = cars.order_by('-price')
+    elif price_order == 'low_to_high':
+        cars = cars.order_by('price')
+
+    if price_order == 'newest_to_oldest':
+        cars = cars.order_by('-year')
+    elif price_order == 'oldest_to_newest':
+        cars = cars.order_by('year')
+
+    if price_order == 'km_high_to_low':
+        cars = cars.order_by('km')
+    elif price_order == 'km_low_to_high':
+        cars = cars.order_by('-km')
 
     context = {
-        'car': car,
+        'cars': cars,
     }
     return render(request, 'core/buy.html', context)
 
+
+@csrf_exempt
+def home_page_search(request):
+    query = request.GET.get('q','')
+    if query:
+        queryset = (
+            Q(name__icontains=query) |
+            Q(car_model__icontains=query) |
+            Q(description__icontains=query) |
+            Q(adress__icontains=query)
+        )
+
+        results = Car.objects.filter(queryset)
+    else:
+       results = []
+    return render(request, 'core/search-results.html', {'results':results, 'query':query})
+
+    #You can also set context = {'results':results, 'query':query} after 
+    #the else: (same indentation as return statement), and 
+    #use render(request, 'home.html', context) if you prefer. 

@@ -67,21 +67,16 @@
    </div>
   <div class="car">
     <div class="info">
+
       <div class="flex">
         {% if car.days_until_expiry > 0 %}
           {% if car.status == 'accepted' %}
           <div class="status" id="status" style="background: #ffc876;">Solgt</div>
-          {% else %}
-          <div class="status" id="status">Aktiv</div>
-          <div class="time-left">{{car.days_until_expiry}} dager igjen</div>
           {% endif %}
-  
-          {% else %}
-          <div class="status" id="status" style="background: #ff8686;">Uaktiv</div>
-          <div class="time-left">{{car.days_until_expiry}} dager igjen</div>
         {% endif %}
       </div>
-      <div class="name">{{car.name}}</div>
+
+      <div class="name"><strong style="font-weight: 600;">{{car.name}}</strong> {{ car.car_model }}</div>
       <div class="price">Pris {{car.price}} kr</div>
 
       <div class="table">

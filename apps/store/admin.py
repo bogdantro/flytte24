@@ -180,6 +180,16 @@ class CarPostAdmin(admin.ModelAdmin):
               'xenolys',
           )
       }),
+      ('Fører', {
+          'fields': (
+              'fjernlysassitent',
+              'lyssensor',
+              'parkeringsensor_bak',
+              'parkeringsensor_foran',
+              'regnesensor',
+              'ryggekamera',
+          )
+      }),
       ('Ekstra', {
           'fields': (
               'maks_tilhengervekt_i_kg',

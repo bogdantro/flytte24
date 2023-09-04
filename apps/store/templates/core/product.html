@@ -201,14 +201,31 @@
 
         <p style="margin-bottom: 10px; margin-top: 30px; color: black; font-size: 16px; opacity: 0.7;">Eksteriør</p>
         {% if car.elektriske_speil %}<li>Elektriske speil</li>{% endif %}
-
+        {% if car.helårsdekk %}<li>Helårsdekk</li>{% endif %}
+        {% if car.hengerfeste_eller_svingbart %}<li>Hengerfeste / Svingbart speil</li>{% endif %}
+        {% if car.LED_lys %}<li>LED lys</li>{% endif %}
+        {% if car.laserlys %}<li>Laserlys speil</li>{% endif %}
+        {% if car.lasterholdere_eller_skistativ %}<li>Lasterholdere / Skistativ</li>{% endif %}
+        {% if car.lettmet_felg_sommer %}<li>Lettmet felg sommer</li>{% endif %}
+        {% if car.lettmet_felg_vinter %}<li>Lettmet felg vinter</li>{% endif %}
+        {% if car.metalic_lakk %}<li>Metalic lakk</li>{% endif %}
+        {% if car.sommerhjul %}<li>Sommerhjul</li>{% endif %}
+        {% if car.vinterhjul %}<li>Vinterhjul</li>{% endif %}
+        {% if car.takrails %}<li>Takrails</li>{% endif %}
+        {% if car.xenolys %}<li>Xenolys</li>{% endif %}
 
         <p style="margin-bottom: 10px; margin-top: 30px; color: black; font-size: 16px; opacity: 0.7;">Fører</p>
+        {% if car.fjernlysassitent %}<li>Fjernlysassitent</li>{% endif %}
+        {% if car.lyssensor %}<li>Lyssensor</li>{% endif %}
+        {% if car.parkeringsensor_bak %}<li>Parkeringsensor bak</li>{% endif %}
+        {% if car.parkeringsensor_foran %}<li>Parkeringsensor foran</li>{% endif %}
+        {% if car.regnesensor %}<li>Regnesensor</li>{% endif %}
+        {% if car.ryggekamera %}<li>Ryggekamera</li>{% endif %}
 
       </div>
 
       <div class="second-info">
-        <p style="margin-bottom: 10px; margin-top: 25px; color: black; font-size: 20px;">Beskrivelse</p>
+        <p style="margin-bottom: 10px; margin-top: 45px; color: black; font-size: 20px;">Beskrivelse</p>
           {{car.description|safe}}
       </div>
 

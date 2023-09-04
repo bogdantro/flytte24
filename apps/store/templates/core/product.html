@@ -143,13 +143,67 @@
       </div>
 
       <div class="second-info">
-        <p style="margin-bottom: 10px; margin-top: 25px; color: black; font-size: 15px; opacity: 0.7;">Beskrivelse</p>
+        <p style="margin-bottom: 10px; margin-top: 25px; color: black; font-size: 20px;">Beskrivelse</p>
           {{car.description|safe}}
       </div>
 
       <div class="third-info">
-        <p style="margin-bottom: 10px; margin-top: 25px; color: black; font-size: 15px; opacity: 0.7;">Utstyr</p>
+        <p style="margin-bottom: 10px; margin-top: 35px; color: black; font-size: 20px;">Utstyr</p>
+        <p style="margin-bottom: 10px; margin-top: 15px; color: black; font-size: 16px; opacity: 0.7;">Sikkerhet</p>
+        {% if car.ABS_bremser %}<li>ABS bremser</li>{% endif %}
+        {% if car.airbag_foran %}<li>Airbag foran</li>{% endif %}
+        {% if car.gjenfinningssystem %}<li>Gjenfinningssystem</li>{% endif %}
+        {% if car.isofix %}<li>Isofix</li>{% endif %}
+        {% if car.sentrallås %}<li>Sentrallås</li>{% endif %}
+        {% if car.sideairbager %}<li>Sideairbager</li>{% endif %}
+        {% if car.startsperre %}<li>Startsperre</li>{% endif %}
         
+        <p style="margin-bottom: 10px; margin-top: 30px; color: black; font-size: 16px; opacity: 0.7;">Media</p>
+        {% if car.AUX_inngang %}<li>AUX inngang</li>{% endif %}
+        {% if car.bluetooth %}<li>Bluetooth</li>{% endif %}
+        {% if car.CD_spiller %}<li>CD spiller</li>{% endif %}
+        {% if car.handsfree_opplegg %}<li>Handsfree</li>{% endif %}
+        {% if car.head_up_display %}<li>Head up display</li>{% endif %}
+        {% if car.kassetspiller %}<li>Kassetspiller</li>{% endif %}
+        {% if car.multifunksjonsratt %}<li>Multifunksjonsratt</li>{% endif %}
+        {% if car.navigasjonssystem %}<li>Navigasjonssystem</li>{% endif %}
+        {% if car.original_telefon %}<li>Original telefon</li>{% endif %}
+        {% if car.radio_DAB %}<li>Radio DAB</li>{% endif %}
+        {% if car.radio_FM %}<li>Radio FM</li>{% endif %}
+        {% if car.TV_skjerm_i_baksetet %}<li>TV skjerm i baksetet</li>{% endif %}
+        
+        <p style="margin-bottom: 10px; margin-top: 30px; color: black; font-size: 16px; opacity: 0.7;">Motor</p>
+        {% if car.antiskrens %}<li>Antiskrens</li>{% endif %}
+        {% if car.antispin %}<li>Antispin</li>{% endif %}
+        {% if car.diesel_partikkelfilter %}<li>Diesel partikkelfilter</li>{% endif %}
+        {% if car.diffsperre %}<li>Diffsperre</li>{% endif %}
+        {% if car.kjørecomputer %}<li>Kjørecomputer</li>{% endif %}
+        {% if car.servostyring %}<li>Servostyring</li>{% endif %}
+
+        <p style="margin-bottom: 10px; margin-top: 30px; color: black; font-size: 16px; opacity: 0.7;">Interior</p>
+        {% if car.elvinduer %}<li>El vinduer</li>{% endif %}
+        {% if car.mørke_ruter_bak %}<li>mørke ruter bak</li>{% endif %}
+        {% if car.seter_i_delskinn %}<li>Seter i delskinn</li>{% endif %}
+        {% if car.seter_i_helskinn %}<li>Seter i helskinn</li>{% endif %}
+        {% if car.soltak_eller_glasstak %}<li>Soltak / Glasstak</li>{% endif %}
+        {% if car.sportsseter %}<li>Sportsseter</li>{% endif %}
+
+        <p style="margin-bottom: 10px; margin-top: 30px; color: black; font-size: 16px; opacity: 0.7;">Komfort</p>
+        {% if car.air_Condition %}<li>Air Condition</li>{% endif %}
+        {% if car.bagasjeromstrekk %}<li>Bagasjeromstrekk</li>{% endif %}
+        {% if car.cruisekontroll %}<li>Cruisekontroll</li>{% endif %}
+        {% if car.cruisekontroll_Adaptiv %}<li>Cruisekontroll Adaptiv</li>{% endif %}
+        {% if car.elektrisk_sete_med_memory %}<li>Elektrisk sete med memory</li>{% endif %}
+        {% if car.elektrisk_sete_uten_memory %}<li>Elektrisk sete uten memory</li>{% endif %}
+        {% if car.klimaanlegg %}<li>Klimaanlegg</li>{% endif %}
+        {% if car.kupevarmer %}<li>Kupevarmer</li>{% endif %}
+        {% if car.luftfjæring %}<li>Luftfjæring</li>{% endif %}
+        {% if car.midtarmlene %}<li>Midtarmlene</li>{% endif %}
+        {% if car.motorvarmer %}<li>Motorvarmer</li>{% endif %}
+        {% if car.nivåregulering %}<li>Nivåregulering</li>{% endif %}
+        {% if car.nøkkelløs_start %}<li>Nøkkelløs start</li>{% endif %}
+        {% if car.oppvarmende_seter %}<li>Oppvarmende seter</li>{% endif %}
+
       </div>
 
     </div>

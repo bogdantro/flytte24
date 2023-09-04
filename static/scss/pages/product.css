@@ -1,3 +1,4 @@
+@charset "UTF-8";
 #mobileNav {
   background: white !important;
   border-bottom: 1px solid rgba(100, 100, 100, 0.15) !important;
@@ -131,6 +132,21 @@
   font-size: 17px;
   color: #1F1F1F;
   margin-bottom: 2px;
+}
+.page .car .info .third-info li {
+  transform: translateX(30px);
+  font-size: 17px;
+  list-style: none;
+}
+.page .car .info .third-info li::before {
+  content: "•"; /* Add content: \2022 is the CSS Code/unicode for a bullet */
+  color: #f0a432; /* Change the color */
+  font-weight: bold; /* If you want it to be bold */
+  display: inline-block; /* Needed to add space between the bullet and the text */
+  width: 1em; /* Also needed for space (tweak if needed) */
+  margin-left: -1em; /* Also needed for space (tweak if needed) */
+  font-size: 24px;
+  transform: translateY(2px);
 }
 .page .car .actions {
   width: 100%;

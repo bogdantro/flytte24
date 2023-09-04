@@ -89,6 +89,18 @@
       <p style="margin-bottom: 0; margin-top: 15px; color: black; font-size: 15px; opacity: 0.7;">Pris</p>
       <div class="price">{{car.price}} kr</div>
 
+      <div class="actions">
+        {% if request.user == car.user %}
+        {% else %}
+          {% if highest_bid.status == 'accepted' %}
+          {% else %}
+          <button onclick="testDrive()" class="secondary">Prøvekjøring</button>
+          <button onclick="contactOwner()" class="secondary">Kontakt eier</button>
+          <button onclick="makeBid()" class="secondary">Gi bud</button>
+          <button onclick="confirmBuy()">Kjøp bilen</button>
+          {% endif %}
+         {% endif %}
+      </div>
 
       <div class="first-info">
         
@@ -131,18 +143,15 @@
       </div>
 
       <div class="second-info">
-          {{car.description}}
+        <p style="margin-bottom: 10px; margin-top: 25px; color: black; font-size: 15px; opacity: 0.7;">Beskrivelse</p>
+          {{car.description|safe}}
       </div>
 
-    </div>
-    <div class="actions">
-      {% if request.user == car.user %}
-      {% else %}
-      <button onclick="testDrive()" class="secondary">Prøvekjøring</button>
-       <button onclick="contactOwner()" class="secondary">Kontakt eier</button>
-       <button onclick="makeBid()" class="secondary">Gi bud</button>
-       <button onclick="confirmBuy()">Kjøp bilen</button>
-       {% endif %}
+      <div class="third-info">
+        <p style="margin-bottom: 10px; margin-top: 25px; color: black; font-size: 15px; opacity: 0.7;">Utstyr</p>
+        
+      </div>
+
     </div>
 
     <form id="testDrive" action="" method="POST">

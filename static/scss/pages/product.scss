@@ -91,43 +91,46 @@ $txt: #183b56;
             }
             .name{
                 margin-top: 10px;
-                font-size: 19px;
+                font-size: 22px;
                 color: $black;
                 font-weight: 500;
             }
             .price{
-                width: 100%;
-                height: 41px;
-                color: $primBtn;
-                border: 1px solid $primBtn;
-                background: #ffeacb4b;
-                font-size: 16px;
+                color: $black;
+                font-size: 22px;
                 font-weight: 500;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                border-radius: 7px;
-                margin-top: 12px;
+                margin-top: 3px;
             }
-            .table{
-                padding-block: 12px;
-                padding-top: 25px;
-                width: 100%;
-                padding-inline: 20px;
-                .row{
-                    width: 100%;
-                    display: flex;
-                    align-items: center;
-                    padding-bottom: 2px;
-                    margin-bottom: 6px;
-                    border-bottom: 2px solid rgba(0,0,0,0.3);
-                    p{
+           .first-info{
+            background: hsla(36, 100%, 90%, 0.484);
+            width: 100%;
+            height: auto;
+            padding: 20px;
+            position: absolute;
+            left: 0;
+            transform: translateY(25px);
+            display: flex;
+            flex-wrap: wrap;
+            .info{
+                display: flex;
+                width: 50%;
+                flex: 50%;
+                .left{
+                    i{
                         color: $black;
-                        font-size: 16px;
-                        margin-bottom: 0
+                        font-size: 27px;
+                    }
+                }
+                .right{
+                    margin-left: 22px;
+                    p{
+                        font-size: 17px;
+                        color: $black;
+                        margin-bottom: 2px;
                     }
                 }
             }
+           }
         }
         .actions{
             width: 100%;

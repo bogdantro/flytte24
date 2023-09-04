@@ -683,7 +683,7 @@
   .cover .content .cover-image {
     filter: brightness(100%);
     display: block;
-    width: 520px;
+    width: 490px;
     height: auto;
     position: unset;
     margin: -100px;

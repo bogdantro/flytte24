@@ -22,7 +22,11 @@
 
  <div class="page">
   <div id="overlay"></div>
+
+
    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+
+
      <div class="carousel-inner">
        <div class="carousel-item active">
          <img class="pr-img" id="productImageSliderOne" src="{{car.image1.url}}" alt="{{car.name}} image1" draggable="false">
@@ -53,6 +57,8 @@
        </div>
        {% endif %}
      </div>
+
+
      {% if car.image2 %}
      <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -65,38 +71,69 @@
      {% else %}
      {% endif %}
    </div>
+
+
+
   <div class="car">
     <div class="info">
 
       <div class="flex">
         {% if car.days_until_expiry > 0 %}
-          {% if car.status == 'accepted' %}
+          {% if highest_bid.status == 'accepted' %}
           <div class="status" id="status" style="background: #ffc876;">Solgt</div>
           {% endif %}
         {% endif %}
       </div>
 
       <div class="name"><strong style="font-weight: 600;">{{car.name}}</strong> {{ car.car_model }}</div>
-      <div class="price">Pris {{car.price}} kr</div>
+      <p style="margin-bottom: 0; margin-top: 15px; color: black; font-size: 15px; opacity: 0.7;">Pris</p>
+      <div class="price">{{car.price}} kr</div>
 
-      <div class="table">
-        <div class="row">
-          <p style="font-weight: 600;">Årsmodell</p>
-          <p style="margin-left: 80px;">{{car.year}}</p>
+
+      <div class="first-info">
+        
+        <div class="info" style="margin-bottom: 30px;">
+          <div class="left"><i class="fa-regular fa-calendar-days"></i></div>
+          <div class="right">
+            <p>Modellår</p>
+            <p style="font-weight: 600;">{{car.year}}</p>
+          </div>
         </div>
-        <div class="row">
-          <p style="font-weight: 600;">Årsmodell</p>
-          <p style="margin-left: 80px;">{{car.year}}</p>
+        
+        <div class="info" style="margin-bottom: 30px;">
+          <div class="left"><i class="fa-solid fa-gauge-simple-high"></i></div>
+          <div class="right">
+            <p>Kilometer</p>
+            <p style="font-weight: 600;">{{car.km}}</p>
+          </div>
         </div>
-        <div class="row">
-          <p style="font-weight: 600;">Årsmodell</p>
-          <p style="margin-left: 80px;">{{car.year}}</p>
+        
+        <div class="info">
+          <div class="left"><i class="fa-solid fa-gear"></i></div>
+          <div class="right">
+            <p>Girkasse</p>
+            <p style="font-weight: 600;">{{car.girkasse}}</p>
+          </div>
         </div>
-        <div class="row">
-          <p style="font-weight: 600;">Årsmodell</p>
-          <p style="margin-left: 80px;">{{car.year}}</p>
+        
+        <div class="info">
+          <div class="left"><i class="fa-solid fa-gas-pump"></i></div>
+          <div class="right">
+            <p>Drivstoff</p>
+            <p style="font-weight: 600;">{{car.drivstoff}}</p>
+          </div>
         </div>
+
       </div>
+      
+      <div style="opacity: 0;">
+        <h1>Høyste bud</h1>her: {{highest_bid.bid_amount}} <h1>Dager igjen</h1>{{ highest_bid.days_until_expiry }} <p>OBS: her vil høyeste budet komme opp. Både prisen og dato til den går bort kan bli vist. Dette er valgfritt</p>
+      </div>
+
+      <div class="second-info">
+          {{car.description}}
+      </div>
+
     </div>
     <div class="actions">
       {% if request.user == car.user %}
@@ -237,9 +274,6 @@
     {% endif %}
 
   </div>
-    <hr>
-    <h1>Høyste bud</h1>her: {{highest_bid.bid_amount}} <h1>Dager igjen</h1>{{ highest_bid.days_until_expiry }} <p>OBS: her vil høyeste budet komme opp. Både prisen og dato til den går bort kan bli vist. Dette er valgfritt</p>
-<hr>
 
   </div>
 
@@ -320,12 +354,18 @@
       const text = document.getElementById('minPriceValue');
       const input = document.getElementById('bid_amount');
 
+      '{% if highest_bid.bid_amount %}'
       var bidAmount = parseInt('{{highest_bid.bid_amount}}');
-
       text.innerHTML = bidAmount + 1;
       input.value = bidAmount + 1
-
       input.min = bidAmount + 1
+      '{% else %}'
+      var bidAmount = '{{car.price}}';
+      text.innerHTML = bidAmount;
+      input.min = bidAmount 
+      input.value = bidAmount 
+      '{% endif %}'
+
     }
     minPriceValue();
 

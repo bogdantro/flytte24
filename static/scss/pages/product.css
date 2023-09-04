@@ -94,42 +94,43 @@
 }
 .page .car .info .name {
   margin-top: 10px;
-  font-size: 19px;
+  font-size: 22px;
   color: #1F1F1F;
   font-weight: 500;
 }
 .page .car .info .price {
-  width: 100%;
-  height: 41px;
-  color: #f0a432;
-  border: 1px solid #f0a432;
-  background: rgba(255, 234, 203, 0.2941176471);
-  font-size: 16px;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 7px;
-  margin-top: 12px;
-}
-.page .car .info .table {
-  padding-block: 12px;
-  padding-top: 25px;
-  width: 100%;
-  padding-inline: 20px;
-}
-.page .car .info .table .row {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  padding-bottom: 2px;
-  margin-bottom: 6px;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.3);
-}
-.page .car .info .table .row p {
   color: #1F1F1F;
-  font-size: 16px;
-  margin-bottom: 0;
+  font-size: 22px;
+  font-weight: 500;
+  margin-top: 3px;
+}
+.page .car .info .first-info {
+  background: hsla(36, 100%, 90%, 0.484);
+  width: 100%;
+  height: auto;
+  padding: 20px;
+  position: absolute;
+  left: 0;
+  transform: translateY(25px);
+  display: flex;
+  flex-wrap: wrap;
+}
+.page .car .info .first-info .info {
+  display: flex;
+  width: 50%;
+  flex: 50%;
+}
+.page .car .info .first-info .info .left i {
+  color: #1F1F1F;
+  font-size: 27px;
+}
+.page .car .info .first-info .info .right {
+  margin-left: 22px;
+}
+.page .car .info .first-info .info .right p {
+  font-size: 17px;
+  color: #1F1F1F;
+  margin-bottom: 2px;
 }
 .page .car .actions {
   width: 100%;

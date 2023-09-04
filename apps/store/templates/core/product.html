@@ -142,11 +142,6 @@
         <h1>Høyste bud</h1>her: {{highest_bid.bid_amount}} <h1>Dager igjen</h1>{{ highest_bid.days_until_expiry }} <p>OBS: her vil høyeste budet komme opp. Både prisen og dato til den går bort kan bli vist. Dette er valgfritt</p>
       </div>
 
-      <div class="second-info">
-        <p style="margin-bottom: 10px; margin-top: 25px; color: black; font-size: 20px;">Beskrivelse</p>
-          {{car.description|safe}}
-      </div>
-
       <div class="third-info">
         <p style="margin-bottom: 10px; margin-top: 35px; color: black; font-size: 20px;">Utstyr</p>
         <p style="margin-bottom: 10px; margin-top: 15px; color: black; font-size: 16px; opacity: 0.7;">Sikkerhet</p>
@@ -204,7 +199,20 @@
         {% if car.nøkkelløs_start %}<li>Nøkkelløs start</li>{% endif %}
         {% if car.oppvarmende_seter %}<li>Oppvarmende seter</li>{% endif %}
 
+        <p style="margin-bottom: 10px; margin-top: 30px; color: black; font-size: 16px; opacity: 0.7;">Eksteriør</p>
+        {% if car.elektriske_speil %}<li>Elektriske speil</li>{% endif %}
+
+
+        <p style="margin-bottom: 10px; margin-top: 30px; color: black; font-size: 16px; opacity: 0.7;">Fører</p>
+
       </div>
+
+      <div class="second-info">
+        <p style="margin-bottom: 10px; margin-top: 25px; color: black; font-size: 20px;">Beskrivelse</p>
+          {{car.description|safe}}
+      </div>
+
+
 
     </div>
 

@@ -235,21 +235,20 @@
 
     <form id="testDrive" action="" method="POST">
       {% csrf_token %}
-      <div onclick="testDriveClose()" class="close"><i class="fa-solid fa-x"></i>Lukk</div>
       <br>
-      <h1>Prøvekjøring</h1>
+      <div onclick="testDriveClose()" class="close"><i class="fa-solid fa-x"></i>Lukk</div>
+      <h1 class="heading">Prøvekjøring</h1>
       <br>
       <div class="inputs-labels">
-        <label for="id_date1">Velg dato1</label>
-        <br>
-        <input type="text" name="date1" id="id_date1" class="flatpickr">
-        <br>
-        <br>
-        <label for="id_time">Velg tidspunkt</label>
-        <br>
-        <label for="time">Klokkeslett</label>
-        <br>
-        <input type="time" name="time1">
+        <div class="first">
+          <label>Tidspunkt 1</label>
+          <div class="icon-input">
+            <input type="text" name="date1" id="id_date1" class="flatpickr" placeholder="Dato">
+            <i class="fa-regular fa-calendar-lines"></i>
+          </div>
+          <br>
+          <input type="time" name="time1">
+        </div>
         <br>
         <br>
         <label for="id_date">Velg dato2</label>
@@ -377,9 +376,10 @@
       }
       // Add other date restrictions here
     ],
-    dateFormat: "d-m-y",
     enableTime: false,
     minDate: 'today',
+    altInput: true,
+    altFormat: "j F, Y",
   });
 });
   </script>
@@ -459,12 +459,12 @@
 
 
     function testDrive(){
-      document.getElementById('testDrive').style.display = 'block';
+      document.getElementById('testDrive').classList.add('active');
       document.getElementById('overlay').style.display = 'block';
     }
-
+    
     function testDriveClose(){
-      document.getElementById('testDrive').style.display = 'none';
+      document.getElementById('testDrive').classList.remove('active');
       document.getElementById('overlay').style.display = 'none';
     }
 

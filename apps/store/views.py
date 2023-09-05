@@ -37,9 +37,9 @@ def car_detail(request, slug):
         name = request.POST.get('name', )
         email = request.POST.get('email', '')
         message = request.POST.get('message', '')
-        date1 = request.POST.get('date1', '')
+        date1_Y_m_d = request.POST.get('date1_Y_m_d', '')
         time1 = request.POST.get('time1', '')
-        date2 = request.POST.get('date2', '')
+        date2_Y_m_d = request.POST.get('date2_Y_m_d', '')
         time2 = request.POST.get('time2', '')
 
         testdrive = TestDrive.objects.create(
@@ -47,9 +47,9 @@ def car_detail(request, slug):
             name=name, 
             message=message, 
             email=email,
-            date1=date1,
+            date1_Y_m_d=date1_Y_m_d,
             time1=time1,
-            date2=date2,
+            date2_Y_m_d=date2_Y_m_d,
             time2=time2,
             )
         return redirect('/success/')

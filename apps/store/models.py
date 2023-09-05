@@ -143,7 +143,7 @@ class Car(models.Model):
     rekkevidde = models.CharField(max_length=100, blank=True, null=True)
     girkasse = models.CharField(max_length=100, blank=True, null=True)
     girkassebetegnelse = models.CharField(max_length=100, blank=True, null=True)
-    hjuldrift = models.CharField(max_length=100, blank=True, null=True)
+    hjuldrift = models.CharField(max_length=200, choices=[('Forhjulsdrift', 'Forhjulsdrift'), ('bBakhjulsdriftk', 'Bakhjulsdrift'), ['Firhjulsdrift', 'Firhjulsdrift']], blank=True, null=True)
     hjuldriftbetegnelse = models.CharField(max_length=100, blank=True, null=True)
     modellspesifikasjon = models.CharField(max_length=100, blank=True, null=True)
     bilen_står_i = models.CharField(choices=PLACE,max_length=100, blank=True, null=True)
@@ -235,9 +235,9 @@ class TestDrive(models.Model):
     name = models.CharField(max_length=400, blank=False)
     email = models.EmailField(max_length=100, blank=False)
     message = models.TextField(blank=False)
-    date1 = models.CharField(max_length=100, blank=True, null=True)
+    date1_Y_m_d = models.CharField(max_length=100, blank=True, null=True)
     time1 = models.CharField(max_length=100, blank=True, null=True)
-    date2 = models.CharField(max_length=100, blank=True, null=True)
+    date2_Y_m_d = models.CharField(max_length=100, blank=True, null=True)
     time2 = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):

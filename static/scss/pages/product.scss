@@ -172,6 +172,7 @@ $txt: #183b56;
                 }
             }
         }
+
         #testDrive{
             background: white;
             border-radius: 12px;
@@ -217,11 +218,11 @@ $txt: #183b56;
                 }
             }
             .heading{
-                margin-top: 15px;
+                margin-top: 25px;
                 color: $black;
                 font-size: 30px;
             }
-            .first{
+            .time{
                 background: #ffeccfa5;
                 padding: 14px;
                 border-radius: 5px;
@@ -275,6 +276,29 @@ $txt: #183b56;
                         opacity: 0.6;
                     }
                 }
+                textarea{
+                    width: 100%;
+                    min-height: 75px;
+                    max-height: 125px;
+                    border: 1px solid lightgray;
+                    outline: none;
+                    padding: 8px;
+                    color: $black;
+                    font-size: 16px;
+                    cursor: pointer;
+                    background: rgba(255,255,255,0.7);
+                    border-radius: 7px;
+                    background: white !important;
+                    &:focus, &:active{
+                        border: 2px solid $primBtn;
+                        cursor: text;
+                        background: rgba(255,255,255,1);
+                    }
+                    &::placeholder{
+                        color: $black;
+                        opacity: 0.6;
+                    }
+                }
             }
             .form-actions{
                 button{
@@ -292,6 +316,7 @@ $txt: #183b56;
                   }
             }
         } 
+
         #makeBid{
             background: white;
             border-radius: 12px;
@@ -301,53 +326,123 @@ $txt: #183b56;
             position: fixed;
             top: 20px;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translateX(-50%) translateY(100px);
             width: 95%;
-            height: 100%;
+            height: 93%;
             overflow-y: scroll !important;
-            display: none;
             z-index: 1000;
-            padding-bottom: 0000040px;
+            padding-bottom: 40px;
+            opacity: 0;
+            pointer-events: none;
+            transition: .2s;
+            &.active{
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+                pointer-events: visible;
+            }
             .close{
                 font-size: 16px;
-                font-weight: 400;
                 border: 1px solid red;
-                background: rgb(255, 169, 169);
+                background: rgb(254, 202, 202);
                 display: flex;
+                align-items: center;
                 opacity: 1;
                 color: $black;
-                padding: 10px;
+                padding: 9px 13px;
                 border-radius: 4px;
+                box-shadow: none;
+                opacity: 1 !important;
+                position: absolute;
+                right: 17px;
+                top: 17px;
                 i{
                     color: red;
                     font-size: 20px;
-                    padding-left: 10px;
+                    margin-right: 15px;
                 }
             }
-            label{
-                font-size: 16px;
+            .heading{
+                margin-top: 32px;
                 color: $black;
-                font-weight: 500;
+                font-size: 30px;
             }
-            input{
-                width: 100%;
-                height: 48px;
-                border: 1px solid lightgray;
-                outline: none;
-                padding: 8px;
-                color: $black;
-                font-size: 16px;
-                cursor: pointer;
-                background: rgba(255,255,255,0.7);
-                border-radius: 7px;
-                &:focus, &:active{
-                    border: 2px solid $primBtn;
-                    cursor: text;
-                    background: rgba(255,255,255,1);
-                }
-                &::placeholder{
+            .time{
+                background: #ffeccfa5;
+                padding: 14px;
+                border-radius: 5px;
+                margin-top: 15px;
+                label{
+                    font-size: 19px;
                     color: $black;
-                    opacity: 0.6;
+                    font-weight: 500;
+                    margin-bottom: 10px;
+                }
+                .icon-input{
+                    position: relative;
+                    width: 100%;
+                    i{
+                        position: absolute;
+                        right: 18px;
+                        top: 13px;
+                        color: $black;
+                        font-size: 20px;
+                        opacity: 0.9;
+                    }
+                }
+                input{
+                    background: white !important;
+                    padding-left: 6px;
+                    color: $black;
+                    font-size: 16px;
+                    &::placeholder{
+                        padding-left: 6px;
+                    }
+                }
+            }
+            .inputs-labels{
+                input{
+                    width: 100%;
+                    height: 48px;
+                    border: 1px solid lightgray;
+                    outline: none;
+                    padding: 8px;
+                    color: $black;
+                    font-size: 16px;
+                    cursor: pointer;
+                    background: rgba(255,255,255,0.7);
+                    border-radius: 7px;
+                    &:focus, &:active{
+                        border: 2px solid $primBtn;
+                        cursor: text;
+                        background: rgba(255,255,255,1);
+                    }
+                    &::placeholder{
+                        color: $black;
+                        opacity: 0.6;
+                    }
+                }
+                textarea{
+                    width: 100%;
+                    min-height: 75px;
+                    max-height: 125px;
+                    border: 1px solid lightgray;
+                    outline: none;
+                    padding: 8px;
+                    color: $black;
+                    font-size: 16px;
+                    cursor: pointer;
+                    background: rgba(255,255,255,0.7);
+                    border-radius: 7px;
+                    background: white !important;
+                    &:focus, &:active{
+                        border: 2px solid $primBtn;
+                        cursor: text;
+                        background: rgba(255,255,255,1);
+                    }
+                    &::placeholder{
+                        color: $black;
+                        opacity: 0.6;
+                    }
                 }
             }
             .form-actions{
@@ -366,6 +461,7 @@ $txt: #183b56;
                   }
             }
         } 
+
         #contactOwner{
             background: white;
             border-radius: 12px;
@@ -375,35 +471,104 @@ $txt: #183b56;
             position: fixed;
             top: 20px;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translateX(-50%) translateY(100px);
             width: 95%;
-            height: 100%;
+            height: 93%;
             overflow-y: scroll !important;
-            display: none;
             z-index: 1000;
-            padding-bottom: 0000040px;
+            padding-bottom: 40px;
+            opacity: 0;
+            pointer-events: none;
+            transition: .2s;
+            &.active{
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+                pointer-events: visible;
+            }
             .close{
                 font-size: 16px;
-                font-weight: 400;
                 border: 1px solid red;
-                background: rgb(255, 169, 169);
+                background: rgb(254, 202, 202);
                 display: flex;
+                align-items: center;
                 opacity: 1;
                 color: $black;
-                padding: 10px;
+                padding: 9px 13px;
                 border-radius: 4px;
+                box-shadow: none;
+                opacity: 1 !important;
+                position: absolute;
+                right: 17px;
+                top: 17px;
                 i{
                     color: red;
                     font-size: 20px;
-                    padding-left: 10px;
+                    margin-right: 15px;
                 }
             }
-            label{
-                font-size: 16px;
+            .heading{
+                margin-top: 25px;
                 color: $black;
-                font-weight: 500;
+                font-size: 30px;
+            }
+            .time{
+                background: #ffeccfa5;
+                padding: 14px;
+                border-radius: 5px;
+                margin-top: 15px;
+                label{
+                    font-size: 19px;
+                    color: $black;
+                    font-weight: 500;
+                    margin-bottom: 10px;
+                }
+                .icon-input{
+                    position: relative;
+                    width: 100%;
+                    i{
+                        position: absolute;
+                        right: 18px;
+                        top: 13px;
+                        color: $black;
+                        font-size: 20px;
+                        opacity: 0.9;
+                    }
+                }
+                input{
+                    background: white !important;
+                    padding-left: 6px;
+                    color: $black;
+                    font-size: 16px;
+                    &::placeholder{
+                        padding-left: 6px;
+                    }
+                }
+            }
+            .inputs-labels{
+                input{
+                    width: 100%;
+                    height: 48px;
+                    border: 1px solid lightgray;
+                    outline: none;
+                    padding: 8px;
+                    color: $black;
+                    font-size: 16px;
+                    cursor: pointer;
+                    background: rgba(255,255,255,0.7);
+                    border-radius: 7px;
+                    &:focus, &:active{
+                        border: 2px solid $primBtn;
+                        cursor: text;
+                        background: rgba(255,255,255,1);
+                    }
+                    &::placeholder{
+                        color: $black;
+                        opacity: 0.6;
+                    }
+                }
             }
         }
+        
         #confirmBuy{
             background: white;
             border-radius: 12px;
@@ -413,53 +578,123 @@ $txt: #183b56;
             position: fixed;
             top: 20px;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translateX(-50%) translateY(100px);
             width: 95%;
-            height: 100%;
+            height: 93%;
             overflow-y: scroll !important;
-            display: none;
             z-index: 1000;
-            padding-bottom: 0000040px;
+            padding-bottom: 40px;
+            opacity: 0;
+            pointer-events: none;
+            transition: .2s;
+            &.active{
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+                pointer-events: visible;
+            }
             .close{
                 font-size: 16px;
-                font-weight: 400;
                 border: 1px solid red;
-                background: rgb(255, 169, 169);
+                background: rgb(254, 202, 202);
                 display: flex;
+                align-items: center;
                 opacity: 1;
                 color: $black;
-                padding: 10px;
+                padding: 9px 13px;
                 border-radius: 4px;
+                box-shadow: none;
+                opacity: 1 !important;
+                position: absolute;
+                right: 17px;
+                top: 17px;
                 i{
                     color: red;
                     font-size: 20px;
-                    padding-left: 10px;
+                    margin-right: 15px;
                 }
             }
-            label{
-                font-size: 16px;
+            .heading{
+                margin-top: 40px;
                 color: $black;
-                font-weight: 500;
+                font-size: 30px;
             }
-            input{
-                width: 100%;
-                height: 48px;
-                border: 1px solid lightgray;
-                outline: none;
-                padding: 8px;
-                color: $black;
-                font-size: 16px;
-                cursor: pointer;
-                background: rgba(255,255,255,0.7);
-                border-radius: 7px;
-                &:focus, &:active{
-                    border: 2px solid $primBtn;
-                    cursor: text;
-                    background: rgba(255,255,255,1);
-                }
-                &::placeholder{
+            .time{
+                background: #ffeccfa5;
+                padding: 14px;
+                border-radius: 5px;
+                margin-top: 15px;
+                label{
+                    font-size: 19px;
                     color: $black;
-                    opacity: 0.6;
+                    font-weight: 500;
+                    margin-bottom: 10px;
+                }
+                .icon-input{
+                    position: relative;
+                    width: 100%;
+                    i{
+                        position: absolute;
+                        right: 18px;
+                        top: 13px;
+                        color: $black;
+                        font-size: 20px;
+                        opacity: 0.9;
+                    }
+                }
+                input{
+                    background: white !important;
+                    padding-left: 6px;
+                    color: $black;
+                    font-size: 16px;
+                    &::placeholder{
+                        padding-left: 6px;
+                    }
+                }
+            }
+            .inputs-labels{
+                input{
+                    width: 100%;
+                    height: 48px;
+                    border: 1px solid lightgray;
+                    outline: none;
+                    padding: 8px;
+                    color: $black;
+                    font-size: 16px;
+                    cursor: pointer;
+                    background: rgba(255,255,255,0.7);
+                    border-radius: 7px;
+                    &:focus, &:active{
+                        border: 2px solid $primBtn;
+                        cursor: text;
+                        background: rgba(255,255,255,1);
+                    }
+                    &::placeholder{
+                        color: $black;
+                        opacity: 0.6;
+                    }
+                }
+                textarea{
+                    width: 100%;
+                    min-height: 75px;
+                    max-height: 125px;
+                    border: 1px solid lightgray;
+                    outline: none;
+                    padding: 8px;
+                    color: $black;
+                    font-size: 16px;
+                    cursor: pointer;
+                    background: rgba(255,255,255,0.7);
+                    border-radius: 7px;
+                    background: white !important;
+                    &:focus, &:active{
+                        border: 2px solid $primBtn;
+                        cursor: text;
+                        background: rgba(255,255,255,1);
+                    }
+                    &::placeholder{
+                        color: $black;
+                        opacity: 0.6;
+                    }
                 }
             }
             .form-actions{

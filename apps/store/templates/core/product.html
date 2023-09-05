@@ -225,6 +225,10 @@
       </div>
 
       <div class="second-info">
+        <p style="margin-bottom: 10px; margin-top: 45px; color: black; font-size: 20px;">Spesifikasjoner</p>
+      </div>
+
+      <div class="fourth-info">
         <p style="margin-bottom: 10px; margin-top: 45px; color: black; font-size: 20px;">Beskrivelse</p>
           {{car.description|safe}}
       </div>
@@ -240,69 +244,86 @@
       <h1 class="heading">Prøvekjøring</h1>
       <br>
       <div class="inputs-labels">
-        <div class="first">
+
+
+        <div class="time">
           <label>Tidspunkt 1</label>
           <div class="icon-input">
-            <input type="text" name="date1" id="id_date1" class="flatpickr" placeholder="Dato">
+            <input required type="text" name="date1_Y_m_d" id="id_date1" class="flatpickr" placeholder="Dato">
             <i class="fa-regular fa-calendar-lines"></i>
           </div>
           <br>
-          <input type="time" name="time1">
+          <div class="icon-input">
+            <input required type="text" name="time1" id="id_time1" class="flatpickr" style="width: 100% !important;" placeholder="Klokkeslett">
+            <i class="fa-light fa-clock"></i>          
+          </div>
+          <br>
         </div>
+
         <br>
+
+        <div class="time">
+          <label>Tidspunkt 2</label>
+          <div class="icon-input">
+            <input required type="text" name="date2_Y_m_d" id="id_date1" class="flatpickr" placeholder="Dato">
+            <i class="fa-regular fa-calendar-lines"></i>
+          </div>
+          <br>
+          <div class="icon-input">
+            <input required type="text" name="time2" id="id_time2" class="flatpickr" style="width: 100% !important;" placeholder="Klokkeslett">
+            <i class="fa-light fa-clock"></i>          
+          </div>
+          <br>
+        </div>
+
         <br>
-        <label for="id_date">Velg dato2</label>
-        <br>
-        <input type="text" name="date2" id="id_date2" class="flatpickr">
+
+        <div class="time">
+          <label for="navn">Informasjon om deg</label>
+          <br>
+          <input type="text" placeholder="Navn" name="name" id="name" required  oninput="this.setCustomValidity('')" value="{{request.user.get_full_name}}">
           <br>
           <br>
-          <label for="id_time">Velg tidspunkt</label>
-          <br>
-          <label for="time">Klokkeslett</label>
-          <br>
-          <input type="time" name="time2">
+          <input type="email" placeholder="Epost" name="email" id="email"  required oninput="this.setCustomValidity('')" value="{{request.user.email}}">
           <br>
           <br>
-         <label for="navn">Navn</label>
-         <br>
-         <input type="text" name="name" id="name" required  oninput="this.setCustomValidity('')" value="{{request.user.get_full_name}}">
-         <br>
-         <br>
-         <label for="email">Epost</label>
-         <br>
-         <input type="email" name="email" id="email"  required oninput="this.setCustomValidity('')" value="{{request.user.email}}">
-         <br>
-         <br>
-         <label for="message"></label>
-         <br>
-         <textarea name="message" id="message"  required oninput="this.setCustomValidity('')"></textarea>
+          <textarea name="message" placeholder="Melding" id="message" oninput="this.setCustomValidity('')"></textarea>
+        </div>
         </div>
       <div class="form-actions">
         <button class="primary" type="submit" name="testdrive" value="testdrive">Send</button>
       </div>
     </form>
 
+
+
     {% if request.user.is_authenticated %}
     <form action="" method="POST" id="makeBid">
         {% csrf_token %}
         <div onclick="makeBidClose()" class="close"><i class="fa-solid fa-x"></i>Lukk</div>
-        <br>
-        <h1>Gi bud</h1>
-       <input type="text" name="user" id="user" value="{{request.user}}" style="opacity: 0; pointer-events: none; width: 0; height: 0;">
-       <br>
-       <br>
-       <label for="bid_amount">Bud beløp</label>
-       <br>
-       <input type="number" name="bid_amount" id="bid_amount">
-       <p>Minste verdien må være <span id="minPriceValue"></span></p>
-       <br>
-       <br>
-       <label for="expiry_date">Utløps dato</label>
-       <br>
-       <input type="text" name="expiry_date" id="expiry_date">
-       <div class="form-actions">
-         <button type="submit" name="make_bid" value="make_bid">Gi bud</button>
+        <h1 class="heading">Gi bud</h1>
+
+        <div class="inputs-labels">
+          <div class="time">
+            <input type="text" name="user" id="user" value="{{request.user}}" style="opacity: 0; pointer-events: none; width: 0; height: 0;">
+            <br>
+            <div class="icon-input">
+              <input type="number" required name="bid_amount" id="bid_amount" placeholder="Bud beløp">
+              <i class="fa-duotone fa-tally-3"></i>
+            </div>
+            <p style="margin-left: 5px; margin-top: 3px;">Minste verdien må være <span id="minPriceValue"></span>kr</p>
+            <br>
+            <div class="icon-input">
+              <input type="text" required name="expiry_date" id="expiry_date" placeholder="Utløpsdato">
+              <i class="fa-regular fa-calendar-lines"></i>
+            </div>
+            <br>
+          </div>
         </div>
+
+        <div class="form-actions">
+          <button type="submit" name="make_bid" value="make_bid">Gi bud</button>
+          </div>
     </form>
     {% else %}
     <form id="makeBid">
@@ -313,41 +334,51 @@
     </form>
     {% endif %}
 
+
+
     <div id="contactOwner">
       <div onclick="contactOwnerClose()" class="close"><i class="fa-solid fa-x"></i>Lukk</div>
-      <br>
-      <h1>Kontakt eier</h1>
-      <label for="">Fullt navn</label>
-      <br>
-      {{car.user.get_full_name}}
-      <br>
-      <br>
-      <label for="">Telefonnummer</label>
-      <br>
-      <a href="telto:{{car.owner_mobile_nr}}">{{car.owner_mobile_nr}}</a>
-      <br>
-      <br>
-      <label for="">Epost</label>
-      <br>
-      <a href="mailto:{{car.user.email}}">{{car.user.email}}</a>
+      <h1 class="heading" style="margin-bottom: 20px;">Kontakt eier</h1>
+      <div class="time">
+        <label for="">Fullt navn</label>
+        <br>
+        {{car.user.get_full_name}}
+      </div>
+      <div class="time">
+        <label for="">Telefonnummer</label>
+        <br>
+        <a>{{car.owner_mobile_nr}}</a>
+      </div>
+      <div class="time">
+        <label for="">Epost</label>
+        <br>
+        <a>{{car.user.email}}</a>
+      </div>
     </div>
+
+
+
 
     {% if request.user.is_authenticated %}
     <form action="" method="POST" id="confirmBuy">
       {% csrf_token %}
       <div onclick="confirmBuyClose()" class="close"><i class="fa-solid fa-x"></i>Lukk</div>
-      <br>
-      <h1>Bekfreft kjøpet</h1>
+      <h1 class="heading">Bekfreft kjøpet</h1>
       <p>Så spennende at du ønsker akkurat denne bilen! Bekfrekt kjøpet så vil du snart motta kontrakt for digital signering</p>
-      <br>
-      <label for="">Bil</label>
-      <br>
-      {{car.name}}
-      <br>
-      <br>
-      <label for="">Pris</label>
-      <br>
-       {{car.price}}kr
+      <div class="time">
+        <label for="">Bil</label>
+        <br>
+        {{car.name}}
+      </div>
+      <div class="time">
+        <label for="">Pris</label>
+        <br>
+         {{car.price}}kr
+      </div>
+      <div class="time" style="display: flex; align-items: center;">
+        <input type="checkbox" required style="width: 28px; height: 28px; border-radius: 4px;">
+        <p style="margin-bottom: 0; margin-left: 15px;">Jeg bekrefter at jeg ønsker å kjøpe denne bilen</p>
+      </div>
       <div class="form-actions">
         <button type="submit" name="buy" value="buy">Gå videre</button>
        </div>
@@ -395,9 +426,47 @@
       }
       // Add other date restrictions here
     ],
-    dateFormat: "d-m-y",
     enableTime: false,
     minDate: 'today',
+    altInput: true,
+    altFormat: "j F, Y",
+  });
+});
+  </script>
+
+
+  <script>
+      document.addEventListener('DOMContentLoaded', function() {
+
+        flatpickr("#id_time1", {
+    enable: [
+      function(date) {
+        return date.getDay() !== 0; // Disable Sundays
+      }
+      // Add other date restrictions here
+    ],
+    enableTime: true,
+    noCalendar: true,
+    dateFormat: "H:i",
+    time_24hr: true
+  });
+});
+  </script>
+
+  <script>
+      document.addEventListener('DOMContentLoaded', function() {
+
+        flatpickr("#id_time2", {
+    enable: [
+      function(date) {
+        return date.getDay() !== 0; // Disable Sundays
+      }
+      // Add other date restrictions here
+    ],
+    enableTime: true,
+    noCalendar: true,
+    dateFormat: "H:i",
+    time_24hr: true
   });
 });
   </script>
@@ -412,9 +481,10 @@
       }
       // Add other date restrictions here
     ],
-    dateFormat: "Y-m-d",
     enableTime: false,
     minDate: 'today',
+    altInput: true,
+    altFormat: "j F, Y",
   });
 });
   </script>
@@ -468,37 +538,37 @@
       document.getElementById('testDrive').classList.remove('active');
       document.getElementById('overlay').style.display = 'none';
     }
-
-
+    
+    
     function makeBid(){
-      document.getElementById('makeBid').style.display = 'block';
+      document.getElementById('makeBid').classList.add('active');
       document.getElementById('overlay').style.display = 'block';
     }
-
+    
     function makeBidClose(){
-      document.getElementById('makeBid').style.display = 'none';
+      document.getElementById('makeBid').classList.remove('active');
       document.getElementById('overlay').style.display = 'none';
     }
 
 
     function contactOwner(){
-      document.getElementById('contactOwner').style.display = 'block';
+      document.getElementById('contactOwner').classList.add('active')
       document.getElementById('overlay').style.display = 'block';
     }
-
+    
     function contactOwnerClose(){
-      document.getElementById('contactOwner').style.display = 'none';
+      document.getElementById('contactOwner').classList.remove('active')
       document.getElementById('overlay').style.display = 'none';
     }
 
 
     function confirmBuy(){
-      document.getElementById('confirmBuy').style.display = 'block';
+      document.getElementById('confirmBuy').classList.add('active')
       document.getElementById('overlay').style.display = 'block';
     }
-
+    
     function confirmBuyClose(){
-      document.getElementById('confirmBuy').style.display = 'none';
+      document.getElementById('confirmBuy').classList.remove('active')
       document.getElementById('overlay').style.display = 'none';
     }
 

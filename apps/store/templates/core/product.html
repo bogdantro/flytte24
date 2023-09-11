@@ -33,17 +33,17 @@
        </div>
        {% if car.image2 %}
        <div class="carousel-item">
-         <img class="pr-img" src="{{car.image2.url}}" alt="{{car.name}}  image2" draggable="false">
+         <img class="pr-img " src="{{car.image2.url}}" alt="{{car.name}}  image2" draggable="false">
        </div>
        {% endif %}
        {% if car.image3 %}
        <div class="carousel-item">
-         <img class="pr-img" src="{{car.image3.url}}" alt="{{car.name}}  image3" draggable="false">
+         <img class="pr-img " src="{{car.image3.url}}" alt="{{car.name}}  image3" draggable="false">
        </div>
        {% endif %}
        {% if car.image4 %}
        <div class="carousel-item">
-         <img class="pr-img" src="{{car.image4.url}}" alt="{{car.name}}  image4" draggable="false">
+         <img class="pr-img " src="{{car.image4.url}}" alt="{{car.name}}  image4" draggable="false">
        </div>
        {% endif %}
        {% if car.image5 %}
@@ -312,7 +312,7 @@
               <input type="number" required name="bid_amount" id="bid_amount" placeholder="Bud beløp">
               <i class="fa-duotone fa-tally-3"></i>
             </div>
-            <p style="margin-left: 5px; margin-top: 3px;">Minste verdien må være <span id="minPriceValue"></span>kr</p>
+            <p style="margin-left: 5px; margin-top: 3px;" id="minPriceValueTxt">Minste verdien må være <span id="minPriceValue"></span>kr</p>
             <br>
             <div class="icon-input">
               <input type="text" required name="expiry_date" id="expiry_date" placeholder="Utløpsdato">
@@ -406,7 +406,7 @@
         flatpickr("#id_date1", {
     enable: [
       function(date) {
-        return date.getDay() !== 0; // Disable Sundays
+        return date
       }
       // Add other date restrictions here
     ],
@@ -425,7 +425,7 @@
         flatpickr("#id_date2", {
     enable: [
       function(date) {
-        return date.getDay() !== 0; // Disable Sundays
+        return date
       }
       // Add other date restrictions here
     ],
@@ -480,7 +480,7 @@
         flatpickr("#expiry_date", {
     enable: [
       function(date) {
-        return date.getDay() !== 0; // Disable Sundays
+        return date
       }
       // Add other date restrictions here
     ],
@@ -553,6 +553,7 @@ function infoChoicesThree(){
     function minPriceValue(){
       const text = document.getElementById('minPriceValue');
       const input = document.getElementById('bid_amount');
+      const minPriceValueTxt = document.getElementById('minPriceValueTxt');
 
       '{% if highest_bid.bid_amount %}'
       var bidAmount = parseInt('{{highest_bid.bid_amount}}');
@@ -560,10 +561,8 @@ function infoChoicesThree(){
       input.value = bidAmount + 1
       input.min = bidAmount + 1
       '{% else %}'
-      var bidAmount = '{{car.price}}';
-      text.innerHTML = bidAmount;
-      input.min = bidAmount 
-      input.value = bidAmount 
+      minPriceValueTxt.style.display = 'none'
+    
       '{% endif %}'
 
     }

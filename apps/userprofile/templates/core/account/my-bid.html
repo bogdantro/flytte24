@@ -34,7 +34,19 @@
 
     <div class="bids">
         {% for bud in bud %}
-        <div class="bid">
+    
+
+        {% if bud.days_until_expiry == 0 %}
+        <div class="bid expired" id="bid">
+            <h1 class="name">{{bud.car.name}} <span>{{ bud.days_until_expiry }} {% if bud.days_until_expiry == 1 %} dag igjen {% else %} dager igjen {% endif %}</span></h1>
+            <p class="price">{{bud.bid_amount}}kr</p>
+                       
+            <div class="status">
+             <p>Utløpt</p>
+            </div>
+        </div>
+        {% else %}
+        <div class="bid" id="bid">
             <h1 class="name">{{bud.car.name}} <span>{{ bud.days_until_expiry }} {% if bud.days_until_expiry == 1 %} dag igjen {% else %} dager igjen {% endif %}</span></h1>
             <p class="price">{{bud.bid_amount}}kr</p>
                        
@@ -50,6 +62,8 @@
                 {% endif %}
             </div>
         </div>
+        {% endif %}
+
         {% empty %}
         <h1 style="color: #1F1F1F; font-size: 22px; font-weight: 500; padding-top: 0; text-align: center;">Ingen bud enda...</h1>
         {% endfor %}
@@ -61,4 +75,10 @@
 <div class="account-footer-mob">
     <p>&#169; 2023 Bilmeglerne AS</p>
 </div>
+
+
+
+<script type="text/javascript">
+
+</script>
 {% endblock %}

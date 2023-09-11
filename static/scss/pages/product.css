@@ -38,9 +38,9 @@
 .page #carouselExampleIndicators .carousel-item {
   font-size: 0px;
   cursor: pointer;
-  overflow: hidden;
   white-space: nowrap;
   scroll-behavior: smooth;
+  overflow: unset !important;
 }
 .page #carouselExampleIndicators .carousel-item.dragging {
   cursor: grab;
@@ -175,7 +175,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 25px;
 }
 .page .car #infoChoices p {
   font-size: 16px;

@@ -11,6 +11,9 @@
   border-radius: 5px;
   margin-bottom: 25px;
 }
+.bids .bid.expired {
+  background: rgba(255, 38, 0, 0.137);
+}
 .bids .bid .name {
   font-size: 22px;
   color: #1F1F1F;

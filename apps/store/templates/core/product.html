@@ -142,9 +142,15 @@
         <h1>Høyste bud</h1>her: {{highest_bid.bid_amount}} <h1>Dager igjen</h1>{{ highest_bid.days_until_expiry }} <p>OBS: her vil høyeste budet komme opp. Både prisen og dato til den går bort kan bli vist. Dette er valgfritt</p>
       </div>
 
-      <div class="third-info">
-        <p style="margin-bottom: 10px; margin-top: 35px; color: black; font-size: 20px;">Utstyr</p>
-        <p style="margin-bottom: 10px; margin-top: 15px; color: black; font-size: 16px; opacity: 0.7;">Sikkerhet</p>
+      <div id="infoChoices">
+        <p onclick="infoChoicesOne()" id="infoChoicesPOne" class="active">Beskrivelse</p>
+        <p onclick="infoChoicesTwo()" id="infoChoicesPTwo">Utstyr</p>
+        <p onclick="infoChoicesThree()" id="infoChoicesPThree">Spesifikasjoner</p>
+      </div>
+
+      <div class="third-info" id="utstyr">
+        <p style="margin-bottom: 10px; margin-top: 25px; color: black; font-size: 20px;">Utstyr</p>
+        <p style="margin-bottom: 10px; margin-top: 25px; color: black; font-size: 20px;">+++ Kan bli sortert A-Z +++</p>
         {% if car.ABS_bremser %}<li>ABS bremser</li>{% endif %}
         {% if car.airbag_foran %}<li>Airbag foran</li>{% endif %}
         {% if car.gjenfinningssystem %}<li>Gjenfinningssystem</li>{% endif %}
@@ -153,7 +159,6 @@
         {% if car.sideairbager %}<li>Sideairbager</li>{% endif %}
         {% if car.startsperre %}<li>Startsperre</li>{% endif %}
         
-        <p style="margin-bottom: 10px; margin-top: 30px; color: black; font-size: 16px; opacity: 0.7;">Media</p>
         {% if car.AUX_inngang %}<li>AUX inngang</li>{% endif %}
         {% if car.bluetooth %}<li>Bluetooth</li>{% endif %}
         {% if car.CD_spiller %}<li>CD spiller</li>{% endif %}
@@ -167,7 +172,6 @@
         {% if car.radio_FM %}<li>Radio FM</li>{% endif %}
         {% if car.TV_skjerm_i_baksetet %}<li>TV skjerm i baksetet</li>{% endif %}
         
-        <p style="margin-bottom: 10px; margin-top: 30px; color: black; font-size: 16px; opacity: 0.7;">Motor</p>
         {% if car.antiskrens %}<li>Antiskrens</li>{% endif %}
         {% if car.antispin %}<li>Antispin</li>{% endif %}
         {% if car.diesel_partikkelfilter %}<li>Diesel partikkelfilter</li>{% endif %}
@@ -175,7 +179,6 @@
         {% if car.kjørecomputer %}<li>Kjørecomputer</li>{% endif %}
         {% if car.servostyring %}<li>Servostyring</li>{% endif %}
 
-        <p style="margin-bottom: 10px; margin-top: 30px; color: black; font-size: 16px; opacity: 0.7;">Interior</p>
         {% if car.elvinduer %}<li>El vinduer</li>{% endif %}
         {% if car.mørke_ruter_bak %}<li>mørke ruter bak</li>{% endif %}
         {% if car.seter_i_delskinn %}<li>Seter i delskinn</li>{% endif %}
@@ -183,7 +186,6 @@
         {% if car.soltak_eller_glasstak %}<li>Soltak / Glasstak</li>{% endif %}
         {% if car.sportsseter %}<li>Sportsseter</li>{% endif %}
 
-        <p style="margin-bottom: 10px; margin-top: 30px; color: black; font-size: 16px; opacity: 0.7;">Komfort</p>
         {% if car.air_Condition %}<li>Air Condition</li>{% endif %}
         {% if car.bagasjeromstrekk %}<li>Bagasjeromstrekk</li>{% endif %}
         {% if car.cruisekontroll %}<li>Cruisekontroll</li>{% endif %}
@@ -199,7 +201,6 @@
         {% if car.nøkkelløs_start %}<li>Nøkkelløs start</li>{% endif %}
         {% if car.oppvarmende_seter %}<li>Oppvarmende seter</li>{% endif %}
 
-        <p style="margin-bottom: 10px; margin-top: 30px; color: black; font-size: 16px; opacity: 0.7;">Eksteriør</p>
         {% if car.elektriske_speil %}<li>Elektriske speil</li>{% endif %}
         {% if car.helårsdekk %}<li>Helårsdekk</li>{% endif %}
         {% if car.hengerfeste_eller_svingbart %}<li>Hengerfeste / Svingbart speil</li>{% endif %}
@@ -214,7 +215,6 @@
         {% if car.takrails %}<li>Takrails</li>{% endif %}
         {% if car.xenolys %}<li>Xenolys</li>{% endif %}
 
-        <p style="margin-bottom: 10px; margin-top: 30px; color: black; font-size: 16px; opacity: 0.7;">Fører</p>
         {% if car.fjernlysassitent %}<li>Fjernlysassitent</li>{% endif %}
         {% if car.lyssensor %}<li>Lyssensor</li>{% endif %}
         {% if car.parkeringsensor_bak %}<li>Parkeringsensor bak</li>{% endif %}
@@ -224,14 +224,16 @@
 
       </div>
 
-      <div class="second-info">
-        <p style="margin-bottom: 10px; margin-top: 45px; color: black; font-size: 20px;">Spesifikasjoner</p>
+      <div class="second-info" id="spesifikasjoner">
+        <p style="margin-bottom: 10px; margin-top: 25px; color: black; font-size: 20px;">Spesifikasjoner</p>
       </div>
 
-      <div class="fourth-info">
-        <p style="margin-bottom: 10px; margin-top: 45px; color: black; font-size: 20px;">Beskrivelse</p>
+      <div class="fourth-info" id="beskrivelse">
+        <p style="margin-bottom: 10px; margin-top: 25px; color: black; font-size: 20px;">Beskrivelse</p>
           {{car.description|safe}}
       </div>
+
+
 
 
 
@@ -239,7 +241,6 @@
 
     <form id="testDrive" action="" method="POST">
       {% csrf_token %}
-      <br>
       <div onclick="testDriveClose()" class="close"><i class="fa-solid fa-x"></i>Lukk</div>
       <h1 class="heading">Prøvekjøring</h1>
       <br>
@@ -328,9 +329,10 @@
     {% else %}
     <form id="makeBid">
       <div onclick="makeBidClose()" class="close"><i class="fa-solid fa-x"></i>Lukk</div>
-      <br>
-      <h1>Logg inn for å gi bud</h1>
-      <a href="/logg-inn/">logg inn</a>
+      <h1 class="heading">Gi bud</h1>
+      <div class="form-actions">
+        <button type="button" onclick="window.location.href='/logg-inn/?next={% firstof request.path '/' %}'">Logg inn</button>
+        </div>
     </form>
     {% endif %}
 
@@ -386,9 +388,10 @@
     {% else %}
     <form action="" method="POST" id="confirmBuy">
       <div onclick="confirmBuyClose()" class="close"><i class="fa-solid fa-x"></i>Lukk</div>
-      <br>
-      <h1>Logg inn for å kjøpe</h1>
-      <a href="/logg-inn/">logg inn</a>
+      <h1 class="heading">Logg inn for å kjøpe</h1>
+      <div class="form-actions">
+        <button type="button" onclick="window.location.href='/logg-inn/?next={% firstof request.path '/' %}'">Logg inn</button>
+        </div>
     {% endif %}
 
   </div>
@@ -507,6 +510,44 @@
           $(this).off('touchmove');
       });
   });
+
+
+
+function infoChoicesOne(){
+  document.getElementById('beskrivelse').style.display = 'block';
+  document.getElementById('utstyr').style.display = 'none';
+  document.getElementById('spesifikasjoner').style.display = 'none';
+  
+  document.getElementById('infoChoicesPOne').classList.add('active')
+
+  document.getElementById('infoChoicesPTwo').classList.remove('active')
+  document.getElementById('infoChoicesPThree').classList.remove('active')
+
+}
+
+function infoChoicesTwo(){
+  document.getElementById('utstyr').style.display = 'block';
+  document.getElementById('spesifikasjoner').style.display = 'none';
+  document.getElementById('beskrivelse').style.display = 'none';
+
+  document.getElementById('infoChoicesPTwo').classList.add('active')
+
+  document.getElementById('infoChoicesPOne').classList.remove('active')
+  document.getElementById('infoChoicesPThree').classList.remove('active')
+
+}
+
+function infoChoicesThree(){
+  document.getElementById('spesifikasjoner').style.display = 'block';
+  document.getElementById('beskrivelse').style.display = 'none';
+  document.getElementById('utstyr').style.display = 'none';
+
+  document.getElementById('infoChoicesPThree').classList.add('active')
+
+  document.getElementById('infoChoicesPTwo').classList.remove('active')
+  document.getElementById('infoChoicesPOne').classList.remove('active')
+
+}
 
 
     function minPriceValue(){

@@ -172,6 +172,36 @@ $txt: #183b56;
                 }
             }
         }
+        #infoChoices{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 25px;
+            p{
+                font-size: 16px;
+                padding-bottom: 10px;
+                font-weight: 500;
+                transition: .2s;
+                border-bottom: 2px solid transparent;
+                &.active{
+                    border-bottom: 2px solid $primBtn;
+                    color: $primBtn;
+                }
+            }
+        }
+
+        #utstyr{
+            display: none;
+        }
+        #spesifikasjoner{
+            display: none;
+        }
+        #beskrivelse{
+            display: block;
+        }
+
+
+
 
         #testDrive{
             background: white;
@@ -218,7 +248,7 @@ $txt: #183b56;
                 }
             }
             .heading{
-                margin-top: 25px;
+                margin-top: 55px;
                 color: $black;
                 font-size: 30px;
             }
@@ -362,7 +392,7 @@ $txt: #183b56;
                 }
             }
             .heading{
-                margin-top: 32px;
+                margin-top: 55px;
                 color: $black;
                 font-size: 30px;
             }
@@ -507,7 +537,7 @@ $txt: #183b56;
                 }
             }
             .heading{
-                margin-top: 25px;
+                margin-top: 55px;
                 color: $black;
                 font-size: 30px;
             }
@@ -614,7 +644,7 @@ $txt: #183b56;
                 }
             }
             .heading{
-                margin-top: 40px;
+                margin-top: 55px;
                 color: $black;
                 font-size: 30px;
             }

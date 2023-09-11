@@ -171,6 +171,32 @@
   background: white;
   margin-right: 0;
 }
+.page .car #infoChoices {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 25px;
+}
+.page .car #infoChoices p {
+  font-size: 16px;
+  padding-bottom: 10px;
+  font-weight: 500;
+  transition: 0.2s;
+  border-bottom: 2px solid transparent;
+}
+.page .car #infoChoices p.active {
+  border-bottom: 2px solid #f0a432;
+  color: #f0a432;
+}
+.page .car #utstyr {
+  display: none;
+}
+.page .car #spesifikasjoner {
+  display: none;
+}
+.page .car #beskrivelse {
+  display: block;
+}
 .page .car #testDrive {
   background: white;
   border-radius: 12px;
@@ -217,7 +243,7 @@
   margin-right: 15px;
 }
 .page .car #testDrive .heading {
-  margin-top: 25px;
+  margin-top: 55px;
   color: #1F1F1F;
   font-size: 30px;
 }
@@ -367,7 +393,7 @@
   margin-right: 15px;
 }
 .page .car #makeBid .heading {
-  margin-top: 32px;
+  margin-top: 55px;
   color: #1F1F1F;
   font-size: 30px;
 }
@@ -518,7 +544,7 @@
   margin-right: 15px;
 }
 .page .car #contactOwner .heading {
-  margin-top: 25px;
+  margin-top: 55px;
   color: #1F1F1F;
   font-size: 30px;
 }
@@ -629,7 +655,7 @@
   margin-right: 15px;
 }
 .page .car #confirmBuy .heading {
-  margin-top: 40px;
+  margin-top: 55px;
   color: #1F1F1F;
   font-size: 30px;
 }

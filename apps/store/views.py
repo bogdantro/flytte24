@@ -60,7 +60,7 @@ def car_detail(request, slug):
         expiry_date = request.POST.get('expiry_date', '')
 
         car.bud_set.create(user=user, bid_amount=bid_amount, expiry_date=expiry_date)
-        return redirect('/')
+        return redirect('/bid-sucessnkldsf2398ryoiqwepyr3829yr3982/')
     
     if request.method=='POST' and 'buy' in request.POST:
         user = request.user
@@ -76,6 +76,10 @@ def car_detail(request, slug):
     }
 
     return render(request, 'core/product.html', context)
+
+def bid_success(request):
+    return render(request, 'core/bid-success.html')
+
 
 def buy_car(request):
     cars = Car.objects.all()

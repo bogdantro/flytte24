@@ -82,7 +82,18 @@
   background: white;
   border-radius: 12px;
   padding-inline: 30px;
-  padding-block: 16px;
+}
+.page form .icon-input {
+  position: relative;
+  width: 100%;
+}
+.page form .icon-input i {
+  position: absolute;
+  right: 18px;
+  top: 13px;
+  color: #1F1F1F;
+  font-size: 20px;
+  opacity: 0.9;
 }
 .page form #bookTimeStepTwo {
   display: none;

@@ -103,8 +103,11 @@
 
 
         {% for buy in buy %}
-        {% if buy.steps == 'zero' %}
+        <div style="margin-bottom: 80px;">
 
+        <h1 class="heading">Kjøp for {{buy.car}}</h1>
+
+        {% if buy.steps == 'zero' %}
         <div class="step">
             <div class="left">
                 <i class="fa-solid fa-lock"></i>
@@ -306,7 +309,10 @@
                 <i class="fa-solid fa-check check"></i>
             </div>
         </div>
+
+        
         {% endif %}
+        </div>
 
 
 

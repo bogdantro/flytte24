@@ -32,12 +32,29 @@
     </div>
     <br>
 
-    {% for bud in bud %}
-        <li>${{ bud.bid_amount }} ({{ bud.days_until_expiry }})</li>
-    {{bud.status}} 
-
+    <div class="bids">
+        {% for bud in bud %}
+        <div class="bid">
+            <h1 class="name">{{bud.car.name}} <span>{{ bud.days_until_expiry }} {% if bud.days_until_expiry == 1 %} dag igjen {% else %} dager igjen {% endif %}</span></h1>
+            <p class="price">{{bud.bid_amount}}kr</p>
+                       
+            <div class="status">
+                {% if bud.status == 'pending' %}
+                <p>Venter på selger</p>
+                {% endif %}
+                {% if bud.status == 'accepted' %}
+                <p>Akseptert</p>
+                {% endif %}
+                {% if bud.status == 'declined' %}
+                <p>Avslått</p>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <h1 style="color: #1F1F1F; font-size: 22px; font-weight: 500; padding-top: 0; text-align: center;">Ingen bud enda...</h1>
         {% endfor %}
-        <hr>
+    </div>
+    
 </div>
 
 

@@ -57,6 +57,7 @@ $txt: #183b56;
     .links{
         p{
             margin-bottom: 0;
+            color: $black;
         }
         .business-heading{
             color: $black;
@@ -84,7 +85,7 @@ $txt: #183b56;
         }
         a{
             display: block;
-            color: $txt;
+            color: $black;
             font-size: 17px;
             width: max-content;
             padding-right: 5px;

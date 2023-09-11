@@ -1,0 +1,35 @@
+.bids {
+  padding-inline: 20px;
+  width: auto;
+  height: auto;
+}
+.bids .bid {
+  width: 100%;
+  height: auto;
+  background: rgb(239, 239, 239);
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 25px;
+}
+.bids .bid .name {
+  font-size: 22px;
+  color: #1F1F1F;
+  font-weight: 500;
+}
+.bids .bid .name span {
+  font-size: 16px;
+  opacity: 0.8;
+  margin-left: 5px;
+}
+.bids .bid .price {
+  margin-bottom: 5px;
+  font-size: 18px;
+  color: #1F1F1F;
+}
+.bids .bid .status {
+  margin-top: 15px;
+}
+.bids .bid .status p {
+  margin-bottom: 0;
+  font-size: 16px;
+}/*# sourceMappingURL=my-bid.css.map */

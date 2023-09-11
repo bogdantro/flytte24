@@ -52,6 +52,7 @@
 }
 #footerMob .links p {
   margin-bottom: 0;
+  color: #1F1F1F;
 }
 #footerMob .links .business-heading {
   color: #1F1F1F;
@@ -79,7 +80,7 @@
 }
 #footerMob .links a {
   display: block;
-  color: #183b56;
+  color: #1F1F1F;
   font-size: 17px;
   width: -moz-max-content;
   width: max-content;

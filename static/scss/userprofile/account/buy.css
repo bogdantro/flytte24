@@ -13,6 +13,13 @@
 .car {
   padding-inline: 20px;
 }
+.car .heading {
+  font-size: 26px;
+  color: #1F1F1F;
+  margin-bottom: 15px;
+  text-align: center;
+  font-weight: 600;
+}
 .car .step {
   background: rgb(237, 237, 237);
   padding: 10px 20px;

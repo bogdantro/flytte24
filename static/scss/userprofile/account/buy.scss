@@ -17,6 +17,13 @@ $txt: #183b56;
 }
 .car{
     padding-inline: 20px;
+    .heading{
+        font-size: 26px;
+        color: $black;
+        margin-bottom: 15px;
+        text-align: center;
+        font-weight: 600;
+    }
     .step{
         background: rgb(237, 237, 237);
         padding: 10px 20px;

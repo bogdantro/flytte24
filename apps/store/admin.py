@@ -29,6 +29,9 @@ class CarPostAdmin(admin.ModelAdmin):
       ('Hoved informasjon', {
           'fields': ('user', 'name', 'slug', 'price','fritak_for_reg_pris','reg_pris','expiry_date','description')
       }),
+      ('Ekstra informasjon', {
+          'fields': ('service', 'garanti')
+      }),
       ('Kvalitet', {
           'fields': (
               'chasis',
@@ -41,7 +44,6 @@ class CarPostAdmin(admin.ModelAdmin):
               'amount_of_owners',
               'last_EU_accepted',
               'next_EU_test_deadline',
-              'garanti_type',
           )
       }),
       ('Bilder', {

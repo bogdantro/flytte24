@@ -7,11 +7,6 @@ from django.contrib.auth.models import User
 
 class Car(models.Model):
 
-    GARANTY_TYPER = [
-        ("Nybilgaranti", "Nybilgaranti"),
-        ("Bruktbilgaranti", "Bruktbilgaranti"),
-    ]
-
     PLACE = [
         ("Norge", "Norge"),
         ("Utlandet", "Utlandet"),
@@ -29,6 +24,10 @@ class Car(models.Model):
     reg_pris = models.CharField(max_length=300, blank=True, null=True)
     fritak_for_reg_pris = models.BooleanField(default=False)
     price = models.CharField(max_length=300, default=0, blank=True, null=True)
+    # Aditional info 
+    service = models.TextField(max_length=700, blank=True, null=True)
+    garanti = models.TextField(max_length=700, blank=True, null=True)
+
     # Quality
     chasis = models.CharField(max_length=100, blank=True, null=True)
     reg_nr = models.CharField(max_length=100, blank=True, null=True)
@@ -40,7 +39,6 @@ class Car(models.Model):
     amount_of_owners = models.CharField(max_length=100, blank=True, null=True)
     last_EU_accepted = models.CharField(max_length=100, blank=True, null=True)
     next_EU_test_deadline = models.CharField(max_length=100, blank=True, null=True)
-    garanti_type = models.CharField(max_length=100, choices=GARANTY_TYPER, blank=True, null=True)
     # Description
     description = models.CharField(max_length=8000, blank=True, null=True)
     # Contact

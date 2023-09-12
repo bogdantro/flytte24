@@ -29,6 +29,7 @@ from datetime import datetime
 def car_detail(request, slug):
     car = get_object_or_404(Car, slug=slug)  
     bids = car.bud_set.all()
+    mapbox_access_token = settings.MAP_BOX_ACCESS_TOKEN 
 
     highest_bid = car.bud_set.all().order_by('bid_amount').last() 
 
@@ -73,6 +74,7 @@ def car_detail(request, slug):
         'car': car,
         'bids': bids,
         'highest_bid': highest_bid,
+        'mapbox_access_token': mapbox_access_token,
     }
 
     return render(request, 'core/product.html', context)

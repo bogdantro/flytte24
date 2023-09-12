@@ -13,6 +13,10 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/flatpickr.min.css">
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
+<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.0.9/mapbox-gl-draw.js'></script>
+<script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -234,7 +238,33 @@
       </div>
 
 
+      <div class="additional-info">
+        <div id="addInfoChoices">
+          {% if car.service %}
+          <div id="service" class="active" style="width: auto; position: relative;">
+            <i class="fa-light fa-car-wrench"></i>
+            <p style="padding-left: 0;">Service</p>
+          </div>
+          {% endif %}
 
+          {% if car.garanti %}
+          <div class="garanti" style="width: auto; position: relative;">
+            <i class="fa-regular fa-shield-heart"></i>
+            <p>Garanti</p>
+          </div>
+          {% endif %}
+        </div>
+        <div class="content">
+          {% if car.service %}
+          <p>{{car.service}}</p>
+          {% endif %}
+          {% if car.service %}
+          <p>{{car.garanti}}</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <div id="map" style="width: 100%; max-width: 900px; height: 380px; margin-top: 20px; margin-inline: auto; border-radius: 4px;"></div>
 
 
     </div>
@@ -397,6 +427,61 @@
   </div>
 
   </div>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+
+    mapboxgl.accessToken = '{{mapbox_access_token}}';
+     const map = new mapboxgl.Map({
+       container: 'map', // Specify the container ID
+       style: 'mapbox://styles/bogdantro/cld3lse3v000301lidywd9qfs',
+       center: [10.776038, 59.912196], // Specify the starting position
+       zoom: 5, // Specify the starting zoom
+     });
+   
+     map.on('load', () => {
+ map.addSource('places', {
+    // This GeoJSON contains features that include an "icon"
+    // property. The value of the "icon" property corresponds
+    // to an image in the Mapbox Streets style's sprite.
+    'type': 'geojson',
+    'data': {
+       'type': 'FeatureCollection',
+       'features': [
+          '{% for locations in locations %}',
+    {
+    'geometry': {
+       'type': 'Point',
+       'coordinates': ['{{locations.cords1}}', '{{locations.cords2}}']
+    },
+    },
+    '{% endfor %}',
+    ]
+    }
+    });
+ // Add a layer showing the places.
+ map.addLayer({
+ 'id': 'places',
+ 'type': 'symbol',
+ 'source': 'places',
+ 'layout': {
+ "icon-image": "marker-editor",
+ 'icon-allow-overlap': true,
+ 'icon-size': 0.9,
+ }
+ });
+  
+
+ });
+ 
+   </script>
+
+
 
   
   <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/flatpickr.min.js"></script>

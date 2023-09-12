@@ -91,6 +91,18 @@ $txt: #183b56;
     border-radius: 12px;
     padding-inline: 30px;
     padding-block: 16px;
+    .icon-input {
+      position: relative;
+      width: 100%;
+      i {
+          position: absolute;
+          right: 18px;
+          top: 13px;
+          color: #1F1F1F;
+          font-size: 20px;
+          opacity: 0.9;
+        }
+    }
     #bookTimeStepTwo{
       display: none;
       .mobile_number{

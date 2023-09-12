@@ -238,32 +238,59 @@
       </div>
 
 
+      {% if car.service or car.garanti %}
       <div class="additional-info">
         <div id="addInfoChoices">
           {% if car.service %}
-          <div id="service" class="active" style="width: auto; position: relative;">
-            <i class="fa-light fa-car-wrench"></i>
-            <p style="padding-left: 0;">Service</p>
-          </div>
+              {% if car.garanti %}
+              <div id="service" class="active" style="width: auto; position: relative; margin-right: 15px;" onclick="serviceChoice()">
+                <i class="fa-light fa-car-wrench"></i>
+                <p style="padding-left: 0;">Service</p>
+              </div>
+            {% else %}
+            <div id="service" class="active" style="width: auto; position: relative;" onclick="serviceChoice()">
+              <i class="fa-light fa-car-wrench"></i>
+              <p style="padding-left: 0;">Service</p>
+            </div>
+            {% endif %}
           {% endif %}
 
           {% if car.garanti %}
-          <div class="garanti" style="width: auto; position: relative;">
-            <i class="fa-regular fa-shield-heart"></i>
-            <p>Garanti</p>
-          </div>
+            {% if car.service %}
+              <div id="garanti" style="width: auto; position: relative;" onclick="garantiChoice()">
+                <i class="fa-regular fa-shield-heart"></i>
+                <p>Garanti</p>
+              </div>
+              {% else %}
+              <div id="garanti" class="active" style="width: auto; position: relative;" onclick="garantiChoice()">
+                <i class="fa-regular fa-shield-heart"></i>
+                <p>Garanti</p>
+              </div>
+            {% endif %}
           {% endif %}
         </div>
         <div class="content">
           {% if car.service %}
-          <p>{{car.service}}</p>
+          <div id="serviceText" class="active">
+            <p>{{car.service}}</p>
+          </div>
           {% endif %}
-          {% if car.service %}
-          <p>{{car.garanti}}</p>
+          {% if car.garanti %}
+            {% if car.service %}
+              <div id="garantiText">
+                <p>{{car.garanti}}</p>
+              </div>
+              {% else %}
+              <div id="garantiText" class="active">
+                <p>{{car.garanti}}</p>
+              </div>
+            {% endif %}
           {% endif %}
         </div>
       </div>
+      {% endif %}
 
+      <h1 style="font-size: 18px; font-weight: 500; color: #1F1F1F; margin-top: 50px;">Bilen står i {{car.adress}}</h1>
       <div id="map" style="width: 100%; max-width: 900px; height: 380px; margin-top: 20px; margin-inline: auto; border-radius: 4px;"></div>
 
 
@@ -635,6 +662,24 @@ function infoChoicesThree(){
 }
 
 
+
+function serviceChoice(){
+  document.getElementById('service').classList.add('active');
+  document.getElementById('serviceText').classList.add('active');
+
+  document.getElementById('garanti').classList.remove('active');
+  document.getElementById('garantiText').classList.remove('active');
+}
+
+function garantiChoice(){
+  document.getElementById('garanti').classList.add('active');
+  document.getElementById('garantiText').classList.add('active');
+
+  document.getElementById('service').classList.remove('active');
+  document.getElementById('serviceText').classList.remove('active');
+}
+
+
     function minPriceValue(){
       const text = document.getElementById('minPriceValue');
       const input = document.getElementById('bid_amount');
@@ -652,6 +697,11 @@ function infoChoicesThree(){
 
     }
     minPriceValue();
+
+
+
+
+
 
 
     function testDrive(){

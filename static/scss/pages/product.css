@@ -153,7 +153,6 @@
   height: auto;
   margin-left: -20px;
   margin-top: 80px;
-  margin-bottom: 50px;
   border-radius: 4px;
 }
 .page .car .info .additional-info #addInfoChoices {
@@ -168,7 +167,7 @@
 }
 .page .car .info .additional-info #addInfoChoices i {
   position: absolute;
-  top: -45px;
+  top: -35px;
   color: #f0a432;
   font-size: 26px;
   left: 50%;
@@ -179,7 +178,8 @@
   color: #1F1F1F;
   font-size: 16px;
   font-weight: 600;
-  padding-inline: 15px;
+  width: -moz-max-content;
+  width: max-content;
 }
 .page .car .info .additional-info #addInfoChoices p:first-child {
   padding-left: 0 !important;
@@ -191,6 +191,13 @@
 .page .car .info .additional-info #addInfoChoices #service.active {
   background: hsla(36, 100%, 86%, 0.484);
 }
+.page .car .info .additional-info #addInfoChoices #garanti {
+  padding: 10px 20px;
+  margin: -10px -20px;
+}
+.page .car .info .additional-info #addInfoChoices #garanti.active {
+  background: hsla(36, 100%, 86%, 0.484);
+}
 .page .car .info .additional-info .content {
   background: hsla(36, 100%, 90%, 0.484);
   padding: 20px;
@@ -200,6 +207,18 @@
   color: #1F1F1F;
   font-size: 16px;
   font-weight: 400;
+}
+.page .car .info .additional-info .content #serviceText {
+  display: none;
+}
+.page .car .info .additional-info .content #serviceText.active {
+  display: block;
+}
+.page .car .info .additional-info .content #garantiText {
+  display: none;
+}
+.page .car .info .additional-info .content #garantiText.active {
+  display: block;
 }
 .page .car .actions {
   width: 100%;

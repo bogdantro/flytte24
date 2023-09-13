@@ -34,6 +34,11 @@
     <br>
     <div class="car">
 
+        {% for purchase in buy %}
+        {% empty %}
+        <h1 style="color: #1F1F1F; font-size: 22px; font-weight: 500; padding-top: 0; text-align: center;">Ingen kjøp enda...</h1>
+        {% endfor %}
+
 
         {% for purchase in buy %}
         <form action="" method="POST" id="stepOne" >
@@ -315,10 +320,6 @@
         </div>
 
 
-
-        {% empty %}
-        <br>
-        <h1>Ingen kjøp enda...</h1>
         {% endfor %}
     </div>
 </div>

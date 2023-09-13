@@ -1,6 +1,6 @@
 {% extends 'core/base.html' %}
 {% load static %}
-
+{% load custom_filters  %}
 
 {% block content %}
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -86,12 +86,21 @@
           {% if highest_bid.status == 'accepted' %}
           <div class="status" id="status" style="background: #ffc876;">Solgt</div>
           {% endif %}
+          {% if car.buys %}
+          <div class="status" id="status" style="background: #ffc876;">Solgt</div>
+          {% endif %}
+          
         {% endif %}
       </div>
 
       <div class="name"><strong style="font-weight: 600;">{{car.name}}</strong> {{ car.car_model }}</div>
       <p style="margin-bottom: 0; margin-top: 15px; color: black; font-size: 15px; opacity: 0.7;">Pris</p>
       <div class="price">{{car.price}} kr</div>
+      {% if highest_bid %}
+      <div class="current-bid">
+        <div class="price" style="font-size: 18px;">Høyeste bud: <strong>{{highest_bid.bid_amount|add_space_separator   }} kr</strong></div>
+      </div>
+      {% endif %}
 
       <div class="actions">
         {% if request.user == car.user %}

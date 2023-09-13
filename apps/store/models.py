@@ -258,7 +258,7 @@ class Car(models.Model):
 class Bud(models.Model):
     car = models.ForeignKey(Car, on_delete=models.PROTECT, blank=True, default='')
     user = models.ForeignKey(User, related_name='bud', on_delete=models.SET_NULL, blank=True, null=True)
-    bid_amount = models.CharField(max_length=100, blank=True, null=True)
+    bid_amount = models.IntegerField(max_length=100, blank=True, null=True)
     expiry_date = models.DateField(blank=True, null=True)
     status = models.CharField(max_length=20, choices=[('pending', 'Pending'), ('accepted', 'Accepted'), ('declined', 'Declined')], default='pending')
 

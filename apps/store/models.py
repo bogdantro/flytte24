@@ -23,7 +23,7 @@ class Car(models.Model):
     # Price
     reg_pris = models.CharField(max_length=300, blank=True, null=True)
     fritak_for_reg_pris = models.BooleanField(default=False)
-    price = models.CharField(max_length=300, default=0, blank=True, null=True)
+    price = models.IntegerField(max_length=300, default=0, blank=True, null=True)
     # Aditional info 
     service = models.TextField(max_length=700, blank=True, null=True)
     garanti = models.TextField(max_length=700, blank=True, null=True)

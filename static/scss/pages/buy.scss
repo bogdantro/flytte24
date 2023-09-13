@@ -113,6 +113,15 @@ $txt: #183b56;
                         object-fit: cover;
                     }
                 }
+                .status{
+                    background: #9cffcc;
+                    width: max-content;
+                    padding: 3px 10px;
+                    font-size: 15px;
+                    color: $black;
+                    border-radius: 5px;
+                    margin-top: 6px;
+                }
                 .bottom{
                     .name{
                         margin-top: 8px;

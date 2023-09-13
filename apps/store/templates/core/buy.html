@@ -1,5 +1,7 @@
 {% extends 'core/base.html' %}
 {% load static %}
+{% load custom_filters  %}
+
 
 {% block content %}
 <link rel="stylesheet" href="{% static '/scss/pages/page.css' %}" type="text/css">
@@ -35,11 +37,20 @@
                 <div class="top">
                     <img src="{{car.image1.url}}" alt="" class="car-image" >
                 </div>
+                {% if car.days_until_expiry > 0 %}
+                {% if highest_bid.status == 'accepted' %}
+                <div class="status" id="status" style="background: #ffc876;">Solgt</div>
+                {% endif %}
+                {% if car.buys %}
+                <div class="status" id="status" style="background: #ffc876;">Solgt</div>
+                {% endif %}
+                
+              {% endif %}
                 <div class="bottom">
                       <div class="name"><strong style="font-weight: 600 !important;">{{car.year}} {{car.km}}km {{car.name}}</strong> {{car.car_model}}</div>
                       <!-- <div class="adress">{{car.adress}}</div> -->
                       <div class="flex">
-                            <div class="price">{{car.price}}kr</div>
+                            <div class="price">{{car.price|add_space_separator}}kr</div>
                       </div>
                 </div>
             </div>

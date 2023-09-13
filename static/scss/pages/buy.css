@@ -111,6 +111,16 @@
   -o-object-fit: cover;
      object-fit: cover;
 }
+.page .buy .cars .car .status {
+  background: #9cffcc;
+  width: -moz-max-content;
+  width: max-content;
+  padding: 3px 10px;
+  font-size: 15px;
+  color: #1F1F1F;
+  border-radius: 5px;
+  margin-top: 6px;
+}
 .page .buy .cars .car .bottom .name {
   margin-top: 8px;
   color: #1F1F1F;

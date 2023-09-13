@@ -83,13 +83,10 @@
 
       <div class="flex">
         {% if car.days_until_expiry > 0 %}
-          {% if highest_bid.status == 'accepted' %}
+          {% if car.sold %}
           <div class="status" id="status" style="background: #ffc876;">Solgt</div>
           {% endif %}
-          {% if car.buys %}
-          <div class="status" id="status" style="background: #ffc876;">Solgt</div>
-          {% endif %}
-          
+
         {% endif %}
       </div>
 
@@ -97,15 +94,18 @@
       <p style="margin-bottom: 0; margin-top: 15px; color: black; font-size: 15px; opacity: 0.7;">Pris</p>
       <div class="price">{{car.price|add_space_separator}}kr</div>
       {% if highest_bid %}
-      <div class="current-bid">
-        <div class="price" style="font-size: 18px;">Høyeste bud: <strong>{{highest_bid.bid_amount|add_space_separator }}kr</strong></div>
-      </div>
+        {% if car.sold %}
+        {% else %}
+        <div class="current-bid">
+          <div class="price" style="font-size: 18px;">Høyeste bud: <strong>{{highest_bid.bid_amount|add_space_separator }}kr</strong></div>
+        </div>
+        {% endif %}
       {% endif %}
 
       <div class="actions">
         {% if request.user == car.user %}
         {% else %}
-          {% if highest_bid.status == 'accepted' %}
+          {% if car.sold %}
           {% else %}
           <button onclick="testDrive()" class="secondary">Prøvekjøring</button>
           <button onclick="contactOwner()" class="secondary">Kontakt eier</button>
@@ -378,13 +378,14 @@
               <input type="number" required name="bid_amount" id="bid_amount" placeholder="Bud beløp">
               <i class="fa-duotone fa-tally-3"></i>
             </div>
-            <!-- <p style="margin-left: 5px; margin-top: 3px;" id="minPriceValueTxt">Må være større enn <span id="minPriceValue"></span>kr</p> -->
+            <p style="margin-left: 5px; margin-top: 3px; margin-bottom: 0;" id="minPriceValueTxt">Må være større enn <span id="minPriceValue"></span>kr</p>
             <br>
             <div class="icon-input">
               <input type="text" required name="expiry_date" id="expiry_date" placeholder="Utløpsdato">
               <i class="fa-regular fa-calendar-lines"></i>
             </div>
             <br>
+            <div class="alert alert-danger" role="alert" id="alert" style="display: none;">Alle feltene må fylles inn</div>
           </div>
         </div>
 
@@ -477,7 +478,7 @@
        container: 'map', // Specify the container ID
        style: 'mapbox://styles/bogdantro/cld3lse3v000301lidywd9qfs',
        center: [10.776038, 59.912196], // Specify the starting position
-       zoom: 5, // Specify the starting zoom
+       zoom: 4.5, // Specify the starting zoom
      });
    
      map.on('load', () => {
@@ -689,15 +690,30 @@ function garantiChoice(){
 }
 
 
+
+function checkIfBidGood(){
+  const expiry_date = document.getElementById('expiry_date');
+  const alert = document.getElementById('alert');
+
+  if(expiry_date.value){
+    alert.style.display = 'none';
+  }else{
+    alert.style.display = 'block';
+  }
+}
+
+setInterval(() => {
+  checkIfBidGood();
+}, 1);
+
     function minPriceValue(){
-      const text = document.getElementById('minPriceValue');
       const input = document.getElementById('bid_amount');
       const minPriceValueTxt = document.getElementById('minPriceValueTxt');
+      const minPriceValue = document.getElementById('minPriceValue');
 
       '{% if highest_bid.bid_amount %}'
       var bidAmount = '{{highest_bid.bid_amount|add_space_separator}}';
-      text.innerHTML = bidAmount;
-      input.value = bidAmount
+      minPriceValue.innerHTML = '{{highest_bid.bid_amount|add_space_separator}}'
       input.min = parseInt('{{highest_bid.bid_amount|add_space_separator}}') + 1
       '{% else %}'
       minPriceValueTxt.style.display = 'none'

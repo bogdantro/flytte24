@@ -38,7 +38,7 @@
                     <img src="{{car.image1.url}}" alt="" class="car-image" >
                 </div>
                 {% if car.days_until_expiry > 0 %}
-                {% if highest_bid.status == 'accepted' %}
+                {% if car.sold %}
                 <div class="status" id="status" style="background: #ffc876;">Solgt</div>
                 {% endif %}
                 {% if car.buys %}

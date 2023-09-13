@@ -66,6 +66,8 @@ def car_detail(request, slug):
     if request.method=='POST' and 'buy' in request.POST:
         user = request.user
         car = car
+        car.sold = True
+        car.save()
 
         buy = Buy.objects.create(user=user, car=car)
         return redirect('/min-bruker/mine-kjøp/')
@@ -85,11 +87,6 @@ def bid_success(request):
 
 def buy_car(request):
     cars = Car.objects.all()
-
-    car = get_object_or_404(Car)  
-
-
-    highest_bid = car.bud_set.all().order_by('bid_amount').last() 
 
     # Retrieve filtering options from query parameters
     price_order = request.GET.get('price_order')
@@ -112,7 +109,6 @@ def buy_car(request):
 
     context = {
         'cars': cars,
-        'highest_bid': highest_bid,
     }
     return render(request, 'core/buy.html', context)
 

@@ -13,7 +13,7 @@ class Car(models.Model):
     ]
 
     user = models.ForeignKey(User, related_name='cars', on_delete=models.SET_NULL, blank=True, null=True)
-
+    sold = models.BooleanField(default=False, blank=True)
     # Main
     name = models.CharField(max_length=300)
     slug = models.SlugField(max_length=150)
@@ -272,6 +272,8 @@ class Bud(models.Model):
     def accept_bid(self):
         self.status = 'accepted'
         self.save()
+        self.car.sold = True
+        self.car.save()
 
     def decline_bid(self):
         self.status = 'declined'

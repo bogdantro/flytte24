@@ -121,7 +121,7 @@
   #desNav {
     display: flex;
     width: 100%;
-    max-width: 1251px;
+    max-width: 1290px;
     height: 80px;
     justify-content: space-between;
     align-items: center;
@@ -144,7 +144,7 @@
     width: 120px;
     height: auto;
     transition: 0.2s;
-    transform: translateX(-35px);
+    transform: translateX(-42px);
   }
   #desNav .logo img:hover {
     transform: scale(1.1) translateX(-35px);

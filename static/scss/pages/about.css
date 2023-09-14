@@ -82,6 +82,9 @@
   text-align: center;
   margin-top: 28px;
 }
+.about-us .verdivurdering .content .text #onlyOnDes {
+  display: none;
+}
 .about-us .verdivurdering .content .text h1 {
   color: white;
   font-size: 29px;
@@ -309,4 +312,412 @@
   font-size: 16px;
   font-weight: 500;
   color: #1F1F1F;
+}
+
+@media only screen and (min-device-width: 1140px) {
+  .page .cover {
+    width: 100%;
+    min-height: -moz-max-content;
+    min-height: max-content;
+    position: relative;
+    padding-bottom: 5px;
+    background: linear-gradient(to bottom right, rgba(255, 240, 180, 0.185), transparent);
+  }
+  .page .cover .content {
+    padding-inline: 35px;
+    padding-top: 80px;
+    padding-bottom: 40px;
+    height: -moz-max-content;
+    height: max-content;
+    position: relative;
+  }
+  .page .cover .content .text {
+    text-align: left;
+    margin-top: 28px;
+  }
+  .page .cover .content .text .cover-h1 {
+    color: #1F1F1F;
+    font-size: 38px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    max-width: 500px;
+  }
+  .page .cover .content .text .cover-p {
+    max-width: 600px !important;
+    font-size: 20px;
+    margin-bottom: 0;
+    color: #1F1F1F;
+    font-weight: 500;
+  }
+  .page .cover .content .cover-actions {
+    margin-top: 24px;
+    width: 100%;
+    text-align: center;
+  }
+  .page .cover .content .cover-actions button {
+    border: 1px solid transparent;
+    border-radius: 6px;
+    outline: none;
+    background: linear-gradient(to bottom right, #f0a432, #ffb649);
+    color: white;
+    font-weight: 500;
+    font-size: 17px;
+    width: 230px;
+    display: block;
+    height: 47px;
+  }
+  .page .cover .content .cover-actions button.secondary {
+    border-color: #f0a432;
+    color: #f0a432;
+    background: white;
+    margin-right: 0;
+    margin-top: 15px;
+  }
+  .about-us {
+    padding-block: 25px;
+    position: relative;
+  }
+  .about-us .first-div {
+    margin-top: 10px;
+    padding-inline: 35px;
+  }
+  .about-us .first-div .text h1 {
+    font-size: 30px;
+    color: #1F1F1F;
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+  .about-us .first-div .text p {
+    font-size: 17px;
+    color: #1F1F1F;
+    max-width: 500px;
+  }
+  .about-us .second-div {
+    padding-block: 65px;
+    padding-inline: 35px;
+  }
+  .about-us .second-div .text h1 {
+    font-size: 30px;
+    color: #1F1F1F;
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+  .about-us .second-div .persons {
+    margin-top: 35px;
+  }
+  .about-us .second-div .persons .person {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    display: flex;
+    margin-bottom: 55px;
+  }
+  .about-us .second-div .persons .person:last-child {
+    margin-bottom: 0 !important;
+  }
+  .about-us .second-div .persons .person .left {
+    display: flex;
+    justify-content: center;
+    width: 20%;
+  }
+  .about-us .second-div .persons .person .left img {
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    -o-object-fit: cover;
+       object-fit: cover;
+  }
+  .about-us .second-div .persons .person .right {
+    width: 80%;
+    margin-left: 20px;
+  }
+  .about-us .second-div .persons .person .right h1 {
+    font-size: 20px;
+    font-weight: 500;
+    color: #1F1F1F;
+    margin-bottom: 6px;
+  }
+  .about-us .second-div .persons .person .right p {
+    margin-bottom: 0px;
+    font-size: 16px;
+    color: #1F1F1F;
+    opacity: 0.8;
+  }
+  .about-us .verdivurdering {
+    margin-top: 25px;
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .about-us .verdivurdering .content {
+    padding-inline: 80px;
+    padding-top: 65px;
+    padding-bottom: 120px;
+    position: relative;
+    background: #f0a432;
+    display: flex;
+    justify-content: space-between;
+  }
+  .about-us .verdivurdering .content .text {
+    text-align: left;
+    margin-top: 28px;
+  }
+  .about-us .verdivurdering .content .text h1 {
+    color: white;
+    font-size: 34px;
+    font-weight: 600;
+    margin-bottom: -10px;
+  }
+  .about-us .verdivurdering .content .text h2 {
+    color: white;
+    font-size: 27px;
+    font-weight: 500;
+  }
+  .about-us .verdivurdering .content .text #onlyOnDes {
+    display: block;
+    margin-top: 30px;
+  }
+  .about-us .verdivurdering .content .text #onlyOnDes .check {
+    display: flex;
+    margin-bottom: 25px;
+  }
+  .about-us .verdivurdering .content .text #onlyOnDes .check i {
+    color: #1efa1e;
+    background: #e0fae0;
+    border-radius: 100%;
+    padding: 10px;
+    font-size: 24px;
+  }
+  .about-us .verdivurdering .content .text #onlyOnDes .check p {
+    color: white;
+    font-weight: 500;
+    font-size: 19px;
+    margin-left: 15px;
+    transform: translateY(8px);
+  }
+  .about-us .verdivurdering .content form {
+    background: white;
+    border-radius: 12px;
+    padding-inline: 30px;
+    padding-block: 13px;
+    padding-bottom: 23px;
+    margin-top: 25px;
+    width: 380px;
+    margin-inline: auto;
+    transform: translateX(40px);
+  }
+  .about-us .verdivurdering .content form .inputs-labels .step-one input {
+    height: 54px;
+    border-radius: 12px;
+    text-align: center;
+    font-size: 23px;
+  }
+  .about-us .verdivurdering .content form .inputs-labels .step-one input:focus, .about-us .verdivurdering .content form .inputs-labels .step-one input:active {
+    border: 1px solid rgb(172, 172, 172);
+    cursor: text;
+    background: rgb(255, 255, 255);
+  }
+  .about-us .verdivurdering .content form .inputs-labels .step-one input::-moz-placeholder {
+    font-size: 23px;
+  }
+  .about-us .verdivurdering .content form .inputs-labels .step-one input::placeholder {
+    font-size: 23px;
+  }
+  .about-us .verdivurdering .content form .inputs-labels .step-one .reg-nr {
+    display: flex;
+    position: relative;
+  }
+  .about-us .verdivurdering .content form .inputs-labels .step-one .reg-nr input {
+    text-transform: uppercase;
+  }
+  .about-us .verdivurdering .content form .inputs-labels .step-one .reg-nr img {
+    position: absolute;
+    left: 0;
+    height: 54px;
+    width: auto;
+    border-bottom-left-radius: 12px;
+    border-top-left-radius: 12px;
+  }
+  .about-us .verdivurdering .content form .inputs-labels .step-one .km {
+    position: relative;
+    display: flex;
+  }
+  .about-us .verdivurdering .content form .inputs-labels .step-one .km p {
+    position: absolute;
+    right: 11px;
+    bottom: -5px;
+    color: #1F1F1F;
+    opacity: 0.95;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .about-us .verdivurdering .content form .inputs-labels label {
+    font-size: 16px;
+    color: #1F1F1F;
+    font-weight: 500;
+  }
+  .about-us .verdivurdering .content form .inputs-labels input {
+    width: 100%;
+    height: 45px;
+    border: 1px solid lightgray;
+    outline: none;
+    padding: 8px;
+    color: #1F1F1F;
+    font-size: 16px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 7px;
+  }
+  .about-us .verdivurdering .content form .inputs-labels input:focus, .about-us .verdivurdering .content form .inputs-labels input:active {
+    border: 2px solid #f0a432;
+    cursor: text;
+    background: rgb(255, 255, 255);
+  }
+  .about-us .verdivurdering .content form .inputs-labels input::-moz-placeholder {
+    color: #1F1F1F;
+    opacity: 0.6;
+  }
+  .about-us .verdivurdering .content form .inputs-labels input::placeholder {
+    color: #1F1F1F;
+    opacity: 0.6;
+  }
+  .about-us .verdivurdering .content form .inputs-labels .checkbox {
+    display: flex;
+    align-items: center;
+    margin-top: 18px;
+    margin-bottom: 15px;
+  }
+  .about-us .verdivurdering .content form .inputs-labels .checkbox p {
+    margin-bottom: 0;
+    margin-left: 15px;
+    font-size: 14px;
+    color: #1F1F1F;
+  }
+  .about-us .verdivurdering .content form .inputs-labels .checkbox p a {
+    text-decoration: underline;
+  }
+  .about-us .verdivurdering .content form .inputs-labels .checkbox input {
+    width: 20px;
+    height: 20px;
+  }
+  .about-us .verdivurdering .content form .form-actions button {
+    border: 1px solid transparent;
+    border-radius: 6px;
+    outline: none;
+    background: linear-gradient(to bottom right, #f0a432, #ffb649);
+    color: white;
+    font-weight: 500;
+    font-size: 17px;
+    width: 100%;
+    display: block;
+    height: 46px;
+    margin-top: 32px;
+  }
+  .about-us .vision {
+    margin-top: 35px;
+    padding: 45px 35px;
+  }
+  .about-us .vision .text h1 {
+    font-size: 30px;
+    color: #1F1F1F;
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+  .about-us .vision .text p {
+    font-size: 17px;
+    color: #1F1F1F;
+    max-width: 500px;
+  }
+  .about-us .our-local {
+    padding: 55px 35px;
+  }
+  .about-us .our-local .text h1 {
+    font-size: 30px;
+    color: #1F1F1F;
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+  .about-us .our-local .text p {
+    font-size: 17px;
+    color: #1F1F1F;
+  }
+  .about-us .our-local .text .video {
+    margin-top: 25px;
+    width: 100%;
+    height: 150px;
+    background: lightgray;
+    max-width: 400px;
+  }
+  .about-us .faq {
+    width: 100%;
+    height: auto;
+    padding-block: 70px;
+    padding-top: 95px;
+    position: relative;
+  }
+  .about-us .faq .content {
+    padding-inline: 35px;
+    position: relative;
+  }
+  .about-us .faq .content .text {
+    text-align: left;
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+  .about-us .faq .content .text h1 {
+    color: #1F1F1F;
+    font-size: 30px;
+    font-weight: 600;
+    margin-bottom: 30px;
+  }
+  .about-us .faq .content .ask {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid lightgray;
+    height: 90px;
+    position: relative;
+    width: 420px;
+    margin-inline: unset;
+    cursor: pointer;
+  }
+  .about-us .faq .content .ask p {
+    color: #1F1F1F;
+    font-weight: 500;
+    margin-bottom: 0;
+    font-size: 22px;
+  }
+  .about-us .faq .content .ask svg {
+    color: #1F1F1F;
+    font-size: 41px;
+    padding: 8px;
+    margin: -8px;
+  }
+  .about-us .faq .content .ask .plus {
+    display: block;
+  }
+  .about-us .faq .content .ask .minus {
+    display: none;
+  }
+  .about-us .faq .content .answer {
+    padding: 8px;
+    transform: translateY(-21px);
+    border-radius: 2px;
+    height: 0;
+    transition: 0.2s;
+    pointer-events: none;
+    opacity: 0;
+    width: 420px;
+    margin-inline: auto;
+  }
+  .about-us .faq .content .answer.active {
+    pointer-events: visible;
+    opacity: 1;
+    height: 140px;
+  }
+  .about-us .faq .content .answer p {
+    font-size: 16px;
+    font-weight: 500;
+    color: #1F1F1F;
+  }
 }/*# sourceMappingURL=about.css.map */

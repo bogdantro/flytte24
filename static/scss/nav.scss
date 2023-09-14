@@ -138,7 +138,7 @@ $txt: #183b56;
     #desNav{
         display: flex;
         width: 100%;
-        max-width: 1251px;
+        max-width: 1290px;
         height: 80px;
         justify-content: space-between;
         align-items: center;
@@ -162,7 +162,7 @@ $txt: #183b56;
                 width: 120px;
                 height: auto;
                 transition: .2s;
-                transform: translateX(-35px);
+                transform: translateX(-42px);
                 &:hover{
                     transform: scale(1.1) translateX(-35px);
                 }

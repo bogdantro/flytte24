@@ -86,6 +86,9 @@ $txt: #183b56;
           .text{
             text-align: center;
             margin-top: 28px;
+            #onlyOnDes{
+                display: none;
+            }
             h1{
               color: white;
               font-size: 29px;
@@ -321,4 +324,420 @@ $txt: #183b56;
           }
         }
       }
+}
+
+@media only screen and (min-device-width: 1140px) {
+    .page{
+        .cover{
+            width: 100%;
+            min-height: max-content;
+            position: relative;
+            padding-bottom: 5px;
+            background: linear-gradient(to bottom right, rgba(255, 240, 180, 0.185), transparent);
+            .content{
+            padding-inline: 35px;
+            padding-top: 80px;
+            padding-bottom: 40px;
+            height: max-content;
+            position: relative;
+            .text{
+                text-align: left;
+                margin-top: 28px;
+                .cover-h1{
+                color: $black;
+                font-size: 38px;
+                font-weight: 600;
+                margin-bottom: 10px;
+                max-width: 500px;
+                }
+                .cover-p{
+                    max-width: 600px !important;
+                font-size: 20px;
+                margin-bottom: 0;
+                color: $black;
+                font-weight: 500;
+                }
+            }
+            .cover-actions{
+                margin-top: 24px;
+                width: 100%;
+                text-align: center;
+                button{
+                border: 1px solid transparent;
+                border-radius: 6px;
+                outline: none;
+                background: linear-gradient(to bottom right, $primBtn, #ffb649);
+                color: white;
+                font-weight: 500;
+                font-size: 17px;
+                width: 230px;
+                display: block;
+                height: 47px;
+                &.secondary{
+                    border-color: $primBtn;
+                    color: $primBtn;
+                    background: white;
+                    margin-right: 0;
+                    margin-top: 15px;
+                }
+                }
+            }
+            }
+        }
+    }
+    .about-us{
+        padding-block: 25px;
+        position: relative;
+        .first-div{
+            margin-top: 10px;
+            padding-inline: 35px;
+            .text{
+                h1{
+                    font-size: 30px;
+                    color: $black;
+                    font-weight: 600;
+                    margin-bottom: 15px;
+                }
+                p{
+                    font-size: 17px;
+                    color: $black;
+                    max-width: 500px;
+                }
+            }
+        }
+        .second-div{
+            padding-block: 65px;
+            padding-inline: 35px;
+            .text{
+                h1{
+                    font-size: 30px;
+                    color: $black;
+                    font-weight: 600;
+                    margin-bottom: 15px;
+                }
+            }
+            .persons{
+                margin-top: 35px;
+                .person{
+                    width: 100%;
+                    max-width: 400px;
+                    height: auto;
+                    display: flex;
+                    margin-bottom: 55px;
+                    &:last-child{
+                        margin-bottom: 0 !important;
+                    }
+                    .left{
+                        display: flex;
+                        justify-content: center;
+                        width: 20%;
+                        img{
+                            width: 50px;
+                            height: 50px;
+                            border-radius: 100%;
+                            object-fit: cover;
+                        }
+                    } 
+                    .right{
+                        width: 80%;
+                        margin-left: 20px;
+                        h1{
+                            font-size: 20px;
+                            font-weight: 500;
+                            color: $black;
+                            margin-bottom: 6px;
+                        }
+                        p{
+                            margin-bottom: 0px;
+                            font-size: 16px;
+                            color: $black;
+                            opacity: 0.8;
+                        }
+                    }
+                }
+            }
+        }
+        .verdivurdering{
+            margin-top: 25px;
+            width: 100%;
+            height: auto;
+            position: relative;
+            .content{
+              padding-inline: 80px;
+              padding-top: 65px;
+              padding-bottom: 120px;
+              position: relative;
+              background: $primBtn;
+              display: flex;
+              justify-content: space-between;
+              .text{
+                text-align: left;
+                margin-top: 28px;
+                h1{
+                  color: white;
+                  font-size: 34px;
+                  font-weight: 600;
+                  margin-bottom: -10px;
+                }
+                h2{
+                  color: white;
+                  font-size: 27px;
+                  font-weight: 500;
+                }
+                #onlyOnDes{
+                  display: block;
+                  margin-top: 30px;
+                  .check{
+                    display: flex;
+                    margin-bottom: 25px;
+                    i{
+                      color: #1efa1e;
+                      background: #e0fae0;
+                      border-radius: 100%;
+                      padding: 10px;
+                      font-size: 24px;
+                    }
+                    p{
+                      color: white;
+                      font-weight: 500;
+                      font-size: 19px;
+                      margin-left: 15px;
+                      transform: translateY(8px);
+                    }
+                  }
+                }
+              }
+              form{
+                background: white;
+                border-radius: 12px;
+                padding-inline: 30px;
+                padding-block: 13px;
+                padding-bottom: 23px;
+                margin-top: 25px;
+                width: 380px;
+                margin-inline: auto;
+                transform: translateX(40px);
+                .inputs-labels{
+                    .step-one{
+                        input{
+                            height: 54px;
+                            border-radius: 12px;
+                            text-align: center;
+                            font-size: 23px;
+                            &:focus, &:active{
+                                border: 1px solid rgb(172, 172, 172);
+                                cursor: text;
+                                background: rgba(255,255,255,1);
+                            }
+                            &::placeholder{
+                                font-size: 23px;
+                            }
+                        }
+                        .reg-nr{
+                            display: flex;
+                            position: relative;
+                            input{
+                                text-transform: uppercase;
+                            }
+                            img{
+                                position: absolute;
+                                left: 0;
+                                height: 54px;
+                                width: auto;
+                                border-bottom-left-radius: 12px;
+                                border-top-left-radius: 12px;
+                            }
+                        }
+                        .km{
+                            position: relative;
+                            display: flex;
+                            p{
+                                position: absolute;
+                                right: 11px;
+                                bottom: -5px;
+                                color: $black;
+                                opacity: 0.95;
+                                font-size: 16px;
+                                font-weight: 500;
+                            }
+                        }
+                    }
+                    label{
+                        font-size: 16px;
+                        color: $black;
+                        font-weight: 500;
+                    }
+                    input{
+                        width: 100%;
+                        height: 45px;
+                        border: 1px solid lightgray;
+                        outline: none;
+                        padding: 8px;
+                        color: $black;
+                        font-size: 16px;
+                        cursor: pointer;
+                        background: rgba(255,255,255,0.7);
+                        border-radius: 7px;
+                        &:focus, &:active{
+                            border: 2px solid $primBtn;
+                            cursor: text;
+                            background: rgba(255,255,255,1);
+                        }
+                        &::placeholder{
+                            color: $black;
+                            opacity: 0.6;
+                        }
+                    }
+                    .checkbox{
+                        display: flex;
+                        align-items: center;
+                        margin-top: 18px;
+                        margin-bottom: 15px;
+                        p{
+                            margin-bottom: 0;
+                            margin-left: 15px;
+                            font-size: 14px;
+                            color: $black;
+                            a{
+                                text-decoration: underline;
+                            }
+                        }
+                        input{
+                            width: 20px;
+                            height: 20px;
+                        }
+                    }
+            
+                }
+                .form-actions{
+                    button{
+                        border: 1px solid transparent;
+                        border-radius: 6px;
+                        outline: none;
+                        background: linear-gradient(to bottom right, $primBtn, #ffb649);
+                        color: white;
+                        font-weight: 500;
+                        font-size: 17px;
+                        width: 100%;
+                        display: block;
+                        height: 46px;
+                        margin-top: 32px;
+                      }
+                }
+              }  
+            }
+          }
+        .vision{
+            margin-top: 35px;
+            padding: 45px 35px;
+            .text{
+                h1{
+                    font-size: 30px;
+                    color: $black;
+                    font-weight: 600;
+                    margin-bottom: 15px;
+                }
+                p{
+                    font-size: 17px;
+                    color: $black;
+                    max-width: 500px;
+                }
+            }
+        }
+        .our-local{
+            padding: 55px 35px;
+            .text{
+                h1{
+                    font-size: 30px;
+                    color: $black;
+                    font-weight: 600;
+                    margin-bottom: 15px;
+                }
+                p{
+                    font-size: 17px;
+                    color: $black;
+                }
+                .video{
+                    margin-top: 25px;
+                    width: 100%;
+                    height: 150px;
+                    background: lightgray;
+                    max-width: 400px;
+                  }
+            }
+        }
+        .faq{
+            width: 100%;
+            height: auto;
+            padding-block: 70px;
+            padding-top: 95px;
+            position: relative;
+            .content{
+              padding-inline: 35px;
+              position: relative;
+              .text{
+                text-align: left;
+                margin-top: 0;
+                margin-bottom: 20px;
+                h1{
+                  color: $black;
+                  font-size: 30px;
+                  font-weight: 600;
+                  margin-bottom: 30px;
+                }
+              }
+              .ask{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                border-bottom: 1px solid lightgray;
+                height: 90px;
+                position: relative;
+                width: 420px;
+                margin-inline: unset;
+                cursor: pointer;
+                p{
+                  color: $black;
+                  font-weight: 500;
+                  margin-bottom: 0;
+                  font-size: 22px;
+                }
+                svg{
+                  color: $black;
+                  font-size: 41px;
+                  padding: 8px;
+                  margin: -8px;
+                }
+                .plus{
+                  display: block;
+                }
+                .minus{
+                  display: none;
+                }
+              }
+              .answer{
+                padding: 8px;
+                transform: translateY(-21px);
+                border-radius: 2px;
+                height: 0;
+                transition: .2s;
+                pointer-events: none;
+                opacity: 0;
+                width: 420px;
+                margin-inline: auto;
+                &.active{
+                  pointer-events: visible;
+                  opacity: 1;
+                  height: 140px;
+                }
+                p{
+                  font-size: 16px;
+                  font-weight: 500;
+                  color: $black;
+                }
+              }
+            }
+          }
+    }
+    
 }

@@ -127,4 +127,181 @@
   display: block;
   height: 44px;
   margin-top: 32px;
+}
+
+@media only screen and (min-device-width: 1140px) {
+  .page {
+    padding-inline: 80px;
+    padding-bottom: 90px;
+    padding-top: 30px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .page .cover {
+    background: transparent;
+    max-width: -moz-max-content;
+    max-width: max-content;
+  }
+  .page .cover .content {
+    padding-inline: 0;
+  }
+  .page .cover .content .text {
+    text-align: left;
+  }
+  .page .cover .content .text h1 {
+    color: #1F1F1F;
+    font-size: 34px;
+    font-weight: 600;
+    margin-bottom: -10px;
+  }
+  .page .cover .content .text p {
+    margin: unset;
+    max-width: 320px;
+    color: #1F1F1F;
+    font-size: 20px;
+    font-weight: 500;
+    margin-top: 18px;
+  }
+  .page .cover .content .text #onlyOnDes {
+    display: block;
+    margin-top: 30px;
+  }
+  .page .cover .content .text #onlyOnDes .check {
+    display: flex;
+    margin-bottom: 25px;
+  }
+  .page .cover .content .text #onlyOnDes .check i {
+    color: #1efa1e;
+    background: #e0fae0;
+    border-radius: 100%;
+    padding: 10px;
+    font-size: 24px;
+  }
+  .page .cover .content .text #onlyOnDes .check p {
+    color: #1F1F1F;
+    font-weight: 500;
+    font-size: 19px;
+    margin-left: 15px;
+    transform: translateY(8px);
+    margin-top: 0;
+  }
+  .page form {
+    background: white;
+    border-radius: 12px;
+    padding-inline: 30px;
+    padding-block: 16px;
+    padding-bottom: 18px;
+    width: 400px;
+    height: -moz-max-content;
+    height: max-content;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    transform: translateY(85px) translateX(-65px);
+  }
+  .page form .inputs-labels .step-one input {
+    height: 60px;
+    border-radius: 12px;
+    text-align: center;
+    font-size: 26px;
+  }
+  .page form .inputs-labels .step-one input:focus, .page form .inputs-labels .step-one input:active {
+    border: 1px solid rgb(172, 172, 172);
+    cursor: text;
+    background: rgb(255, 255, 255);
+  }
+  .page form .inputs-labels .step-one input::-moz-placeholder {
+    font-size: 26px;
+  }
+  .page form .inputs-labels .step-one input::placeholder {
+    font-size: 26px;
+  }
+  .page form .inputs-labels .step-one .reg-nr {
+    display: flex;
+    position: relative;
+  }
+  .page form .inputs-labels .step-one .reg-nr input {
+    text-transform: uppercase;
+  }
+  .page form .inputs-labels .step-one .reg-nr img {
+    position: absolute;
+    left: 0;
+    height: 60px;
+    width: auto;
+    border-bottom-left-radius: 12px;
+    border-top-left-radius: 12px;
+  }
+  .page form .inputs-labels .step-one .km {
+    position: relative;
+    display: flex;
+  }
+  .page form .inputs-labels .step-one .km p {
+    position: absolute;
+    right: 7px;
+    bottom: -4px;
+    color: #1F1F1F;
+    opacity: 0.95;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .page form .inputs-labels label {
+    font-size: 16px;
+    color: #1F1F1F;
+    font-weight: 500;
+  }
+  .page form .inputs-labels input {
+    width: 100%;
+    height: 48px;
+    border: 1px solid lightgray;
+    outline: none;
+    padding: 8px;
+    color: #1F1F1F;
+    font-size: 16px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 7px;
+  }
+  .page form .inputs-labels input:focus, .page form .inputs-labels input:active {
+    border: 2px solid #f0a432;
+    cursor: text;
+    background: rgb(255, 255, 255);
+  }
+  .page form .inputs-labels input::-moz-placeholder {
+    color: #1F1F1F;
+    opacity: 0.6;
+  }
+  .page form .inputs-labels input::placeholder {
+    color: #1F1F1F;
+    opacity: 0.6;
+  }
+  .page form .inputs-labels .checkbox {
+    display: flex;
+    align-items: center;
+    margin-top: 18px;
+    margin-bottom: 15px;
+  }
+  .page form .inputs-labels .checkbox p {
+    margin-bottom: 0;
+    margin-left: 15px;
+    font-size: 14px;
+    color: #1F1F1F;
+  }
+  .page form .inputs-labels .checkbox p a {
+    text-decoration: underline;
+  }
+  .page form .inputs-labels .checkbox input {
+    width: 20px;
+    height: 20px;
+  }
+  .page form .form-actions button {
+    border: 1px solid transparent;
+    border-radius: 6px;
+    outline: none;
+    background: linear-gradient(to bottom right, #f0a432, #ffb649);
+    color: white;
+    font-weight: 500;
+    font-size: 17px;
+    width: 100%;
+    display: block;
+    height: 44px;
+    margin-top: 32px;
+  }
 }/*# sourceMappingURL=verdi.css.map */

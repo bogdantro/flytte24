@@ -396,7 +396,7 @@
     {% else %}
     <form id="makeBid">
       <div onclick="makeBidClose()" class="close"><i class="fa-solid fa-x"></i>Lukk</div>
-      <h1 class="heading">Gi bud</h1>
+      <h1 class="heading">Logg inn for å gi bud</h1>
       <div class="form-actions">
         <button type="button" onclick="window.location.href='/logg-inn/?next={% firstof request.path '/' %}'">Logg inn</button>
         </div>
@@ -693,9 +693,10 @@ function garantiChoice(){
 
 function checkIfBidGood(){
   const expiry_date = document.getElementById('expiry_date');
+  const bid_amount = document.getElementById('bid_amount');
   const alert = document.getElementById('alert');
 
-  if(expiry_date.value){
+  if(expiry_date.value && bid_amount.value){
     alert.style.display = 'none';
   }else{
     alert.style.display = 'block';

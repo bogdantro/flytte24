@@ -14,6 +14,9 @@
 .page .cover .content .text p {
   margin: auto;
 }
+.page .cover .content .text #onlyOnDes {
+  display: none;
+}
 .page form {
   background: white;
   border-radius: 12px;

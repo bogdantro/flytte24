@@ -183,6 +183,9 @@
   .page .prices {
     padding: 35px;
   }
+  .page .prices .flex {
+    display: flex;
+  }
   .page .prices .price {
     width: 100%;
     max-width: 400px;

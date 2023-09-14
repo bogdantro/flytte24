@@ -188,6 +188,9 @@ $txt: #183b56;
         }
         .prices{
             padding: 35px;
+            .flex{
+                display: flex;
+            }
             .price{
                 width: 100%;
                 max-width: 400px;

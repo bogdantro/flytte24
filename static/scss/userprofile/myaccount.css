@@ -2,6 +2,10 @@
   display: none;
 }
 
+#desNav {
+  display: none;
+}
+
 #footerMob {
   display: none;
 }
@@ -88,9 +92,6 @@
   width: 100%;
   text-decoration: none;
   position: relative;
-}
-.account-nav-mob .sidebar a:last-child:hover {
-  background: rgba(255, 34, 34, 0.07);
 }
 .account-nav-mob .sidebar a:hover {
   background: rgba(255, 226, 97, 0.0941176471);
@@ -180,180 +181,161 @@
 }
 
 @media only screen and (min-device-width: 1140px) {
-  .myaccount {
+  .account-nav-mob {
     width: 100%;
-    min-height: 88vh;
-    background: transparent;
-    margin-bottom: 0;
-  }
-  .myaccount .top {
-    background: rgba(255, 255, 255, 0.8);
-    text-align: center;
+    height: 75px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 25px 600px;
-  }
-  .myaccount .top .back-to-home {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-  }
-  .myaccount .top .back-to-home p {
-    margin-bottom: 0;
-    color: #183b56;
-    font-size: 18px;
-    font-weight: 600;
-    margin-left: 10px;
-  }
-  .myaccount .top .back-to-home span {
-    background: #183b56;
-    width: 75px;
-    height: 2px;
-    display: block;
-    position: relative;
-    border-radius: 4px;
-  }
-  .myaccount .top .heading {
-    color: #183b56;
-    font-size: 28px;
-    font-weight: 600;
-    margin-bottom: 0;
-  }
-  .myaccount .account-card {
-    margin: 0 auto;
-    text-align: left;
-    background: transparent;
-    width: 100%;
-    max-width: 900px;
-    padding: 20px;
-    border-radius: 7px;
-  }
-  .myaccount .account-card .your-info {
-    display: inline-block;
-    margin-block: 12px;
-    margin-left: 0;
-    text-align: center;
+    padding: 5px 35px;
+    padding-bottom: 3px;
+    position: absolute;
+    top: 0;
+    z-index: 1000;
+    transition: 0.2s;
+    border-bottom: 1px solid lightgray;
     background: white;
-    width: 100%;
+  }
+  .account-nav-mob .logo {
+    transition: 0.8s;
+    cursor: pointer;
+    width: auto;
     height: auto;
-    max-width: 400px;
-    padding: 28px;
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
+    z-index: 1000;
   }
-  .myaccount .account-card .your-info .user-profile {
-    width: -moz-max-content;
-    width: max-content;
-    height: -moz-max-content;
-    height: max-content;
-    margin: auto;
-    position: relative;
+  .account-nav-mob .logo img {
+    width: 120px;
+    height: auto;
+    transition: 0.3s;
+    transform: translateX(-29px);
   }
-  .myaccount .account-card .your-info .user-profile img {
-    width: 90px;
-    border-radius: 100%;
-    height: 95px;
-    -o-object-fit: fill;
-       object-fit: fill;
+  .account-nav-mob .logo img:hover {
+    transform: translateX(-29px) scale(0.93);
   }
-  .myaccount .account-card .your-info .user-profile i {
-    position: absolute;
-    right: -45px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 22px;
-    color: #183b56;
-    cursor: pointer;
-  }
-  .myaccount .account-card .your-info .user-profile #changeProfilePic {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    margin-block: 15px;
-    padding-block: 5px;
-    width: -moz-max-content;
-    width: max-content;
-    max-width: 250px;
-    pointer-events: visible;
-    z-index: 100000;
-  }
-  .myaccount .account-card .your-info .user-profile #changeProfilePic label {
-    color: #183b56;
-    font-size: 17px;
-    font-weight: 500;
-  }
-  .myaccount .account-card .your-info .user-profile #changeProfilePic input {
-    width: 100%;
-    height: 53px;
-    outline: none;
-    padding: 8px;
-    color: #183b56;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 4px;
-  }
-  .myaccount .account-card .your-info .user-profile #changeProfilePic button {
-    margin-top: 15px;
-    width: 100%;
-    height: 40px;
-    border: 1px solid transparent;
-    outline: none;
-    border-radius: 4px;
-    background: #f0a432;
-    color: rgb(246, 246, 246);
-    font-weight: 400;
-  }
-  .myaccount .account-card .your-info .user-info {
-    text-align: left;
-    margin-top: 220px;
-  }
-  .myaccount .account-card .your-info .user-info label {
-    color: #183b56;
-    font-size: 17px;
-    font-weight: 500;
-  }
-  .myaccount .account-card .your-info .user-info input {
-    width: 100%;
-    height: 53px;
-    border: 1px solid lightgray;
-    outline: none;
-    padding: 8px;
-    color: #183b56;
-    font-size: 16px;
-    cursor: pointer;
-    background: rgba(255, 255, 255, 0.7);
-    border-radius: 4px;
-  }
-  .myaccount .account-card .your-info .user-info button {
-    margin-top: 25px;
-    width: 100%;
-    height: 50px;
-    border: 1px solid transparent;
-    outline: none;
-    border-radius: 4px;
-    background: #f0a432;
-    color: rgb(246, 246, 246);
-    font-weight: 400;
-  }
-  .myaccount .account-card .your-info .user-won-comp .heading {
-    color: #183b56;
-    font-size: 24px;
-    font-weight: 0;
-    margin-bottom: 0;
+  .account-nav-mob .hamburger {
+    padding: 5px;
+    margin: -5px;
+    width: auto;
+    height: auto;
+    z-index: 1000;
     text-align: center;
+    border-radius: 50%;
+    cursor: pointer;
   }
-  .myaccount .account-card .your-info .user-won-comp .comps-sec {
-    margin-top: 12px;
+  .account-nav-mob .hamburger span {
+    height: 4px;
+    width: 29px;
+    background: #1F1F1F;
+    border-radius: 6px;
+    display: block;
+    transition: 0.2s;
+    margin-block: 6px;
+    text-align: center;
+    transform-origin: 25%;
   }
-  .myaccount .account-card .your-info .user-won-comp .comps-sec .empty h1 {
-    margin-bottom: 5px;
+  .account-nav-mob .hamburger.click .upper-span {
+    transform: rotate(45deg);
+  }
+  .account-nav-mob .hamburger.click .center-span {
+    display: none;
+  }
+  .account-nav-mob .hamburger.click .lower-span {
+    transform: rotate(-45deg);
+  }
+  .account-nav-mob .sidebar {
+    background: white;
+    position: absolute;
+    top: 75px;
+    left: -100px;
+    width: 100%;
+    height: calc(100vh - 65px);
+    z-index: 120;
+    opacity: 0;
+    pointer-events: none;
+    display: block;
+    transition: 0.2s;
+  }
+  .account-nav-mob .sidebar a {
+    padding: 23px 50px;
     color: #183b56;
     font-size: 18px;
+    font-weight: 500;
+    display: block;
+    width: 100%;
+    text-decoration: none;
+    position: relative;
   }
-  .myaccount .account-card .your-info .user-won-comp .comps-sec .empty p {
+  .account-nav-mob .sidebar a:hover {
+    background: rgba(255, 226, 97, 0.0941176471);
+  }
+  .account-nav-mob .sidebar a i {
+    float: right;
+    padding-right: 3px;
     color: #183b56;
-    font-size: 15px;
+    font-size: 17px;
+    transform: translateY(1px);
+  }
+  .account-nav-mob .sidebar.active {
+    opacity: 1;
+    pointer-events: visible;
+    transition: 0.4s;
+    left: 0;
+  }
+  .myaccount {
+    min-height: 88vh;
+  }
+  .myaccount .text {
+    padding-inline: 20px;
+    padding-bottom: 30px;
+    padding-top: 105px;
+    background: white;
+    text-align: center;
+    border-bottom: 1px solid lightgray;
+  }
+  .myaccount .text .heading {
+    color: #1F1F1F;
+    font-weight: 600;
+    font-size: 35px;
+  }
+  .myaccount .text .sub-heading {
+    color: #1F1F1F;
+    font-weight: 500;
+    font-size: 19px;
+    margin-top: 10px;
+  }
+  .myaccount .main-content {
+    text-align: center;
+    padding-inline: 20px;
+    padding-top: 40px;
+    max-width: 1300px;
+  }
+  .myaccount .main-content h1 {
+    color: #1F1F1F;
+    font-size: 26px;
+    font-weight: 600;
+  }
+  .myaccount .main-content p {
+    color: #1F1F1F;
+    font-size: 18px;
+    max-width: 400px;
+    margin: auto;
+    margin-bottom: 20px;
+  }
+  .myaccount .main-content button {
+    margin-block: 15px;
+    width: 100%;
+    max-width: 380px;
+    margin-inline: 8px;
+    height: 49px;
+    outline: none;
+    background: #f0a432;
+    border: 1px solid #f0a432;
+    color: white;
+    border-radius: 6px;
+  }
+  .myaccount .main-content button:last-child {
+    border-color: rgb(228, 33, 8);
+    color: white;
+    background: rgb(228, 33, 8);
   }
 }/*# sourceMappingURL=myaccount.css.map */

@@ -41,3 +41,48 @@ $txt: #183b56;
         }
     }
 }
+
+
+@media only screen and (min-device-width: 1140px) {
+    .bids{
+        padding-inline: 35px;
+        width: auto;
+        height: auto;
+        .bid{
+            width: 100%;
+            height: auto;
+            background: rgb(239,239,239);
+            padding: 13px;
+            border-radius: 5px;
+            margin-bottom: 25px;
+            max-width: 420px;
+            margin-inline: auto;
+            &.expired{
+                background: rgba(255, 38, 0, 0.137);
+            }
+            .name{
+                font-size: 24px;
+                color: $black;
+                font-weight: 500;
+                span{
+                    font-size: 16px;
+                    opacity: 0.8;
+                    margin-left: 5px;
+                }
+            }
+            .price{
+                margin-bottom: 5px;
+                font-size: 18px;
+                color: $black;
+            }
+            .status{
+                margin-top: 15px;
+                p{
+                    margin-bottom: 0;
+                    font-size: 16px;
+                }
+            }
+        }
+    }
+    
+}

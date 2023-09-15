@@ -88,3 +88,92 @@ $txt: #183b56;
         }
       }
   }
+
+
+@media only screen and (min-device-width: 1140px) {
+  .account-card{
+    margin: 0 auto;
+    text-align: left;
+    background: transparent;
+    width: 100%;
+    max-width: 900px;
+    padding: 0;
+    border-radius: 7px;
+    padding-inline: 20px;
+    padding-bottom: 30px;
+      padding-top: 105px;
+    .text{
+        text-align: center;
+        .heading{
+            color: $black;
+            font-weight: 600;
+            font-size: 33px;
+        }
+        .sub-heading{
+          color: $black;
+          font-weight: 500;
+          font-size: 18px;
+          margin-top: 10px;
+        }
+    }
+      // YOUR INFO
+      .your-info{
+        position: relative;
+        margin-top: 35px;
+        background: white;
+        border-radius: 12px;
+        padding-inline: 30px;
+        padding-block: 16px;
+        max-width: 420px;
+        border: 1px solid rgba(0,0,0,0.1);
+        margin-inline: auto;
+        .user-info{
+          text-align: left;
+          label{
+            font-size: 16px;
+            color: $black;
+            font-weight: 500;
+        }
+        input{
+            width: 100%;
+            height: 48px;
+            border: 1px solid lightgray;
+            outline: none;
+            padding: 8px;
+            color: $black;
+            font-size: 16px;
+            cursor: pointer;
+            background: rgba(255,255,255,0.7);
+            border-radius: 7px;
+            &:focus, &:active{
+                border: 2px solid $primBtn;
+                cursor: text;
+                background: rgba(255,255,255,1);
+            }
+            &::placeholder{
+                color: $black;
+                opacity: 0.6;
+            }
+        }
+        button{
+          width: 100%;
+          height: 42px;
+          background: linear-gradient(to bottom right, $primBtn, #ffb649);
+          color: $white;
+          border-radius: 7px;
+          font-size: 16px;
+          padding: 3px;
+          cursor: pointer;
+          transition: .4s;
+          border: none;
+          outline: none;
+          font-weight: 400;
+          &:hover{
+              transform: scale(1.01);
+          }
+      }
+        }
+      }
+  }
+
+}

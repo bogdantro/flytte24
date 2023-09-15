@@ -370,3 +370,365 @@ $txt: #183b56;
         }
     } 
 }
+
+
+@media only screen and (min-device-width: 1140px) {
+    .car{
+        padding-inline: 35px;
+        max-width: 1300px;
+        .heading{
+            font-size: 28px;
+            color: $black;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 600;
+        }
+        .step{
+            background: rgb(237, 237, 237);
+            padding: 10px 20px;
+            width: 100%;
+            max-width: 420px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            margin-inline: auto;
+            .left{
+                display: flex;
+                i{
+                    font-size: 24px;
+                    color: $black;
+                }
+                h1{
+                    color: $black;
+                    font-size: 19px;
+                    margin-left: 17px;
+                }
+            }
+            .right{
+                button{
+                    background: $txt;
+                    width: 80px;
+                    height: 40px;
+                    color: white;
+                    border-radius: 20px;
+                    outline: none;
+                    border: none;
+                    font-size: 15px;
+                }
+            }
+            &.conf{
+                background: rgba(167, 255, 167, 0.753);
+                .check{
+                    font-size: 23px;
+                    border: 2px solid rgb(26, 196, 63);
+                    color: rgb(26, 196, 63);
+                    padding: 5px;
+                    border-radius: 100%;
+                }
+            }
+        }
+    
+        #stepOne{
+            background: white;
+            border-radius: 12px;
+            padding-inline: 10px;
+            padding-block: 16px;
+            padding-bottom: 26px;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 95%;
+            height: 100%;
+            overflow-y: scroll !important;
+            display: none;
+            z-index: 10000;
+            padding-bottom: 0000040px;
+            .close{
+                font-size: 16px;
+                font-weight: 400;
+                border: 1px solid red;
+                background: rgb(255, 169, 169);
+                display: flex;
+                opacity: 1;
+                color: $black;
+                padding: 10px;
+                border-radius: 4px;
+                i{
+                    color: red;
+                    font-size: 20px;
+                    padding-left: 10px;
+                }
+            }
+            label{
+                font-size: 16px;
+                color: $black;
+                font-weight: 500;
+            }
+            input{
+                width: 100%;
+                height: 48px;
+                border: 1px solid lightgray;
+                outline: none;
+                padding: 8px;
+                color: $black;
+                font-size: 16px;
+                cursor: pointer;
+                background: rgba(255,255,255,0.7);
+                border-radius: 7px;
+                &:focus, &:active{
+                    border: 2px solid $primBtn;
+                    cursor: text;
+                    background: rgba(255,255,255,1);
+                }
+                &::placeholder{
+                    color: $black;
+                    opacity: 0.6;
+                }
+            }
+            .form-actions{
+                button{
+                    border: 1px solid transparent;
+                    border-radius: 6px;
+                    outline: none;
+                    background: linear-gradient(to bottom right, $primBtn, #ffb649);
+                    color: white;
+                    font-weight: 500;
+                    font-size: 17px;
+                    width: 100%;
+                    display: block;
+                    height: 44px;
+                    margin-top: 32px;
+                  }
+            }
+        } 
+    
+        #stepTwo{
+            background: white;
+            border-radius: 12px;
+            padding-inline: 10px;
+            padding-block: 16px;
+            padding-bottom: 26px;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 95%;
+            height: 100%;
+            overflow-y: scroll !important;
+            display: none;
+            z-index: 10000;
+            padding-bottom: 0000040px;
+            .close{
+                font-size: 16px;
+                font-weight: 400;
+                border: 1px solid red;
+                background: rgb(255, 169, 169);
+                display: flex;
+                opacity: 1;
+                color: $black;
+                padding: 10px;
+                border-radius: 4px;
+                i{
+                    color: red;
+                    font-size: 20px;
+                    padding-left: 10px;
+                }
+            }
+            label{
+                font-size: 16px;
+                color: $black;
+                font-weight: 500;
+            }
+            input{
+                width: 100%;
+                height: 48px;
+                border: 1px solid lightgray;
+                outline: none;
+                padding: 8px;
+                color: $black;
+                font-size: 16px;
+                cursor: pointer;
+                background: rgba(255,255,255,0.7);
+                border-radius: 7px;
+                &:focus, &:active{
+                    border: 2px solid $primBtn;
+                    cursor: text;
+                    background: rgba(255,255,255,1);
+                }
+                &::placeholder{
+                    color: $black;
+                    opacity: 0.6;
+                }
+            }
+            .form-actions{
+                button{
+                    border: 1px solid transparent;
+                    border-radius: 6px;
+                    outline: none;
+                    background: linear-gradient(to bottom right, $primBtn, #ffb649);
+                    color: white;
+                    font-weight: 500;
+                    font-size: 17px;
+                    width: 100%;
+                    display: block;
+                    height: 44px;
+                    margin-top: 32px;
+                  }
+            }
+        } 
+    
+        #stepThree{
+            background: white;
+            border-radius: 12px;
+            padding-inline: 10px;
+            padding-block: 16px;
+            padding-bottom: 26px;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 95%;
+            height: 100%;
+            overflow-y: scroll !important;
+            display: none;
+            z-index: 10000;
+            padding-bottom: 0000040px;
+            .close{
+                font-size: 16px;
+                font-weight: 400;
+                border: 1px solid red;
+                background: rgb(255, 169, 169);
+                display: flex;
+                opacity: 1;
+                color: $black;
+                padding: 10px;
+                border-radius: 4px;
+                i{
+                    color: red;
+                    font-size: 20px;
+                    padding-left: 10px;
+                }
+            }
+            label{
+                font-size: 16px;
+                color: $black;
+                font-weight: 500;
+            }
+            input{
+                width: 100%;
+                height: 48px;
+                border: 1px solid lightgray;
+                outline: none;
+                padding: 8px;
+                color: $black;
+                font-size: 16px;
+                cursor: pointer;
+                background: rgba(255,255,255,0.7);
+                border-radius: 7px;
+                &:focus, &:active{
+                    border: 2px solid $primBtn;
+                    cursor: text;
+                    background: rgba(255,255,255,1);
+                }
+                &::placeholder{
+                    color: $black;
+                    opacity: 0.6;
+                }
+            }
+            .form-actions{
+                button{
+                    border: 1px solid transparent;
+                    border-radius: 6px;
+                    outline: none;
+                    background: linear-gradient(to bottom right, $primBtn, #ffb649);
+                    color: white;
+                    font-weight: 500;
+                    font-size: 17px;
+                    width: 100%;
+                    display: block;
+                    height: 44px;
+                    margin-top: 32px;
+                  }
+            }
+        } 
+    
+        #stepFour{
+            background: white;
+            border-radius: 12px;
+            padding-inline: 10px;
+            padding-block: 16px;
+            padding-bottom: 26px;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 95%;
+            height: 100%;
+            overflow-y: scroll !important;
+            display: none;
+            z-index: 10000;
+            padding-bottom: 0000040px;
+            .close{
+                font-size: 16px;
+                font-weight: 400;
+                border: 1px solid red;
+                background: rgb(255, 169, 169);
+                display: flex;
+                opacity: 1;
+                color: $black;
+                padding: 10px;
+                border-radius: 4px;
+                i{
+                    color: red;
+                    font-size: 20px;
+                    padding-left: 10px;
+                }
+            }
+            label{
+                font-size: 16px;
+                color: $black;
+                font-weight: 500;
+            }
+            input{
+                width: 100%;
+                height: 48px;
+                border: 1px solid lightgray;
+                outline: none;
+                padding: 8px;
+                color: $black;
+                font-size: 16px;
+                cursor: pointer;
+                background: rgba(255,255,255,0.7);
+                border-radius: 7px;
+                &:focus, &:active{
+                    border: 2px solid $primBtn;
+                    cursor: text;
+                    background: rgba(255,255,255,1);
+                }
+                &::placeholder{
+                    color: $black;
+                    opacity: 0.6;
+                }
+            }
+            .form-actions{
+                button{
+                    border: 1px solid transparent;
+                    border-radius: 6px;
+                    outline: none;
+                    background: linear-gradient(to bottom right, $primBtn, #ffb649);
+                    color: white;
+                    font-weight: 500;
+                    font-size: 17px;
+                    width: 100%;
+                    display: block;
+                    height: 44px;
+                    margin-top: 32px;
+                  }
+            }
+        } 
+    }
+}

@@ -6,6 +6,9 @@ $txt: #183b56;
 #mobileNav{
   display: none;
 }
+#desNav{
+  display: none;
+}
 #footerMob{
   display: none;
 }
@@ -99,11 +102,7 @@ $txt: #183b56;
               width: 100%;
               text-decoration: none;
               position: relative;
-              &:last-child{
-                &:hover{
-                  background: rgba(255, 34, 34, 0.07);
-              }
-              }
+       
               &:hover{
                   background: #ffe26118;
               }
@@ -196,181 +195,171 @@ $txt: #183b56;
 
 @media only screen and (min-device-width: 1140px) {
 
-  .myaccount{
+  .account-nav-mob{
+    // NAVBAR CSS
     width: 100%;
-    min-height: 88vh;
-    background: transparent;
-    margin-bottom: 0;
-    .top{
-      background: rgba(255,255,255,0.8);
-      text-align: center;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 25px 600px;
-      .back-to-home{
-        display: flex;
-        align-items: center;
+    height: 75px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 35px;
+    padding-bottom: 3px;
+    position: absolute;
+    top: 0;
+    z-index: 1000;
+    transition: .2s;
+    border-bottom: 1px solid lightgray;
+    background: white;
+    .logo{
+        transition: .8s;
         cursor: pointer;
-        p{
-          margin-bottom: 0;
-          color: $txt;
-          font-size: 18px;
-          font-weight: 600;
-          margin-left: 10px;
+        width: auto;
+        height: auto;
+        z-index: 1000;
+        img{
+        width: 120px;
+        height: auto;
+        transition: .3s;
+        transform: translateX(-29px);
+        &:hover{
+            transform: translateX(-29px) scale(0.93);
         }
-        span{
-          background: $txt;
-          width: 75px;
-          height: 2px;
-          display: block;
-          position: relative;
-          border-radius: 4px;
         }
-      }
-      .heading{
-        color: $txt;
-        font-size: 28px;
-        font-weight: 600;
-        margin-bottom: 0
-      }
     }
-    .account-card{
-      margin: 0 auto;
-      text-align: left;
-      background: transparent;
-      width: 100%;
-      max-width: 900px;
-      padding: 20px;
-      border-radius: 7px;
-        // YOUR INFO
-        .your-info{
-          display: inline-block;
-          margin-block: 12px;
-          margin-left: 0;
-          text-align: center;
-          background: white;
-          width: 100%;
-          height: auto;
-          max-width: 400px;
-          padding: 28px;
-          position: relative;
-          left: 50%;
-          transform: translateX(-50%);
-          .user-profile{
-            width: max-content;
-            height: max-content;
-            margin: auto;
+    .hamburger{
+        padding: 5px;
+        margin: -5px;
+        width: auto;
+        height: auto;
+        z-index: 1000;
+        text-align: center;
+        border-radius: 50%;
+        cursor: pointer;
+        span{
+            height: 4px;
+            width: 29px;
+            background: $black;
+            border-radius: 6px;
+            display: block;
+            transition: .2s;
+            margin-block: 6px;
+            text-align: center;
+            transform-origin: 25%; 
+        }
+        .upper-span{
+        }
+        .center-span{
+        }
+        .lower-span{
+        }
+        &.click{
+            .upper-span{
+                transform: rotate(45deg);
+            }
+            .center-span{
+                display: none;
+            }
+            .lower-span{
+                transform: rotate(-45deg);
+            }
+        }
+    }
+    .sidebar{
+        background: white;
+        position: absolute;
+        top: 75px;
+        left: -100px;
+        width: 100%;
+        height: calc(100vh - 65px);
+        z-index: 120;
+        opacity: 0;
+        pointer-events: none;
+        display: block;
+        transition: .2s;
+        a{
+            padding: 23px 50px;
+            color: $txt;
+            font-size: 18px;
+            font-weight: 500;
+            display: block;
+            width: 100%;
+            text-decoration: none;
             position: relative;
-            img{
-              width: 90px;
-              border-radius: 100%;
-              height: 95px;
-              object-fit: fill;
+            &:hover{
+                background: #ffe26118;
             }
             i{
-              position: absolute;
-              right: -45px;
-              top: 50%;
-              transform: translateY(-50%);
-              font-size: 22px;
-              color: $txt;
-              cursor: pointer;
-            }
-            #changeProfilePic{
-              position: absolute;
-              left: 50%;
-              transform: translateX(-50%);
-              margin-block: 15px;
-              padding-block: 5px;
-              width:max-content;
-              max-width: 250px;
-              pointer-events: visible;
-              z-index: 100000;
-              label{
+                float: right;
+                padding-right: 3px;
                 color: $txt;
                 font-size: 17px;
-                font-weight: 500;
-              }
-              input{
-                  width: 100%;
-                  height: 53px;
-                  outline: none;
-                  padding: 8px;
-                  color: $txt;
-                  font-size: 16px;
-                  cursor: pointer;
-                  border-radius: 4px;
-              }
-              button{
-                margin-top: 15px;
-                width: 100%;
-                height: 40px;
-                border: 1px solid transparent;
-                outline: none;
-                border-radius: 4px;
-                background: $primBtn;
-                color: $white;
-                font-weight: 400;
-              }
+                transform: translateY(1px);
             }
-          }
-          .user-info{
-            text-align: left;
-            margin-top: 220px;
-            label{
-                color: $txt;
-                font-size: 17px;
-                font-weight: 500;
-            }
-            input{
-                width: 100%;
-                height: 53px;
-                border: 1px solid lightgray;
-                outline: none;
-                padding: 8px;
-                color: $txt;
-                font-size: 16px;
-                cursor: pointer;
-                background: rgba(255,255,255,0.7);
-                border-radius: 4px;
-            }
-            button{
-              margin-top: 25px;
-              width: 100%;
-              height: 50px;
-              border: 1px solid transparent;
-              outline: none;
-              border-radius: 4px;
-              background: $primBtn;
-              color: $white;
-              font-weight: 400;
-            }
-          }
-          .user-won-comp{
-              .heading{
-                color: $txt;
-                font-size: 24px;
-                font-weight: 00;
-                margin-bottom: 0;
-                text-align: center;
-              }
-              .comps-sec{
-                margin-top: 12px;
-                .empty{
-                  h1{
-                    margin-bottom: 5px;
-                    color: $txt;
-                    font-size: 18px;
-                  }
-                  p{
-                    color: $txt;
-                    font-size: 15px;
-                  }
-                }
-              }
-          }
+        }
+        &.active{
+            opacity: 1;
+            pointer-events: visible;
+            transition: .4s;
+            left: 0;
+        }
+    } 
+}
+
+  .myaccount{
+    min-height: 88vh;
+    .text{
+      padding-inline: 20px;
+      padding-bottom: 30px;
+        padding-top: 105px;
+        background: white;
+        text-align: center;
+        border-bottom: 1px solid lightgray;
+        .heading{
+            color: $black;
+            font-weight: 600;
+            font-size: 35px;
+        }
+        .sub-heading{
+          color: $black;
+          font-weight: 500;
+          font-size: 19px;
+          margin-top: 10px;
         }
     }
-  }
+    .main-content{
+      text-align: center;
+      padding-inline: 20px;
+      padding-top: 40px;
+      max-width: 1300px;
+      h1{
+        color: $black;
+        font-size: 26px;
+        font-weight: 600;
+      }
+      p{
+        color: $black;
+        font-size: 18px;
+        max-width: 400px;
+        margin: auto;
+        margin-bottom: 20px;
+      }
+      button{
+        margin-block: 15px;
+        width: 100%;
+        max-width: 380px;
+        margin-inline: 8px;
+        height: 49px;
+        outline: none;
+        background: $primBtn;
+        border: 1px solid $primBtn;
+        color: white;
+        border-radius: 6px;
+        &:last-child{
+          border-color: rgb(228, 33, 8);
+          color: white;
+          background: rgb(228, 33, 8);
+        }
+      }
+    }
+  }  
 }

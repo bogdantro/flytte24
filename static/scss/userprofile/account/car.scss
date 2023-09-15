@@ -97,3 +97,108 @@ $txt: #183b56;
         }
     }
 }
+
+
+@media only screen and (min-device-width: 1140px) {
+    .myaccount{
+        .user-cars{
+            padding-top: 25px;
+            width: 100%;
+            height: auto;
+            padding-inline: 20px;
+            position: relative;
+            border-radius: 6px;
+            display: flex;
+            .car{
+                min-width: 400px;
+                max-width: 400px;
+                margin-right: 20px;
+                .car-image{
+                    border-radius: 6px;
+                    width: 100%;
+                    height: 250px;
+                    object-fit: cover;
+                    cursor: pointer;
+                    &:hover{
+                        filter: brightness(70%);
+                    }
+                }
+                .flex{
+                    display: flex;
+                    align-items: center;
+                    width: 100%;
+                    height: max-content;
+                    margin-top: 14px;
+                    .status{
+                        background: #9cffcc;
+                        width: max-content;
+                        padding: 2px 7px;
+                        font-size: 15px;
+                        color: $black;
+                        border-radius: 5px;
+                    }
+                    .time-left{
+                        background: #ffd698;
+                        width: max-content;
+                        padding: 2px 7px;
+                        font-size: 15px;
+                        color: $black;
+                        border-radius: 5px;
+                        margin-left: 10px;
+                    }
+                }
+                .name{
+                    color: $black;
+                    font-size: 19px;
+                    margin-top: 8px;
+                    font-weight: 500;
+                }
+                .bids{
+                    margin-top: 15px;
+                    text-align: left;
+                    h1{
+                        color: $black;
+                        font-size: 23px;
+                        font-weight: 500;
+                    }
+                    .flex{
+                        display: flex;
+                        align-items: center;
+                        width: 100%;
+                        height: max-content;
+                        .price{
+                            background: #8ce8ff;
+                            width: max-content;
+                            padding: 6px 9px;
+                            font-size: 15px;
+                            color: $black;
+                            border-radius: 5px;
+                        }
+                        .time-left{
+                            padding: 6px 9px;
+                        }
+                    }
+                    .actions{
+                        margin-top: 23px;
+                        width: 100%;
+                        button{
+                            display: block;
+                            width: 230px;
+                            height: 42px;
+                            background: linear-gradient(to bottom right, $primBtn, #ffb649);
+                            color: $white;
+                            border-radius: 7px;
+                            font-size: 16px;
+                            padding: 3px;
+                            cursor: pointer;
+                            transition: .4s;
+                            border: none;
+                            outline: none;
+                            font-weight: 400;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

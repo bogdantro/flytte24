@@ -85,4 +85,94 @@
 }
 .account-card .your-info .user-info button:hover {
   transform: scale(1.01);
+}
+
+@media only screen and (min-device-width: 1140px) {
+  .account-card {
+    margin: 0 auto;
+    text-align: left;
+    background: transparent;
+    width: 100%;
+    max-width: 900px;
+    padding: 0;
+    border-radius: 7px;
+    padding-inline: 20px;
+    padding-bottom: 30px;
+    padding-top: 105px;
+  }
+  .account-card .text {
+    text-align: center;
+  }
+  .account-card .text .heading {
+    color: #1F1F1F;
+    font-weight: 600;
+    font-size: 33px;
+  }
+  .account-card .text .sub-heading {
+    color: #1F1F1F;
+    font-weight: 500;
+    font-size: 18px;
+    margin-top: 10px;
+  }
+  .account-card .your-info {
+    position: relative;
+    margin-top: 35px;
+    background: white;
+    border-radius: 12px;
+    padding-inline: 30px;
+    padding-block: 16px;
+    max-width: 420px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-inline: auto;
+  }
+  .account-card .your-info .user-info {
+    text-align: left;
+  }
+  .account-card .your-info .user-info label {
+    font-size: 16px;
+    color: #1F1F1F;
+    font-weight: 500;
+  }
+  .account-card .your-info .user-info input {
+    width: 100%;
+    height: 48px;
+    border: 1px solid lightgray;
+    outline: none;
+    padding: 8px;
+    color: #1F1F1F;
+    font-size: 16px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 7px;
+  }
+  .account-card .your-info .user-info input:focus, .account-card .your-info .user-info input:active {
+    border: 2px solid #f0a432;
+    cursor: text;
+    background: rgb(255, 255, 255);
+  }
+  .account-card .your-info .user-info input::-moz-placeholder {
+    color: #1F1F1F;
+    opacity: 0.6;
+  }
+  .account-card .your-info .user-info input::placeholder {
+    color: #1F1F1F;
+    opacity: 0.6;
+  }
+  .account-card .your-info .user-info button {
+    width: 100%;
+    height: 42px;
+    background: linear-gradient(to bottom right, #f0a432, #ffb649);
+    color: rgb(246, 246, 246);
+    border-radius: 7px;
+    font-size: 16px;
+    padding: 3px;
+    cursor: pointer;
+    transition: 0.4s;
+    border: none;
+    outline: none;
+    font-weight: 400;
+  }
+  .account-card .your-info .user-info button:hover {
+    transform: scale(1.01);
+  }
 }/*# sourceMappingURL=edit.css.map */

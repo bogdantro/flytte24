@@ -34,13 +34,13 @@
     </div>
   </div>
 
-    {% for car in cars_with_bids %}
-    <div class="user-cars">
+  <div class="user-cars">
+      {% for car in cars_with_bids %}
       <div class="car">
         <img src="{{car.image1.url}}" alt="" class="car-image" onclick="window.location.href='{% url  'car_detail' car.slug  %}'">
         <div class="flex">
           {% if car.days_until_expiry > 0 %}
-            {% if car.highest_bid_instance == 'accepted' %}
+            {% if car.sold %}
             <div class="status" id="status" style="background: #ffc876;">Solgt for {{ car.highest_bid }}kr</div>
             {% else %}
             <div class="status" id="status">Aktiv</div>
@@ -88,10 +88,12 @@
         <hr style="margin-top: 40px;">
       </div>
 
+      
+   
+      {% empty %}
+      <h1 style="color: #1F1F1F; font-size: 22px; font-weight: 500; padding-top: 25px; text-align: center;">Ingen annonser enda...</h1>
+      {% endfor %}
     </div>
-    {% empty %}
-    <h1 style="color: #1F1F1F; font-size: 22px; font-weight: 500; padding-top: 25px; text-align: center;">Ingen annonser enda...</h1>
-    {% endfor %}
 </div>
 
 

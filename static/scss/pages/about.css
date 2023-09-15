@@ -708,7 +708,7 @@
     pointer-events: none;
     opacity: 0;
     width: 420px;
-    margin-inline: auto;
+    margin-inline: unset;
   }
   .about-us .faq .content .answer.active {
     pointer-events: visible;

@@ -724,7 +724,7 @@ $txt: #183b56;
                 pointer-events: none;
                 opacity: 0;
                 width: 420px;
-                margin-inline: auto;
+                margin-inline: unset;
                 &.active{
                   pointer-events: visible;
                   opacity: 1;

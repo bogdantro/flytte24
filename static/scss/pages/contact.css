@@ -89,4 +89,66 @@
   display: block;
   height: 44px;
   margin-top: 25px;
+}
+
+@media only screen and (min-device-width: 1140px) {
+  .page {
+    padding-inline: 80px;
+    padding-bottom: 140px;
+    padding-top: 50px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .page .cover {
+    background: transparent;
+    max-width: -moz-max-content;
+    max-width: max-content;
+  }
+  .page .cover .content {
+    padding-inline: 0;
+  }
+  .page .cover .content .text {
+    text-align: left;
+    transform: translateX(20px);
+  }
+  .page .cover .content .text h1 {
+    color: #1F1F1F;
+    font-size: 34px;
+    font-weight: 600;
+    margin-bottom: -10px;
+    max-width: 400px;
+  }
+  .page .cover .content .text p {
+    margin: unset;
+    max-width: 320px;
+    color: #1F1F1F;
+    font-size: 20px;
+    font-weight: 500;
+    margin-top: 18px;
+  }
+  .page form {
+    background: white;
+    border-radius: 12px;
+    padding-inline: 30px;
+    padding-block: 16px;
+    padding-bottom: 18px;
+    width: 400px;
+    height: -moz-max-content;
+    height: max-content;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    transform: translateY(65px) translateX(-65px);
+  }
+  .page form .form-actions button {
+    border: 1px solid transparent;
+    border-radius: 6px;
+    outline: none;
+    background: linear-gradient(to bottom right, #f0a432, #ffb649);
+    color: white;
+    font-weight: 500;
+    font-size: 17px;
+    width: 100%;
+    display: block;
+    height: 44px;
+    margin-top: 32px;
+  }
 }/*# sourceMappingURL=contact.css.map */

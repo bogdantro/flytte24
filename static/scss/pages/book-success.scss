@@ -26,3 +26,34 @@ $txt: #183b56;
         padding-block: 16px;
     }
 }
+
+
+@media only screen and (min-device-width: 1140px) {
+    .page{
+        padding-inline: 35px;
+        padding-bottom: 60px;
+        padding-top: 30px !important;
+        .cover{
+            background: transparent;
+            .content{
+                padding-inline: 0;
+                .text{
+                    text-align: center;
+                    p{
+                        margin: auto;
+                    }
+                }
+            }
+        }
+        .divivivi{
+            background: white;
+            margin-top: 10px;
+            border-radius: 12px;
+            padding-inline: 30px;
+            padding-block: 16px;
+            max-width: 420px !important;
+            border: 1px solid rgba(0,0,0,0.1) !important;
+            margin-inline: auto !important;
+        }
+    }
+}

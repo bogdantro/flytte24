@@ -150,6 +150,19 @@ $txt: #183b56;
                 }
             }
            }
+           .second-info{
+            .spec{
+                p{
+                    margin-bottom: 4px;
+                    font-size: 16px;
+                    color: $black;
+                }
+                .spec-heading{
+                    font-weight: 600;
+                    font-size: 17px;
+                }
+            }
+           }
            .additional-info{
                width: 120%;
                height: auto;

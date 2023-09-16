@@ -148,6 +148,15 @@
   font-size: 24px;
   transform: translateY(2px);
 }
+.page .car .info .second-info .spec p {
+  margin-bottom: 4px;
+  font-size: 16px;
+  color: #1F1F1F;
+}
+.page .car .info .second-info .spec .spec-heading {
+  font-weight: 600;
+  font-size: 17px;
+}
 .page .car .info .additional-info {
   width: 120%;
   height: auto;

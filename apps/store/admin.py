@@ -21,13 +21,13 @@ class CarPostAdminForm(forms.ModelForm):
 class CarPostAdmin(admin.ModelAdmin):
     form = CarPostAdminForm
 
-    list_display = ['id', 'name', 'car_brand', 'car_model', 'price']
-    search_fields = ('id', 'name', 'car_brand', 'car_model', 'km')
+    list_display = ['id', 'name', 'car_brand', 'car_spesifikasjoner', 'price']
+    search_fields = ('id', 'name', 'car_brand', 'car_spesifikasjoner', 'km')
 
 
     fieldsets = (
       ('Hoved informasjon', {
-          'fields': ('sold', 'user', 'name', 'slug', 'price','fritak_for_reg_pris','reg_pris','expiry_date','description')
+          'fields': ('sold', 'user', 'name', 'car_spesifikasjoner', 'car_brand', 'slug', 'price','fritak_for_reg_pris','reg_pris','expiry_date','description')
       }),
       ('Ekstra informasjon', {
           'fields': ('service', 'garanti')
@@ -37,8 +37,6 @@ class CarPostAdmin(admin.ModelAdmin):
               'chasis',
               'reg_nr',
               'year',
-              'car_brand',
-              'car_model',
               'km',
               'first_registered',
               'amount_of_owners',

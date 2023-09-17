@@ -26,7 +26,7 @@ from datetime import datetime
 
 
 
-def car_detail(request, slug):
+def car_detail(request, slug, id):
     car = get_object_or_404(Car, slug=slug)  
     bids = car.bud_set.all()
     mapbox_access_token = settings.MAP_BOX_ACCESS_TOKEN 

@@ -12,6 +12,22 @@ class Car(models.Model):
         ("Utlandet", "Utlandet"),
     ]
 
+    CHASIS = [
+        ("Kombi-5", "Kombi-5 dørs"),
+        ("SUV", "SUV"),
+    ]
+
+    GIRKASSE = [
+        ("Automat", "Automat"),
+        ("Manuelt ", "Manuelt"),
+    ]
+
+    DRIVSTOFF = [
+        ("Bensin", "Bensin"),
+        ("Diesel ", "Diesel"),
+        ("Elektrisk ", "Elektrisk"),
+    ]
+
     user = models.ForeignKey(User, related_name='cars', on_delete=models.CASCADE, blank=True, null=True)
     sold = models.BooleanField(default=False, blank=True)
     # Main
@@ -25,15 +41,15 @@ class Car(models.Model):
     fritak_for_reg_pris = models.BooleanField(default=False)
     price = models.IntegerField(max_length=300, default=0, blank=True, null=True)
     # Aditional info 
-    service = models.TextField(max_length=700, blank=True, null=True)
-    garanti = models.TextField(max_length=700, blank=True, null=True)
+    service = models.TextField(max_length=700, blank=True, null=True, default="Bilens serviceprogram er fulgt. Det er tatt servicer på bilen i henhold til fabrikkens retningslinjer.")
+    garanti = models.TextField(max_length=700, blank=True, null=True, default="Denne bilen kan selges med bruktbilgaranti 24måneder eller frem til 200000km.")
 
     # Quality
-    chasis = models.CharField(max_length=100, blank=True, null=True)
+    chasis = models.CharField(max_length=100, choices=CHASIS, blank=True, null=True)
     reg_nr = models.CharField(max_length=100, blank=True, null=True)
     year = models.CharField(max_length=100, blank=True, null=True)
     car_brand = models.CharField(max_length=100, blank=True, null=True)
-    car_model = models.CharField(max_length=100, blank=True, null=True)
+    car_spesifikasjoner = models.CharField(max_length=100, blank=True, null=True)
     km = models.CharField(max_length=100, blank=True, null=True)
     first_registered = models.DateField(blank=True, null=True)
     amount_of_owners = models.CharField(max_length=100, blank=True, null=True)
@@ -139,13 +155,13 @@ class Car(models.Model):
     bagasjeromsvolum_i_liter = models.CharField(max_length=100, blank=True, null=True)
     egenvekt_i_kg = models.CharField(max_length=100, blank=True, null=True)
     rekkevidde = models.CharField(max_length=100, blank=True, null=True)
-    girkasse = models.CharField(max_length=100, blank=True, null=True)
+    girkasse = models.CharField(max_length=100, blank=True, null=True, choices=GIRKASSE)
     girkassebetegnelse = models.CharField(max_length=100, blank=True, null=True)
     hjuldrift = models.CharField(max_length=200, choices=[('Forhjulsdrift', 'Forhjulsdrift'), ('bBakhjulsdriftk', 'Bakhjulsdrift'), ['Firhjulsdrift', 'Firhjulsdrift']], blank=True, null=True)
     hjuldriftbetegnelse = models.CharField(max_length=100, blank=True, null=True)
     modellspesifikasjon = models.CharField(max_length=100, blank=True, null=True)
     bilen_står_i = models.CharField(choices=PLACE,max_length=100, blank=True, null=True)
-    drivstoff = models.CharField(max_length=100, blank=True, null=True)
+    drivstoff = models.CharField(max_length=100, blank=True, null=True, choices=DRIVSTOFF)
     effekt_i_hk = models.CharField(max_length=100, blank=True, null=True)
     batterikapasitet_i_kWh = models.CharField(max_length=100, blank=True, null=True)
     

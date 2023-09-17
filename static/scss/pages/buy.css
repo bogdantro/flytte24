@@ -124,22 +124,28 @@
 .page .buy .cars .car .bottom .name {
   margin-top: 8px;
   color: #1F1F1F;
-  font-size: 17px;
+  font-size: 19px;
   font-weight: 500;
-}
-.page .buy .cars .car .bottom .adress {
-  margin-top: 4px;
-  color: #1F1F1F;
-  font-size: 15px;
-  font-weight: 400;
 }
 .page .buy .cars .car .bottom .flex {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  padding-top: 10px;
+  padding-top: 13px;
+  text-align: left;
 }
 .page .buy .cars .car .bottom .flex .price {
   color: #1F1F1F;
-  font-size: 20px;
+  font-size: 17px;
+  font-weight: 500;
+}
+.page .buy .cars .car .bottom .flex .year {
+  color: #1F1F1F;
+  font-size: 17px;
+  font-weight: 500;
+}
+.page .buy .cars .car .bottom .flex .km {
+  color: #1F1F1F;
+  font-size: 17px;
   font-weight: 500;
 }/*# sourceMappingURL=buy.css.map */

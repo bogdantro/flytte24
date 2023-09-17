@@ -33,7 +33,7 @@
         </div>
         <div class="cars">
             {% for car in cars %}
-            <div class="car" onclick="window.location.href='{% url  'car_detail' car.slug  %}'">
+            <div class="car" onclick="window.location.href='{% url  'car_detail' car.slug car.id %}'">
                 <div class="top">
                     <img src="{{car.image1.url}}" alt="" class="car-image" >
                 </div>
@@ -47,9 +47,11 @@
                 
               {% endif %}
                 <div class="bottom">
-                      <div class="name"><strong style="font-weight: 600 !important;">{{car.year}} {{car.km}}km {{car.name}}</strong> {{car.car_model}}</div>
+                      <div class="name"><strong style="font-weight: 600 !important;">{{car.name}}</strong> {{car.car_spesifikasjoner}}</div>
                       <!-- <div class="adress">{{car.adress}}</div> -->
                       <div class="flex">
+                            <div class="year">{{car.year}}</div>
+                            <div class="km">{{car.km}}km</div>
                             <div class="price">{{car.price|add_space_separator}}kr</div>
                       </div>
                 </div>

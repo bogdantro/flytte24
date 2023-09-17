@@ -126,22 +126,28 @@ $txt: #183b56;
                     .name{
                         margin-top: 8px;
                         color: $black;
-                        font-size: 17px;
+                        font-size: 19px;
                         font-weight: 500;
-                    }
-                    .adress{
-                        margin-top: 4px;
-                        color: $black;
-                        font-size: 15px;
-                        font-weight: 400;
                     }
                     .flex{
                         display: flex;
+                        justify-content: space-between;
                         align-items: center;
-                        padding-top: 10px;
+                        padding-top: 13px;
+                        text-align: left;
                         .price{
                             color: $black;
-                            font-size: 20px;
+                            font-size: 17px;
+                            font-weight: 500;
+                        }
+                        .year{
+                            color: $black;
+                            font-size: 17px;
+                            font-weight: 500;
+                        }
+                        .km{
+                            color: $black;
+                            font-size: 17px;
                             font-weight: 500;
                         }
                     }

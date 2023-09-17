@@ -37,7 +37,7 @@
   <div class="user-cars">
       {% for car in cars_with_bids %}
       <div class="car">
-        <img src="{{car.image1.url}}" alt="" class="car-image" onclick="window.location.href='{% url  'car_detail' car.slug  %}'">
+        <img src="{{car.image1.url}}" alt="" class="car-image" onclick="window.location.href='{% url  'car_detail' car.slug car.id  %}'">
         <div class="flex">
           {% if car.days_until_expiry > 0 %}
             {% if car.sold %}
@@ -49,7 +49,7 @@
   
             {% else %}
             <div class="status" id="status" style="background: #ff8686;">Uaktiv</div>
-            <div class="time-left">{{car.days_until_expiry}} dager igjen</div>
+            <div class="time-left">0 dager igjen</div>
           {% endif %}
         </div>
   
@@ -61,15 +61,17 @@
         <div class="bids">
           <h1>Høyeste bud</h1>
           {% if car.highest_bid %}
+          {% if car.remaining_days > 0 %}
           <div class="flex">
             <div class="price">{{ car.highest_bid }}kr</div>
             <div class="time-left">{{car.remaining_days}} dager igjen</div>
           </div>
           {% if car.highest_bid_instance == 'pending' %}
-          <div class="actions">
-            <button onclick="window.location.href='{% url 'accept_highest_bid' car.id %}'" style="margin-bottom: 10px; background: #44cf5b;;">Aksepter bud</button>
-            <button onclick="window.location.href='{% url 'decline_highest_bid' car.id %}'" style="background: #ff5e5e;">Avslå bud</button>
-          </div>
+            <div class="actions">
+              <button onclick="window.location.href='{% url 'accept_highest_bid' car.id %}'" style="margin-bottom: 10px; background: #44cf5b;;">Aksepter bud</button>
+              <button onclick="window.location.href='{% url 'decline_highest_bid' car.id %}'" style="background: #ff5e5e;">Avslå bud</button>
+            </div>
+            {% endif %}
           {% endif %}
         {% endif %}
 

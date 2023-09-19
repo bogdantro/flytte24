@@ -83,7 +83,6 @@ def book_time(request):
         less_than_150000km = request.POST.get('less_than_150000km', '')
         vilkaar = request.POST.get('vilkaar', '')
 
-
         data = {
             'date': date,
             'time': time,
@@ -102,10 +101,18 @@ def book_time(request):
             'vilkaar': vilkaar,
         }
 
-        try:
-            user_instance = User.objects.get(username=user)
-        except User.DoesNotExist:
-            return render(request, 'pages/book/error.html', {'message': 'User not found'})
+
+              # Check if the user is authenticated (logged in)
+        if request.user.is_authenticated:
+            try:
+                user_instance = User.objects.get(username=user)
+            except User.DoesNotExist:
+                # Handle the case where the user doesn't exist (if needed)
+                pass
+        else:
+            # Handle the case where the user is not logged in (if needed)
+            user_instance = None
+
 
         if Booking.objects.filter(date=date, time=time, is_booked=True).exists():
             return render(request, 'pages/book/error.html', {'message': 'This time slot is already booked!'})
@@ -132,14 +139,15 @@ def book_time(request):
             booking = Booking.objects.create(user=user_instance, time=time, date=date, location=location, preference=preference, full_name=full_name, email=email, mobile_number=mobile_number, reg_number=reg_number, km=km, car_name_model=car_name_model, sms_reminder=sms_reminder, car_younger_than_10=car_younger_than_10, less_than_150000km=less_than_150000km, vilkaar=vilkaar)
             booking.is_booked = True
 
-
-              # Replace 'YOUR_ZAPIER_WEBHOOK_URL' with your actual Zapier webhook URL
+            booking.save()
+            
+            # Replace 'YOUR_ZAPIER_WEBHOOK_URL' with your actual Zapier webhook URL
             zapier_webhook_url = 'https://hooks.zapier.com/hooks/catch/16531899/3rcbk2o/'
 
             # Make a POST request to Zapier webhook
             response = requests.post(zapier_webhook_url, json=data)
 
-            booking.save()
+
         return render(request, 'pages/book/book-success.html', {'booking': booking})
 
     return render(request, 'pages/book/book.html')

@@ -166,13 +166,6 @@ def success(request):
     return render(request, 'pages/contact/success.html')
 
 def contact(request):
-    if request.method=='POST' and 'contact' in request.POST:
-        name = request.POST.get('name', )
-        email = request.POST.get('email', '')
-        message = request.POST.get('message', '')
-
-        contact = Contact.objects.create(name=name, message=message, email=email)
-        return redirect('success')
     return render(request, 'pages/contact/contact.html')  
 
 def verdivurdering(request):
@@ -193,6 +186,8 @@ def verdivurdering(request):
     return render(request, 'pages/contact/verdivurdering.html')  
 
 
+def services(request):
+    return render(request, 'pages/about/services.html')  
 
 def about(request):
     if request.method=='POST' and 'verdivurdering' in request.POST:

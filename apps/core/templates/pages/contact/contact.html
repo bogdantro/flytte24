@@ -11,32 +11,34 @@
         <div class="content" style="padding-bottom: 15px;">
             <div class="text">
                 <h1 class="cover-h1">Kontakt oss</h1>
-                <p class="cover-p">Bruk skjema under så svarer vi så fort vi kan</p>
+                <p class="cover-p">Vi ser frem til å høre fra deg</p>
             </div>  
         </div>
     </div>
-    <form id="contactUs" action="" method="POST">
-        {% csrf_token %}
-        <br>
-        <div class="inputs-labels">
-           <label for="navn">Navn</label>
-           <br>
-           <input type="text" name="name" id="name" required  oninput="this.setCustomValidity('')" value="{{request.user.get_full_name}}">
-           <br>
-           <br>
-           <label for="email">Epost</label>
-           <br>
-           <input type="email" name="email" id="email"  required oninput="this.setCustomValidity('')" value="{{request.user.email}}">
-           <br>
-           <br>
-           <label for="message">Hvordan kan vi hjelpe?</label>
-           <br>
-           <textarea name="message" id="message"  required oninput="this.setCustomValidity('')"></textarea>
-          </div>
-        <div class="form-actions">
-          <button class="primary" type="submit" name="contact" value="contact">Send melding</button>
-        </div>
-      </form>
+    <div class="cards">
+
+      <div class="card">
+        <i class="fa-regular fa-envelopes"></i>
+        <h1>Send epost</h1>
+        <hr>
+        <div class="value">epost@epost.no</div>
+      </div>
+
+      <div class="card">
+        <i class="fa-regular fa-phone"></i>      
+        <h1>Ring oss</h1>
+        <hr>
+        <div class="value">123456789</div>
+      </div>
+
+      <div class="card">
+        <i class="fa-brands fa-facebook-messenger"></i>
+        <h1>Chatt med oss</h1>
+        <hr>
+        <div class="value">Start chat</div>
+      </div>
+
+    </div>
 </div>
 
 

@@ -1,0 +1,54 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static '/scss/pages/services.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static '/scss/pages/page.css' %}" type="text/css">
+
+
+<div class="page">
+    <div class="cover">
+        <div class="content" style="padding-bottom: 15px;">
+            <div class="text">
+                <h1 class="cover-h1">Tjenester</h1>
+            </div>  
+        </div>
+    </div>
+
+    <div class="cards">
+
+        <div class="card">
+            <i class="fa-regular fa-handshake"></i>
+          <h1>Service avtale<i class="fa-solid fa-angle-right"></i></h1>
+        </div>
+
+        <div class="card">
+            <i class="fa-regular fa-car"></i>
+          <h1>Garanti<i class="fa-solid fa-angle-right"></i></h1>
+        </div>
+
+        <div class="card">
+        <i class="fa-regular fa-money-check-dollar"></i>
+          <h1>Finansiering<i class="fa-solid fa-angle-right"></i></h1>
+        </div>
+
+        <div class="card">
+            <i class="fa-regular fa-lock"></i>
+          <h1>Forsikring<i class="fa-solid fa-angle-right"></i></h1>
+        </div>
+
+        <div class="card">
+            <i class="fa-regular fa-hammer"></i>
+          <h1>Verksted<i class="fa-solid fa-angle-right"></i></h1>
+        </div>
+
+        <div class="card">
+            <i class="fa-regular fa-truck-container-empty"></i>
+          <h1>Transport<i class="fa-solid fa-angle-right"></i></h1>
+        </div>
+  
+      </div>
+</div>
+
+{% endblock %}

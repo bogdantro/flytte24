@@ -31,6 +31,8 @@ urlpatterns = [
     
     path('success/', success, name='success'),
 
+    path('tjenester/', services, name='services'),
+
     path('om-oss/', about, name='about'),
 
     path('personvernerklaering/', personerk, name='personerk'),

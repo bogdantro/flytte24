@@ -46,6 +46,7 @@
   width: max-content;
   margin: auto;
   transition: 0.2s;
+  cursor: pointer;
 }
 .page .cards .card .value:hover {
   background: rgb(246, 246, 246);
@@ -88,6 +89,7 @@
     position: relative;
     margin-top: 10px;
     display: flex;
+    justify-content: center;
   }
   .page .cards .card {
     text-align: center;

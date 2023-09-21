@@ -48,6 +48,7 @@ $txt: #183b56;
                 width: max-content;
                 margin: auto;
                 transition: .2s;
+                cursor: pointer;
                 &:hover{
                     background: $white;
                 }
@@ -95,6 +96,7 @@ $txt: #183b56;
             position: relative;
             margin-top: 10px;
             display: flex;
+            justify-content: center;
             .card{
                 text-align: center;
                 padding: 17px;

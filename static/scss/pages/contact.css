@@ -45,6 +45,10 @@
   width: -moz-max-content;
   width: max-content;
   margin: auto;
+  transition: 0.2s;
+}
+.page .cards .card .value:hover {
+  background: rgb(246, 246, 246);
 }
 
 @media only screen and (min-device-width: 1140px) {

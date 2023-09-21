@@ -47,6 +47,10 @@ $txt: #183b56;
                 border-radius: 25px;
                 width: max-content;
                 margin: auto;
+                transition: .2s;
+                &:hover{
+                    background: $white;
+                }
             }
         }
     }

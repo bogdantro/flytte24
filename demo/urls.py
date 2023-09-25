@@ -32,6 +32,12 @@ urlpatterns = [
     path('success/', success, name='success'),
 
     path('tjenester/', services, name='services'),
+    path('tjenester/verksted/', verksted, name='verksted'),
+    path('tjenester/transport/', transport, name='transport'),
+    path('tjenester/forsikring/', forsikring, name='forsikring'),
+    path('tjenester/finansiering/', finansiering, name='finansiering'),
+    path('tjenester/garanti/', garanti, name='garanti'),
+    path('tjenester/avtale/', avtale, name='avtale'),
 
     path('om-oss/', about, name='about'),
 

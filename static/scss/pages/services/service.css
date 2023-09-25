@@ -1,0 +1,94 @@
+.cover {
+  width: 100%;
+  min-height: -moz-max-content;
+  min-height: max-content;
+  position: relative;
+  padding-bottom: 5px;
+  background: linear-gradient(to bottom right, rgba(255, 240, 180, 0.185), transparent);
+}
+.cover .content {
+  padding-inline: 20px;
+  padding-top: 72px;
+  padding-bottom: 40px;
+  height: -moz-max-content;
+  height: max-content;
+  position: relative;
+}
+.cover .content .text {
+  text-align: left;
+  margin-top: 28px;
+}
+.cover .content .text .cover-h1 {
+  color: #1F1F1F;
+  font-size: 36px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.cover .content .text .cover-p {
+  max-width: 270px;
+  font-size: 18px;
+  margin-bottom: 0;
+  color: #1F1F1F;
+  font-weight: 500;
+}
+
+@media only screen and (min-device-width: 1140px) {
+  .page .cover {
+    width: 100%;
+    min-height: -moz-max-content;
+    min-height: max-content;
+    position: relative;
+    padding-bottom: 5px;
+    background: linear-gradient(to bottom right, rgba(255, 240, 180, 0.185), transparent);
+  }
+  .page .cover .content {
+    padding-inline: 35px;
+    padding-top: 80px;
+    padding-bottom: 40px;
+    height: -moz-max-content;
+    height: max-content;
+    position: relative;
+  }
+  .page .cover .content .text {
+    text-align: left;
+    margin-top: 28px;
+  }
+  .page .cover .content .text .cover-h1 {
+    color: #1F1F1F;
+    font-size: 38px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    max-width: 500px;
+  }
+  .page .cover .content .text .cover-p {
+    max-width: 600px !important;
+    font-size: 20px;
+    margin-bottom: 0;
+    color: #1F1F1F;
+    font-weight: 500;
+  }
+  .page .cover .content .cover-actions {
+    margin-top: 24px;
+    width: 100%;
+    text-align: center;
+  }
+  .page .cover .content .cover-actions button {
+    border: 1px solid transparent;
+    border-radius: 6px;
+    outline: none;
+    background: linear-gradient(to bottom right, #f0a432, #ffb649);
+    color: white;
+    font-weight: 500;
+    font-size: 17px;
+    width: 230px;
+    display: block;
+    height: 47px;
+  }
+  .page .cover .content .cover-actions button.secondary {
+    border-color: #f0a432;
+    color: #f0a432;
+    background: white;
+    margin-right: 0;
+    margin-top: 15px;
+  }
+}/*# sourceMappingURL=service.css.map */

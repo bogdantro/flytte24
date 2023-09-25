@@ -186,8 +186,34 @@ def verdivurdering(request):
     return render(request, 'pages/contact/verdivurdering.html')  
 
 
+
+
+
 def services(request):
     return render(request, 'pages/about/services.html')  
+
+
+def verksted(request):
+    return render(request, 'pages/services/verksted.html')  
+
+def transport(request):
+    return render(request, 'pages/services/transport.html')  
+
+def forsikring(request):
+    return render(request, 'pages/services/forsikring.html')  
+
+def finansiering(request):
+    return render(request, 'pages/services/finansiering.html')  
+
+def garanti(request):
+    return render(request, 'pages/services/garanti.html')  
+
+def avtale(request):
+    return render(request, 'pages/services/avtale.html')  
+
+
+
+
 
 def about(request):
     if request.method=='POST' and 'verdivurdering' in request.POST:

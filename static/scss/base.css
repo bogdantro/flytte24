@@ -1379,4 +1379,741 @@
     font-weight: 500;
     color: #1F1F1F;
   }
+}
+@media only screen and (min-device-width: 1290px) {
+  .cover {
+    width: 100%;
+    min-height: -moz-max-content;
+    min-height: max-content;
+    margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 5px;
+    background: linear-gradient(to bottom right, transparent, rgba(255, 238, 212, 0.4156862745));
+  }
+  .cover .content {
+    padding-inline: 35px;
+    padding-top: 120px;
+    padding-bottom: 60px;
+    height: -moz-max-content;
+    height: max-content;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    max-width: 1290px;
+    margin-inline: auto;
+  }
+  .cover .content #onlyOnMob {
+    display: none;
+  }
+  .cover .content #onlyOnDes {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  .cover .content .cover-image {
+    filter: brightness(100%);
+    display: block;
+    width: 490px;
+    height: auto;
+    position: unset;
+    margin: -100px;
+    margin-left: -4px;
+    transform: translateY(-58px) translateX(-90px);
+  }
+  .cover .content .text {
+    text-align: left;
+    margin-top: 28px;
+  }
+  .cover .content .text .cover-h1 {
+    color: #1F1F1F;
+    font-size: 42px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .cover .content .text .cover-p {
+    font-size: 20px;
+    margin-bottom: 0;
+    color: #1F1F1F;
+    font-weight: 500;
+    width: 400px;
+  }
+  .cover .content .cover-actions {
+    margin-top: 24px;
+    width: 100%;
+    text-align: center;
+  }
+  .cover .content .cover-actions button {
+    border: 1px solid transparent;
+    border-radius: 6px;
+    outline: none;
+    background: linear-gradient(to bottom right, #f0a432, #ffb649);
+    color: white;
+    font-weight: 500;
+    font-size: 17px;
+    width: 395px;
+    display: block;
+    height: 46px;
+  }
+  .cover .content .cover-actions button.secondary {
+    border-color: #f0a432;
+    color: #f0a432;
+    background: white;
+    margin-right: 0;
+    margin-top: 15px;
+  }
+  .sell-with-us {
+    width: 100%;
+    height: auto;
+    padding-block: 120px;
+    padding-top: 50px;
+    position: relative;
+  }
+  .sell-with-us .content {
+    padding-inline: 35px;
+    position: relative;
+  }
+  .sell-with-us .content .text {
+    text-align: center;
+    margin-top: 28px;
+  }
+  .sell-with-us .content .text h1 {
+    color: #1F1F1F;
+    font-size: 34px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .sell-with-us .content .video {
+    margin-inline: auto;
+    margin-top: 35px;
+    width: 420px;
+    height: 190px;
+    background: lightgray;
+  }
+  .verdivurdering {
+    margin-top: 25px;
+    width: 100%;
+    height: auto;
+    position: relative;
+    background: #f0a432;
+  }
+  .verdivurdering .content {
+    transform: translateX(50px);
+    padding-inline: 120px;
+    padding-top: 85px;
+    padding-bottom: 140px;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    max-width: 1290px;
+    margin-inline: auto;
+  }
+  .verdivurdering .content .text {
+    text-align: left;
+    margin-top: 28px;
+  }
+  .verdivurdering .content .text h1 {
+    color: white;
+    font-size: 34px;
+    font-weight: 600;
+    margin-bottom: -10px;
+  }
+  .verdivurdering .content .text h2 {
+    color: white;
+    font-size: 27px;
+    font-weight: 500;
+  }
+  .verdivurdering .content .text #onlyOnDes {
+    display: block;
+    margin-top: 30px;
+  }
+  .verdivurdering .content .text #onlyOnDes .check {
+    display: flex;
+    margin-bottom: 25px;
+  }
+  .verdivurdering .content .text #onlyOnDes .check i {
+    color: #1efa1e;
+    background: #e0fae0;
+    border-radius: 100%;
+    padding: 10px;
+    font-size: 24px;
+  }
+  .verdivurdering .content .text #onlyOnDes .check p {
+    color: white;
+    font-weight: 500;
+    font-size: 19px;
+    margin-left: 15px;
+    transform: translateY(8px);
+  }
+  .verdivurdering .content form {
+    background: white;
+    border-radius: 12px;
+    padding-inline: 30px;
+    padding-block: 13px;
+    padding-bottom: 23px;
+    margin-top: 25px;
+    width: 380px;
+    margin-inline: auto;
+    transform: translateX(40px);
+  }
+  .verdivurdering .content form .inputs-labels .step-one input {
+    height: 54px;
+    border-radius: 12px;
+    text-align: center;
+    font-size: 23px;
+  }
+  .verdivurdering .content form .inputs-labels .step-one input:focus, .verdivurdering .content form .inputs-labels .step-one input:active {
+    border: 1px solid rgb(172, 172, 172);
+    cursor: text;
+    background: rgb(255, 255, 255);
+  }
+  .verdivurdering .content form .inputs-labels .step-one input::-moz-placeholder {
+    font-size: 23px;
+  }
+  .verdivurdering .content form .inputs-labels .step-one input::placeholder {
+    font-size: 23px;
+  }
+  .verdivurdering .content form .inputs-labels .step-one .reg-nr {
+    display: flex;
+    position: relative;
+  }
+  .verdivurdering .content form .inputs-labels .step-one .reg-nr input {
+    text-transform: uppercase;
+  }
+  .verdivurdering .content form .inputs-labels .step-one .reg-nr img {
+    position: absolute;
+    left: 0;
+    height: 54px;
+    width: auto;
+    border-bottom-left-radius: 12px;
+    border-top-left-radius: 12px;
+  }
+  .verdivurdering .content form .inputs-labels .step-one .km {
+    position: relative;
+    display: flex;
+  }
+  .verdivurdering .content form .inputs-labels .step-one .km p {
+    position: absolute;
+    right: 11px;
+    bottom: -5px;
+    color: #1F1F1F;
+    opacity: 0.95;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .verdivurdering .content form .inputs-labels label {
+    font-size: 16px;
+    color: #1F1F1F;
+    font-weight: 500;
+  }
+  .verdivurdering .content form .inputs-labels input {
+    width: 100%;
+    height: 45px;
+    border: 1px solid lightgray;
+    outline: none;
+    padding: 8px;
+    color: #1F1F1F;
+    font-size: 16px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 7px;
+  }
+  .verdivurdering .content form .inputs-labels input:focus, .verdivurdering .content form .inputs-labels input:active {
+    border: 2px solid #f0a432;
+    cursor: text;
+    background: rgb(255, 255, 255);
+  }
+  .verdivurdering .content form .inputs-labels input::-moz-placeholder {
+    color: #1F1F1F;
+    opacity: 0.6;
+  }
+  .verdivurdering .content form .inputs-labels input::placeholder {
+    color: #1F1F1F;
+    opacity: 0.6;
+  }
+  .verdivurdering .content form .inputs-labels .checkbox {
+    display: flex;
+    align-items: center;
+    margin-top: 18px;
+    margin-bottom: 15px;
+  }
+  .verdivurdering .content form .inputs-labels .checkbox p {
+    margin-bottom: 0;
+    margin-left: 15px;
+    font-size: 14px;
+    color: #1F1F1F;
+  }
+  .verdivurdering .content form .inputs-labels .checkbox p a {
+    text-decoration: underline;
+  }
+  .verdivurdering .content form .inputs-labels .checkbox input {
+    width: 20px;
+    height: 20px;
+  }
+  .verdivurdering .content form .form-actions button {
+    border: 1px solid transparent;
+    border-radius: 6px;
+    outline: none;
+    background: linear-gradient(to bottom right, #f0a432, #ffb649);
+    color: white;
+    font-weight: 500;
+    font-size: 17px;
+    width: 100%;
+    display: block;
+    height: 46px;
+    margin-top: 32px;
+  }
+  .proccess {
+    width: 100%;
+    height: auto;
+    padding-block: 90px;
+    position: relative;
+    max-width: 1290px;
+    margin-inline: auto;
+  }
+  .proccess .content {
+    padding-inline: 35px;
+    position: relative;
+  }
+  .proccess .content .text {
+    text-align: center;
+    margin-top: 28px;
+    margin-bottom: 30px;
+  }
+  .proccess .content .text h1 {
+    color: #1F1F1F;
+    font-size: 34px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .proccess .content .flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .proccess .content .proccess-card {
+    flex-basis: 50%;
+    margin-bottom: 25px;
+    margin-inline: 25px;
+    transition: 1s;
+    transform: translateY(0);
+    max-width: 400px;
+  }
+  .proccess .content .proccess-card.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .proccess .content .proccess-image {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    border-bottom-left-radius: 6px;
+    width: 100%;
+  }
+  .proccess .content .proccess-image img {
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.164);
+    width: 100%;
+    height: 220px;
+    -o-object-fit: cover;
+       object-fit: cover;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    border-bottom-left-radius: 6px;
+    filter: brightness(90%);
+    margin: 15px auto;
+  }
+  .proccess .content .proccess-image .ribbon-number {
+    position: absolute;
+    right: 30px;
+    top: -5px;
+    width: 40px;
+    height: 40px;
+    padding: 10px;
+    background: #f0a432;
+    font-size: 22px;
+    color: white;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+  }
+  .proccess .content .proccess-image-text {
+    width: 100%;
+    transform: translateY(3px);
+  }
+  .proccess .content .proccess-image-text h1 {
+    font-size: 20px;
+    font-weight: 500;
+    color: #1F1F1F;
+  }
+  .proccess .content .proccess-image-text p {
+    transform: translateY(-3px);
+    opacity: 1;
+    font-size: 16px;
+    font-weight: 400;
+    color: #1F1F1F;
+    padding-right: 30px;
+  }
+  .book-now {
+    padding-block: 180px;
+    background: #f0a432;
+    position: relative;
+    width: 100%;
+  }
+  .book-now .content {
+    padding-inline: 35px;
+    position: relative;
+    text-align: center;
+  }
+  .book-now .content h1 {
+    color: white;
+    font-size: 34px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .book-now .content p {
+    color: white;
+    font-weight: 500;
+    font-size: 18px;
+  }
+  .book-now .content button {
+    margin-top: 30px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    outline: none;
+    color: white;
+    font-weight: 500;
+    font-size: 17px;
+    width: 380px;
+    display: block;
+    margin-inline: auto;
+    height: 47px;
+    border-color: #f0a432;
+    color: #f0a432;
+    background: white;
+  }
+  .services {
+    width: 100%;
+    height: auto;
+    padding-block: 120px;
+    position: relative;
+    padding-bottom: 120px;
+    max-width: 1290px;
+    margin-inline: auto;
+  }
+  .services .content {
+    width: 100%;
+    padding-inline: 35px;
+    position: relative;
+    margin-top: 26px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .services .content .text {
+    text-align: left;
+    width: 700px;
+    transform: translateX(30px);
+  }
+  .services .content .text h1 {
+    color: #1F1F1F;
+    font-size: 34px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .services .content .text #onlyOnDes {
+    display: block;
+    margin-top: 30px;
+  }
+  .services .content .text #onlyOnDes .check {
+    display: flex;
+    margin-bottom: 25px;
+  }
+  .services .content .text #onlyOnDes .check i {
+    color: #1efa1e;
+    background: #e0fae0;
+    border-radius: 100%;
+    padding: 10px;
+    font-size: 24px;
+  }
+  .services .content .text #onlyOnDes .check p {
+    color: #1F1F1F;
+    font-weight: 500;
+    font-size: 19px;
+    margin-left: 15px;
+    transform: translateY(8px);
+  }
+  .services .content .flex {
+    margin-top: 0;
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+  .services .content .flex .service {
+    min-width: 320px;
+    flex-basis: 35%;
+    height: 170px;
+    padding: 22px;
+    position: relative;
+    background: rgb(241, 241, 241);
+    border: 1px solid rgb(246, 246, 246);
+    border-right: 20px solid #f0a432;
+    border-radius: 5px;
+    border-top-right-radius: 18px;
+    border-bottom-right-radius: 18px;
+    display: flex;
+    margin-bottom: 25px;
+    margin-inline: 25px;
+  }
+  .services .content .flex .service:last-child {
+    margin-bottom: 0;
+  }
+  .services .content .flex .service .left {
+    width: 10%;
+    display: flex;
+    justify-content: center;
+  }
+  .services .content .flex .service .left i {
+    color: #f0a432;
+    font-size: 26px;
+    transform: translateY(-2px) translateX(-2px);
+  }
+  .services .content .flex .service .right {
+    width: 90%;
+    margin-left: 25px;
+  }
+  .services .content .flex .service .right h1 {
+    color: #1F1F1F;
+    font-size: 19px;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+  .services .content .flex .service .right p {
+    font-size: 16px;
+    color: #1F1F1F;
+  }
+  .price {
+    width: 100%;
+    height: auto;
+    padding-block: 90px;
+    position: relative;
+    background: #f0a432;
+  }
+  .price .content {
+    padding-inline: 35px;
+    position: relative;
+  }
+  .price .content .text {
+    text-align: center;
+    margin-top: 28px;
+  }
+  .price .content .text h1 {
+    color: white;
+    font-size: 34px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .price .content .text p {
+    color: white;
+    font-weight: 500;
+    font-size: 18px;
+    width: 400px;
+    margin-inline: auto;
+  }
+  .price .content button {
+    margin-top: 30px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    outline: none;
+    color: white;
+    font-weight: 500;
+    font-size: 17px;
+    width: 380px;
+    margin-inline: auto;
+    display: block;
+    height: 47px;
+    border-color: #f0a432;
+    color: #f0a432;
+    background: white;
+  }
+  .location {
+    width: 100%;
+    height: auto;
+    padding-block: 90px;
+    padding-top: 50px;
+    position: relative;
+  }
+  .location .content {
+    padding-inline: 20px;
+    position: relative;
+  }
+  .location .content .text {
+    text-align: center;
+    margin-top: 28px;
+  }
+  .location .content .text h1 {
+    color: #1F1F1F;
+    font-size: 34px;
+    font-weight: 600;
+    margin-bottom: 13px;
+  }
+  .location .content .place {
+    color: #1F1F1F;
+    font-size: 16px;
+    text-decoration: underline;
+  }
+  .reviews {
+    width: 100%;
+    height: auto;
+    padding-block: 90px;
+    padding-top: 58px;
+    position: relative;
+  }
+  .reviews .content {
+    padding-inline: 20px;
+    position: relative;
+  }
+  .reviews .content .text {
+    text-align: center;
+    margin-top: 28px;
+  }
+  .reviews .content .text h1 {
+    color: #1F1F1F;
+    font-size: 34px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .reviews .content .flex {
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+  }
+  .reviews .content .flex .review {
+    background: rgba(255, 183, 76, 0.1725490196);
+    width: 380px;
+    height: auto;
+    border-radius: 5px;
+    padding: 17px;
+    min-height: 180px;
+    display: flex;
+    margin-bottom: 25px;
+    margin-inline: 25px;
+  }
+  .reviews .content .flex .review:last-child {
+    margin-bottom: 25px;
+  }
+  .reviews .content .flex .review .left {
+    width: 20%;
+    height: 100%;
+    text-align: center;
+  }
+  .reviews .content .flex .review .left .icon {
+    width: 35px;
+    height: 35px;
+    border-radius: 100%;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+  }
+  .reviews .content .flex .review .left .name {
+    color: #1F1F1F;
+    font-size: 14px;
+    margin-top: 3px;
+  }
+  .reviews .content .flex .review .left .stars {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 7px;
+  }
+  .reviews .content .flex .review .left .stars i {
+    color: #f0a432;
+    font-size: 13px;
+    margin-inline: 2px;
+  }
+  .reviews .content .flex .review .right {
+    width: 80%;
+    margin-left: 42px;
+    font-size: 16px;
+    color: #1F1F1F;
+    opacity: 0.95;
+  }
+  .faq {
+    width: 100%;
+    height: auto;
+    padding-block: 90px;
+    padding-top: 70px;
+    position: relative;
+  }
+  .faq .content {
+    padding-inline: 20px;
+    position: relative;
+  }
+  .faq .content .text {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+  .faq .content .text h1 {
+    color: #1F1F1F;
+    font-size: 34px;
+    font-weight: 600;
+    margin-bottom: 30px;
+  }
+  .faq .content .ask {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid lightgray;
+    height: 90px;
+    position: relative;
+    width: 420px;
+    margin-inline: auto;
+    cursor: pointer;
+  }
+  .faq .content .ask p {
+    color: #1F1F1F;
+    font-weight: 500;
+    margin-bottom: 0;
+    font-size: 22px;
+  }
+  .faq .content .ask svg {
+    color: #1F1F1F;
+    font-size: 41px;
+    padding: 8px;
+    margin: -8px;
+  }
+  .faq .content .ask .plus {
+    display: block;
+  }
+  .faq .content .ask .minus {
+    display: none;
+  }
+  .faq .content .answer {
+    padding: 8px;
+    transform: translateY(-21px);
+    border-radius: 2px;
+    height: 0;
+    transition: 0.2s;
+    pointer-events: none;
+    opacity: 0;
+    width: 420px;
+    margin-inline: auto;
+  }
+  .faq .content .answer.active {
+    pointer-events: visible;
+    opacity: 1;
+    height: 140px;
+  }
+  .faq .content .answer p {
+    font-size: 16px;
+    font-weight: 500;
+    color: #1F1F1F;
+  }
 }/*# sourceMappingURL=base.css.map */

@@ -175,4 +175,73 @@
   #footerMob .bottom .social-icons i:hover {
     color: #f0a432;
   }
+}
+@media only screen and (min-device-width: 1290px) {
+  #footerMob {
+    padding-inline: 35px;
+    padding-top: 30px;
+  }
+  #footerMob .content {
+    max-width: 1290px;
+    margin-inline: auto;
+  }
+  #footerMob .hours {
+    background: rgb(242, 242, 242);
+    width: 380px;
+    padding: 13px 8px;
+    height: -moz-max-content;
+    height: max-content;
+  }
+  #footerMob .hours .info-heading {
+    color: #1F1F1F;
+    font-size: 19px;
+    margin-bottom: 3px;
+    font-weight: 500;
+  }
+  #footerMob .hours a {
+    display: block;
+    color: #1F1F1F;
+    font-size: 17px;
+    width: -moz-max-content;
+    width: max-content;
+    padding-right: 5px;
+    margin-block: 8px;
+  }
+  #footerMob .hours a:first-child {
+    margin-top: 0;
+  }
+  #footerMob .flex {
+    display: flex;
+  }
+  #footerMob .flex hr {
+    display: none !important;
+  }
+  #footerMob .flex .links {
+    transform: translateX(80px);
+  }
+  #footerMob .flex .contact-info {
+    transform: translateX(40px);
+  }
+  #footerMob .bottom {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    opacity: 0.85;
+  }
+  #footerMob .bottom .copyright {
+    color: #1F1F1F;
+    font-size: 14px;
+  }
+  #footerMob .bottom .social-icons i {
+    color: #1F1F1F;
+    font-size: 24px;
+    margin-inline: 2px;
+    padding: 8px;
+    transition: 0.2s;
+    cursor: pointer;
+  }
+  #footerMob .bottom .social-icons i:hover {
+    color: #f0a432;
+  }
 }/*# sourceMappingURL=footer.css.map */

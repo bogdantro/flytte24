@@ -138,7 +138,6 @@ $txt: #183b56;
     #desNav{
         display: flex;
         width: 100%;
-        max-width: 1290px;
         height: 80px;
         justify-content: space-between;
         align-items: center;
@@ -151,7 +150,22 @@ $txt: #183b56;
         z-index: 10000;
         transition: .2s;
         border-bottom: 1px solid transparent;
-        
+        .content{
+            width: 100%;
+            display: flex;
+            width: 100%;
+            max-width: 1290px;
+            height: 80px;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: transparent;
+            padding-inline: 35px;    
+        }
+
         &.sticky{
             background: white;
             border-bottom: 1px solid rgba(100,100,100,0.15);

@@ -839,4 +839,859 @@
   display: block;
   height: 44px;
   margin-top: 32px;
+}
+
+@media only screen and (min-device-width: 1140px) {
+  .page {
+    padding-top: 130px;
+  }
+  .page #overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    display: none;
+    pointer-events: none !important;
+  }
+  .page #carouselExampleIndicators {
+    display: flex;
+    max-width: 480px;
+    position: relative;
+    height: -moz-max-content;
+    height: max-content;
+    transform: translateX(35px);
+    padding: 20px;
+    border-radius: 10px;
+    background: rgb(246, 246, 246);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  .page #carouselExampleIndicators .overlay {
+    pointer-events: none;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.35), transparent, transparent);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+  }
+  .page #carouselExampleIndicators .carousel-item {
+    font-size: 0px;
+    cursor: pointer;
+    white-space: nowrap;
+    scroll-behavior: smooth;
+    overflow: unset !important;
+  }
+  .page #carouselExampleIndicators .carousel-item.dragging {
+    cursor: grab;
+    scroll-behavior: auto;
+  }
+  .page #carouselExampleIndicators .carousel-item.dragging img {
+    pointer-events: none;
+  }
+  .page #carouselExampleIndicators .carousel-item img {
+    height: auto;
+    -o-object-fit: cover;
+       object-fit: cover;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+            user-select: none;
+    margin-left: 0;
+    width: 100%;
+    filter: brightness(88%);
+  }
+  .page #carouselExampleIndicators .carousel-item img:first-child {
+    margin-left: 0px;
+  }
+  .page .car {
+    padding-inline: 35px;
+  }
+  .page .car .info .flex {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: -moz-max-content;
+    height: max-content;
+    margin-top: 14px;
+  }
+  .page .car .info .flex .status {
+    background: #9cffcc;
+    width: -moz-max-content;
+    width: max-content;
+    padding: 3px 10px;
+    font-size: 15px;
+    color: #1F1F1F;
+    border-radius: 5px;
+  }
+  .page .car .info .flex .time-left {
+    background: #ffd698;
+    width: -moz-max-content;
+    width: max-content;
+    padding: 3px 10px;
+    font-size: 15px;
+    color: #1F1F1F;
+    border-radius: 5px;
+    margin-left: 10px;
+  }
+  .page .car .info .main-info {
+    position: absolute;
+    top: 120px;
+    left: 650px;
+    z-index: 10;
+    pointer-events: visible;
+  }
+  .page .car .info .name {
+    margin-top: 10px;
+    font-size: 24px;
+    color: #1F1F1F;
+    font-weight: 500;
+    max-width: 400px;
+  }
+  .page .car .info .price {
+    color: #1F1F1F;
+    font-size: 23px;
+    font-weight: 500;
+    margin-top: 3px;
+  }
+  .page .car .info .first-info {
+    background: hsla(36, 100%, 90%, 0.484);
+    width: 100%;
+    height: auto;
+    padding: 20px;
+    position: absolute;
+    left: 0;
+    transform: translateY(25px);
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 120px;
+  }
+  .page .car .info .first-info .info {
+    display: flex;
+    width: 50%;
+    flex: 50%;
+  }
+  .page .car .info .first-info .info .left i {
+    color: #1F1F1F;
+    font-size: 27px;
+  }
+  .page .car .info .first-info .info .right {
+    margin-left: 22px;
+  }
+  .page .car .info .first-info .info .right p {
+    font-size: 17px;
+    color: #1F1F1F;
+    margin-bottom: 2px;
+  }
+  .page .car .info .third-info li {
+    transform: translateX(30px);
+    font-size: 17px;
+    list-style: none;
+  }
+  .page .car .info .third-info li::before {
+    content: "•"; /* Add content: \2022 is the CSS Code/unicode for a bullet */
+    color: #f0a432; /* Change the color */
+    font-weight: bold; /* If you want it to be bold */
+    display: inline-block; /* Needed to add space between the bullet and the text */
+    width: 1em; /* Also needed for space (tweak if needed) */
+    margin-left: -1em; /* Also needed for space (tweak if needed) */
+    font-size: 24px;
+    transform: translateY(2px);
+  }
+  .page .car .info .second-info .spec p {
+    margin-bottom: 4px;
+    font-size: 16px;
+    color: #1F1F1F;
+  }
+  .page .car .info .second-info .spec .spec-heading {
+    font-weight: 600;
+    font-size: 17px;
+  }
+  .page .car .info .additional-info {
+    width: 120%;
+    height: auto;
+    margin-left: -20px;
+    margin-top: 80px;
+    border-radius: 4px;
+  }
+  .page .car .info .additional-info #addInfoChoices {
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+    padding: 10px 20px;
+    background: hsla(36, 100%, 90%, 0.484);
+    width: -moz-max-content;
+    width: max-content;
+    position: relative;
+    display: flex;
+  }
+  .page .car .info .additional-info #addInfoChoices i {
+    position: absolute;
+    top: -35px;
+    color: #f0a432;
+    font-size: 26px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .page .car .info .additional-info #addInfoChoices p {
+    margin-bottom: 0;
+    color: #1F1F1F;
+    font-size: 16px;
+    font-weight: 600;
+    width: -moz-max-content;
+    width: max-content;
+  }
+  .page .car .info .additional-info #addInfoChoices p:first-child {
+    padding-left: 0 !important;
+  }
+  .page .car .info .additional-info #addInfoChoices #service {
+    padding: 10px 20px;
+    margin: -10px -20px;
+  }
+  .page .car .info .additional-info #addInfoChoices #service.active {
+    background: hsla(36, 100%, 86%, 0.484);
+  }
+  .page .car .info .additional-info #addInfoChoices #garanti {
+    padding: 10px 20px;
+    margin: -10px -20px;
+  }
+  .page .car .info .additional-info #addInfoChoices #garanti.active {
+    background: hsla(36, 100%, 86%, 0.484);
+  }
+  .page .car .info .additional-info .content {
+    background: hsla(36, 100%, 90%, 0.484);
+    padding: 20px;
+  }
+  .page .car .info .additional-info .content p {
+    margin-bottom: 0;
+    color: #1F1F1F;
+    font-size: 16px;
+    font-weight: 400;
+  }
+  .page .car .info .additional-info .content #serviceText {
+    display: none;
+  }
+  .page .car .info .additional-info .content #serviceText.active {
+    display: block;
+  }
+  .page .car .info .additional-info .content #garantiText {
+    display: none;
+  }
+  .page .car .info .additional-info .content #garantiText.active {
+    display: block;
+  }
+  .page .car .actions {
+    width: 100%;
+    margin-top: 10px;
+  }
+  .page .car .actions button {
+    display: block;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    outline: none;
+    background: linear-gradient(to bottom right, #f0a432, #ffb649);
+    color: white;
+    font-weight: 500;
+    font-size: 17px;
+    width: 100%;
+    display: block;
+    height: 45px;
+    margin-top: 15px;
+    max-width: 390px;
+  }
+  .page .car .actions button.secondary {
+    border-color: #f0a432;
+    color: #f0a432;
+    background: white;
+    margin-right: 0;
+  }
+  .page .car #infoChoices {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .page .car #infoChoices p {
+    font-size: 16px;
+    padding-bottom: 10px;
+    font-weight: 500;
+    transition: 0.2s;
+    border-bottom: 2px solid transparent;
+  }
+  .page .car #infoChoices p.active {
+    border-bottom: 2px solid #f0a432;
+    color: #f0a432;
+  }
+  .page .car #utstyr {
+    display: none;
+  }
+  .page .car #spesifikasjoner {
+    display: none;
+  }
+  .page .car #beskrivelse {
+    display: block;
+  }
+  .page .car #testDrive {
+    background: white;
+    border-radius: 12px;
+    padding-inline: 10px;
+    padding-block: 16px;
+    padding-bottom: 26px;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    width: 95%;
+    height: 93%;
+    overflow-y: scroll !important;
+    z-index: 1000;
+    padding-bottom: 40px;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.2s;
+  }
+  .page .car #testDrive.active {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: visible;
+  }
+  .page .car #testDrive .close {
+    font-size: 16px;
+    border: 1px solid red;
+    background: rgb(254, 202, 202);
+    display: flex;
+    align-items: center;
+    opacity: 1;
+    color: #1F1F1F;
+    padding: 9px 13px;
+    border-radius: 4px;
+    box-shadow: none;
+    opacity: 1 !important;
+    position: absolute;
+    right: 17px;
+    top: 17px;
+  }
+  .page .car #testDrive .close i {
+    color: red;
+    font-size: 20px;
+    margin-right: 15px;
+  }
+  .page .car #testDrive .heading {
+    margin-top: 55px;
+    color: #1F1F1F;
+    font-size: 30px;
+  }
+  .page .car #testDrive .time {
+    background: rgba(255, 236, 207, 0.6470588235);
+    padding: 14px;
+    border-radius: 5px;
+  }
+  .page .car #testDrive .time label {
+    font-size: 19px;
+    color: #1F1F1F;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  .page .car #testDrive .time .icon-input {
+    position: relative;
+    width: 100%;
+  }
+  .page .car #testDrive .time .icon-input i {
+    position: absolute;
+    right: 18px;
+    top: 13px;
+    color: #1F1F1F;
+    font-size: 20px;
+    opacity: 0.9;
+  }
+  .page .car #testDrive .time input {
+    background: white !important;
+    padding-left: 6px;
+    color: #1F1F1F;
+    font-size: 16px;
+  }
+  .page .car #testDrive .time input::-moz-placeholder {
+    padding-left: 6px;
+  }
+  .page .car #testDrive .time input::placeholder {
+    padding-left: 6px;
+  }
+  .page .car #testDrive .inputs-labels input {
+    width: 100%;
+    height: 48px;
+    border: 1px solid lightgray;
+    outline: none;
+    padding: 8px;
+    color: #1F1F1F;
+    font-size: 16px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 7px;
+  }
+  .page .car #testDrive .inputs-labels input:focus, .page .car #testDrive .inputs-labels input:active {
+    border: 2px solid #f0a432;
+    cursor: text;
+    background: rgb(255, 255, 255);
+  }
+  .page .car #testDrive .inputs-labels input::-moz-placeholder {
+    color: #1F1F1F;
+    opacity: 0.6;
+  }
+  .page .car #testDrive .inputs-labels input::placeholder {
+    color: #1F1F1F;
+    opacity: 0.6;
+  }
+  .page .car #testDrive .inputs-labels textarea {
+    width: 100%;
+    min-height: 75px;
+    max-height: 125px;
+    border: 1px solid lightgray;
+    outline: none;
+    padding: 8px;
+    color: #1F1F1F;
+    font-size: 16px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 7px;
+    background: white !important;
+  }
+  .page .car #testDrive .inputs-labels textarea:focus, .page .car #testDrive .inputs-labels textarea:active {
+    border: 2px solid #f0a432;
+    cursor: text;
+    background: rgb(255, 255, 255);
+  }
+  .page .car #testDrive .inputs-labels textarea::-moz-placeholder {
+    color: #1F1F1F;
+    opacity: 0.6;
+  }
+  .page .car #testDrive .inputs-labels textarea::placeholder {
+    color: #1F1F1F;
+    opacity: 0.6;
+  }
+  .page .car #testDrive .form-actions button {
+    border: 1px solid transparent;
+    border-radius: 6px;
+    outline: none;
+    background: linear-gradient(to bottom right, #f0a432, #ffb649);
+    color: white;
+    font-weight: 500;
+    font-size: 17px;
+    width: 100%;
+    display: block;
+    height: 44px;
+    margin-top: 32px;
+  }
+  .page .car #makeBid {
+    background: white;
+    border-radius: 12px;
+    padding-inline: 10px;
+    padding-block: 16px;
+    padding-bottom: 26px;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    width: 95%;
+    height: 93%;
+    overflow-y: scroll !important;
+    z-index: 1000;
+    padding-bottom: 40px;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.2s;
+  }
+  .page .car #makeBid.active {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: visible;
+  }
+  .page .car #makeBid .close {
+    font-size: 16px;
+    border: 1px solid red;
+    background: rgb(254, 202, 202);
+    display: flex;
+    align-items: center;
+    opacity: 1;
+    color: #1F1F1F;
+    padding: 9px 13px;
+    border-radius: 4px;
+    box-shadow: none;
+    opacity: 1 !important;
+    position: absolute;
+    right: 17px;
+    top: 17px;
+  }
+  .page .car #makeBid .close i {
+    color: red;
+    font-size: 20px;
+    margin-right: 15px;
+  }
+  .page .car #makeBid .heading {
+    margin-top: 55px;
+    color: #1F1F1F;
+    font-size: 30px;
+  }
+  .page .car #makeBid .time {
+    background: rgba(255, 236, 207, 0.6470588235);
+    padding: 14px;
+    border-radius: 5px;
+    margin-top: 15px;
+  }
+  .page .car #makeBid .time label {
+    font-size: 19px;
+    color: #1F1F1F;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  .page .car #makeBid .time .icon-input {
+    position: relative;
+    width: 100%;
+  }
+  .page .car #makeBid .time .icon-input i {
+    position: absolute;
+    right: 18px;
+    top: 13px;
+    color: #1F1F1F;
+    font-size: 20px;
+    opacity: 0.9;
+  }
+  .page .car #makeBid .time input {
+    background: white !important;
+    padding-left: 6px;
+    color: #1F1F1F;
+    font-size: 16px;
+  }
+  .page .car #makeBid .time input::-moz-placeholder {
+    padding-left: 6px;
+  }
+  .page .car #makeBid .time input::placeholder {
+    padding-left: 6px;
+  }
+  .page .car #makeBid .inputs-labels input {
+    width: 100%;
+    height: 48px;
+    border: 1px solid lightgray;
+    outline: none;
+    padding: 8px;
+    color: #1F1F1F;
+    font-size: 16px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 7px;
+  }
+  .page .car #makeBid .inputs-labels input:focus, .page .car #makeBid .inputs-labels input:active {
+    border: 2px solid #f0a432;
+    cursor: text;
+    background: rgb(255, 255, 255);
+  }
+  .page .car #makeBid .inputs-labels input::-moz-placeholder {
+    color: #1F1F1F;
+    opacity: 0.6;
+  }
+  .page .car #makeBid .inputs-labels input::placeholder {
+    color: #1F1F1F;
+    opacity: 0.6;
+  }
+  .page .car #makeBid .inputs-labels textarea {
+    width: 100%;
+    min-height: 75px;
+    max-height: 125px;
+    border: 1px solid lightgray;
+    outline: none;
+    padding: 8px;
+    color: #1F1F1F;
+    font-size: 16px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 7px;
+    background: white !important;
+  }
+  .page .car #makeBid .inputs-labels textarea:focus, .page .car #makeBid .inputs-labels textarea:active {
+    border: 2px solid #f0a432;
+    cursor: text;
+    background: rgb(255, 255, 255);
+  }
+  .page .car #makeBid .inputs-labels textarea::-moz-placeholder {
+    color: #1F1F1F;
+    opacity: 0.6;
+  }
+  .page .car #makeBid .inputs-labels textarea::placeholder {
+    color: #1F1F1F;
+    opacity: 0.6;
+  }
+  .page .car #makeBid .form-actions button {
+    border: 1px solid transparent;
+    border-radius: 6px;
+    outline: none;
+    background: linear-gradient(to bottom right, #f0a432, #ffb649);
+    color: white;
+    font-weight: 500;
+    font-size: 17px;
+    width: 100%;
+    display: block;
+    height: 44px;
+    margin-top: 32px;
+  }
+  .page .car #contactOwner {
+    background: white;
+    border-radius: 12px;
+    padding-inline: 10px;
+    padding-block: 16px;
+    padding-bottom: 26px;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    width: 95%;
+    height: 93%;
+    overflow-y: scroll !important;
+    z-index: 1000;
+    padding-bottom: 40px;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.2s;
+  }
+  .page .car #contactOwner.active {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: visible;
+  }
+  .page .car #contactOwner .close {
+    font-size: 16px;
+    border: 1px solid red;
+    background: rgb(254, 202, 202);
+    display: flex;
+    align-items: center;
+    opacity: 1;
+    color: #1F1F1F;
+    padding: 9px 13px;
+    border-radius: 4px;
+    box-shadow: none;
+    opacity: 1 !important;
+    position: absolute;
+    right: 17px;
+    top: 17px;
+  }
+  .page .car #contactOwner .close i {
+    color: red;
+    font-size: 20px;
+    margin-right: 15px;
+  }
+  .page .car #contactOwner .heading {
+    margin-top: 55px;
+    color: #1F1F1F;
+    font-size: 30px;
+  }
+  .page .car #contactOwner .time {
+    background: rgba(255, 236, 207, 0.6470588235);
+    padding: 14px;
+    border-radius: 5px;
+    margin-top: 15px;
+  }
+  .page .car #contactOwner .time label {
+    font-size: 19px;
+    color: #1F1F1F;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  .page .car #contactOwner .time .icon-input {
+    position: relative;
+    width: 100%;
+  }
+  .page .car #contactOwner .time .icon-input i {
+    position: absolute;
+    right: 18px;
+    top: 13px;
+    color: #1F1F1F;
+    font-size: 20px;
+    opacity: 0.9;
+  }
+  .page .car #contactOwner .time input {
+    background: white !important;
+    padding-left: 6px;
+    color: #1F1F1F;
+    font-size: 16px;
+  }
+  .page .car #contactOwner .time input::-moz-placeholder {
+    padding-left: 6px;
+  }
+  .page .car #contactOwner .time input::placeholder {
+    padding-left: 6px;
+  }
+  .page .car #contactOwner .inputs-labels input {
+    width: 100%;
+    height: 48px;
+    border: 1px solid lightgray;
+    outline: none;
+    padding: 8px;
+    color: #1F1F1F;
+    font-size: 16px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 7px;
+  }
+  .page .car #contactOwner .inputs-labels input:focus, .page .car #contactOwner .inputs-labels input:active {
+    border: 2px solid #f0a432;
+    cursor: text;
+    background: rgb(255, 255, 255);
+  }
+  .page .car #contactOwner .inputs-labels input::-moz-placeholder {
+    color: #1F1F1F;
+    opacity: 0.6;
+  }
+  .page .car #contactOwner .inputs-labels input::placeholder {
+    color: #1F1F1F;
+    opacity: 0.6;
+  }
+  .page .car #confirmBuy {
+    background: white;
+    border-radius: 12px;
+    padding-inline: 10px;
+    padding-block: 16px;
+    padding-bottom: 26px;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    width: 95%;
+    height: 93%;
+    overflow-y: scroll !important;
+    z-index: 1000;
+    padding-bottom: 40px;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.2s;
+  }
+  .page .car #confirmBuy.active {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: visible;
+  }
+  .page .car #confirmBuy .close {
+    font-size: 16px;
+    border: 1px solid red;
+    background: rgb(254, 202, 202);
+    display: flex;
+    align-items: center;
+    opacity: 1;
+    color: #1F1F1F;
+    padding: 9px 13px;
+    border-radius: 4px;
+    box-shadow: none;
+    opacity: 1 !important;
+    position: absolute;
+    right: 17px;
+    top: 17px;
+  }
+  .page .car #confirmBuy .close i {
+    color: red;
+    font-size: 20px;
+    margin-right: 15px;
+  }
+  .page .car #confirmBuy .heading {
+    margin-top: 55px;
+    color: #1F1F1F;
+    font-size: 30px;
+  }
+  .page .car #confirmBuy .time {
+    background: rgba(255, 236, 207, 0.6470588235);
+    padding: 14px;
+    border-radius: 5px;
+    margin-top: 15px;
+  }
+  .page .car #confirmBuy .time label {
+    font-size: 19px;
+    color: #1F1F1F;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  .page .car #confirmBuy .time .icon-input {
+    position: relative;
+    width: 100%;
+  }
+  .page .car #confirmBuy .time .icon-input i {
+    position: absolute;
+    right: 18px;
+    top: 13px;
+    color: #1F1F1F;
+    font-size: 20px;
+    opacity: 0.9;
+  }
+  .page .car #confirmBuy .time input {
+    background: white !important;
+    padding-left: 6px;
+    color: #1F1F1F;
+    font-size: 16px;
+  }
+  .page .car #confirmBuy .time input::-moz-placeholder {
+    padding-left: 6px;
+  }
+  .page .car #confirmBuy .time input::placeholder {
+    padding-left: 6px;
+  }
+  .page .car #confirmBuy .inputs-labels input {
+    width: 100%;
+    height: 48px;
+    border: 1px solid lightgray;
+    outline: none;
+    padding: 8px;
+    color: #1F1F1F;
+    font-size: 16px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 7px;
+  }
+  .page .car #confirmBuy .inputs-labels input:focus, .page .car #confirmBuy .inputs-labels input:active {
+    border: 2px solid #f0a432;
+    cursor: text;
+    background: rgb(255, 255, 255);
+  }
+  .page .car #confirmBuy .inputs-labels input::-moz-placeholder {
+    color: #1F1F1F;
+    opacity: 0.6;
+  }
+  .page .car #confirmBuy .inputs-labels input::placeholder {
+    color: #1F1F1F;
+    opacity: 0.6;
+  }
+  .page .car #confirmBuy .inputs-labels textarea {
+    width: 100%;
+    min-height: 75px;
+    max-height: 125px;
+    border: 1px solid lightgray;
+    outline: none;
+    padding: 8px;
+    color: #1F1F1F;
+    font-size: 16px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 7px;
+    background: white !important;
+  }
+  .page .car #confirmBuy .inputs-labels textarea:focus, .page .car #confirmBuy .inputs-labels textarea:active {
+    border: 2px solid #f0a432;
+    cursor: text;
+    background: rgb(255, 255, 255);
+  }
+  .page .car #confirmBuy .inputs-labels textarea::-moz-placeholder {
+    color: #1F1F1F;
+    opacity: 0.6;
+  }
+  .page .car #confirmBuy .inputs-labels textarea::placeholder {
+    color: #1F1F1F;
+    opacity: 0.6;
+  }
+  .page .car #confirmBuy .form-actions button {
+    border: 1px solid transparent;
+    border-radius: 6px;
+    outline: none;
+    background: linear-gradient(to bottom right, #f0a432, #ffb649);
+    color: white;
+    font-weight: 500;
+    font-size: 17px;
+    width: 100%;
+    display: block;
+    height: 44px;
+    margin-top: 32px;
+  }
 }/*# sourceMappingURL=product.css.map */

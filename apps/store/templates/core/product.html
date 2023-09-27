@@ -465,29 +465,34 @@
         {% endif %}
       </div>
 
-      <div class="name"><strong style="font-weight: 600;">{{car.name}}</strong> {{ car.car_spesifikasjoner }}</div>
-      <p style="margin-bottom: 0; margin-top: 15px; color: black; font-size: 15px; opacity: 0.7;">Pris</p>
-      <div class="price">{{car.price|add_space_separator}}kr</div>
-      {% if highest_bid %}
-        {% if car.sold %}
-        {% else %}
-        <div class="current-bid">
-          <div class="price" style="font-size: 18px;">Høyeste bud: <strong>{{highest_bid.bid_amount|add_space_separator }}kr</strong></div>
-        </div>
-        {% endif %}
-      {% endif %}
 
-      <div class="actions">
-        {% if request.user == car.user %}
-        {% else %}
+      <div class="main-info">
+
+        <div class="name"><strong style="font-weight: 600;">{{car.name}}</strong> {{ car.car_spesifikasjoner }}</div>
+        <p style="margin-bottom: 0; margin-top: 15px; color: black; font-size: 16px; opacity: 0.7;">Pris</p>
+        <div class="price">{{car.price|add_space_separator}}kr</div>
+        {% if highest_bid %}
           {% if car.sold %}
           {% else %}
-          <button onclick="testDrive()" class="secondary">Prøvekjøring</button>
-          <button onclick="contactOwner()" class="secondary">Kontakt eier</button>
-          <button onclick="makeBid()" class="secondary">Gi bud</button>
-          <button onclick="confirmBuy()">Kjøp bilen</button>
+          <div class="current-bid">
+            <div class="price" style="font-size: 18px;">Høyeste bud: <strong>{{highest_bid.bid_amount|add_space_separator }}kr</strong></div>
+          </div>
           {% endif %}
-         {% endif %}
+        {% endif %}
+
+        <div class="actions">
+          {% if request.user == car.user %}
+          {% else %}
+            {% if car.sold %}
+            {% else %}
+            <button onclick="testDrive()" class="secondary">Prøvekjøring</button>
+            <button onclick="contactOwner()" class="secondary">Kontakt eier</button>
+            <button onclick="makeBid()" class="secondary">Gi bud</button>
+            <button onclick="confirmBuy()">Kjøp bilen</button>
+            {% endif %}
+          {% endif %}
+        </div>
+
       </div>
 
       <div class="first-info">

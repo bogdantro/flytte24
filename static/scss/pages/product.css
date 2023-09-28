@@ -843,7 +843,7 @@
 
 @media only screen and (min-device-width: 1140px) {
   .page {
-    padding-top: 130px;
+    padding-top: 120px;
   }
   .page #overlay {
     position: fixed;
@@ -938,7 +938,7 @@
   }
   .page .car .info .main-info {
     position: absolute;
-    top: 120px;
+    top: 110px;
     left: 620px;
     z-index: 10;
     pointer-events: visible;

@@ -1134,7 +1134,7 @@
   .page .car #testDrive {
     background: white;
     border-radius: 12px;
-    padding-inline: 10px;
+    padding-inline: 18px;
     padding-block: 16px;
     padding-bottom: 26px;
     position: fixed;
@@ -1144,11 +1144,12 @@
     width: 95%;
     height: 93%;
     overflow-y: scroll !important;
-    z-index: 1000;
+    z-index: 10000;
     padding-bottom: 40px;
     opacity: 0;
     pointer-events: none;
     transition: 0.2s;
+    max-width: 490px;
   }
   .page .car #testDrive.active {
     opacity: 1;
@@ -1284,7 +1285,7 @@
   .page .car #makeBid {
     background: white;
     border-radius: 12px;
-    padding-inline: 10px;
+    padding-inline: 18px;
     padding-block: 16px;
     padding-bottom: 26px;
     position: fixed;
@@ -1294,11 +1295,12 @@
     width: 95%;
     height: 93%;
     overflow-y: scroll !important;
-    z-index: 1000;
-    padding-bottom: 40px;
+    z-index: 10000;
+    padding-bottom: 70px;
     opacity: 0;
     pointer-events: none;
     transition: 0.2s;
+    max-width: 490px;
   }
   .page .car #makeBid.active {
     opacity: 1;
@@ -1435,7 +1437,7 @@
   .page .car #contactOwner {
     background: white;
     border-radius: 12px;
-    padding-inline: 10px;
+    padding-inline: 18px;
     padding-block: 16px;
     padding-bottom: 26px;
     position: fixed;
@@ -1445,11 +1447,12 @@
     width: 95%;
     height: 93%;
     overflow-y: scroll !important;
-    z-index: 1000;
+    z-index: 10000;
     padding-bottom: 40px;
     opacity: 0;
     pointer-events: none;
     transition: 0.2s;
+    max-width: 490px;
   }
   .page .car #contactOwner.active {
     opacity: 1;
@@ -1546,7 +1549,7 @@
   .page .car #confirmBuy {
     background: white;
     border-radius: 12px;
-    padding-inline: 10px;
+    padding-inline: 18px;
     padding-block: 16px;
     padding-bottom: 26px;
     position: fixed;
@@ -1556,11 +1559,12 @@
     width: 95%;
     height: 93%;
     overflow-y: scroll !important;
-    z-index: 1000;
+    z-index: 10000;
     padding-bottom: 40px;
     opacity: 0;
     pointer-events: none;
     transition: 0.2s;
+    max-width: 490px;
   }
   .page .car #confirmBuy.active {
     opacity: 1;

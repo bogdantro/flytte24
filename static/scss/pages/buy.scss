@@ -123,8 +123,13 @@ $txt: #183b56;
                     margin-top: 6px;
                 }
                 .bottom{
+                    .adress{
+                        color: $black;
+                        font-size: 15px;
+                        margin-top: 5px;
+                    }
                     .name{
-                        margin-top: 8px;
+                        margin-top: 6px;
                         color: $black;
                         font-size: 19px;
                         font-weight: 500;
@@ -264,29 +269,33 @@ $txt: #183b56;
                 }
             }
             .cars{
-                padding-top: 35px;
-                display: flex;
-                justify-content: center;
-                flex-wrap: wrap;
+                padding-top: 55px;
                 .car{
-                    margin-bottom: 75px;
-                    width: 95%;
+                    margin-bottom: 35px;
+                    width: 100%;
                     height: auto;
                     max-width: 400px;
-                    margin-inline: unset;
-                    margin-inline: 30px;
-                    flex: 0 0 33.333333%;
+                    margin-inline: auto;
+                    max-width: 900px;
+                    display: flex;
+                    border-bottom: 1px solid rgba(0,0,0,0.2);
+                    padding-bottom: 35px;
+                    cursor: pointer;
+                    &:hover{
+                        .top{
+                            .car-image{
+                                filter: brightness(85%);
+                            }
+                        }
+                    }
                     .top{
                         .car-image{
                             border-radius: 6px;
-                            width: 100%;
+                            width: 270px;
                             height: auto;
                             object-fit: cover;
                             cursor: pointer;
                             transition: .2s;
-                            &:hover{
-                                filter: brightness(85%);
-                            }
                         }
                     }
                     .status{
@@ -299,8 +308,12 @@ $txt: #183b56;
                         margin-top: 6px;
                     }
                     .bottom{
+                        margin-left: 35px;
+                        transform: translateY(-5px);
+                        .adress{
+                        }
                         .name{
-                            margin-top: 8px;
+                            margin-top: 4px;
                             color: $black;
                             font-size: 19px;
                             font-weight: 500;
@@ -311,6 +324,7 @@ $txt: #183b56;
                             align-items: center;
                             padding-top: 13px;
                             text-align: left;
+                            max-width: 280px;
                             .price{
                                 color: $black;
                                 font-size: 17px;

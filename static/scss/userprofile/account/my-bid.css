@@ -14,9 +14,6 @@
 .bids .bid.expired {
   background: rgba(255, 38, 0, 0.137);
 }
-.bids .bid.accepted {
-  background: rgba(0, 255, 38, 0.137);
-}
 .bids .bid .name {
   font-size: 22px;
   color: #1F1F1F;

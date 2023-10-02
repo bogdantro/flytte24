@@ -46,11 +46,16 @@
             <div onclick="stepOneClose()" class="close"><i class="fa-solid fa-x"></i>Lukk</div>
             <br>
             <h1>Forsikring</h1>
-            <p> Bilen må forsikres, vi tilbyr den første måneden gratis hos If forsikring sin beste dekning</p>
             <br>
-            <label for="forsikring">Ønsker du forsikring</label>
+            <div class="time">
+                <p> Bilen må forsikres, vi tilbyr den første måneden gratis hos If forsikring sin beste dekning</p>
+            </div>
             <br>
-            <div style="display: flex; width: 300px;"><input type="checkbox" name="forsikring" id="forsikring"><p style="margin-left: 10px;">Ja jeg ønsker forsikring</p></div>
+            <div class="time">
+                <label for="forsikring">Ønsker du forsikring</label>
+                <br>
+                <div style="display: flex; width: 300px;"><input type="checkbox" style="width: 30px; height: 30px;" name="forsikring" id="forsikring"><p style="margin-left: 10px;">Ja jeg ønsker forsikring</p></div>
+            </div>
             <div class="form-actions">
               <button type="submit" name="stepone">Jeg bekrefter</button>
              </div>
@@ -63,13 +68,18 @@
               <div onclick="stepTwoClose()" class="close"><i class="fa-solid fa-x"></i>Lukk</div>
               <br>
               <h1>Garanti</h1>
-              <p>Bilmeglerne tilbyr markedsledende bruktbilgarantier, er bilen over 5 år anbefaler vi bruktbilgaranti og full kasko forsikring</p>
               <br>
-              <label for="forsikring">Ønsker du utvidet bruktbilgaranti til kroner 9.000,-?</label>
+              <div class="time">
+                  <p>Bilmeglerne tilbyr markedsledende bruktbilgarantier, er bilen over 5 år anbefaler vi bruktbilgaranti og full kasko forsikring</p>
+            </div>
               <br>
-              <p> Se hva den dekker her: <a href="https://fragus.com/no/vare-produkter-og-tjenester/gosafe-garantier/gosafe-complete/">fragus.com</a></p>
-              <br>
-              <div style="display: flex; width: 300px;"><input type="checkbox" name="garanti" id="garanti"><p style="margin-left: 10px;">Ja jeg ønsker bruktbilgaranti</p></div>
+              <div class="time">
+                  <label for="forsikring">Ønsker du utvidet bruktbilgaranti til kroner 9.000,-?</label>
+                  <br>
+                  <p> Se hva den dekker her: <a href="https://fragus.com/no/vare-produkter-og-tjenester/gosafe-garantier/gosafe-complete/">fragus.com</a></p>
+                  <br>
+                  <div style="display: flex; width: 300px;"><input type="checkbox" style="width: 30px; height: 30px;"  name="garanti" id="garanti"><p style="margin-left: 10px;">Ja jeg ønsker bruktbilgaranti</p></div>
+                </div>
               <div class="form-actions">
                 <button type="submit" name="stepone">Jeg bekrefter</button>
                </div>
@@ -82,15 +92,22 @@
               <div onclick="stepThreeClose()" class="close"><i class="fa-solid fa-x"></i>Lukk</div>
               <br>
               <h1>Oppgjøret</h1>
-              <p>Finansiering, betaler du med bankoverføring eller ved banklån? 1. Bankoverføring: Du kan nå trygt overføre pengene til vår kundekonto, der vil pengene stå trygt frem til overleveringen er fullført og alt er funnet i orden. 2. Finansiering. Vi trenger bekreftelse på finansiering, dette må sendes til <a href="mailto:post@bilmeglerne.no"> post@bilmeglerne.no</a> </p>
               <br>
-              <p> Her er betalingsinformasjonen: xxxx xx xxxx
+              <div class="time">
+                  <p>Finansiering, betaler du med bankoverføring eller ved banklån? 1. Bankoverføring: Du kan nå trygt overføre pengene til vår kundekonto, der vil pengene stå trygt frem til overleveringen er fullført og alt er funnet i orden. 2. Finansiering. Vi trenger bekreftelse på finansiering, dette må sendes til <a href="mailto:post@bilmeglerne.no"> post@bilmeglerne.no</a> </p>
+                </div>
+              <br>
+              <div class="time">
+                  <p> Her er betalingsinformasjonen: xxxx xx xxxx
+            </div>
                 <br>
-                Vi venter nå på bekreftelse på oppgjør før bilen kan overleveres. Neste steg vil være mulig å fullføre når oppgjøret er motatt
-                <br>
-                <br>
-                her kan en dynamisk pris stå, mtp om kunden velger garanti
+                <div class="time">
+                    Vi venter nå på bekreftelse på oppgjør før bilen kan overleveres. Neste steg vil være mulig å fullføre når oppgjøret er motatt
+                    <br>
+                    <br>
+                    her kan en dynamisk pris stå, mtp om kunden velger garanti
                 </p>
+            </div>
             </form>
             {% endfor %}
 
@@ -99,10 +116,16 @@
               {% csrf_token %}
               <div onclick="stepFourClose()" class="close"><i class="fa-solid fa-x"></i>Lukk</div>
               <br>
-              <h1>Omregistrering</h1>
-              <p>Oppgjøret er nå mottatt, nå må bilen omregistreres. Du vil motta en sms når dette skjer</p>
-              <p>her er linekn til salgmld <a href="https://www.vegvesen.no/kjoretoy/kjop-og-salg/salgsmelding-og-omregistrering/godkjenn-salgsmelding/">vegvesen.no</a></p>
               <br>
+              <h1>Omregistrering</h1>
+              <br>
+              <div class="time">
+                  <p style="margin-bottom: 0;">Oppgjøret er nå mottatt, nå må bilen omregistreres. Du vil motta en sms når dette skjer</p>
+                </div>
+                <br>
+                <div class="time">
+                    <p style="margin-bottom: 0;">her er linekn til salgmld <a href="https://www.vegvesen.no/kjoretoy/kjop-og-salg/salgsmelding-og-omregistrering/godkjenn-salgsmelding/">vegvesen.no</a></p>
+                </div>
             </form>
             {% endfor %}
 
@@ -328,42 +351,42 @@
 
 <script type="text/javascript">
      function stepOne(){
-      document.getElementById('stepOne').style.display = 'block';
+      document.getElementById('stepOne').classList.add('active')
       document.getElementById('overlay').style.display = 'block';
     }
 
     function stepOneClose(){
-      document.getElementById('stepOne').style.display = 'none';
+      document.getElementById('stepOne').classList.remove('active')
       document.getElementById('overlay').style.display = 'none';
     }
 
      function stepTwo(){
-      document.getElementById('stepTwo').style.display = 'block';
+      document.getElementById('stepTwo').classList.add('active')
       document.getElementById('overlay').style.display = 'block';
     }
 
     function stepTwoClose(){
-      document.getElementById('stepTwo').style.display = 'none';
+      document.getElementById('stepTwo').classList.remove('active')
       document.getElementById('overlay').style.display = 'none';
     }
 
      function stepThree(){
-      document.getElementById('stepThree').style.display = 'block';
+      document.getElementById('stepThree').classList.add('active')
       document.getElementById('overlay').style.display = 'block';
     }
 
     function stepThreeClose(){
-      document.getElementById('stepThree').style.display = 'none';
+      document.getElementById('stepThree').classList.remove('active')
       document.getElementById('overlay').style.display = 'none';
     }
 
      function stepFour(){
-      document.getElementById('stepFour').style.display = 'block';
+      document.getElementById('stepFour').classList.add('active')
       document.getElementById('overlay').style.display = 'block';
     }
 
     function stepFourClose(){
-      document.getElementById('stepFour').style.display = 'none';
+      document.getElementById('stepFour').classList.remove('active')
       document.getElementById('overlay').style.display = 'none';
     }
 

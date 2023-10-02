@@ -54,6 +54,7 @@ urlpatterns = [
     path('min-bruker/', myaccount, name='myaccount'),
     path('min-bruker/rediger-min-info/', edit_user_info, name='edit_user_info'),
     path('min-bruker/mine-annonser/', mine_annonser, name='mine_annonser'),
+    path('mine-annonser/egenerkl/<int:car_id>/', mine_annonser_egenerklering, name='mine_annonser_egenerklering'),
     path('min-bruker/mine-bud/', mine_bud, name='mine_bud'),
     path('min-bruker/mine-kjøp/', mine_kjøp, name='mine_kjøp'),
     path('min-bruker/kommende-visninger/', kommende_visninger, name='kommende_visninger'),

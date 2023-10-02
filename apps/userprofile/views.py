@@ -75,6 +75,16 @@ def mine_annonser(request):
 
 
 
+def mine_annonser_egenerklering(request, car_id):
+    car = get_object_or_404(Car, id=car_id, user=request.user)
+
+    context = {
+        'car': car,
+    }
+    return render(request, 'core/account/egenerkl.html', context)
+
+
+
 @login_required
 def accept_highest_bid(request, car_id):
     car = get_object_or_404(Car, id=car_id, user=request.user)

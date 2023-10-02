@@ -17,6 +17,9 @@ $txt: #183b56;
         &.expired{
             background: rgba(255, 38, 0, 0.137);
         }
+        &.accepted{
+            background: rgba(0, 255, 38, 0.137);
+        }
         .name{
             font-size: 22px;
             color: $black;

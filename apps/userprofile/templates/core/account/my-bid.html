@@ -36,9 +36,28 @@
         {% for bud in bud %}
     
 
-        {% if bud.days_until_expiry == 0 %}
-        <div class="bid expired" id="bid">
-            <h1 class="name">{{bud.car.name}} <span>{{ bud.days_until_expiry }} {% if bud.days_until_expiry == 1 %} dag igjen {% else %} dager igjen {% endif %}</span></h1>
+  
+            {% if bud.days_until_expiry < 0 %}
+            <div class="bid expired" id="bid">
+            <h1 class="name">{{bud.car.name}} <span>
+                {% if bud.days_until_expiry < 0 %} 
+                    Utløpt
+                {% else %} 
+                    {{bud.days_until_expiry}}
+                {% endif %} 
+
+                {% if bud.days_until_expiry < 0 %} 
+                
+                {% endif %}
+
+                {% if bud.days_until_expiry == 1 %} 
+                dag igjen 
+                {% elif bud.days_until_expiry > 1  %} 
+                dager igjen 
+                {% endif %}
+
+
+            </span></h1>
             <p class="price">{{bud.bid_amount}}kr</p>
                        
             <div class="status">
@@ -46,8 +65,15 @@
             </div>
         </div>
         {% else %}
-        <div class="bid" id="bid">
-            <h1 class="name">{{bud.car.name}} <span>{{ bud.days_until_expiry }} {% if bud.days_until_expiry == 1 %} dag igjen {% else %} dager igjen {% endif %}</span></h1>
+        {% if bud.status == 'declined' %}
+        <div class="bid expired" id="bid">
+        {% elif bud.status == 'accepted' %}
+        <div class="bid accepted" id="bid">
+            {% else %}   
+            <div class="bid" id="bid">
+        {% endif %}
+
+            <h1 class="name">{{bud.car.name}} <span> {% if bud.days_until_expiry < 0 %} 0 {% else %} {{bud.days_until_expiry}} {% endif %} {% if bud.days_until_expiry == 1 %} dag igjen {% else %} dager igjen {% endif %}</span></h1>
             <p class="price">{{bud.bid_amount}}kr</p>
                        
             <div class="status">

@@ -65,3 +65,12 @@ class UnBook(models.Model):
     
     def __str__(self):
         return f"{self.full_name} - {self.email}"
+
+
+class Visning(models.Model):
+    user = models.ForeignKey(User, related_name='visninger', on_delete=models.CASCADE, blank=True, null=True)
+    date = models.DateField(blank=True, null=True)
+    time = models.CharField(max_length=100, blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.date} - {self.user}"

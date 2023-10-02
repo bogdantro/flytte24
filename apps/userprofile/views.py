@@ -16,6 +16,7 @@ from .tokens import *
 from django.contrib.auth import get_user_model
 from django.db.models import Max
 from django.db.models import Subquery, OuterRef
+from apps.core.models import *
 
 
 
@@ -119,8 +120,12 @@ def decline_highest_bid(request, car_id):
 
 @login_required
 def kommende_visninger(request):
-    
-    return render(request, 'core/account/timer.html')
+    visninger = request.user.visninger.all()
+
+    context = {
+        'visninger': visninger,
+    }
+    return render(request, 'core/account/timer.html', context)
 
 
 

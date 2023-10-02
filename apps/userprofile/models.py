@@ -8,3 +8,5 @@ class Userprofile(models.Model):
         return '%s' % self.user.username
 
 User.userprofile = property(lambda u:Userprofile.objects.get_or_create(user=u)[0])
+
+

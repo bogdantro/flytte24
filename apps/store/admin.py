@@ -276,6 +276,7 @@ admin.site.register(Car,CarPostAdmin)
 admin.site.register(Bud)
 admin.site.register(TestDrive)
 admin.site.register(Buy)
+admin.site.register(Egenerkeling)
 
     
 

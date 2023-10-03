@@ -336,3 +336,9 @@ class Buy(models.Model):
     def step_two_garanti(self):
         self.garanti = 'yes'
         self.save()
+
+
+
+class Egenerkeling(models.Model):
+    car = models.ForeignKey(Car, on_delete=models.CASCADE, blank=True, default='')
+    user = models.ForeignKey(User, related_name='egenerkling', on_delete=models.SET_NULL, blank=True, null=True)

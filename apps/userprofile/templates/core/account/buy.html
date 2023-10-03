@@ -87,7 +87,7 @@
             {% endfor %}
 
           {% for purchase in buy %}
-          <form action="" method="POST" id="stepThree" >
+            <form action="" method="POST" id="stepThree" >
               {% csrf_token %}
               <div onclick="stepThreeClose()" class="close"><i class="fa-solid fa-x"></i>Lukk</div>
               <br>

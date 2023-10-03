@@ -1,0 +1,873 @@
+$black: #1F1F1F;
+$white: rgb(246,246,246);
+$primBtn: #f0a432;
+$txt: #183b56;
+
+.car{
+    padding-inline: 20px;
+    #kontaktForm{
+        background: white;
+        border-radius: 12px;
+        padding-inline: 10px;
+        padding-block: 16px;
+        padding-bottom: 26px;
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%) translateY(100px);
+        width: 95%;
+        height: 93%;
+        overflow-y: scroll !important;
+        z-index: 1000;
+        padding-bottom: 40px;
+        opacity: 0;
+        pointer-events: none;
+        transition: .2s;
+        &.active{
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+            pointer-events: visible;
+        }
+        .close{
+            font-size: 16px;
+            border: 1px solid red;
+            background: rgb(254, 202, 202);
+            display: flex;
+            align-items: center;
+            opacity: 1;
+            color: $black;
+            padding: 9px 13px;
+            border-radius: 4px;
+            box-shadow: none;
+            opacity: 1 !important;
+            position: absolute;
+            right: 17px;
+            top: 17px;
+            i{
+                color: red;
+                font-size: 20px;
+                margin-right: 15px;
+            }
+        }
+        .heading{
+            margin-top: 55px;
+            color: $black;
+            font-size: 30px;
+        }
+        .time{
+            background: #ffeccfa5;
+            padding: 14px;
+            border-radius: 5px;
+            label{
+                font-size: 19px;
+                color: $black;
+                font-weight: 500;
+                margin-bottom: 10px;
+            }
+            .icon-input{
+                position: relative;
+                width: 100%;
+                i{
+                    position: absolute;
+                    right: 18px;
+                    top: 13px;
+                    color: $black;
+                    font-size: 20px;
+                    opacity: 0.9;
+                }
+            }
+            input{
+                background: white !important;
+                padding-left: 6px;
+                color: $black;
+                font-size: 16px;
+                &::placeholder{
+                    padding-left: 6px;
+                }
+            }
+        }
+        .inputs-labels{
+            input{
+                width: 100%;
+                height: 48px;
+                border: 1px solid lightgray;
+                outline: none;
+                padding: 8px;
+                color: $black;
+                font-size: 16px;
+                cursor: pointer;
+                background: rgba(255,255,255,0.7);
+                border-radius: 7px;
+                &:focus, &:active{
+                    border: 2px solid $primBtn;
+                    cursor: text;
+                    background: rgba(255,255,255,1);
+                }
+                &::placeholder{
+                    color: $black;
+                    opacity: 0.6;
+                }
+            }
+            textarea{
+                width: 100%;
+                min-height: 75px;
+                max-height: 125px;
+                border: 1px solid lightgray;
+                outline: none;
+                padding: 8px;
+                color: $black;
+                font-size: 16px;
+                cursor: pointer;
+                background: rgba(255,255,255,0.7);
+                border-radius: 7px;
+                background: white !important;
+                &:focus, &:active{
+                    border: 2px solid $primBtn;
+                    cursor: text;
+                    background: rgba(255,255,255,1);
+                }
+                &::placeholder{
+                    color: $black;
+                    opacity: 0.6;
+                }
+            }
+        }
+        .form-actions{
+            button{
+                border: 1px solid transparent;
+                border-radius: 6px;
+                outline: none;
+                background: linear-gradient(to bottom right, $primBtn, #ffb649);
+                color: white;
+                font-weight: 500;
+                font-size: 17px;
+                width: 100%;
+                display: block;
+                height: 44px;
+                margin-top: 32px;
+              }
+        }
+    } 
+    #carDetailsForm{
+        background: white;
+        border-radius: 12px;
+        padding-inline: 10px;
+        padding-block: 16px;
+        padding-bottom: 26px;
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%) translateY(100px);
+        width: 95%;
+        height: 93%;
+        overflow-y: scroll !important;
+        z-index: 1000;
+        padding-bottom: 40px;
+        opacity: 0;
+        pointer-events: none;
+        transition: .2s;
+        &.active{
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+            pointer-events: visible;
+        }
+        .close{
+            font-size: 16px;
+            border: 1px solid red;
+            background: rgb(254, 202, 202);
+            display: flex;
+            align-items: center;
+            opacity: 1;
+            color: $black;
+            padding: 9px 13px;
+            border-radius: 4px;
+            box-shadow: none;
+            opacity: 1 !important;
+            position: absolute;
+            right: 17px;
+            top: 17px;
+            i{
+                color: red;
+                font-size: 20px;
+                margin-right: 15px;
+            }
+        }
+        .heading{
+            margin-top: 55px;
+            color: $black;
+            font-size: 30px;
+        }
+        .time{
+            background: #ffeccfa5;
+            padding: 14px;
+            border-radius: 5px;
+            label{
+                font-size: 19px;
+                color: $black;
+                font-weight: 500;
+                margin-bottom: 10px;
+            }
+            .icon-input{
+                position: relative;
+                width: 100%;
+                i{
+                    position: absolute;
+                    right: 18px;
+                    top: 13px;
+                    color: $black;
+                    font-size: 20px;
+                    opacity: 0.9;
+                }
+            }
+            input{
+                background: white !important;
+                padding-left: 6px;
+                color: $black;
+                font-size: 16px;
+                &::placeholder{
+                    padding-left: 6px;
+                }
+            }
+        }
+        .inputs-labels{
+            input{
+                width: 100%;
+                height: 48px;
+                border: 1px solid lightgray;
+                outline: none;
+                padding: 8px;
+                color: $black;
+                font-size: 16px;
+                cursor: pointer;
+                background: rgba(255,255,255,0.7);
+                border-radius: 7px;
+                &:focus, &:active{
+                    border: 2px solid $primBtn;
+                    cursor: text;
+                    background: rgba(255,255,255,1);
+                }
+                &::placeholder{
+                    color: $black;
+                    opacity: 0.6;
+                }
+            }
+            textarea{
+                width: 100%;
+                min-height: 75px;
+                max-height: 125px;
+                border: 1px solid lightgray;
+                outline: none;
+                padding: 8px;
+                color: $black;
+                font-size: 16px;
+                cursor: pointer;
+                background: rgba(255,255,255,0.7);
+                border-radius: 7px;
+                background: white !important;
+                &:focus, &:active{
+                    border: 2px solid $primBtn;
+                    cursor: text;
+                    background: rgba(255,255,255,1);
+                }
+                &::placeholder{
+                    color: $black;
+                    opacity: 0.6;
+                }
+            }
+        }
+        .form-actions{
+            button{
+                border: 1px solid transparent;
+                border-radius: 6px;
+                outline: none;
+                background: linear-gradient(to bottom right, $primBtn, #ffb649);
+                color: white;
+                font-weight: 500;
+                font-size: 17px;
+                width: 100%;
+                display: block;
+                height: 44px;
+                margin-top: 32px;
+              }
+        }
+    } 
+    #toolsForm{
+        background: white;
+        border-radius: 12px;
+        padding-inline: 10px;
+        padding-block: 16px;
+        padding-bottom: 26px;
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%) translateY(100px);
+        width: 95%;
+        height: 93%;
+        overflow-y: scroll !important;
+        z-index: 1000;
+        padding-bottom: 40px;
+        opacity: 0;
+        pointer-events: none;
+        transition: .2s;
+        &.active{
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+            pointer-events: visible;
+        }
+        .close{
+            font-size: 16px;
+            border: 1px solid red;
+            background: rgb(254, 202, 202);
+            display: flex;
+            align-items: center;
+            opacity: 1;
+            color: $black;
+            padding: 9px 13px;
+            border-radius: 4px;
+            box-shadow: none;
+            opacity: 1 !important;
+            position: absolute;
+            right: 17px;
+            top: 17px;
+            i{
+                color: red;
+                font-size: 20px;
+                margin-right: 15px;
+            }
+        }
+        .heading{
+            margin-top: 55px;
+            color: $black;
+            font-size: 30px;
+        }
+        .time{
+            background: #ffeccfa5;
+            padding: 14px;
+            border-radius: 5px;
+            label{
+                font-size: 19px;
+                color: $black;
+                font-weight: 500;
+                margin-bottom: 10px;
+            }
+            .icon-input{
+                position: relative;
+                width: 100%;
+                i{
+                    position: absolute;
+                    right: 18px;
+                    top: 13px;
+                    color: $black;
+                    font-size: 20px;
+                    opacity: 0.9;
+                }
+            }
+            input{
+                background: white !important;
+                padding-left: 6px;
+                color: $black;
+                font-size: 16px;
+                &::placeholder{
+                    padding-left: 6px;
+                }
+            }
+        }
+        .inputs-labels{
+            input{
+                width: 100%;
+                height: 48px;
+                border: 1px solid lightgray;
+                outline: none;
+                padding: 8px;
+                color: $black;
+                font-size: 16px;
+                cursor: pointer;
+                background: rgba(255,255,255,0.7);
+                border-radius: 7px;
+                &:focus, &:active{
+                    border: 2px solid $primBtn;
+                    cursor: text;
+                    background: rgba(255,255,255,1);
+                }
+                &::placeholder{
+                    color: $black;
+                    opacity: 0.6;
+                }
+            }
+            textarea{
+                width: 100%;
+                min-height: 75px;
+                max-height: 125px;
+                border: 1px solid lightgray;
+                outline: none;
+                padding: 8px;
+                color: $black;
+                font-size: 16px;
+                cursor: pointer;
+                background: rgba(255,255,255,0.7);
+                border-radius: 7px;
+                background: white !important;
+                &:focus, &:active{
+                    border: 2px solid $primBtn;
+                    cursor: text;
+                    background: rgba(255,255,255,1);
+                }
+                &::placeholder{
+                    color: $black;
+                    opacity: 0.6;
+                }
+            }
+        }
+        .form-actions{
+            button{
+                border: 1px solid transparent;
+                border-radius: 6px;
+                outline: none;
+                background: linear-gradient(to bottom right, $primBtn, #ffb649);
+                color: white;
+                font-weight: 500;
+                font-size: 17px;
+                width: 100%;
+                display: block;
+                height: 44px;
+                margin-top: 32px;
+              }
+        }
+    } 
+}
+
+
+@media only screen and (min-device-width: 1140px) {
+    #kontaktForm{
+        background: white;
+        border-radius: 12px;
+        padding-inline: 18px;
+        padding-block: 16px;
+        padding-bottom: 26px;
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%) translateY(100px);
+        width: 95%;
+        height: 93%;
+        overflow-y: scroll !important;
+        z-index: 10000;
+        padding-bottom: 40px;
+        opacity: 0;
+        pointer-events: none;
+        transition: .2s;
+        max-width: 490px;
+        &.active{
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+            pointer-events: visible;
+        }
+        .close{
+            font-size: 16px;
+            border: 1px solid red;
+            background: rgb(254, 202, 202);
+            display: flex;
+            align-items: center;
+            opacity: 1;
+            color: $black;
+            padding: 9px 13px;
+            border-radius: 4px;
+            box-shadow: none;
+            opacity: 1 !important;
+            position: absolute;
+            right: 17px;
+            top: 17px;
+            i{
+                color: red;
+                font-size: 20px;
+                margin-right: 15px;
+            }
+        }
+        .heading{
+            margin-top: 55px;
+            color: $black;
+            font-size: 30px;
+        }
+        .time{
+            background: #ffeccfa5;
+            padding: 14px;
+            border-radius: 5px;
+            label{
+                font-size: 19px;
+                color: $black;
+                font-weight: 500;
+                margin-bottom: 10px;
+            }
+            .icon-input{
+                position: relative;
+                width: 100%;
+                i{
+                    position: absolute;
+                    right: 18px;
+                    top: 13px;
+                    color: $black;
+                    font-size: 20px;
+                    opacity: 0.9;
+                }
+            }
+            input{
+                background: white !important;
+                padding-left: 6px;
+                color: $black;
+                font-size: 16px;
+                &::placeholder{
+                    padding-left: 6px;
+                }
+            }
+        }
+        .inputs-labels{
+            input{
+                width: 100%;
+                height: 48px;
+                border: 1px solid lightgray;
+                outline: none;
+                padding: 8px;
+                color: $black;
+                font-size: 16px;
+                cursor: pointer;
+                background: rgba(255,255,255,0.7);
+                border-radius: 7px;
+                &:focus, &:active{
+                    border: 2px solid $primBtn;
+                    cursor: text;
+                    background: rgba(255,255,255,1);
+                }
+                &::placeholder{
+                    color: $black;
+                    opacity: 0.6;
+                }
+            }
+            textarea{
+                width: 100%;
+                min-height: 75px;
+                max-height: 125px;
+                border: 1px solid lightgray;
+                outline: none;
+                padding: 8px;
+                color: $black;
+                font-size: 16px;
+                cursor: pointer;
+                background: rgba(255,255,255,0.7);
+                border-radius: 7px;
+                background: white !important;
+                &:focus, &:active{
+                    border: 2px solid $primBtn;
+                    cursor: text;
+                    background: rgba(255,255,255,1);
+                }
+                &::placeholder{
+                    color: $black;
+                    opacity: 0.6;
+                }
+            }
+        }
+        .form-actions{
+            button{
+                border: 1px solid transparent;
+                border-radius: 6px;
+                outline: none;
+                background: linear-gradient(to bottom right, $primBtn, #ffb649);
+                color: white;
+                font-weight: 500;
+                font-size: 17px;
+                width: 100%;
+                display: block;
+                height: 44px;
+                margin-top: 32px;
+              }
+        }
+    } 
+    #carDetailsForm{
+        background: white;
+        border-radius: 12px;
+        padding-inline: 18px;
+        padding-block: 16px;
+        padding-bottom: 26px;
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%) translateY(100px);
+        width: 95%;
+        height: 93%;
+        overflow-y: scroll !important;
+        z-index: 10000;
+        padding-bottom: 40px;
+        opacity: 0;
+        pointer-events: none;
+        transition: .2s;
+        max-width: 490px;
+        &.active{
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+            pointer-events: visible;
+        }
+        .close{
+            font-size: 16px;
+            border: 1px solid red;
+            background: rgb(254, 202, 202);
+            display: flex;
+            align-items: center;
+            opacity: 1;
+            color: $black;
+            padding: 9px 13px;
+            border-radius: 4px;
+            box-shadow: none;
+            opacity: 1 !important;
+            position: absolute;
+            right: 17px;
+            top: 17px;
+            i{
+                color: red;
+                font-size: 20px;
+                margin-right: 15px;
+            }
+        }
+        .heading{
+            margin-top: 55px;
+            color: $black;
+            font-size: 30px;
+        }
+        .time{
+            background: #ffeccfa5;
+            padding: 14px;
+            border-radius: 5px;
+            label{
+                font-size: 19px;
+                color: $black;
+                font-weight: 500;
+                margin-bottom: 10px;
+            }
+            .icon-input{
+                position: relative;
+                width: 100%;
+                i{
+                    position: absolute;
+                    right: 18px;
+                    top: 13px;
+                    color: $black;
+                    font-size: 20px;
+                    opacity: 0.9;
+                }
+            }
+            input{
+                background: white !important;
+                padding-left: 6px;
+                color: $black;
+                font-size: 16px;
+                &::placeholder{
+                    padding-left: 6px;
+                }
+            }
+        }
+        .inputs-labels{
+            input{
+                width: 100%;
+                height: 48px;
+                border: 1px solid lightgray;
+                outline: none;
+                padding: 8px;
+                color: $black;
+                font-size: 16px;
+                cursor: pointer;
+                background: rgba(255,255,255,0.7);
+                border-radius: 7px;
+                &:focus, &:active{
+                    border: 2px solid $primBtn;
+                    cursor: text;
+                    background: rgba(255,255,255,1);
+                }
+                &::placeholder{
+                    color: $black;
+                    opacity: 0.6;
+                }
+            }
+            textarea{
+                width: 100%;
+                min-height: 75px;
+                max-height: 125px;
+                border: 1px solid lightgray;
+                outline: none;
+                padding: 8px;
+                color: $black;
+                font-size: 16px;
+                cursor: pointer;
+                background: rgba(255,255,255,0.7);
+                border-radius: 7px;
+                background: white !important;
+                &:focus, &:active{
+                    border: 2px solid $primBtn;
+                    cursor: text;
+                    background: rgba(255,255,255,1);
+                }
+                &::placeholder{
+                    color: $black;
+                    opacity: 0.6;
+                }
+            }
+        }
+        .form-actions{
+            button{
+                border: 1px solid transparent;
+                border-radius: 6px;
+                outline: none;
+                background: linear-gradient(to bottom right, $primBtn, #ffb649);
+                color: white;
+                font-weight: 500;
+                font-size: 17px;
+                width: 100%;
+                display: block;
+                height: 44px;
+                margin-top: 32px;
+              }
+        }
+    } 
+    #toolsForm{
+        background: white;
+        border-radius: 12px;
+        padding-inline: 18px;
+        padding-block: 16px;
+        padding-bottom: 26px;
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%) translateY(100px);
+        width: 95%;
+        height: 93%;
+        overflow-y: scroll !important;
+        z-index: 10000;
+        padding-bottom: 40px;
+        opacity: 0;
+        pointer-events: none;
+        transition: .2s;
+        max-width: 490px;
+        &.active{
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+            pointer-events: visible;
+        }
+        .close{
+            font-size: 16px;
+            border: 1px solid red;
+            background: rgb(254, 202, 202);
+            display: flex;
+            align-items: center;
+            opacity: 1;
+            color: $black;
+            padding: 9px 13px;
+            border-radius: 4px;
+            box-shadow: none;
+            opacity: 1 !important;
+            position: absolute;
+            right: 17px;
+            top: 17px;
+            i{
+                color: red;
+                font-size: 20px;
+                margin-right: 15px;
+            }
+        }
+        .heading{
+            margin-top: 55px;
+            color: $black;
+            font-size: 30px;
+        }
+        .time{
+            background: #ffeccfa5;
+            padding: 14px;
+            border-radius: 5px;
+            label{
+                font-size: 19px;
+                color: $black;
+                font-weight: 500;
+                margin-bottom: 10px;
+            }
+            .icon-input{
+                position: relative;
+                width: 100%;
+                i{
+                    position: absolute;
+                    right: 18px;
+                    top: 13px;
+                    color: $black;
+                    font-size: 20px;
+                    opacity: 0.9;
+                }
+            }
+            input{
+                background: white !important;
+                padding-left: 6px;
+                color: $black;
+                font-size: 16px;
+                &::placeholder{
+                    padding-left: 6px;
+                }
+            }
+        }
+        .inputs-labels{
+            input{
+                width: 100%;
+                height: 48px;
+                border: 1px solid lightgray;
+                outline: none;
+                padding: 8px;
+                color: $black;
+                font-size: 16px;
+                cursor: pointer;
+                background: rgba(255,255,255,0.7);
+                border-radius: 7px;
+                &:focus, &:active{
+                    border: 2px solid $primBtn;
+                    cursor: text;
+                    background: rgba(255,255,255,1);
+                }
+                &::placeholder{
+                    color: $black;
+                    opacity: 0.6;
+                }
+            }
+            textarea{
+                width: 100%;
+                min-height: 75px;
+                max-height: 125px;
+                border: 1px solid lightgray;
+                outline: none;
+                padding: 8px;
+                color: $black;
+                font-size: 16px;
+                cursor: pointer;
+                background: rgba(255,255,255,0.7);
+                border-radius: 7px;
+                background: white !important;
+                &:focus, &:active{
+                    border: 2px solid $primBtn;
+                    cursor: text;
+                    background: rgba(255,255,255,1);
+                }
+                &::placeholder{
+                    color: $black;
+                    opacity: 0.6;
+                }
+            }
+        }
+        .form-actions{
+            button{
+                border: 1px solid transparent;
+                border-radius: 6px;
+                outline: none;
+                background: linear-gradient(to bottom right, $primBtn, #ffb649);
+                color: white;
+                font-weight: 500;
+                font-size: 17px;
+                width: 100%;
+                display: block;
+                height: 44px;
+                margin-top: 32px;
+              }
+        }
+    } 
+}

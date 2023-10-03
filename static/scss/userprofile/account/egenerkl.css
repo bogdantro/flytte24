@@ -1,0 +1,909 @@
+.car {
+  padding-inline: 20px;
+}
+.car #kontaktForm {
+  background: white;
+  border-radius: 12px;
+  padding-inline: 10px;
+  padding-block: 16px;
+  padding-bottom: 26px;
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  width: 95%;
+  height: 93%;
+  overflow-y: scroll !important;
+  z-index: 1000;
+  padding-bottom: 40px;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.2s;
+}
+.car #kontaktForm.active {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: visible;
+}
+.car #kontaktForm .close {
+  font-size: 16px;
+  border: 1px solid red;
+  background: rgb(254, 202, 202);
+  display: flex;
+  align-items: center;
+  opacity: 1;
+  color: #1F1F1F;
+  padding: 9px 13px;
+  border-radius: 4px;
+  box-shadow: none;
+  opacity: 1 !important;
+  position: absolute;
+  right: 17px;
+  top: 17px;
+}
+.car #kontaktForm .close i {
+  color: red;
+  font-size: 20px;
+  margin-right: 15px;
+}
+.car #kontaktForm .heading {
+  margin-top: 55px;
+  color: #1F1F1F;
+  font-size: 30px;
+}
+.car #kontaktForm .time {
+  background: rgba(255, 236, 207, 0.6470588235);
+  padding: 14px;
+  border-radius: 5px;
+}
+.car #kontaktForm .time label {
+  font-size: 19px;
+  color: #1F1F1F;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+.car #kontaktForm .time .icon-input {
+  position: relative;
+  width: 100%;
+}
+.car #kontaktForm .time .icon-input i {
+  position: absolute;
+  right: 18px;
+  top: 13px;
+  color: #1F1F1F;
+  font-size: 20px;
+  opacity: 0.9;
+}
+.car #kontaktForm .time input {
+  background: white !important;
+  padding-left: 6px;
+  color: #1F1F1F;
+  font-size: 16px;
+}
+.car #kontaktForm .time input::-moz-placeholder {
+  padding-left: 6px;
+}
+.car #kontaktForm .time input::placeholder {
+  padding-left: 6px;
+}
+.car #kontaktForm .inputs-labels input {
+  width: 100%;
+  height: 48px;
+  border: 1px solid lightgray;
+  outline: none;
+  padding: 8px;
+  color: #1F1F1F;
+  font-size: 16px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 7px;
+}
+.car #kontaktForm .inputs-labels input:focus, .car #kontaktForm .inputs-labels input:active {
+  border: 2px solid #f0a432;
+  cursor: text;
+  background: rgb(255, 255, 255);
+}
+.car #kontaktForm .inputs-labels input::-moz-placeholder {
+  color: #1F1F1F;
+  opacity: 0.6;
+}
+.car #kontaktForm .inputs-labels input::placeholder {
+  color: #1F1F1F;
+  opacity: 0.6;
+}
+.car #kontaktForm .inputs-labels textarea {
+  width: 100%;
+  min-height: 75px;
+  max-height: 125px;
+  border: 1px solid lightgray;
+  outline: none;
+  padding: 8px;
+  color: #1F1F1F;
+  font-size: 16px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 7px;
+  background: white !important;
+}
+.car #kontaktForm .inputs-labels textarea:focus, .car #kontaktForm .inputs-labels textarea:active {
+  border: 2px solid #f0a432;
+  cursor: text;
+  background: rgb(255, 255, 255);
+}
+.car #kontaktForm .inputs-labels textarea::-moz-placeholder {
+  color: #1F1F1F;
+  opacity: 0.6;
+}
+.car #kontaktForm .inputs-labels textarea::placeholder {
+  color: #1F1F1F;
+  opacity: 0.6;
+}
+.car #kontaktForm .form-actions button {
+  border: 1px solid transparent;
+  border-radius: 6px;
+  outline: none;
+  background: linear-gradient(to bottom right, #f0a432, #ffb649);
+  color: white;
+  font-weight: 500;
+  font-size: 17px;
+  width: 100%;
+  display: block;
+  height: 44px;
+  margin-top: 32px;
+}
+.car #carDetailsForm {
+  background: white;
+  border-radius: 12px;
+  padding-inline: 10px;
+  padding-block: 16px;
+  padding-bottom: 26px;
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  width: 95%;
+  height: 93%;
+  overflow-y: scroll !important;
+  z-index: 1000;
+  padding-bottom: 40px;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.2s;
+}
+.car #carDetailsForm.active {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: visible;
+}
+.car #carDetailsForm .close {
+  font-size: 16px;
+  border: 1px solid red;
+  background: rgb(254, 202, 202);
+  display: flex;
+  align-items: center;
+  opacity: 1;
+  color: #1F1F1F;
+  padding: 9px 13px;
+  border-radius: 4px;
+  box-shadow: none;
+  opacity: 1 !important;
+  position: absolute;
+  right: 17px;
+  top: 17px;
+}
+.car #carDetailsForm .close i {
+  color: red;
+  font-size: 20px;
+  margin-right: 15px;
+}
+.car #carDetailsForm .heading {
+  margin-top: 55px;
+  color: #1F1F1F;
+  font-size: 30px;
+}
+.car #carDetailsForm .time {
+  background: rgba(255, 236, 207, 0.6470588235);
+  padding: 14px;
+  border-radius: 5px;
+}
+.car #carDetailsForm .time label {
+  font-size: 19px;
+  color: #1F1F1F;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+.car #carDetailsForm .time .icon-input {
+  position: relative;
+  width: 100%;
+}
+.car #carDetailsForm .time .icon-input i {
+  position: absolute;
+  right: 18px;
+  top: 13px;
+  color: #1F1F1F;
+  font-size: 20px;
+  opacity: 0.9;
+}
+.car #carDetailsForm .time input {
+  background: white !important;
+  padding-left: 6px;
+  color: #1F1F1F;
+  font-size: 16px;
+}
+.car #carDetailsForm .time input::-moz-placeholder {
+  padding-left: 6px;
+}
+.car #carDetailsForm .time input::placeholder {
+  padding-left: 6px;
+}
+.car #carDetailsForm .inputs-labels input {
+  width: 100%;
+  height: 48px;
+  border: 1px solid lightgray;
+  outline: none;
+  padding: 8px;
+  color: #1F1F1F;
+  font-size: 16px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 7px;
+}
+.car #carDetailsForm .inputs-labels input:focus, .car #carDetailsForm .inputs-labels input:active {
+  border: 2px solid #f0a432;
+  cursor: text;
+  background: rgb(255, 255, 255);
+}
+.car #carDetailsForm .inputs-labels input::-moz-placeholder {
+  color: #1F1F1F;
+  opacity: 0.6;
+}
+.car #carDetailsForm .inputs-labels input::placeholder {
+  color: #1F1F1F;
+  opacity: 0.6;
+}
+.car #carDetailsForm .inputs-labels textarea {
+  width: 100%;
+  min-height: 75px;
+  max-height: 125px;
+  border: 1px solid lightgray;
+  outline: none;
+  padding: 8px;
+  color: #1F1F1F;
+  font-size: 16px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 7px;
+  background: white !important;
+}
+.car #carDetailsForm .inputs-labels textarea:focus, .car #carDetailsForm .inputs-labels textarea:active {
+  border: 2px solid #f0a432;
+  cursor: text;
+  background: rgb(255, 255, 255);
+}
+.car #carDetailsForm .inputs-labels textarea::-moz-placeholder {
+  color: #1F1F1F;
+  opacity: 0.6;
+}
+.car #carDetailsForm .inputs-labels textarea::placeholder {
+  color: #1F1F1F;
+  opacity: 0.6;
+}
+.car #carDetailsForm .form-actions button {
+  border: 1px solid transparent;
+  border-radius: 6px;
+  outline: none;
+  background: linear-gradient(to bottom right, #f0a432, #ffb649);
+  color: white;
+  font-weight: 500;
+  font-size: 17px;
+  width: 100%;
+  display: block;
+  height: 44px;
+  margin-top: 32px;
+}
+.car #toolsForm {
+  background: white;
+  border-radius: 12px;
+  padding-inline: 10px;
+  padding-block: 16px;
+  padding-bottom: 26px;
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  width: 95%;
+  height: 93%;
+  overflow-y: scroll !important;
+  z-index: 1000;
+  padding-bottom: 40px;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.2s;
+}
+.car #toolsForm.active {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: visible;
+}
+.car #toolsForm .close {
+  font-size: 16px;
+  border: 1px solid red;
+  background: rgb(254, 202, 202);
+  display: flex;
+  align-items: center;
+  opacity: 1;
+  color: #1F1F1F;
+  padding: 9px 13px;
+  border-radius: 4px;
+  box-shadow: none;
+  opacity: 1 !important;
+  position: absolute;
+  right: 17px;
+  top: 17px;
+}
+.car #toolsForm .close i {
+  color: red;
+  font-size: 20px;
+  margin-right: 15px;
+}
+.car #toolsForm .heading {
+  margin-top: 55px;
+  color: #1F1F1F;
+  font-size: 30px;
+}
+.car #toolsForm .time {
+  background: rgba(255, 236, 207, 0.6470588235);
+  padding: 14px;
+  border-radius: 5px;
+}
+.car #toolsForm .time label {
+  font-size: 19px;
+  color: #1F1F1F;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+.car #toolsForm .time .icon-input {
+  position: relative;
+  width: 100%;
+}
+.car #toolsForm .time .icon-input i {
+  position: absolute;
+  right: 18px;
+  top: 13px;
+  color: #1F1F1F;
+  font-size: 20px;
+  opacity: 0.9;
+}
+.car #toolsForm .time input {
+  background: white !important;
+  padding-left: 6px;
+  color: #1F1F1F;
+  font-size: 16px;
+}
+.car #toolsForm .time input::-moz-placeholder {
+  padding-left: 6px;
+}
+.car #toolsForm .time input::placeholder {
+  padding-left: 6px;
+}
+.car #toolsForm .inputs-labels input {
+  width: 100%;
+  height: 48px;
+  border: 1px solid lightgray;
+  outline: none;
+  padding: 8px;
+  color: #1F1F1F;
+  font-size: 16px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 7px;
+}
+.car #toolsForm .inputs-labels input:focus, .car #toolsForm .inputs-labels input:active {
+  border: 2px solid #f0a432;
+  cursor: text;
+  background: rgb(255, 255, 255);
+}
+.car #toolsForm .inputs-labels input::-moz-placeholder {
+  color: #1F1F1F;
+  opacity: 0.6;
+}
+.car #toolsForm .inputs-labels input::placeholder {
+  color: #1F1F1F;
+  opacity: 0.6;
+}
+.car #toolsForm .inputs-labels textarea {
+  width: 100%;
+  min-height: 75px;
+  max-height: 125px;
+  border: 1px solid lightgray;
+  outline: none;
+  padding: 8px;
+  color: #1F1F1F;
+  font-size: 16px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 7px;
+  background: white !important;
+}
+.car #toolsForm .inputs-labels textarea:focus, .car #toolsForm .inputs-labels textarea:active {
+  border: 2px solid #f0a432;
+  cursor: text;
+  background: rgb(255, 255, 255);
+}
+.car #toolsForm .inputs-labels textarea::-moz-placeholder {
+  color: #1F1F1F;
+  opacity: 0.6;
+}
+.car #toolsForm .inputs-labels textarea::placeholder {
+  color: #1F1F1F;
+  opacity: 0.6;
+}
+.car #toolsForm .form-actions button {
+  border: 1px solid transparent;
+  border-radius: 6px;
+  outline: none;
+  background: linear-gradient(to bottom right, #f0a432, #ffb649);
+  color: white;
+  font-weight: 500;
+  font-size: 17px;
+  width: 100%;
+  display: block;
+  height: 44px;
+  margin-top: 32px;
+}
+
+@media only screen and (min-device-width: 1140px) {
+  #kontaktForm {
+    background: white;
+    border-radius: 12px;
+    padding-inline: 18px;
+    padding-block: 16px;
+    padding-bottom: 26px;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    width: 95%;
+    height: 93%;
+    overflow-y: scroll !important;
+    z-index: 10000;
+    padding-bottom: 40px;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.2s;
+    max-width: 490px;
+  }
+  #kontaktForm.active {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: visible;
+  }
+  #kontaktForm .close {
+    font-size: 16px;
+    border: 1px solid red;
+    background: rgb(254, 202, 202);
+    display: flex;
+    align-items: center;
+    opacity: 1;
+    color: #1F1F1F;
+    padding: 9px 13px;
+    border-radius: 4px;
+    box-shadow: none;
+    opacity: 1 !important;
+    position: absolute;
+    right: 17px;
+    top: 17px;
+  }
+  #kontaktForm .close i {
+    color: red;
+    font-size: 20px;
+    margin-right: 15px;
+  }
+  #kontaktForm .heading {
+    margin-top: 55px;
+    color: #1F1F1F;
+    font-size: 30px;
+  }
+  #kontaktForm .time {
+    background: rgba(255, 236, 207, 0.6470588235);
+    padding: 14px;
+    border-radius: 5px;
+  }
+  #kontaktForm .time label {
+    font-size: 19px;
+    color: #1F1F1F;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  #kontaktForm .time .icon-input {
+    position: relative;
+    width: 100%;
+  }
+  #kontaktForm .time .icon-input i {
+    position: absolute;
+    right: 18px;
+    top: 13px;
+    color: #1F1F1F;
+    font-size: 20px;
+    opacity: 0.9;
+  }
+  #kontaktForm .time input {
+    background: white !important;
+    padding-left: 6px;
+    color: #1F1F1F;
+    font-size: 16px;
+  }
+  #kontaktForm .time input::-moz-placeholder {
+    padding-left: 6px;
+  }
+  #kontaktForm .time input::placeholder {
+    padding-left: 6px;
+  }
+  #kontaktForm .inputs-labels input {
+    width: 100%;
+    height: 48px;
+    border: 1px solid lightgray;
+    outline: none;
+    padding: 8px;
+    color: #1F1F1F;
+    font-size: 16px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 7px;
+  }
+  #kontaktForm .inputs-labels input:focus, #kontaktForm .inputs-labels input:active {
+    border: 2px solid #f0a432;
+    cursor: text;
+    background: rgb(255, 255, 255);
+  }
+  #kontaktForm .inputs-labels input::-moz-placeholder {
+    color: #1F1F1F;
+    opacity: 0.6;
+  }
+  #kontaktForm .inputs-labels input::placeholder {
+    color: #1F1F1F;
+    opacity: 0.6;
+  }
+  #kontaktForm .inputs-labels textarea {
+    width: 100%;
+    min-height: 75px;
+    max-height: 125px;
+    border: 1px solid lightgray;
+    outline: none;
+    padding: 8px;
+    color: #1F1F1F;
+    font-size: 16px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 7px;
+    background: white !important;
+  }
+  #kontaktForm .inputs-labels textarea:focus, #kontaktForm .inputs-labels textarea:active {
+    border: 2px solid #f0a432;
+    cursor: text;
+    background: rgb(255, 255, 255);
+  }
+  #kontaktForm .inputs-labels textarea::-moz-placeholder {
+    color: #1F1F1F;
+    opacity: 0.6;
+  }
+  #kontaktForm .inputs-labels textarea::placeholder {
+    color: #1F1F1F;
+    opacity: 0.6;
+  }
+  #kontaktForm .form-actions button {
+    border: 1px solid transparent;
+    border-radius: 6px;
+    outline: none;
+    background: linear-gradient(to bottom right, #f0a432, #ffb649);
+    color: white;
+    font-weight: 500;
+    font-size: 17px;
+    width: 100%;
+    display: block;
+    height: 44px;
+    margin-top: 32px;
+  }
+  #carDetailsForm {
+    background: white;
+    border-radius: 12px;
+    padding-inline: 18px;
+    padding-block: 16px;
+    padding-bottom: 26px;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    width: 95%;
+    height: 93%;
+    overflow-y: scroll !important;
+    z-index: 10000;
+    padding-bottom: 40px;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.2s;
+    max-width: 490px;
+  }
+  #carDetailsForm.active {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: visible;
+  }
+  #carDetailsForm .close {
+    font-size: 16px;
+    border: 1px solid red;
+    background: rgb(254, 202, 202);
+    display: flex;
+    align-items: center;
+    opacity: 1;
+    color: #1F1F1F;
+    padding: 9px 13px;
+    border-radius: 4px;
+    box-shadow: none;
+    opacity: 1 !important;
+    position: absolute;
+    right: 17px;
+    top: 17px;
+  }
+  #carDetailsForm .close i {
+    color: red;
+    font-size: 20px;
+    margin-right: 15px;
+  }
+  #carDetailsForm .heading {
+    margin-top: 55px;
+    color: #1F1F1F;
+    font-size: 30px;
+  }
+  #carDetailsForm .time {
+    background: rgba(255, 236, 207, 0.6470588235);
+    padding: 14px;
+    border-radius: 5px;
+  }
+  #carDetailsForm .time label {
+    font-size: 19px;
+    color: #1F1F1F;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  #carDetailsForm .time .icon-input {
+    position: relative;
+    width: 100%;
+  }
+  #carDetailsForm .time .icon-input i {
+    position: absolute;
+    right: 18px;
+    top: 13px;
+    color: #1F1F1F;
+    font-size: 20px;
+    opacity: 0.9;
+  }
+  #carDetailsForm .time input {
+    background: white !important;
+    padding-left: 6px;
+    color: #1F1F1F;
+    font-size: 16px;
+  }
+  #carDetailsForm .time input::-moz-placeholder {
+    padding-left: 6px;
+  }
+  #carDetailsForm .time input::placeholder {
+    padding-left: 6px;
+  }
+  #carDetailsForm .inputs-labels input {
+    width: 100%;
+    height: 48px;
+    border: 1px solid lightgray;
+    outline: none;
+    padding: 8px;
+    color: #1F1F1F;
+    font-size: 16px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 7px;
+  }
+  #carDetailsForm .inputs-labels input:focus, #carDetailsForm .inputs-labels input:active {
+    border: 2px solid #f0a432;
+    cursor: text;
+    background: rgb(255, 255, 255);
+  }
+  #carDetailsForm .inputs-labels input::-moz-placeholder {
+    color: #1F1F1F;
+    opacity: 0.6;
+  }
+  #carDetailsForm .inputs-labels input::placeholder {
+    color: #1F1F1F;
+    opacity: 0.6;
+  }
+  #carDetailsForm .inputs-labels textarea {
+    width: 100%;
+    min-height: 75px;
+    max-height: 125px;
+    border: 1px solid lightgray;
+    outline: none;
+    padding: 8px;
+    color: #1F1F1F;
+    font-size: 16px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 7px;
+    background: white !important;
+  }
+  #carDetailsForm .inputs-labels textarea:focus, #carDetailsForm .inputs-labels textarea:active {
+    border: 2px solid #f0a432;
+    cursor: text;
+    background: rgb(255, 255, 255);
+  }
+  #carDetailsForm .inputs-labels textarea::-moz-placeholder {
+    color: #1F1F1F;
+    opacity: 0.6;
+  }
+  #carDetailsForm .inputs-labels textarea::placeholder {
+    color: #1F1F1F;
+    opacity: 0.6;
+  }
+  #carDetailsForm .form-actions button {
+    border: 1px solid transparent;
+    border-radius: 6px;
+    outline: none;
+    background: linear-gradient(to bottom right, #f0a432, #ffb649);
+    color: white;
+    font-weight: 500;
+    font-size: 17px;
+    width: 100%;
+    display: block;
+    height: 44px;
+    margin-top: 32px;
+  }
+  #toolsForm {
+    background: white;
+    border-radius: 12px;
+    padding-inline: 18px;
+    padding-block: 16px;
+    padding-bottom: 26px;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    width: 95%;
+    height: 93%;
+    overflow-y: scroll !important;
+    z-index: 10000;
+    padding-bottom: 40px;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.2s;
+    max-width: 490px;
+  }
+  #toolsForm.active {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: visible;
+  }
+  #toolsForm .close {
+    font-size: 16px;
+    border: 1px solid red;
+    background: rgb(254, 202, 202);
+    display: flex;
+    align-items: center;
+    opacity: 1;
+    color: #1F1F1F;
+    padding: 9px 13px;
+    border-radius: 4px;
+    box-shadow: none;
+    opacity: 1 !important;
+    position: absolute;
+    right: 17px;
+    top: 17px;
+  }
+  #toolsForm .close i {
+    color: red;
+    font-size: 20px;
+    margin-right: 15px;
+  }
+  #toolsForm .heading {
+    margin-top: 55px;
+    color: #1F1F1F;
+    font-size: 30px;
+  }
+  #toolsForm .time {
+    background: rgba(255, 236, 207, 0.6470588235);
+    padding: 14px;
+    border-radius: 5px;
+  }
+  #toolsForm .time label {
+    font-size: 19px;
+    color: #1F1F1F;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  #toolsForm .time .icon-input {
+    position: relative;
+    width: 100%;
+  }
+  #toolsForm .time .icon-input i {
+    position: absolute;
+    right: 18px;
+    top: 13px;
+    color: #1F1F1F;
+    font-size: 20px;
+    opacity: 0.9;
+  }
+  #toolsForm .time input {
+    background: white !important;
+    padding-left: 6px;
+    color: #1F1F1F;
+    font-size: 16px;
+  }
+  #toolsForm .time input::-moz-placeholder {
+    padding-left: 6px;
+  }
+  #toolsForm .time input::placeholder {
+    padding-left: 6px;
+  }
+  #toolsForm .inputs-labels input {
+    width: 100%;
+    height: 48px;
+    border: 1px solid lightgray;
+    outline: none;
+    padding: 8px;
+    color: #1F1F1F;
+    font-size: 16px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 7px;
+  }
+  #toolsForm .inputs-labels input:focus, #toolsForm .inputs-labels input:active {
+    border: 2px solid #f0a432;
+    cursor: text;
+    background: rgb(255, 255, 255);
+  }
+  #toolsForm .inputs-labels input::-moz-placeholder {
+    color: #1F1F1F;
+    opacity: 0.6;
+  }
+  #toolsForm .inputs-labels input::placeholder {
+    color: #1F1F1F;
+    opacity: 0.6;
+  }
+  #toolsForm .inputs-labels textarea {
+    width: 100%;
+    min-height: 75px;
+    max-height: 125px;
+    border: 1px solid lightgray;
+    outline: none;
+    padding: 8px;
+    color: #1F1F1F;
+    font-size: 16px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 7px;
+    background: white !important;
+  }
+  #toolsForm .inputs-labels textarea:focus, #toolsForm .inputs-labels textarea:active {
+    border: 2px solid #f0a432;
+    cursor: text;
+    background: rgb(255, 255, 255);
+  }
+  #toolsForm .inputs-labels textarea::-moz-placeholder {
+    color: #1F1F1F;
+    opacity: 0.6;
+  }
+  #toolsForm .inputs-labels textarea::placeholder {
+    color: #1F1F1F;
+    opacity: 0.6;
+  }
+  #toolsForm .form-actions button {
+    border: 1px solid transparent;
+    border-radius: 6px;
+    outline: none;
+    background: linear-gradient(to bottom right, #f0a432, #ffb649);
+    color: white;
+    font-weight: 500;
+    font-size: 17px;
+    width: 100%;
+    display: block;
+    height: 44px;
+    margin-top: 32px;
+  }
+}/*# sourceMappingURL=egenerkl.css.map */

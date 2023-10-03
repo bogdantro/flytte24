@@ -6,6 +6,7 @@
 <script rel="stylesheet" src="{% static '/js/account.js' %}" type="text/javascript"></script>
 <link rel="stylesheet" href="{% static '/scss/pages/page.css' %}" type="text/css">
 <link rel="stylesheet" href="{% static '/scss/userprofile/account/buy.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static '/scss/userprofile/account/egenerkl.css' %}" type="text/css">
 
 
 
@@ -40,30 +41,33 @@
         <div class="step">
             <div class="left">
                 <i class="fa-solid fa-address-book"></i>
-                <h1>Kontakt</h1>
+                <h1>Kontakt-info</h1>
             </div>
             <div class="right">
-                <button onclick="stepOne()">Fullfør</button>
+                <button onclick="contactInfo()">Fullfør</button>
             </div>
         </div>
+
         <div class="step">
             <div class="left">
                 <i class="fa-solid fa-circle-info"></i>                
                 <h1>Bil-detaljer</h1>
             </div>
             <div class="right">
-                <button onclick="stepOne()">Fullfør</button>
+                <button onclick="carDetails()">Fullfør</button>
             </div>
         </div>
+
         <div class="step">
             <div class="left">
                 <i class="fa-solid fa-screwdriver-wrench"></i>
                 <h1>Utstyrsliste</h1>
             </div>
             <div class="right">
-                <button onclick="stepOne()">Fullfør</button>
+                <button onclick="tools()">Fullfør</button>
             </div>
         </div>
+        
         <div class="step">
             <div class="left">
                 <i class="fa-solid fa-car-wrench"></i>
@@ -73,6 +77,7 @@
                 <button onclick="stepOne()">Fullfør</button>
             </div>
         </div>
+
         <div class="step">
             <div class="left">
                 <i class="fa-solid fa-car"></i>
@@ -82,9 +87,127 @@
                 <button onclick="stepOne()">Fullfør</button>
             </div>
         </div>
+
+
+        <form action="" method="POST" id="kontaktForm" >
+            {% csrf_token %}
+            <div onclick="contactInfoClose()" class="close"><i class="fa-solid fa-x"></i>Lukk</div>
+            <br>
+            <h1>Kontakt-info</h1>
+            <br>
+            <div class="inputs-labels">
+                <div class="time">
+                    <label for="">Personalia</label>
+                    <br>
+                    <input type="text" name="" id="" placeholder="Fullt navn">
+                    <br>
+                    <br>
+                    <input type="text" name="" id="" placeholder="Telefonnummer">
+                    <br>
+                    <br>
+                    <input type="text" name="" id="" placeholder="Adresse">
+                    <br>
+                    <br>
+                    <input type="text" name="" id="" placeholder="Fødsels- og personnummer">
+                </div>
+                <br>
+                <div class="time">
+                    <label for="">Kontonummer</label>
+                    <br>
+                    <input type="text" name="" id="" placeholder="Kontonummer for mottak av oppgjør">
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" name="make_bid" value="make_bid">Lagre</button>
+                </div>
+          </form>
+
+        <form action="" method="POST" id="carDetailsForm" >
+            {% csrf_token %}
+            <div onclick="carDetailsClose()" class="close"><i class="fa-solid fa-x"></i>Lukk</div>
+            <br>
+            <h1>Bil-detaljer</h1>
+            <br>
+            <div class="inputs-labels">
+                <div class="time">
+                    <label for="">Om bilen</label>
+                    <br>
+                    <input type="text" name="" id="" placeholder="Registreringsnummer">
+                    <br>
+                    <br>
+                    <input type="text" name="" id="" placeholder="Kilometerstand">
+                    <br>
+                    <br>
+                    <input type="text" name="" id="" placeholder="Antall eiere">
+                    <br>
+                    <br>
+                    <input type="text" name="" id="" placeholder="Bruktimportert (ja/nei)">
+                    <br>
+                    <br>
+                    <input type="text" name="" id="" placeholder="Demobil (ja/nei)">
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" name="make_bid" value="make_bid">Lagre</button>
+                </div>
+          </form>
+
+        <form action="" method="POST" id="toolsForm" >
+            {% csrf_token %}
+            <div onclick="toolsClose()" class="close"><i class="fa-solid fa-x"></i>Lukk</div>
+            <br>
+            <h1>Utstyrsliste</h1>
+            <br>
+            <div class="inputs-labels">
+                <div class="time">
+                    <label for="">Utstyr</label>
+                    <br>
+                    <input type="file" name="" id="" placeholder="Last opp vedlegg">
+                    <br>
+                    <br>
+                    <textarea type="text" name="" id="" placeholder="Fyll ut manuelt "></textarea>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" name="make_bid" value="make_bid">Lagre</button>
+                </div>
+          </form>
     </div>
 </div>
 
+
+
+
+
+
+<script type="text/javascript">
+    function contactInfo(){
+     document.getElementById('kontaktForm').classList.add('active')
+     document.getElementById('overlay').style.display = 'block';
+   }
+    function contactInfoClose(){
+     document.getElementById('kontaktForm').classList.remove('active')
+     document.getElementById('overlay').style.display = 'none';
+   }
+
+    function carDetails(){
+     document.getElementById('carDetailsForm').classList.add('active')
+     document.getElementById('overlay').style.display = 'block';
+   }
+    function carDetailsClose(){
+     document.getElementById('carDetailsForm').classList.remove('active')
+     document.getElementById('overlay').style.display = 'none';
+   }
+
+    function tools(){
+     document.getElementById('toolsForm').classList.add('active')
+     document.getElementById('overlay').style.display = 'block';
+   }
+    function toolsClose(){
+     document.getElementById('toolsForm').classList.remove('active')
+     document.getElementById('overlay').style.display = 'none';
+   }
+</script>
 
 
 <div class="account-footer-mob">

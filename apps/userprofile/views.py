@@ -78,9 +78,104 @@ def mine_annonser(request):
 
 def mine_annonser_egenerklering(request, car_id):
     car = get_object_or_404(Car, id=car_id, user=request.user)
+    egnerklæring = Egenerkeling.objects.filter(car=car, user=request.user).first()  # Assuming there's only one egnerklæring per user
+
+    if request.method == 'POST':
+        if 'contactInfo' in request.POST:
+            car_id = request.POST.get('car_id')
+            car = get_object_or_404(Car, id=car_id, user=request.user)
+
+            stepOne = request.POST.get('stepOne', False) == 'on'
+            name = request.POST.get('name', '')
+            mobile_nr = request.POST.get('mobile_nr', '')
+            adress = request.POST.get('adress', '')
+            personal_number = request.POST.get('personal_number', '')
+            account_number = request.POST.get('account_number', '')
+
+            egnerklæring = Egenerkeling.objects.filter(car=car, user=request.user).first()
+
+            if egnerklæring:
+                egnerklæring.stepOne = stepOne
+                egnerklæring.name = name
+                egnerklæring.mobile_nr = mobile_nr
+                egnerklæring.adress = adress
+                egnerklæring.personal_number = personal_number
+                egnerklæring.account_number = account_number
+                egnerklæring.save()
+            else:
+                egnerklæring = Egenerkeling.objects.create(
+                    car=car,
+                    user=request.user,
+                    stepOne=stepOne,
+                    name=name,
+                    mobile_nr=mobile_nr,
+                    adress=adress,
+                    personal_number=personal_number,
+                    account_number=account_number,
+                )
+
+
+
+        elif 'carDetails' in request.POST:
+                car_id = request.POST.get('car_id')
+                car = get_object_or_404(Car, id=car_id, user=request.user)
+
+                stepTwo = request.POST.get('stepTwo', False) == 'on'
+                reg_nr = request.POST.get('reg_nr', '')
+                km = request.POST.get('km', '')
+                owners = request.POST.get('owners', '')
+                bruktimportert = request.POST.get('bruktimportert', '')
+                demobil = request.POST.get('demobil', '')
+
+                egnerklæring = Egenerkeling.objects.filter(car=car, user=request.user)
+
+                if egnerklæring:
+                    egnerklæring.stepTwo = stepTwo
+                    egnerklæring.reg_nr = reg_nr
+                    egnerklæring.km = km
+                    egnerklæring.owners = owners
+                    egnerklæring.bruktimportert = bruktimportert
+                    egnerklæring.demobil = demobil
+                    egnerklæring.save()
+                else:
+                    egnerklæring = Egenerkeling.objects.create(
+                    car=car,
+                    user=request.user,
+                    stepTwo=stepTwo,
+                    reg_nr=reg_nr,
+                    km=km,
+                    owners=owners,
+                    bruktimportert=bruktimportert,
+                    demobil=demobil,
+                    )
+
+
+        elif 'tools' in request.POST:
+                stepThree = request.POST.get('stepThree', False) == 'on'  # Convert 'on' to True and everything else to False
+                file_tools = request.POST.get('file_tools', '')
+                manual_tools = request.POST.get('manual_tools', '')
+                
+                if egnerklæring:
+                    egnerklæring.stepThree = stepThree
+                    egnerklæring.file_tools = file_tools
+                    egnerklæring.manual_tools = manual_tools
+                    egnerklæring.save()
+                else:
+                    egnerklæring = Egenerkeling.objects.create(
+                        car=car,
+                        user=request.user,
+                        stepThree=stepThree,
+                        file_tools=file_tools,
+                        manual_tools=manual_tools,
+                    )
+        elif 'service' in request.POST:
+            None
+        elif 'garanti' in request.POST:
+            None
 
     context = {
         'car': car,
+        'egnerklæring': egnerklæring,
     }
     return render(request, 'core/account/egenerkl.html', context)
 

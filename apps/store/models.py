@@ -340,5 +340,28 @@ class Buy(models.Model):
 
 
 class Egenerkeling(models.Model):
+    # Steps
+    stepOne = models.BooleanField(blank=True, default=False)
+    stepTwo = models.BooleanField(blank=True, default=False)
+    stepThree = models.BooleanField(blank=True, default=False)
+    
     car = models.ForeignKey(Car, on_delete=models.CASCADE, blank=True, default='')
     user = models.ForeignKey(User, related_name='egenerkling', on_delete=models.SET_NULL, blank=True, null=True)
+    # Contact info
+    name = models.CharField(max_length=200, blank=True, null=True)
+    mobile_nr = models.CharField(max_length=200, blank=True, null=True)
+    adress = models.CharField(max_length=200, blank=True, null=True)
+    personal_number = models.CharField(max_length=200, blank=True, null=True)
+    account_number = models.CharField(max_length=200, blank=True, null=True)
+    # Car info
+    reg_nr = models.CharField(max_length=200, blank=True, null=True)
+    km = models.CharField(max_length=200, blank=True, null=True)
+    owners = models.CharField(max_length=200, blank=True, null=True)
+    bruktimportert = models.CharField(max_length=200, blank=True, null=True)
+    demobil = models.CharField(max_length=200, blank=True, null=True)
+    # Tools
+    file_tools = models.FileField(max_length=200, blank=True, null=True)
+    manual_tools = models.TextField(max_length=1000, blank=True, null=True)
+
+    def __str__(self):
+        return f"Egenærkling på bil {self.car} av {self.name}"      

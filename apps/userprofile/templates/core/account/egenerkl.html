@@ -7,6 +7,8 @@
 <link rel="stylesheet" href="{% static '/scss/pages/page.css' %}" type="text/css">
 <link rel="stylesheet" href="{% static '/scss/userprofile/account/buy.css' %}" type="text/css">
 <link rel="stylesheet" href="{% static '/scss/userprofile/account/egenerkl.css' %}" type="text/css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/flatpickr.min.js"></script>
 
 
 
@@ -74,7 +76,7 @@
                 <h1>Servicehistorikk</h1>
             </div>
             <div class="right">
-                <button onclick="stepOne()">Fullfør</button>
+                <button onclick="service()">Fullfør</button>
             </div>
         </div>
 
@@ -84,7 +86,7 @@
                 <h1>Garantier</h1>
             </div>
             <div class="right">
-                <button onclick="stepOne()">Fullfør</button>
+                <button onclick="garanti()">Fullfør</button>
             </div>
         </div>
 
@@ -168,7 +170,73 @@
                 <div class="time">
                     <label for="">Fyll ut manuelt</label>
                     <br>
-                    <textarea type="text" name="" id="" placeholder="Ha ' , ' mellom hver punkt"></textarea>
+                    <textarea type="text" name="" id="" style="min-height: 110px; max-height: 180px;" placeholder="Ha punktene under hverandre"></textarea>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" name="make_bid" value="make_bid">Lagre</button>
+                </div>
+          </form>
+
+        <form action="" method="POST" id="serviceForm" >
+            {% csrf_token %}
+            <div onclick="serviceClose()" class="close"><i class="fa-solid fa-x"></i>Lukk</div>
+            <br>
+            <h1>Servicehistorikk</h1>
+            <br>
+            <div class="inputs-labels">
+                <div class="time">
+                    <label for="">Last opp verkstedshistorikk</label>
+                    <br>
+                    <input type="file" name="" id="" placeholder="Last opp verkstedshistorikk">
+                </div>
+                <br>
+                <div class="time">
+                    <label for="">Last opp service historikk</label>
+                    <br>
+                    <input type="file" name="" id="" placeholder="Last opp service historikk">
+                </div>
+                <br>
+                <div class="time">
+                    <label for="">Neste service (dato)</label>
+                    <br>
+                    <div class="icon-input">
+                        <input type="text" required name="service_date" id="service_date" placeholder="Neste service (dato)">
+                        <i class="fa-regular fa-calendar-lines"></i>
+                      </div>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" name="make_bid" value="make_bid">Lagre</button>
+                </div>
+          </form>
+          
+        <form action="" method="POST" id="garantiForm" >
+            {% csrf_token %}
+            <div onclick="garantiClose()" class="close"><i class="fa-solid fa-x"></i>Lukk</div>
+            <br>
+            <h1>Garantier</h1>
+            <br>
+            <div class="inputs-labels">
+                <div class="time">
+                    <label for="">Resterende garantier</label>
+                    <br>
+                    <input type="text" name="" id="" placeholder="Ingen garantier igjen (ja/nei)">
+                    <br>
+                    <br>
+                    <input type="text" name="" id="" placeholder="Nybil garanti (ja/nei)">
+                </div>
+                <br>
+                <div class="time">
+                    <label for="">Om bilen</label>
+                    <br>
+                    <input type="text" name="" id="" placeholder="Batteri (varighet)">
+                    <br>
+                    <br>
+                    <input type="text" name="" id="" placeholder="Karrosseri">
+                    <br>
+                    <br>
+                    <input type="text" name="" id="" placeholder="Drivverk">
                 </div>
             </div>
             <div class="form-actions">
@@ -180,7 +248,23 @@
 
 
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
 
+      flatpickr("#service_date", {
+  enable: [
+    function(date) {
+      return date
+    }
+    // Add other date restrictions here
+  ],
+  enableTime: false,
+  minDate: 'today',
+  altInput: true,
+  altFormat: "j F, Y",
+});
+});
+</script>
 
 
 <script type="text/javascript">
@@ -208,6 +292,24 @@
    }
     function toolsClose(){
      document.getElementById('toolsForm').classList.remove('active')
+     document.getElementById('overlay').style.display = 'none';
+   }
+
+    function service(){
+     document.getElementById('serviceForm').classList.add('active')
+     document.getElementById('overlay').style.display = 'block';
+   }
+    function serviceClose(){
+     document.getElementById('serviceForm').classList.remove('active')
+     document.getElementById('overlay').style.display = 'none';
+   }
+
+    function garanti(){
+     document.getElementById('garantiForm').classList.add('active')
+     document.getElementById('overlay').style.display = 'block';
+   }
+    function garantiClose(){
+     document.getElementById('garantiForm').classList.remove('active')
      document.getElementById('overlay').style.display = 'none';
    }
 </script>

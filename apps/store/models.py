@@ -344,6 +344,8 @@ class Egenerkeling(models.Model):
     stepOne = models.BooleanField(blank=True, default=False)
     stepTwo = models.BooleanField(blank=True, default=False)
     stepThree = models.BooleanField(blank=True, default=False)
+    stepFour = models.BooleanField(blank=True, default=False)
+    stepFive = models.BooleanField(blank=True, default=False)
     
     car = models.ForeignKey(Car, on_delete=models.CASCADE, blank=True, default='')
     user = models.ForeignKey(User, related_name='egenerkling', on_delete=models.SET_NULL, blank=True, null=True)
@@ -362,6 +364,16 @@ class Egenerkeling(models.Model):
     # Tools
     file_tools = models.FileField(max_length=200, blank=True, null=True)
     manual_tools = models.TextField(max_length=1000, blank=True, null=True)
+    # Service
+    verksted_history = models.FileField(max_length=200, blank=True, null=True)
+    service_history = models.FileField(max_length=200, blank=True, null=True)
+    next_service = models.CharField(max_length=100, blank=True, null=True)
+    # Garanti
+    left_garantier = models.CharField(max_length=900, blank=True, null=True)
+    new_car_garanti = models.CharField(max_length=900, blank=True, null=True)
+    batery = models.CharField(max_length=900, blank=True, null=True)
+    karrosseri = models.CharField(max_length=900, blank=True, null=True)
+    drivverk = models.CharField(max_length=900, blank=True, null=True)
 
     def __str__(self):
         return f"Egenærkling på bil {self.car} av {self.name}"      

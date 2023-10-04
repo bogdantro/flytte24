@@ -117,28 +117,27 @@ def mine_annonser_egenerklering(request, car_id):
 
 
         elif 'carDetails' in request.POST:
-                car_id = request.POST.get('car_id')
-                car = get_object_or_404(Car, id=car_id, user=request.user)
+            car_id = request.POST.get('car_id')
+            car = get_object_or_404(Car, id=car_id, user=request.user)
 
-                stepTwo = request.POST.get('stepTwo', False) == 'on'
-                reg_nr = request.POST.get('reg_nr', '')
-                km = request.POST.get('km', '')
-                owners = request.POST.get('owners', '')
-                bruktimportert = request.POST.get('bruktimportert', '')
-                demobil = request.POST.get('demobil', '')
+            stepTwo = request.POST.get('stepTwo', False) == 'on'
+            reg_nr = request.POST.get('reg_nr', '')
+            km = request.POST.get('km', '')
+            owners = request.POST.get('owners', '')
+            bruktimportert = request.POST.get('bruktimportert', '')
+            demobil = request.POST.get('demobil', '')
 
-                egnerklæring = Egenerkeling.objects.filter(car=car, user=request.user)
-
-                if egnerklæring:
-                    egnerklæring.stepTwo = stepTwo
-                    egnerklæring.reg_nr = reg_nr
-                    egnerklæring.km = km
-                    egnerklæring.owners = owners
-                    egnerklæring.bruktimportert = bruktimportert
-                    egnerklæring.demobil = demobil
-                    egnerklæring.save()
-                else:
-                    egnerklæring = Egenerkeling.objects.create(
+            # Check if egnerklæring is an instance of Egenerkeling
+            if egnerklæring and isinstance(egnerklæring, Egenerkeling):
+                egnerklæring.stepTwo = stepTwo
+                egnerklæring.reg_nr = reg_nr
+                egnerklæring.km = km
+                egnerklæring.owners = owners
+                egnerklæring.bruktimportert = bruktimportert
+                egnerklæring.demobil = demobil
+                egnerklæring.save()
+            else:
+                egnerklæring = Egenerkeling.objects.create(
                     car=car,
                     user=request.user,
                     stepTwo=stepTwo,
@@ -147,31 +146,96 @@ def mine_annonser_egenerklering(request, car_id):
                     owners=owners,
                     bruktimportert=bruktimportert,
                     demobil=demobil,
-                    )
+                )
+
 
 
         elif 'tools' in request.POST:
-                stepThree = request.POST.get('stepThree', False) == 'on'  # Convert 'on' to True and everything else to False
-                file_tools = request.POST.get('file_tools', '')
-                manual_tools = request.POST.get('manual_tools', '')
-                
-                if egnerklæring:
-                    egnerklæring.stepThree = stepThree
-                    egnerklæring.file_tools = file_tools
-                    egnerklæring.manual_tools = manual_tools
-                    egnerklæring.save()
-                else:
-                    egnerklæring = Egenerkeling.objects.create(
-                        car=car,
-                        user=request.user,
-                        stepThree=stepThree,
-                        file_tools=file_tools,
-                        manual_tools=manual_tools,
-                    )
+            car_id = request.POST.get('car_id')
+            car = get_object_or_404(Car, id=car_id, user=request.user)
+
+            stepThree = request.POST.get('stepThree', False) == 'on'
+            file_tools = request.POST.get('file_tools', '')
+            manual_tools = request.POST.get('manual_tools', '')
+
+            egnerklæring = Egenerkeling.objects.filter(car=car, user=request.user).first()
+
+            if egnerklæring:
+                egnerklæring.stepThree = stepThree
+                egnerklæring.file_tools = file_tools
+                egnerklæring.manual_tools = manual_tools
+                egnerklæring.save()
+            else:
+                egnerklæring = Egenerkeling.objects.create(
+                car=car,
+                user=request.user,
+                stepThree=stepThree,
+                file_tools=file_tools,
+                manual_tools=manual_tools,
+                )
+
+
         elif 'service' in request.POST:
-            None
+            car_id = request.POST.get('car_id')
+            car = get_object_or_404(Car, id=car_id, user=request.user)
+
+            stepFour = request.POST.get('stepFour', False) == 'on'
+            verksted_history = request.POST.get('verksted_history', '')
+            service_history = request.POST.get('service_history', '')
+            next_service = request.POST.get('next_service', '')
+
+            egnerklæring = Egenerkeling.objects.filter(car=car, user=request.user).first()
+
+            if egnerklæring:
+                egnerklæring.stepFour = stepFour
+                egnerklæring.verksted_history = verksted_history
+                egnerklæring.service_history = service_history
+                egnerklæring.next_service = next_service
+                egnerklæring.save()
+            else:
+                egnerklæring = Egenerkeling.objects.create(
+                car=car,
+                user=request.user,
+                stepFour=stepFour,
+                verksted_history=verksted_history,
+                service_history=service_history,
+                next_service=next_service,
+                )
+
+
+
         elif 'garanti' in request.POST:
-            None
+            car_id = request.POST.get('car_id')
+            car = get_object_or_404(Car, id=car_id, user=request.user)
+
+            stepFive = request.POST.get('stepFive', False) == 'on'
+            left_garantier = request.POST.get('left_garantier', '')
+            new_car_garanti = request.POST.get('new_car_garanti', '')
+            batery = request.POST.get('batery', '')
+            karrosseri = request.POST.get('karrosseri', '')
+            drivverk = request.POST.get('drivverk', '')
+
+            # Check if egnerklæring is an instance of Egenerkeling
+            if egnerklæring and isinstance(egnerklæring, Egenerkeling):
+                egnerklæring.stepFive = stepFive
+                egnerklæring.left_garantier = left_garantier
+                egnerklæring.new_car_garanti = new_car_garanti
+                egnerklæring.batery = batery
+                egnerklæring.karrosseri = karrosseri
+                egnerklæring.drivverk = drivverk
+                egnerklæring.save()
+            else:
+                egnerklæring = Egenerkeling.objects.create(
+                    car=car,
+                    user=request.user,
+                    stepFive=stepFive,
+                    left_garantier=left_garantier,
+                    new_car_garanti=new_car_garanti,
+                    batery=batery,
+                    karrosseri=karrosseri,
+                    drivverk=drivverk,
+                )
+
 
     context = {
         'car': car,

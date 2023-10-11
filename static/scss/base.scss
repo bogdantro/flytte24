@@ -25,12 +25,12 @@ $txt: #183b56;
       .cover-image{
         filter: brightness(100%);
         display: block;
-        width: 352px;
+        width: 322px;
         height: auto;
         position: relative;
         left: 50%;
         transform: translateX(-50%);
-        margin: -100px;
+        margin: 0;
         margin-left: -4px;
       }
       .text{
@@ -659,21 +659,39 @@ $txt: #183b56;
 
 
 @media only screen and (min-device-width: 1140px) {
+
+#desNav{
+  background: white;
+}
+
   .cover{
     width: 100%;
-    min-height: max-content;
+    min-height: 650px;
     margin-bottom: 20px;
     position: relative;
     padding-bottom: 5px;
-    background: linear-gradient(to bottom right, transparent, #ffeed46a);
+    // background: linear-gradient(to bottom right, transparent, #ffeed46a);
+    overflow: hidden !important;
     .content{
       padding-inline: 35px;
-      padding-top: 100px;
+      padding-top: 120px;
       padding-bottom: 40px;
-      height: max-content;
-      position: relative;
+      height: 560px;
       display: flex;
       justify-content: space-between;
+      overflow: hidden !important;
+      position: relative;
+       /* The image used */
+      background-image: url("/static/images/covers/cover-1.png");
+
+      /* Full height */
+      height: 560px;
+
+      /* Create the parallax scrolling effect */
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
       #onlyOnMob{
         display: none;
       }
@@ -683,20 +701,22 @@ $txt: #183b56;
         width: 100%;
       }
       .cover-image{
-        filter: brightness(100%);
+        filter: brightness(83%);
         display: block;
-        width: 490px;
-        height: auto;
-        position: unset;
-        margin: -100px;
-        margin-left: -4px;
-        transform: translateY(-58px) translateX(-90px);
+        width: 100%;
+        height: 560px;
+        position: fixed;
+        top: 0;
+        right: 0;
+        object-fit: cover;
       }
       .text{
         text-align: left;
-        margin-top: 28px;
+        margin-top: 55px;
+        position: relative;
+        z-index: 10;
         .cover-h1{
-          color: $black;
+          color: white;
           font-size: 42px;
           font-weight: 600;
           margin-bottom: 10px;
@@ -704,7 +724,7 @@ $txt: #183b56;
         .cover-p{
           font-size: 20px;
           margin-bottom: 0;
-          color: $black;
+          color: white;
           font-weight: 500;
           width: 400px;
         }

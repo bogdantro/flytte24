@@ -13,8 +13,9 @@
 
 <div class="cover">
     <div class="content">
+        <!-- <img class="cover-image" src="{% static '/images/covers/cover-1.png' %}" alt="quote-marks"> -->
         <div id="onlyOnMob">
-            <img class="cover-image" src="{% static '/images/covers/cover.png' %}" alt="quote-marks">
+            <img class="cover-image" src="{% static '/images/covers/cover-2.png' %}" alt="quote-marks">
             <div class="text">
                 <h1 class="cover-h1">Enklere og tryggere bilsalg</h1>
                 <p class="cover-p">Bilsalg trenger ikke være så komplisert. Vi gjør all jobben for deg!</p>
@@ -33,7 +34,6 @@
                     <button onclick="window.location.href='/selg-bilen/'" class="secondary">Selg bil</button>
                  </div>   
             </div>
-            <img class="cover-image" src="{% static '/images/covers/cover.png' %}" alt="quote-marks">
         </div>
     </div>
 </div>
@@ -43,9 +43,14 @@
         <div class="text">
             <h1>Så enkelt kan du selge med oss</h1>
         </div>
-        <div class="video">video</div>
+        <video width="320" height="240" controls>
+            <source src="{{ video.video_file.url }}" type="video/mp4">
+        </video>
     </div>
 </div>
+
+
+
 
 <div class="verdivurdering">
     <div class="content">

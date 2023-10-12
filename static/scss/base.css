@@ -97,7 +97,7 @@
 .sell-with-us .content .video {
   margin-top: 25px;
   width: 100%;
-  height: 150px;
+  height: 100%;
   background: lightgray;
 }
 
@@ -268,70 +268,58 @@
   font-weight: 600;
   margin-bottom: 10px;
 }
+.proccess .content span {
+  height: 85px;
+  width: 4px;
+  border-radius: 10px;
+  display: block;
+  position: relative;
+  background: linear-gradient(to bottom right, #ffc163, #f0a432);
+  margin-inline: auto;
+}
 .proccess .content .proccess-card {
-  margin-block: 25px;
+  margin-block: 35px;
   transition: 1s;
   transform: translateY(0);
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 18px 10px;
+  border-radius: 12px;
+}
+.proccess .content .proccess-card .icon {
+  margin-bottom: 5px;
+}
+.proccess .content .proccess-card .icon i {
+  color: #f0a432;
+  font-size: 38px;
+}
+.proccess .content .proccess-card:first-child {
+  margin-top: 25px;
+}
+.proccess .content .proccess-card:last-child {
+  margin-bottom: 25px;
 }
 .proccess .content .proccess-card.active {
   opacity: 1;
   transform: translateY(0);
 }
-.proccess .content .proccess-image {
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-  border-top-left-radius: 25px;
-  border-top-right-radius: 25px;
-  border-bottom-right-radius: 25px;
-  border-bottom-left-radius: 6px;
-  width: 100%;
-}
-.proccess .content .proccess-image img {
-  box-shadow: 0 0 3px rgba(0, 0, 0, 0.164);
-  width: 100%;
-  height: 220px;
-  -o-object-fit: cover;
-     object-fit: cover;
-  border-top-left-radius: 25px;
-  border-top-right-radius: 25px;
-  border-bottom-right-radius: 25px;
-  border-bottom-left-radius: 6px;
-  filter: brightness(90%);
-  margin: 15px auto;
-}
-.proccess .content .proccess-image .ribbon-number {
-  position: absolute;
-  right: 30px;
-  top: -5px;
-  width: 40px;
-  height: 40px;
-  padding: 10px;
-  background: #f0a432;
-  font-size: 22px;
-  color: white;
-  z-index: 10;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 4px;
-}
-.proccess .content .proccess-image-text {
+.proccess .content .proccess-text {
   width: 100%;
   transform: translateY(3px);
 }
-.proccess .content .proccess-image-text h1 {
+.proccess .content .proccess-text h1 {
   font-size: 20px;
   font-weight: 500;
   color: #1F1F1F;
 }
-.proccess .content .proccess-image-text p {
+.proccess .content .proccess-text p {
   transform: translateY(-3px);
   opacity: 1;
   font-size: 16px;
   font-weight: 400;
   color: #1F1F1F;
-  padding-right: 30px;
+  max-width: 250px;
+  margin-inline: auto;
 }
 
 .book-now {
@@ -541,9 +529,18 @@
   min-height: 180px;
   display: flex;
   margin-bottom: 25px;
+  position: relative;
 }
 .reviews .content .flex .review:last-child {
   margin-bottom: 0;
+}
+.reviews .content .flex .review .source {
+  position: absolute;
+  left: 17px;
+  bottom: 17px;
+  opacity: 0.8;
+  font-size: 15px;
+  color: #1F1F1F;
 }
 .reviews .content .flex .review .left {
   width: 20%;

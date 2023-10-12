@@ -43,9 +43,10 @@
         <div class="text">
             <h1>Så enkelt kan du selge med oss</h1>
         </div>
-        <video width="320" height="240" controls>
-            <source src="{{ video.video_file.url }}" type="video/mp4">
-        </video>
+        <video class="video" controls>
+            <source src="{% static '/images/video.mp4' %}" type="video/mp4">
+          Your browser does not support the video tag.
+          </video>
     </div>
 </div>
 
@@ -123,41 +124,46 @@
         </div>
         <div class="flex">
             <div class="proccess-card" id="processCard1">
-                <div class="proccess-image">
-                <div class="ribbon-number">1</div>
-                <img src="{% static '/images/other/time.jpg' %}" alt="bilmeglerne">
+                <div class="icon">
+                    <i class="fa-solid fa-business-time"></i>
                 </div>
-                <div class="proccess-image-text">
+                <div class="proccess-text">
                 <h1>Velg tidspunkt</h1>
                 <p>Book det tidspunktet som passer best</p>
                 </div>
             </div>
+
+            <span></span>
+
             <div class="proccess-card" id="processCard2">
-                <div class="proccess-image">
-                <div class="ribbon-number">2</div>
-                <img src="{% static '/images/other/deliver.jpg' %}" alt="bilmeglerne">
+                <div class="icon">
+                    <i class="fa-solid fa-hands-holding-diamond"></i>
                 </div>
-                <div class="proccess-image-text">
+                <div class="proccess-text">
                 <h1>Levering</h1>
                 <p>Lever bilen til nærmestelokasjon</p>
                 </div>
             </div>
+
+            <span></span>
+
             <div class="proccess-card" id="processCard3">
-                <div class="proccess-image">
-                <div class="ribbon-number">3</div>
-                <img src="{% static '/images/other/pick.jpg' %}" alt="bilmeglerne">
+                <div class="icon">
+                    <i class="fa-solid fa-backward"></i>
                 </div>
-                <div class="proccess-image-text">
+                <div class="proccess-text">
                 <h1>Henting</h1>
                 <p>Hent bilen samme dag før klokken 16:00</p>
                 </div>
             </div>
+
+            <span></span>
+
             <div class="proccess-card" id="processCard3">
-                <div class="proccess-image">
-                <div class="ribbon-number">4</div>
-                <img src="{% static '/images/other/dealership.jpg' %}" alt="bilmeglerne">
+                <div class="icon">
+                    <i class="fa-solid fa-car"></i>
                 </div>
-                <div class="proccess-image-text">
+                <div class="proccess-text">
                 <h1>Vi finner kjøper</h1>
                 <p>Vent til vi har en kjøper</p>
                 </div>
@@ -273,8 +279,8 @@
         <div class="flex">
             <div class="review">
                 <div class="left">
-                    <div class="icon" style="background: rgba(7, 150, 7, 0.644);">B</div>
-                    <div class="name">Bogdan</div>
+                    <div class="icon" style="background: rgba(7, 150, 7, 0.644);">S</div>
+                    <div class="name">Shahrokh</div>
                     <div class="stars">
                         <i class="fa-solid fa-star"></i>
                         <i class="fa-solid fa-star"></i>
@@ -284,13 +290,15 @@
                     </div>
                 </div>
                 <div class="right">
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Illum, dolores illo rerum corrupti, natus reprehenderit, explicabo nostrum quibusdam recusandae quis molestiae nesciunt id ipsa! Cupiditate sed quasi ab repudiandae fugiat.
+                    Kjempe fornøyd med hele salgsprosessen av min bil. Bilen ble solgt på to dager og til den prisen jeg håpet på.
+                    Bilmeglerne er folk som kan jobben sin. Jeg kan trygt anbefale dem 👌👍
                 </div>
+                <div class="source">Google<br>Reviews</div>
             </div>
             <div class="review">
                 <div class="left">
-                    <div class="icon" style="background: rgba(228, 231, 28, 0.644);">Ø</div>
-                    <div class="name">Øystein</div>
+                    <div class="icon" style="background: rgba(228, 231, 28, 0.644);">G</div>
+                    <div class="name">Gitle</div>
                     <div class="stars">
                         <i class="fa-solid fa-star"></i>
                         <i class="fa-solid fa-star"></i>
@@ -300,13 +308,15 @@
                     </div>
                 </div>
                 <div class="right">
-                    Lorem ipsum dolor sitrerum corrupti, natus reprehenderit, explicabo nostrum quibusdam recusandae quis molestiae nesciunt id ipsa! Cupiditate sed quasi ab repudiandae fugiat.
+                    Veldig ryddig. Profesjonelle i alle faser av handelen. Ryddig og strøken gjennomføring av handel.
+                    Er absolutt å anbefale.                
                 </div>
+                <div class="source">Google<br>Reviews</div>
             </div>
             <div class="review">
                 <div class="left">
-                    <div class="icon" style="background: rgba(69, 7, 150, 0.644);">E</div>
-                    <div class="name">Elon</div>
+                    <div class="icon" style="background: rgba(69, 7, 150, 0.644);">V</div>
+                    <div class="name">Vegard</div>
                     <div class="stars">
                         <i class="fa-solid fa-star"></i>
                         <i class="fa-solid fa-star"></i>
@@ -316,8 +326,63 @@
                     </div>
                 </div>
                 <div class="right">
-                    Lorem ipsum dolor sit amsciunt id ipsa! Cupiditate sed quasi ab
+                    Enkelt og greit og veldig bra service og oppfølging. Anbefales                
                 </div>
+                <div class="source">Google<br>Reviews</div>
+            </div>
+
+
+            <div class="review">
+                <div class="left">
+                    <div class="icon" style="background: rgba(12, 38, 185, 0.767);">P</div>
+                    <div class="name">Peter</div>
+                    <div class="stars">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                </div>
+                <div class="right">
+                    Enkelt, effektivt og pålitelig salg av bil etter at den først var forsøkt solgt privat. Øystein tok seg av hele prosessen, og formidlet bilsalget veldig bra. Kan gjerne jobbe litt med å forbedre foto av bilen, men det er pirk! Alt i alt en flott prosess fra A-Å, og en tjeneste jeg kan anbefale på det sterkeste!
+                    Peter Skogvang                
+                </div>
+                <div class="source">Google<br>Reviews</div>
+            </div>
+            <div class="review">
+                <div class="left">
+                    <div class="icon" style="background: rgba(160, 185, 49, 0.644);">C</div>
+                    <div class="name">Christian</div>
+                    <div class="stars">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                </div>
+                <div class="right">
+                    Trygt og effektivt. Disse folka kjenner markedet og det biltekniske godt. Salget gikk fort og pengene var på konto som avtalt. Fikk også mer for bilen enn jeg hadde sett for meg. Kommer til å bruke Bilmeglerne igjen!                
+                </div>
+                    <div class="source">Google<br>Reviews</div>
+                </div>
+            <div class="review">
+                <div class="left">
+                    <div class="icon" style="background: rgba(150, 52, 7, 0.644);">O</div>
+                    <div class="name">Osman</div>
+                    <div class="stars">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                </div>
+                <div class="right">
+                    Veldig god service og oppfølging. Hadde kontakt med gjennom Øystein Helgheim. Salget gikk gjennom, og alle parter kan si seg fornøyde. Takk for alt!               
+                </div>
+                <div class="source">Google<br>Reviews</div>
             </div>
         </div>
     </div>

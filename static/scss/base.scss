@@ -98,7 +98,7 @@ $txt: #183b56;
     .video{
       margin-top: 25px;
       width: 100%;
-      height: 150px;
+      height: 100%;
       background: lightgray;
     }
   }
@@ -269,54 +269,42 @@ $txt: #183b56;
         margin-bottom: 10px;
       }
     }
+    span{
+      height: 85px;
+      width: 4px;
+      border-radius: 10px;
+      display: block;
+      position: relative;
+      background: linear-gradient(to bottom right, #ffc163, $primBtn);
+      margin-inline: auto;
+    }
     .proccess-card{
-      margin-block: 25px;
+      margin-block: 35px;
       transition: 1s;
       transform: translateY(0);
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      padding: 18px 10px;
+      border-radius: 12px;
+      .icon{
+        margin-bottom: 5px;
+        i{
+          color: $primBtn;
+          font-size: 38px;
+        }
+      }
+      &:first-child{
+        margin-top: 25px;
+      }
+      &:last-child{
+        margin-bottom: 25px;
+      }
       &.active{
         opacity: 1;
         transform: translateY(0);
       }
     }
-    .proccess-image{
-      position: relative;
-      left: 50%;
-      transform: translateX(-50%);
-      border-top-left-radius: 25px;
-      border-top-right-radius: 25px;
-      border-bottom-right-radius: 25px;
-      border-bottom-left-radius: 6px;
-      width: 100%;
-      img{
-        box-shadow: 0 0 3px rgba(0, 0, 0, 0.164);
-        width: 100%;
-        height: 220px;
-        object-fit: cover;
-        border-top-left-radius: 25px;
-        border-top-right-radius: 25px;
-        border-bottom-right-radius: 25px;
-        border-bottom-left-radius: 6px;
-        filter: brightness(90%);
-        margin: 15px auto;
-      }
-      .ribbon-number{
-        position: absolute;
-        right: 30px;
-        top: -5px;
-        width: 40px;
-        height: 40px;
-        padding: 10px;
-        background: $primBtn;
-        font-size: 22px;
-        color: white;
-        z-index: 10;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 4px;
-      }
-    }
-    .proccess-image-text{
+    .proccess-text{
       width: 100%;
       transform: translateY(3px);
       h1{
@@ -330,7 +318,8 @@ $txt: #183b56;
         font-size: 16px;
         font-weight: 400;
         color: $black;
-        padding-right: 30px;
+        max-width: 250px;
+        margin-inline: auto;
       }
     }
   }
@@ -542,8 +531,17 @@ $txt: #183b56;
         min-height: 180px;
         display: flex;
         margin-bottom: 25px;
+        position: relative;
         &:last-child{
           margin-bottom: 0;
+        }
+        .source{
+          position: absolute;
+          left: 17px;
+          bottom: 17px;
+          opacity: 0.8;
+          font-size: 15px;
+          color: $black;
         }
         .left{
           width: 20%;

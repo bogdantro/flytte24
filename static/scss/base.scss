@@ -673,14 +673,14 @@ $txt: #183b56;
     .content{
       padding-inline: 35px;
       padding-top: 120px;
-      padding-bottom: 40px;
+      padding-bottom: 90px;
       height: 560px;
       display: flex;
       justify-content: space-between;
       overflow: hidden !important;
       position: relative;
        /* The image used */
-      background-image: url("/static/images/covers/cover-1.png");
+      background:linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.15)), url("/static/images/covers/cover-1.png");
 
       /* Full height */
       height: 560px;
@@ -1412,13 +1412,12 @@ $txt: #183b56;
     background: linear-gradient(to bottom right, transparent, #ffeed46a);
     .content{
       padding-inline: 35px;
-      padding-top: 120px;
-      padding-bottom: 60px;
+      padding-top: 160px;
+      padding-bottom: 310px;
       height: max-content;
       position: relative;
       display: flex;
       justify-content: space-between;
-      max-width: 1290px;
       margin-inline: auto;
       #onlyOnMob{
         display: none;
@@ -1427,6 +1426,9 @@ $txt: #183b56;
         display: flex;
         justify-content: space-between;
         width: 100%;
+        max-width: 1290px !important;
+        margin-inline: auto;
+        transform: translateX(30px);
       }
       .cover-image{
         filter: brightness(100%);
@@ -1442,7 +1444,7 @@ $txt: #183b56;
         text-align: left;
         margin-top: 28px;
         .cover-h1{
-          color: $black;
+          color: white;
           font-size: 42px;
           font-weight: 600;
           margin-bottom: 10px;
@@ -1450,7 +1452,7 @@ $txt: #183b56;
         .cover-p{
           font-size: 20px;
           margin-bottom: 0;
-          color: $black;
+          color: white;
           font-weight: 500;
           width: 400px;
         }

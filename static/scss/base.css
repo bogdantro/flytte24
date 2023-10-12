@@ -731,9 +731,9 @@
     color: white;
     font-weight: 500;
     font-size: 17px;
-    width: 395px;
+    width: 415px;
     display: block;
-    height: 46px;
+    height: 48px;
   }
   .cover .content .cover-actions button.secondary {
     border-color: #f0a432;
@@ -766,9 +766,12 @@
   .sell-with-us .content .video {
     margin-inline: auto;
     margin-top: 35px;
-    width: 420px;
-    height: 190px;
+    width: 620px;
+    height: 335px;
     background: lightgray;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
   }
   .verdivurdering {
     margin-top: 25px;
@@ -949,6 +952,9 @@
   .proccess .content {
     padding-inline: 35px;
     position: relative;
+  }
+  .proccess .content span {
+    display: none;
   }
   .proccess .content .text {
     text-align: center;
@@ -1244,6 +1250,7 @@
     width: 100%;
     height: auto;
     padding-block: 90px;
+    padding-bottom: 30px;
     padding-top: 58px;
     position: relative;
   }
@@ -1265,6 +1272,7 @@
     display: flex;
     justify-content: center;
     margin-top: 25px;
+    flex-wrap: wrap;
   }
   .reviews .content .flex .review {
     background: rgba(255, 183, 76, 0.1725490196);
@@ -1274,11 +1282,11 @@
     padding: 17px;
     min-height: 180px;
     display: flex;
-    margin-bottom: 25px;
+    margin-bottom: 50px;
     margin-inline: 25px;
   }
   .reviews .content .flex .review:last-child {
-    margin-bottom: 25px;
+    margin-bottom: 50px;
   }
   .reviews .content .flex .review .left {
     width: 20%;
@@ -1404,7 +1412,7 @@
   .cover .content {
     padding-inline: 35px;
     padding-top: 160px;
-    padding-bottom: 310px;
+    padding-bottom: 350px;
     height: -moz-max-content;
     height: max-content;
     position: relative;
@@ -1463,9 +1471,9 @@
     color: white;
     font-weight: 500;
     font-size: 17px;
-    width: 395px;
+    width: 425px;
     display: block;
-    height: 46px;
+    height: 50px;
   }
   .cover .content .cover-actions button.secondary {
     border-color: #f0a432;
@@ -1498,9 +1506,12 @@
   .sell-with-us .content .video {
     margin-inline: auto;
     margin-top: 35px;
-    width: 420px;
-    height: 190px;
+    width: 680px;
+    height: 350px;
     background: lightgray;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
   }
   .verdivurdering {
     margin-top: 25px;
@@ -1983,6 +1994,7 @@
     width: 100%;
     height: auto;
     padding-block: 90px;
+    padding-bottom: 30px;
     padding-top: 58px;
     position: relative;
   }
@@ -2013,11 +2025,11 @@
     padding: 17px;
     min-height: 180px;
     display: flex;
-    margin-bottom: 25px;
+    margin-bottom: 50px;
     margin-inline: 25px;
   }
   .reviews .content .flex .review:last-child {
-    margin-bottom: 25px;
+    margin-bottom: 50px;
   }
   .reviews .content .flex .review .left {
     width: 20%;

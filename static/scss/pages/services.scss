@@ -100,9 +100,11 @@ $txt: #183b56;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
+            max-width: 1200px;
+            margin-inline: auto;
             .card{
                 text-align: center;
-                padding: 17px;
+                padding: 19px;
                 border-radius: 14px;
                 box-shadow: 0 3px 5px rgba(0,0,0,0.05);
                 border: none;

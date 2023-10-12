@@ -739,9 +739,9 @@ $txt: #183b56;
           color: white;
           font-weight: 500;
           font-size: 17px;
-          width: 395px;
+          width: 415px;
           display: block;
-          height: 46px;
+          height: 48px;
           &.secondary{
             border-color: $primBtn;
             color: $primBtn;
@@ -775,9 +775,12 @@ $txt: #183b56;
       .video{
         margin-inline: auto;
         margin-top: 35px;
-        width: 420px;
-        height: 190px;
+        width: 620px;
+        height: 335px;
         background: lightgray;
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
       }
     }
   }
@@ -959,6 +962,9 @@ $txt: #183b56;
     .content{
       padding-inline: 35px;
       position: relative;
+      span{
+        display: none;
+      }
       .text{
         text-align: center;
         margin-top: 28px;
@@ -1254,6 +1260,7 @@ $txt: #183b56;
     width: 100%;
     height: auto;
     padding-block: 90px;
+    padding-bottom: 30px;
     padding-top: 58px;
     position: relative;
     .content{
@@ -1273,6 +1280,7 @@ $txt: #183b56;
         display: flex;
         justify-content: center;
         margin-top: 25px;
+        flex-wrap: wrap;
         .review{
           background: #ffb74c2c;
           width: 380px;
@@ -1281,10 +1289,10 @@ $txt: #183b56;
           padding: 17px;
           min-height: 180px;
           display: flex;
-          margin-bottom: 25px;
+          margin-bottom: 50px;
           margin-inline: 25px;
           &:last-child{
-            margin-bottom: 25px;
+            margin-bottom: 50px;
           }
           .left{
             width: 20%;
@@ -1413,7 +1421,7 @@ $txt: #183b56;
     .content{
       padding-inline: 35px;
       padding-top: 160px;
-      padding-bottom: 310px;
+      padding-bottom: 350px;
       height: max-content;
       position: relative;
       display: flex;
@@ -1469,9 +1477,9 @@ $txt: #183b56;
           color: white;
           font-weight: 500;
           font-size: 17px;
-          width: 395px;
+          width: 425px;
           display: block;
-          height: 46px;
+          height: 50px;
           &.secondary{
             border-color: $primBtn;
             color: $primBtn;
@@ -1505,9 +1513,12 @@ $txt: #183b56;
       .video{
         margin-inline: auto;
         margin-top: 35px;
-        width: 420px;
-        height: 190px;
+        width: 680px;
+        height: 350px;
         background: lightgray;
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
       }
     }
   }
@@ -1991,6 +2002,7 @@ $txt: #183b56;
     width: 100%;
     height: auto;
     padding-block: 90px;
+    padding-bottom: 30px;
     padding-top: 58px;
     position: relative;
     .content{
@@ -2018,10 +2030,10 @@ $txt: #183b56;
           padding: 17px;
           min-height: 180px;
           display: flex;
-          margin-bottom: 25px;
+          margin-bottom: 50px;
           margin-inline: 25px;
           &:last-child{
-            margin-bottom: 25px;
+            margin-bottom: 50px;
           }
           .left{
             width: 20%;

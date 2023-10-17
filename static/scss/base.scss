@@ -12,7 +12,7 @@ $txt: #183b56;
     background: linear-gradient(to bottom right, rgba(255, 240, 180, 0.185), transparent);
     .content{
       padding-inline: 20px;
-      padding-top: 56px;
+      padding-top: 70px;
       padding-bottom: 40px;
       height: max-content;
       position: relative;
@@ -25,12 +25,12 @@ $txt: #183b56;
       .cover-image{
         filter: brightness(100%);
         display: block;
-        width: 650px;
+        width: 305px;
         height: auto;
         position: relative;
         left: 50%;
-        transform: translateX(-50%) translateY(-10px);
-        margin: -100px;
+        transform: translateX(-50%);
+        margin: 0px;
         margin-left: -4px;
       }
       .text{

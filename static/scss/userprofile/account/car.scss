@@ -13,6 +13,7 @@ $txt: #183b56;
         position: relative;
         border-radius: 6px;
         .car{
+            margin-bottom: 60px;
             .car-image{
                 border-radius: 6px;
                 width: 100%;
@@ -45,7 +46,7 @@ $txt: #183b56;
             }
             .name{
                 color: $black;
-                font-size: 17px;
+                font-size: 18px;
                 margin-top: 8px;
                 font-weight: 500;
             }

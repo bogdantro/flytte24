@@ -18,6 +18,26 @@ html, body {
   min-height: 80vh;
 }
 
+.interactive-btn {
+  width: auto;
+  padding: 4px;
+  margin: -4px;
+  border-radius: 4px;
+  text-decoration: none !important;
+  color: #1F1F1F !important;
+  background: rgba(180, 196, 6, 0.1254901961);
+  transition: 0.2s;
+  cursor: pointer;
+}
+.interactive-btn:active, .interactive-btn:focus {
+  text-decoration: none;
+  background: rgba(180, 196, 6, 0.3568627451);
+}
+.interactive-btn:hover {
+  text-decoration: none;
+  background: rgba(180, 196, 6, 0.231372549);
+}
+
 button {
   transition: 0.2s;
 }

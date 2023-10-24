@@ -23,6 +23,26 @@ $txt: #183b56;
     min-height: 80vh;
   }
 
+  .interactive-btn{
+    width: auto;
+    padding: 4px;
+    margin: -4px;
+    border-radius: 4px;
+    text-decoration: none !important;
+    color: $black !important;
+    background: #b4c40620;
+    transition: .2s;
+    cursor: pointer;
+    &:active, &:focus{
+      text-decoration: none;
+      background: #b4c4065b;
+    }
+    &:hover{
+      text-decoration: none;
+      background: #b4c4063b;
+    }
+  }
+
   button{
     transition: .2s;
     &:hover{

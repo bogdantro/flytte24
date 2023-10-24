@@ -1,5 +1,7 @@
 {% extends 'core/base.html' %}
 {% load static %}
+{% load custom_filters  %}
+
 
 {% block content %}
 <link rel="stylesheet" href="{% static '/scss/userprofile/myaccount.css' %}" type="text/css">
@@ -36,6 +38,79 @@
 
   <div class="user-cars">
       {% for car in cars_with_bids %}
+
+      {% if car.days_until_expiry > 0 %}
+      <div class="car">
+        <img src="{{car.image1.url}}" alt="" class="car-image" onclick="window.location.href='{% url  'car_detail' car.slug car.id  %}'">
+        <div class="flex">
+          {% if car.days_until_expiry > 0 %}
+            {% if car.sold %}
+            <div class="status" id="status" style="background: #ffc876;">Solgt for {{ car.highest_bid|add_space_separator }}kr</div>
+            {% else %}
+            <div class="status" id="status">Aktiv</div>
+            <div class="time-left">{{car.days_until_expiry}} dager igjen</div>
+            {% endif %}
+  
+            {% else %}
+            <div class="status" id="status" style="background: #ff8686;">Uaktiv</div>
+            <div class="time-left">0 dager igjen</div>
+          {% endif %}
+        </div>
+  
+
+        <div class="name">{{car.name}}</div>
+
+
+        
+    
+        <hr>
+
+        {% if car.sold %}
+        {% else %}
+        <a href="{% url 'mine_annonser_egenerklering' car.id %}" class="interactive-btn">Egenerklæring</a>
+        {% endif %}
+
+
+        {% if car.highest_bid_instance == 'pending' %}
+        <hr>
+
+        <div class="bids">
+          {% if car.highest_bid %}
+          {% if car.remaining_days > 0 %}
+          <h1 style="color: #1F1F1F; font-size: 21px;">Høyeste bud</h1>
+          <div class="flex">
+            <div class="price">{{car.highest_bid|add_space_separator}}kr</div>
+            <div class="time-left">{{car.remaining_days}} dager igjen</div>
+          </div>
+          {% if car.highest_bid_instance == 'pending' %}
+            <div class="actions">
+              <button onclick="window.location.href='{% url 'accept_highest_bid' car.id %}'" style="margin-bottom: 10px; background: #44cf5b;;">Aksepter bud</button>
+              <button onclick="window.location.href='{% url 'decline_highest_bid' car.id %}'" style="background: #ff5e5e;">Avslå bud</button>
+            </div>
+            {% endif %}
+            {% else %}
+            <div class="bids">
+              <h1 style="margin-top: 17px; margin-bottom: 10px; color: #1F1F1F; font-size: 16px;">Ingen aktive bud enda...</h1>
+            </div>
+          {% endif %}
+        {% endif %}
+
+        </div>
+
+        {% else %}
+        {% endif %}
+
+        {% if car.highest_bid %}
+        {% else %}
+        <hr>
+        <div class="bids">
+          <h1 style="margin-top: 17px; margin-bottom: 10px; color: #1F1F1F; font-size: 16px;">Ingen bud enda...</h1>
+        </div>
+        {% endif %}
+
+
+      </div>
+      {% else %}
       <div class="car">
         <img src="{{car.image1.url}}" alt="" class="car-image" onclick="window.location.href='{% url  'car_detail' car.slug car.id  %}'">
         <div class="flex">
@@ -53,49 +128,12 @@
           {% endif %}
         </div>
   
+
         <div class="name">{{car.name}}</div>
-        
-        {% if car.highest_bid_instance == 'pending' %}
-        <hr>
 
-        <div class="bids">
-          <h1>Høyeste bud</h1>
-          {% if car.highest_bid %}
-          {% if car.remaining_days > 0 %}
-          <div class="flex">
-            <div class="price">{{ car.highest_bid }}kr</div>
-            <div class="time-left">{{car.remaining_days}} dager igjen</div>
-          </div>
-          {% if car.highest_bid_instance == 'pending' %}
-            <div class="actions">
-              <button onclick="window.location.href='{% url 'accept_highest_bid' car.id %}'" style="margin-bottom: 10px; background: #44cf5b;;">Aksepter bud</button>
-              <button onclick="window.location.href='{% url 'decline_highest_bid' car.id %}'" style="background: #ff5e5e;">Avslå bud</button>
-            </div>
-            {% endif %}
-          {% endif %}
-        {% endif %}
-
-        </div>
-
-        {% else %}
-        {% endif %}
-
-        {% if car.highest_bid %}
-        {% else %}
-        <div class="bids">
-          <h1 style="margin-top: 17px; margin-bottom: -20px;">Ingen bud enda...</h1>
-        </div>
-        {% endif %}
-
-        <hr>
-
-        <a href="{% url 'mine_annonser_egenerklering' car.id %}">Egenerklæring</a>
-
-        <hr style="margin-top: 40px;">
       </div>
+      {% endif %}
 
-      
-   
       {% empty %}
       <h1 style="color: #1F1F1F; font-size: 22px; font-weight: 500; padding-top: 25px; text-align: center;">Ingen annonser enda...</h1>
       {% endfor %}

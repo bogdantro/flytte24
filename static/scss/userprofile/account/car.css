@@ -6,6 +6,9 @@
   position: relative;
   border-radius: 6px;
 }
+.myaccount .user-cars .car {
+  margin-bottom: 60px;
+}
 .myaccount .user-cars .car .car-image {
   border-radius: 6px;
   width: 100%;
@@ -42,7 +45,7 @@
 }
 .myaccount .user-cars .car .name {
   color: #1F1F1F;
-  font-size: 17px;
+  font-size: 18px;
   margin-top: 8px;
   font-weight: 500;
 }

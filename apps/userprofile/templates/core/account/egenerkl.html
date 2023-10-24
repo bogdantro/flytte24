@@ -136,6 +136,7 @@
             <input type="hidden" name="car_id" value="{{ car.id }}">
             <div onclick="contactInfoClose()" class="close"><i class="fa-solid fa-x"></i>Lukk</div>
             <br>
+            <br>
             <h1>Kontakt-info</h1>
             <br>
             <div class="inputs-labels">
@@ -171,6 +172,7 @@
             <input type="hidden" name="car_id" value="{{ car.id }}">
             <div onclick="carDetailsClose()" class="close"><i class="fa-solid fa-x"></i>Lukk</div>
             <br>
+            <br>
             <h1>Bil-detaljer</h1>
             <br>
             <div class="inputs-labels">
@@ -203,6 +205,7 @@
             <input type="hidden" name="car_id" value="{{ car.id }}">
             <div onclick="toolsClose()" class="close"><i class="fa-solid fa-x"></i>Lukk</div>
             <br>
+            <br>
             <h1>Utstyrsliste</h1>
             <input type="checkbox" checked="stepThree" name="stepThree" style="display: none;">
             <br>
@@ -228,6 +231,7 @@
             {% csrf_token %}
             <input type="hidden" name="car_id" value="{{ car.id }}">
             <div onclick="serviceClose()" class="close"><i class="fa-solid fa-x"></i>Lukk</div>
+            <br>
             <br>
             <h1>Servicehistorikk</h1>
             <input type="checkbox" checked="stepFour" name="stepFour" style="display: none;">
@@ -263,6 +267,7 @@
             {% csrf_token %}
             <input type="hidden" name="car_id" value="{{ car.id }}">
             <div onclick="garantiClose()" class="close"><i class="fa-solid fa-x"></i>Lukk</div>
+            <br>
             <br>
             <h1>Garantier</h1>
             <input type="checkbox" checked="stepFive" name="stepFive" style="display: none;">

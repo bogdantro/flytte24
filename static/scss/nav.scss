@@ -215,3 +215,90 @@ $txt: #183b56;
         }
     }
 }
+
+
+
+@media only screen and (min-device-width: 1290px) {
+    #mobileNav{
+        display: none;
+    }
+    #desNav{
+        display: flex;
+        width: 100%;
+        height: 80px;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        background: transparent;
+        padding-inline: 35px;
+        z-index: 100;
+        transition: .2s;
+        border-bottom: 1px solid transparent;
+        .content{
+            width: 100%;
+            display: flex;
+            width: 100%;
+            max-width: 1290px;
+            height: 80px;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: transparent;
+            padding-inline: 35px;    
+        }
+
+        &.sticky{
+            background: white;
+            border-bottom: 1px solid rgba(100,100,100,0.15);
+        }
+        .logo{
+            img{               
+                cursor: pointer;
+                width: 135px;
+                height: auto;
+                transition: .2s;
+                transform: translateX(-42px);
+                &:hover{
+                    transform: scale(1.1) translateX(-35px);
+                }
+            }
+        }
+        .menu{
+            display: flex;
+            a{
+                color: $black;
+                font-size: 19px;
+                font-weight: 400;
+                margin-inline: 2px;
+                padding: 10px;
+                cursor: pointer;
+                text-decoration: none;
+                transition: .3s;
+                border-bottom: 2px solid transparent;
+                &:last-child{
+                    transform: translateY(2px);
+                    background: linear-gradient(to bottom right, $primBtn, #ffb649);
+                    color: white;
+                    border-radius: 5px;
+                    margin-left: 6px;
+                    padding: 7px 14px !important;
+                    border: none;
+                    height: max-content !important;
+                    margin-bottom: 0; 
+                    &:hover{
+                        transform: scale(1.05) translateY(2px);
+                    }
+                }
+                &:hover{
+                    border-bottom: 2px solid $primBtn;
+                }
+            }
+        }
+    }
+}

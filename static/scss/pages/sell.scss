@@ -413,3 +413,220 @@ $txt: #183b56;
     }
 }
 }
+
+
+
+@media only screen and (min-device-width: 1290px) {
+  .cover{
+    width: 100%;
+    min-height: max-content;
+    position: relative;
+    padding-bottom: 5px;
+    background: linear-gradient(to bottom right, rgba(255, 240, 180, 0.185), transparent);
+    .content{
+      padding-inline: 35px;
+      padding-top: 140px;
+      padding-bottom: 60px;
+      height: max-content;
+      position: relative;
+      max-width: 1290px;
+      margin-inline: auto;
+      .text{
+        text-align: left;
+        margin-top: 28px;
+        .cover-h1{
+          color: $black;
+          font-size: 40px;
+          font-weight: 600;
+          margin-bottom: 10px;
+          max-width: 500px;
+        }
+        .cover-p{
+            max-width: 320px;
+          font-size: 22px;
+          margin-bottom: 0;
+          color: $black;
+          font-weight: 500;
+        }
+      }
+      .cover-actions{
+        margin-top: 24px;
+        width: 100%;
+        text-align: center;
+        button{
+          border: 1px solid transparent;
+          border-radius: 6px;
+          outline: none;
+          background: linear-gradient(to bottom right, $primBtn, #ffb649);
+          color: white;
+          font-weight: 500;
+          font-size: 17px;
+          width: 230px;
+          display: block;
+          height: 47px;
+          &.secondary{
+            border-color: $primBtn;
+            color: $primBtn;
+            background: white;
+            margin-right: 0;
+            margin-top: 15px;
+          }
+        }
+      }
+    }
+  }
+.page{
+    .sell-car{
+        padding-inline: 35px;
+        max-width: 1290px;
+        margin-inline: auto;      
+        padding-bottom: 30px;
+        .steps{
+            padding-top: 10px;
+            .content{
+                position: relative;
+                .text{
+                  text-align: left;
+                  margin-top: 38px;
+                  h1{
+                    color: $black;
+                    font-size: 30px;
+                    font-weight: 600;
+                    margin-bottom: 5px;
+                  }
+                }
+                .proccess-card{
+                    margin-block: 25px;
+                    transition: 1s;
+                    transform: translateY(0);
+                    display: inline-block;
+                    margin-right: 20px;
+                    &.active{
+                      opacity: 1;
+                      transform: translateY(0);
+                    }
+                  }
+                  .proccess-image-text{
+                    width: 100%;
+                    transform: translateY(3px);
+                    background: rgb(241,241,241);
+                    border-right: 10px solid $primBtn;
+                    padding-right: 12px;
+                    padding: 12px 8px;
+                    border-radius: 4px;
+                    width: 400px;
+                    h1{
+                      font-size: 22px;
+                      font-weight: 500;
+                      color: $black;
+                    }
+                    p{
+                      transform: translateY(-3px);
+                      opacity: 1;
+                      font-size: 17px;
+                      font-weight: 400;
+                      color: $black;
+                      padding-right: 30px;
+                    }
+                  }
+            }
+        }
+        .why-us{
+            padding-top:30px;
+            .content{
+                position: relative;
+                .text{
+                  text-align: left;
+                  margin-top: 28px;
+                  h1{
+                    color: $black;
+                    font-size: 30px;
+                    font-weight: 600;
+                    margin-bottom: 10px;
+                  }
+                  p{
+                    font-size: 17px;
+                    margin-bottom: 0;
+                    color: $black;
+                    font-weight: 500;
+                    max-width: 500px;
+                  }
+                }
+                button{
+                  border: 1px solid transparent;
+                  border-radius: 6px;
+                  outline: none;
+                  background: linear-gradient(to bottom right, $primBtn, #ffb649);
+                  color: white;
+                  font-weight: 500;
+                  font-size: 17px;
+                  width: 200px;
+                  display: block;
+                  height: 40px;
+                  margin-top: 25px;
+                }
+            }
+        }
+        .undo-orders{
+            padding-top:55px;
+            .content{
+                position: relative;
+                .text{
+                  text-align: left;
+                  margin-top: 28px;
+                  h1{
+                    color: $black;
+                    font-size: 30px;
+                    font-weight: 600;
+                    margin-bottom: 10px;
+                  }
+                  p{
+                    font-size: 17px;
+                    margin-bottom: 0;
+                    color: $black;
+                    font-weight: 500;
+                    max-width: 500px;
+                  }
+                }
+            }
+        }
+        .contact-info{
+            padding-block:55px;
+            padding-top: 30px;
+            .content{
+                position: relative;
+                .text{
+                  text-align: left;
+                  margin-top: 28px;
+                  h1{
+                    color: $black;
+                    font-size: 30px;
+                    font-weight: 600;
+                    margin-bottom: 10px;
+                  }
+                  p{
+                    font-size: 17px;
+                    margin-bottom: 0;
+                    color: $black;
+                    font-weight: 500;
+                    max-width: 500px;
+                  }
+                }
+                button{
+                  border: 1px solid transparent;
+                  border-radius: 6px;
+                  outline: none;
+                  background: linear-gradient(to bottom right, $primBtn, #ffb649);
+                  color: white;
+                  font-weight: 500;
+                  font-size: 17px;
+                  width: 200px;
+                  display: block;
+                  height: 40px;
+                  margin-top: 25px;
+                }
+            }
+        }
+    }
+}
+}

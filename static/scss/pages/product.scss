@@ -76,6 +76,7 @@ $txt: #183b56;
                 .status{
                     background: #9cffcc;
                     width: max-content;
+                    height: max-content;
                     padding: 3px 10px;
                     font-size: 15px;
                     color: $black;
@@ -905,6 +906,7 @@ $txt: #183b56;
                     .status{
                         background: #9cffcc;
                         width: max-content;
+                        height: max-content;
                         padding: 3px 10px;
                         font-size: 15px;
                         color: $black;
@@ -1083,19 +1085,20 @@ $txt: #183b56;
                     border: 1px solid transparent;
                     border-radius: 6px;
                     outline: none;
-                    background: linear-gradient(to bottom right, $primBtn, #ffb649);
-                    color: white;
+                    background: white;
+                    color: $primBtn;
                     font-weight: 500;
                     font-size: 17px;
                     width: 100%;
                     display: block;
                     height: 45px;
                     margin-top: 15px;
+                    min-width: 390px;
                     max-width: 390px;
-                    &.secondary{
+                    &:last-child{
                       border-color: $primBtn;
-                      color: $primBtn;
-                      background: white;
+                      color: white;
+                      background: linear-gradient(to bottom right, $primBtn, #ffb649);
                       margin-right: 0;
                     }
                 }

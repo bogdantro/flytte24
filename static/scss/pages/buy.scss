@@ -289,6 +289,7 @@ $txt: #183b56;
                         }
                     }
                     .top{
+                        position: relative;
                         .car-image{
                             border-radius: 6px;
                             width: 270px;
@@ -301,11 +302,14 @@ $txt: #183b56;
                     .status{
                         background: #9cffcc;
                         width: max-content;
-                        padding: 3px 10px;
+                        height: max-content;
+                        padding: 6px 16px;
                         font-size: 15px;
                         color: $black;
                         border-radius: 5px;
                         margin-top: 6px;
+                        position: absolute;
+                        transform: translateX(8px) translateY(5px);
                     }
                     .bottom{
                         margin-left: 35px;

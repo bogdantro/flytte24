@@ -78,6 +78,8 @@
   background: #9cffcc;
   width: -moz-max-content;
   width: max-content;
+  height: -moz-max-content;
+  height: max-content;
   padding: 3px 10px;
   font-size: 15px;
   color: #1F1F1F;
@@ -921,6 +923,8 @@
     background: #9cffcc;
     width: -moz-max-content;
     width: max-content;
+    height: -moz-max-content;
+    height: max-content;
     padding: 3px 10px;
     font-size: 15px;
     color: #1F1F1F;
@@ -1090,20 +1094,21 @@
     border: 1px solid transparent;
     border-radius: 6px;
     outline: none;
-    background: linear-gradient(to bottom right, #f0a432, #ffb649);
-    color: white;
+    background: white;
+    color: #f0a432;
     font-weight: 500;
     font-size: 17px;
     width: 100%;
     display: block;
     height: 45px;
     margin-top: 15px;
+    min-width: 390px;
     max-width: 390px;
   }
-  .page .car .actions button.secondary {
+  .page .car .actions button:last-child {
     border-color: #f0a432;
-    color: #f0a432;
-    background: white;
+    color: white;
+    background: linear-gradient(to bottom right, #f0a432, #ffb649);
     margin-right: 0;
   }
   .page .car #infoChoices {

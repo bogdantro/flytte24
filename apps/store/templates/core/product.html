@@ -477,14 +477,25 @@
 
         <div class="actions">
           {% if request.user == car.user %}
+
           {% else %}
+
             {% if car.sold %}
+            {% else %}
+            
+            {% if highest_bid %}
+            <button onclick="testDrive()" class="secondary">Prøvekjøring</button>
+            <button onclick="contactOwner()" class="secondary">Kontakt eier</button>
+            <button onclick="makeBid()" class="secondary">Gi bud</button>
             {% else %}
             <button onclick="testDrive()" class="secondary">Prøvekjøring</button>
             <button onclick="contactOwner()" class="secondary">Kontakt eier</button>
             <button onclick="makeBid()" class="secondary">Gi bud</button>
             <button onclick="confirmBuy()">Kjøp bilen</button>
             {% endif %}
+
+            {% endif %}
+
           {% endif %}
         </div>
 

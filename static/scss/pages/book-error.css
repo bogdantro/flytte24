@@ -34,4 +34,46 @@
   border-radius: 12px;
   padding-inline: 30px;
   padding-block: 16px;
+}
+
+@media only screen and (min-device-width: 1140px) {
+  .page {
+    padding-inline: 20px;
+    padding-bottom: 60px;
+  }
+  .page .cover {
+    background: transparent;
+  }
+  .page .cover .content {
+    padding-inline: 0;
+    padding-top: 120px;
+    padding-bottom: 20px;
+  }
+  .page .cover .content .text {
+    text-align: center;
+  }
+  .page .cover .content .text p {
+    margin: auto;
+  }
+  .page .cover .content button {
+    border: 1px solid transparent;
+    border-radius: 6px;
+    outline: none;
+    background: linear-gradient(to bottom right, #f0a432, #ffb649);
+    color: white;
+    font-weight: 500;
+    font-size: 17px;
+    width: 240px;
+    display: block;
+    height: 45px;
+    margin: auto;
+    margin-top: 25px;
+  }
+  .page .divivivi {
+    background: white;
+    margin-top: 10px;
+    border-radius: 12px;
+    padding-inline: 30px;
+    padding-block: 16px;
+  }
 }/*# sourceMappingURL=book-error.css.map */

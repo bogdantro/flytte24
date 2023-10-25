@@ -67,5 +67,23 @@ function faqFunc3(){
 }
 
 
+function faqFunc4(){
+    const answer = document.getElementById('answer4');
+    const ask = document.getElementById('ask4');
+    const faqPlus = document.getElementById('faqPlus4');
+    const faqMinus = document.getElementById('faqMinus4');
+    if (window.getComputedStyle(answer,null).getPropertyValue("opacity") == '0'){
+        answer.classList.add('active');
+        ask.style.borderBottom = '1px solid transparent';
+        faqPlus.style.display = 'none';
+        faqMinus.style.display = 'block';
+    }else{
+        answer.classList.remove('active');
+        ask.style.borderBottom = '1px solid lightgray';
+        faqPlus.style.display = 'block';
+        faqMinus.style.display = 'none';
+    }
+}
+
 
 

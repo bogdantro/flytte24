@@ -1363,7 +1363,7 @@ $txt: #183b56;
         border-bottom: 1px solid lightgray;
         height: 90px;
         position: relative;
-        width: 420px;
+        width: 540px;
         margin-inline: auto;
         cursor: pointer;
         p{
@@ -1371,6 +1371,7 @@ $txt: #183b56;
           font-weight: 500;
           margin-bottom: 0;
           font-size: 22px;
+          padding-right: 105px;
         }
         svg{
           color: $black;
@@ -1387,16 +1388,17 @@ $txt: #183b56;
       }
       .answer{
         padding: 8px;
-        transform: translateY(-21px);
         border-radius: 2px;
         height: 0;
         transition: .2s;
         pointer-events: none;
         opacity: 0;
-        width: 420px;
+        width: 540px;
         margin-inline: auto;
+        margin-top: 0;
         &.active{
           pointer-events: visible;
+          margin-top: 10px;
           opacity: 1;
           height: 140px;
         }
@@ -1409,6 +1411,7 @@ $txt: #183b56;
     }
   }
 }
+
 
 @media only screen and (min-device-width: 1290px) {
   .cover{
@@ -2104,7 +2107,7 @@ $txt: #183b56;
         border-bottom: 1px solid lightgray;
         height: 90px;
         position: relative;
-        width: 540px;
+        width: 640px;
         margin-inline: auto;
         cursor: pointer;
         p{
@@ -2112,7 +2115,7 @@ $txt: #183b56;
           font-weight: 500;
           margin-bottom: 0;
           font-size: 22px;
-          padding-right: 105px;
+          padding-right: 65px;
         }
         svg{
           color: $black;
@@ -2135,7 +2138,7 @@ $txt: #183b56;
         transition: .2s;
         pointer-events: none;
         opacity: 0;
-        width: 540px;
+        width: 640px;
         margin-inline: auto;
         &.active{
           pointer-events: visible;

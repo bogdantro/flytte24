@@ -11,136 +11,137 @@
 <link rel="stylesheet" href="{% static '/scss/pages/book.css' %}" type="text/css">
 
 <div class="page">
-    <div class="cover">
-        <div class="content">
-            <div class="text">
-                <h1 class="cover-h1">Vi gleder oss å se deg som kunde</h1>
-                <p class="cover-p">Å booke en time er veldig enkel. Bruk skjema nedenfor</p>
-            </div>  
-        </div>
-    </div>
-
-
-    <div class="book-time">
-        <div id="overlay"></div>
-        <div id="loader">
-            <div class="load"></div>
+    <div class="flex">
+        <div class="cover">
+            <div class="content">
+                <div class="text">
+                    <h1 class="cover-h1">Vi gleder oss å se deg som kunde</h1>
+                    <p class="cover-p">Å booke en time er veldig enkel. Bruk skjema nedenfor</p>
+                </div>  
+            </div>
         </div>
 
-        <form id="form" action="" method="POST">
-            <br>
-            {% csrf_token %}
-            <div id="bookTimeStepOne">    
-                <label for="id_date">Velg dato</label>
-                <br>
-                <div class="icon-input">
-                    <input type="text" name="date" id="id_date" class="flatpickr">
-                    <i class="fa-regular fa-calendar-lines"></i>
-                  </div>
-                <br>            
-                <label for="id_time">Velg tidspunkt</label>
-                <br>
-                <select class="time" name="time" id="weekday">
-                    <option disabled selected value>Tidspunkt</option>
-                    <option value="08:00">08:00</option>
-                    <option value="10:00">10:00</option>
-                    <option value="12:00">12:00</option>
-                    <option value="14:00">14:00</option>
-                </select>
-                <select class="time" name="time" id="saturday">
-                    <option disabled selected value>Tidspunkt</option>
-                    <option value="10:00">10:00</option>
-                    <option value="12:00">12:00</option>
-                    <option value="14:00">14:00</option>
-                </select>
-                <br>
-                <label for="id_preference">Plassering</label>
-                <br>
-                <select class="location" name="location" id="location">
-                    <option disabled selected value>Plassering</option>
-                    <option value="Arendal (Stoaveien)">Arendal (Stoaveien)</option>
-                    <option value="Kristiansand (Sørlandsparken)">Kristiansand (Sørlandsparken)</option>
-                    <option value="Lillestrøm">Lillestrøm</option>
-                    <option value="Oslo (Kontor)">Oslo (Kontor)</option>
-                    <option value="Oslo (Skøyen)">Oslo (Skøyen)</option>
-                </select>
-                <br>
-                <br>
-                <label for="id_preference">Medarbeider</label>
-                <br>
-                <select class="preference" name="preference" id="preference">
-                    <option disabled selected value>Medarbeider</option>
-                    <option value="Cecilie Gromsrud">Cecilie Gromsrud</option>
-                    <option value="Fredrik S. von der Lippe">Fredrik S. von der Lippe</option>
-                    <option value="Øystein Helgheim">Øystein Helgheim</option>
-                </select>
-                <br>
-                <br>
-                <div class="alert alert-danger" role="alert" id="alert" style="display: none;">Alle feltene må fylles inn</div>
-                <div class="form-actions">
-                    <button type="button" onclick="nextStep()">Neste</button>
-                </div>
+        <div class="book-time">
+            <div id="overlay"></div>
+            <div id="loader">
+                <div class="load"></div>
             </div>
 
-            <div id="bookTimeStepTwo">
-                {% if request.user.is_authenticated %}
-                {% else %}
-                <div class="alert alert-info" style="margin-bottom: 28px;">Har du allerede en konto? <a href="/logg-inn/?next={% firstof request.path '/' %}" style="color: unset; font-weight: 500; text-decoration: underline;">Logg inn</a> for raskere bestilling.</div>
-                {% endif %}
-                <input type="text" name="user" id="user" style="display: none;" value="{{request.user}}">
-                <label for="full_name">Fulltnavn</label>
+            <form id="form" action="" method="POST">
                 <br>
-                <input type="text" name="full_name" id="full_name" value="{{request.user.get_full_name}}" required>
-                <br>
-                <br>
-                <label for="email">Epost</label>
-                <br>
-                <input type="email" name="email" id="email" value="{{request.user.email}}" required>
-                <br>
-                <br>
-                <label for="mobile_number">Telefonnummer</label>
-                <br>
-                <div class="mobile_number">
-                    <div class="nr">+47</div>
-                    <input type="number" name="mobile_number" id="mobile_number" required>
+                {% csrf_token %}
+                <div id="bookTimeStepOne">    
+                    <label for="id_date">Velg dato</label>
+                    <br>
+                    <div class="icon-input">
+                        <input type="text" name="date" id="id_date" class="flatpickr">
+                        <i class="fa-regular fa-calendar-lines"></i>
+                    </div>
+                    <br>            
+                    <label for="id_time">Velg tidspunkt</label>
+                    <br>
+                    <select class="time" name="time" id="weekday">
+                        <option disabled selected value>Tidspunkt</option>
+                        <option value="08:00">08:00</option>
+                        <option value="10:00">10:00</option>
+                        <option value="12:00">12:00</option>
+                        <option value="14:00">14:00</option>
+                    </select>
+                    <select class="time" name="time" id="saturday">
+                        <option disabled selected value>Tidspunkt</option>
+                        <option value="10:00">10:00</option>
+                        <option value="12:00">12:00</option>
+                        <option value="14:00">14:00</option>
+                    </select>
+                    <br>
+                    <label for="id_preference">Plassering</label>
+                    <br>
+                    <select class="location" name="location" id="location">
+                        <option disabled selected value>Plassering</option>
+                        <option value="Arendal (Stoaveien)">Arendal (Stoaveien)</option>
+                        <option value="Kristiansand (Sørlandsparken)">Kristiansand (Sørlandsparken)</option>
+                        <option value="Lillestrøm">Lillestrøm</option>
+                        <option value="Oslo (Kontor)">Oslo (Kontor)</option>
+                        <option value="Oslo (Skøyen)">Oslo (Skøyen)</option>
+                    </select>
+                    <br>
+                    <br>
+                    <label for="id_preference">Medarbeider</label>
+                    <br>
+                    <select class="preference" name="preference" id="preference">
+                        <option disabled selected value>Medarbeider</option>
+                        <option value="Cecilie Gromsrud">Cecilie Gromsrud</option>
+                        <option value="Fredrik S. von der Lippe">Fredrik S. von der Lippe</option>
+                        <option value="Øystein Helgheim">Øystein Helgheim</option>
+                    </select>
+                    <br>
+                    <br>
+                    <div class="alert alert-danger" role="alert" id="alert" style="display: none;">Alle feltene må fylles inn</div>
+                    <div class="form-actions">
+                        <button type="button" onclick="nextStep()">Neste</button>
+                    </div>
                 </div>
-                <div class="checkbox">
-                    <input type="checkbox" id="sms_reminder" name="sms_reminder">
-                    <p onclick="smsCheckBox()">Jeg vil mota en SMS-påminelse før denne økten starter</p>
-                </div>
-                <div class="reg-nr">
-                    <img src="{% static 'images/other/skilt-no.svg' %}" alt="">
-                    <input required type="text" name="reg_number" id="reg_number" placeholder="AB12345" maxlength="7">
-                </div>
-                <br>
-                <div class="km">
-                    <p>km</p>
-                    <input type="number" id="km" name="km" placeholder="130000" name="km" id="km">
-                </div>
-                <div class="checkbox">
-                    <input type="checkbox" id="car_younger_than_10" name="car_younger_than_10" required>
-                    <p onclick="car_younger_than_10CheckBox()">Jeg bekrefter at bilen ikke er eldre enn 10 år</p>
-                </div>
-                <div class="checkbox">
-                    <input type="checkbox" id="less_than_150000km" name="less_than_150000km" required>
-                    <p onclick="less_than_150000kmCheckBox()">Jeg bekrefter at bilen ikke har gått lengre enn 150.000 km</p>
-                </div>
-                <div class="checkbox" style="margin-bottom: 26px;">
-                    <input type="checkbox" id="vilkaar" name="vilkaar" required>
-                    <p onclick="vilkaarCheckBox()">Jeg godtar vilkårene for formidllingssalg. <a href="" style="color: unset; font-weight: 500; text-decoration: underline;">Avale om formidllingssalg</a></p>
-                </div>
-                <label for="car_name_model">Bil og modell</label>
-                <br>
-                <input type="text" name="car_name_model" id="car_name_model">
-                <br>
-                <br>
-                <div class="alert alert-danger" role="alert" id="alert2" style="display: none;">Alle feltene må fylles inn. Du må også bekrefte de 3 feltene ovenfor.</div>
-                <div class="form-actions">
-                    <button type="button" onclick="getLast()">Book time</button>
-                </div>
-            </div>
-        </form>
 
+                <div id="bookTimeStepTwo">
+                    {% if request.user.is_authenticated %}
+                    {% else %}
+                    <div class="alert alert-info" style="margin-bottom: 28px;">Har du allerede en konto? <a href="/logg-inn/?next={% firstof request.path '/' %}" style="color: unset; font-weight: 500; text-decoration: underline;">Logg inn</a> for raskere bestilling.</div>
+                    {% endif %}
+                    <input type="text" name="user" id="user" style="display: none;" value="{{request.user}}">
+                    <label for="full_name">Fulltnavn</label>
+                    <br>
+                    <input type="text" name="full_name" id="full_name" value="{{request.user.get_full_name}}" required>
+                    <br>
+                    <br>
+                    <label for="email">Epost</label>
+                    <br>
+                    <input type="email" name="email" id="email" value="{{request.user.email}}" required>
+                    <br>
+                    <br>
+                    <label for="mobile_number">Telefonnummer</label>
+                    <br>
+                    <div class="mobile_number">
+                        <div class="nr">+47</div>
+                        <input type="number" name="mobile_number" id="mobile_number" required>
+                    </div>
+                    <div class="checkbox">
+                        <input type="checkbox" id="sms_reminder" name="sms_reminder">
+                        <p onclick="smsCheckBox()">Jeg vil mota en SMS-påminelse før denne økten starter</p>
+                    </div>
+                    <div class="reg-nr">
+                        <img src="{% static 'images/other/skilt-no.svg' %}" alt="">
+                        <input required type="text" name="reg_number" id="reg_number" placeholder="AB12345" maxlength="7">
+                    </div>
+                    <br>
+                    <div class="km">
+                        <p>km</p>
+                        <input type="number" id="km" name="km" placeholder="130000" name="km" id="km">
+                    </div>
+                    <div class="checkbox">
+                        <input type="checkbox" id="car_younger_than_10" name="car_younger_than_10" required>
+                        <p onclick="car_younger_than_10CheckBox()">Jeg bekrefter at bilen ikke er eldre enn 10 år</p>
+                    </div>
+                    <div class="checkbox">
+                        <input type="checkbox" id="less_than_150000km" name="less_than_150000km" required>
+                        <p onclick="less_than_150000kmCheckBox()">Jeg bekrefter at bilen ikke har gått lengre enn 150.000 km</p>
+                    </div>
+                    <div class="checkbox" style="margin-bottom: 26px;">
+                        <input type="checkbox" id="vilkaar" name="vilkaar" required>
+                        <p onclick="vilkaarCheckBox()">Jeg godtar vilkårene for formidllingssalg. <a href="" style="color: unset; font-weight: 500; text-decoration: underline;">Avale om formidllingssalg</a></p>
+                    </div>
+                    <label for="car_name_model">Bil og modell</label>
+                    <br>
+                    <input type="text" name="car_name_model" id="car_name_model">
+                    <br>
+                    <br>
+                    <div class="alert alert-danger" role="alert" id="alert2" style="display: none;">Alle feltene må fylles inn. Du må også bekrefte de 3 feltene ovenfor.</div>
+                    <div class="form-actions">
+                        <button type="button" onclick="getLast()">Book time</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
     </div>
 
 

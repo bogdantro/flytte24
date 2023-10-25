@@ -127,6 +127,13 @@ $txt: #183b56;
                 }
             }
         }
+        .flex{
+            display: flex;
+            justify-content: space-between;    
+            margin-inline: auto;
+            padding-inline: 0px;
+            width: 100%;
+        }
         form{
             background: white;
             border-radius: 12px;
@@ -155,4 +162,187 @@ $txt: #183b56;
         }   
     }
     
+}
+
+@media only screen and (min-device-width: 1290px) {
+    .page{
+        padding-inline: 10px;
+        padding-bottom: 170px;
+        padding-top: 140px;
+        .cover{
+            background: transparent;
+            max-width: 1290px;
+            .content{
+                max-width: 1290px;
+                padding-inline: 0;
+                .text{
+                    text-align: left;
+                    h1{
+                        color: $black;
+                        font-size: 36px;
+                        font-weight: 600;
+                        margin-bottom: -10px;
+                      }
+                      p{
+                        margin: unset;
+                        max-width: 340px;
+                        color: $black;
+                        font-size: 22px;
+                        font-weight: 500;
+                        margin-top: 18px;
+                      }
+                    #onlyOnDes{
+                        display: block;
+                        margin-top: 30px;
+                        .check{
+                          display: flex;
+                          margin-bottom: 25px;
+                          i{
+                            color: #1efa1e;
+                            background: #e0fae0;
+                            border-radius: 100%;
+                            padding: 10px;
+                            font-size: 24px;
+                          }
+                          p{
+                            color: $black;
+                            font-weight: 500;
+                            font-size: 20px;
+                            margin-left: 15px;
+                            transform: translateY(8px);
+                            margin-top: 0;
+                          }
+                        }
+                      }
+                }
+            }
+        }
+        .flex{
+            display: flex;
+            justify-content: space-between;    
+            min-width: 1290px;
+            max-width: 1290px;
+            margin-inline: auto;
+            padding-inline: 120px;
+        }
+        form{
+            background: white;
+            border-radius: 14px;
+            padding-inline: 30px;
+            padding-block: 22px;
+            padding-bottom: 24px;
+            width: 490px;
+            height: max-content;
+            border: 1px solid rgba(0,0,0,0.2);
+            transform: translateY(95px) translateX(-40px);
+            max-width: 1290px;
+            .inputs-labels{
+                .step-one{
+                    input{
+                        height: 60px;
+                        border-radius: 12px;
+                        text-align: center;
+                        font-size: 26px;
+                        &:focus, &:active{
+                            border: 1px solid rgb(172, 172, 172);
+                            cursor: text;
+                            background: rgba(255,255,255,1);
+                        }
+                        &::placeholder{
+                            font-size: 26px;
+                        }
+                    }
+                    .reg-nr{
+                        display: flex;
+                        position: relative;
+                        input{
+                            text-transform: uppercase;
+                        }
+                        img{
+                            position: absolute;
+                            left: 0;
+                            height: 60px;
+                            width: auto;
+                            border-bottom-left-radius: 12px;
+                            border-top-left-radius: 12px;
+                        }
+                    }
+                    .km{
+                        position: relative;
+                        display: flex;
+                        p{
+                            position: absolute;
+                            right: 7px;
+                            bottom: -4px;
+                            color: $black;
+                            opacity: 0.95;
+                            font-size: 16px;
+                            font-weight: 500;
+                        }
+                    }
+                }
+                label{
+                    font-size: 16px;
+                    color: $black;
+                    font-weight: 500;
+                }
+                input{
+                    width: 100%;
+                    height: 48px;
+                    border: 1px solid lightgray;
+                    outline: none;
+                    padding: 8px;
+                    color: $black;
+                    font-size: 16px;
+                    cursor: pointer;
+                    background: rgba(255,255,255,0.7);
+                    border-radius: 7px;
+                    &:focus, &:active{
+                        border: 2px solid $primBtn;
+                        cursor: text;
+                        background: rgba(255,255,255,1);
+                    }
+                    &::placeholder{
+                        color: $black;
+                        opacity: 0.6;
+                    }
+                }
+                .checkbox{
+                    display: flex;
+                    align-items: center;
+                    margin-top: 18px;
+                    margin-bottom: 15px;
+                    p{
+                        margin-bottom: 0;
+                        margin-left: 15px;
+                        font-size: 14px;
+                        color: $black;
+                        a{
+                            text-decoration: underline;
+                        }
+                    }
+                    input{
+                        width: 30px;
+                        height: 30px;
+                    }
+                }
+        
+            }
+            .form-actions{
+                button{
+                    border: 1px solid transparent;
+                    border-radius: 6px;
+                    outline: none;
+                    background: linear-gradient(to bottom right, $primBtn, #ffb649);
+                    color: white;
+                    font-weight: 500;
+                    font-size: 17px;
+                    width: 100%;
+                    display: block;
+                    height: 44px;
+                    margin-top: 32px;
+                  }
+            }
+        }   
+    }
 }

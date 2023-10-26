@@ -103,9 +103,9 @@ def buy_car(request):
         cars = cars.order_by('year')
 
     if price_order == 'km_high_to_low':
-        cars = cars.order_by('km')
-    elif price_order == 'km_low_to_high':
         cars = cars.order_by('-km')
+    elif price_order == 'km_low_to_high':
+        cars = cars.order_by('km')
 
     context = {
         'cars': cars,
@@ -119,7 +119,8 @@ def home_page_search(request):
     if query:
         queryset = (
             Q(name__icontains=query) |
-            Q(car_model__icontains=query) |
+            Q(car_spesifikasjoner__icontains=query) |
+            Q(car_brand__icontains=query) |
             Q(description__icontains=query) |
             Q(adress__icontains=query)
         )

@@ -225,6 +225,7 @@ $txt: #183b56;
                     background: transparent;
                     position: relative;
                     width: 40%;
+                    z-index: 100000;
                     .sort{
                         font-size: 16px;
                         color: $black;

@@ -1,5 +1,6 @@
 {% extends 'core/base.html' %}
 {% load static %}
+{% load custom_filters  %}
 
 {% block content %}
 <link rel="stylesheet" href="{% static '/scss/pages/page.css' %}" type="text/css">
@@ -34,15 +35,27 @@
         </div>
         <div class="cars">
             {% for car in results %}
-            <div class="car">
+            <div class="car" onclick="window.location.href='{% url  'car_detail' car.slug car.id %}'">
                 <div class="top">
-                    <img src="{{car.image1.url}}" alt="" class="car-image" onclick="window.location.href='{% url  'car_detail' car.slug  %}'">
+                    <img src="{{car.image1.url}}" alt="" class="car-image" >
                 </div>
+                {% if car.days_until_expiry > 0 %}
+                {% if car.sold %}
+                <div class="status" id="status" style="background: #ffc876;">Solgt</div>
+                {% endif %}
+                {% if car.buys %}
+                <div class="status" id="status" style="background: #ffc876;">Solgt</div>
+                {% endif %}
+                
+              {% endif %}
                 <div class="bottom">
-                      <div class="name"><strong style="font-weight: 600 !important;">{{car.year}} {{car.name}}</strong> {{car.car_model}}|{{car.km}}km</div>
+                    <div class="adress">{{car.adress}}</div>
+                      <div class="name"><strong style="font-weight: 600 !important;">{{car.name}}</strong> {{car.car_spesifikasjoner}}</div>
                       <!-- <div class="adress">{{car.adress}}</div> -->
                       <div class="flex">
-                            <div class="price">{{car.price}}kr</div>
+                            <div class="year">{{car.year}}</div>
+                            <div class="km">{{car.km}}km</div>
+                            <div class="price">{{car.price|add_space_separator}}kr</div>
                       </div>
                 </div>
             </div>

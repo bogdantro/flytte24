@@ -239,21 +239,21 @@ $txt: #183b56;
             width: 100%;
             button{
                 display: block;
-                border: 1px solid transparent;
+                border: 1px solid $primBtn;
                 border-radius: 6px;
                 outline: none;
-                background: linear-gradient(to bottom right, $primBtn, #ffb649);
-                color: white;
+                background: white;
+                color: $primBtn;
                 font-weight: 500;
                 font-size: 17px;
                 width: 100%;
                 display: block;
                 height: 47px;
                 margin-top: 15px;
-                &.secondary{
+                &:last-child{
                   border-color: $primBtn;
-                  color: $primBtn;
-                  background: white;
+                  color: white;
+                  background: linear-gradient(to bottom right, $primBtn, #ffb649);
                   margin-right: 0;
                 }
             }
@@ -834,7 +834,7 @@ $txt: #183b56;
 
 @media only screen and (min-device-width: 1140px) {
     .page{
-        padding-top: 120px;
+        padding-top: 220px;
         #overlay{
             position: fixed;
             top: 0;
@@ -925,7 +925,7 @@ $txt: #183b56;
 
                 .main-info{
                     position: absolute;
-                    top: 110px;
+                    top: 210px;
                     left: 620px;
                     z-index: 10;
                     pointer-events: visible;
@@ -946,30 +946,37 @@ $txt: #183b56;
 
 
                .first-info{
-                background: hsla(36, 100%, 90%, 0.484);
+                background: hsla(36, 100%, 90%, 1);
                 width: 100%;
-                height: auto;
-                padding: 20px;
-                position: absolute;
+                height: 80px;
+                padding-bottom: 0;
+                padding-top: 15px;
+                padding-inline: 35px;
+                position: fixed;
+                top: 80px;
                 left: 0;
-                transform: translateY(25px);
+                transform: translateY(0);
                 display: flex;
-                flex-wrap: wrap;
-                margin-top: 120px;
+                justify-content: unset;
+                flex-wrap: unset;
+                margin-top: 0;
+                z-index: 100;
                 .info{
                     display: flex;
                     width: 50%;
                     flex: 50%;
+                    max-width: 200px;
+                    height: max-content;
                     .left{
                         i{
                             color: $black;
-                            font-size: 27px;
+                            font-size: 25px;
                         }
                     }
                     .right{
                         margin-left: 22px;
                         p{
-                            font-size: 17px;
+                            font-size: 16px;
                             color: $black;
                             margin-bottom: 2px;
                         }
@@ -1082,7 +1089,7 @@ $txt: #183b56;
                 margin-top: 10px;
                 button{
                     display: block;
-                    border: 1px solid transparent;
+                    border: 1px solid $primBtn;
                     border-radius: 6px;
                     outline: none;
                     background: white;
@@ -1107,12 +1114,19 @@ $txt: #183b56;
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
+                max-width: 480px;
+                padding-left: 15px;
+                transform: translateY(-60px);
                 p{
-                    font-size: 16px;
+                    font-size: 18px;
+                    cursor: pointer;
                     padding-bottom: 10px;
                     font-weight: 500;
                     transition: .2s;
                     border-bottom: 2px solid transparent;
+                    &:hover{
+                        border-bottom: 2px solid $primBtn;
+                    }
                     &.active{
                         border-bottom: 2px solid $primBtn;
                         color: $primBtn;

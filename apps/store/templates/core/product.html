@@ -469,9 +469,15 @@
         {% if highest_bid %}
           {% if car.sold %}
           {% else %}
-          <div class="current-bid">
-            <div class="price" style="font-size: 18px;">Høyeste bud: <strong>{{highest_bid.bid_amount|add_space_separator }}kr</strong></div>
-          </div>
+            {% if highest_bid.days_until_expiry > 0 %}
+              {% if highest_bid.status = 'declined' %}
+              <div class="current-bid">
+                <div class="price" style="font-size: 18px;">Høyeste bud: <strong>{{highest_bid.bid_amount|add_space_separator }}kr</strong></div>
+              </div>
+              {% else %}
+              {% endif %}
+            {% else %}
+            {% endif %}
           {% endif %}
         {% endif %}
 
@@ -537,6 +543,8 @@
 
       </div>
       
+
+      <!-- Usynlig -->
       <div style="opacity: 0;">
         <h1>Høyste bud</h1>her: {{highest_bid.bid_amount}} <h1>Dager igjen</h1>{{ highest_bid.days_until_expiry }} <p>OBS: her vil høyeste budet komme opp. Både prisen og dato til den går bort kan bli vist. Dette er valgfritt</p>
       </div>
@@ -768,7 +776,10 @@
               <input type="number" required name="bid_amount" id="bid_amount" placeholder="Bud beløp">
               <i class="fa-duotone fa-tally-3"></i>
             </div>
+            {% if highest_bid.days_until_expiry > 0  %}
             <p style="margin-left: 5px; margin-top: 3px; margin-bottom: 0;" id="minPriceValueTxt">Må være større enn <span id="minPriceValue"></span>kr</p>
+            {% else %}
+            {% endif %}
             <br>
             <div class="icon-input">
               <input type="text" required name="expiry_date" id="expiry_date" placeholder="Utløpsdato">
@@ -1103,9 +1114,12 @@ setInterval(() => {
       const minPriceValue = document.getElementById('minPriceValue');
 
       '{% if highest_bid.bid_amount %}'
-      var bidAmount = '{{highest_bid.bid_amount|add_space_separator}}';
-      minPriceValue.innerHTML = '{{highest_bid.bid_amount|add_space_separator}}'
-      input.min = parseInt('{{highest_bid.bid_amount|add_space_separator}}') + 1
+      '{% if highest_bid.days_until_expiry > 0 %}'
+        var bidAmount = '{{highest_bid.bid_amount|add_space_separator}}';
+        minPriceValue.innerHTML = '{{highest_bid.bid_amount|add_space_separator}}'
+        input.min = parseInt('{{highest_bid.bid_amount|add_space_separator}}') + 1
+        '{% else %}'
+        '{% endif %}'
       '{% else %}'
       minPriceValueTxt.style.display = 'none'
     

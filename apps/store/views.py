@@ -22,20 +22,27 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from .forms import *
 from datetime import datetime
+from django.db.models import Q
 
 
 
+
+
+def update_bid_statuses(car):
+    display_bids = car.bud_set.filter(Q(status='pending') | Q(status='accepted'))
+    highest_bid = display_bids.order_by('-bid_amount').first()
+
+    for bid in display_bids:
+        if highest_bid is not None and bid.bid_amount < highest_bid.bid_amount:
+            bid.status = 'declined'
+            bid.save()
 
 def car_detail(request, slug, id):
-    car = get_object_or_404(Car, slug=slug)  
-    bids = car.bud_set.all()
-    mapbox_access_token = settings.MAP_BOX_ACCESS_TOKEN 
+    car = get_object_or_404(Car, slug=slug)
+    mapbox_access_token = settings.MAP_BOX_ACCESS_TOKEN
 
-    highest_bid = car.bud_set.all().order_by('bid_amount').last() 
-
-
-    if request.method=='POST' and 'testdrive' in request.POST:
-        name = request.POST.get('name', )
+    if request.method == 'POST' and 'testdrive' in request.POST:
+        name = request.POST.get('name', '')
         email = request.POST.get('email', '')
         message = request.POST.get('message', '')
         date1_Y_m_d = request.POST.get('date1_Y_m_d', '')
@@ -45,41 +52,52 @@ def car_detail(request, slug, id):
 
         testdrive = TestDrive.objects.create(
             car=car,
-            name=name, 
-            message=message, 
+            name=name,
+            message=message,
             email=email,
             date1_Y_m_d=date1_Y_m_d,
             time1=time1,
             date2_Y_m_d=date2_Y_m_d,
             time2=time2,
-            )
+        )
         return redirect('/success/')
 
-    if request.method=='POST' and 'make_bid' in request.POST:
+    if request.method == 'POST' and 'make_bid' in request.POST:
         user = request.user
-        bid_amount = request.POST.get('bid_amount', '')
+        bid_amount = int(request.POST.get('bid_amount', ''))
         expiry_date = request.POST.get('expiry_date', '')
 
-        car.bud_set.create(user=user, bid_amount=bid_amount, expiry_date=expiry_date)
+        status = 'pending'
+
+        bid = car.bud_set.create(user=user, bid_amount=bid_amount, expiry_date=expiry_date, status=status)
+
+        update_bid_statuses(car)  # Update bid statuses after creating a new bid
+
         return redirect('/bid-sucessnkldsf2398ryoiqwepyr3829yr3982/')
-    
-    if request.method=='POST' and 'buy' in request.POST:
+
+    if request.method == 'POST' and 'buy' in request.POST:
         user = request.user
-        car = car
+
         car.sold = True
         car.save()
 
         buy = Buy.objects.create(user=user, car=car)
         return redirect('/min-bruker/mine-kjøp/')
 
+    update_bid_statuses(car)  # Update bid statuses before rendering the view
+
+    display_bids = car.bud_set.filter(Q(status='pending') | Q(status='accepted'))
+    highest_bid = display_bids.order_by('-bid_amount').first()
+
     context = {
         'car': car,
-        'bids': bids,
-        'highest_bid': highest_bid,
+        'bids': display_bids,
+        'highest_bid': highest_bid,  # Pass the highest bid to the context
         'mapbox_access_token': mapbox_access_token,
     }
 
     return render(request, 'core/product.html', context)
+
 
 def bid_success(request):
     return render(request, 'core/bid-success.html')

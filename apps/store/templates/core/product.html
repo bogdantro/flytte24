@@ -470,11 +470,11 @@
           {% if car.sold %}
           {% else %}
             {% if highest_bid.days_until_expiry > 0 %}
-              {% if highest_bid.status = 'declined' %}
+              {% if highest_bid.status == 'declined' %}
+              {% else %}
               <div class="current-bid">
                 <div class="price" style="font-size: 18px;">Høyeste bud: <strong>{{highest_bid.bid_amount|add_space_separator }}kr</strong></div>
               </div>
-              {% else %}
               {% endif %}
             {% else %}
             {% endif %}
@@ -777,7 +777,10 @@
               <i class="fa-duotone fa-tally-3"></i>
             </div>
             {% if highest_bid.days_until_expiry > 0  %}
+            {% if highest_bid.status == 'declined' %}
+            {% else %}
             <p style="margin-left: 5px; margin-top: 3px; margin-bottom: 0;" id="minPriceValueTxt">Må være større enn <span id="minPriceValue"></span>kr</p>
+            {% endif %}
             {% else %}
             {% endif %}
             <br>
@@ -1115,9 +1118,12 @@ setInterval(() => {
 
       '{% if highest_bid.bid_amount %}'
       '{% if highest_bid.days_until_expiry > 0 %}'
-        var bidAmount = '{{highest_bid.bid_amount|add_space_separator}}';
-        minPriceValue.innerHTML = '{{highest_bid.bid_amount|add_space_separator}}'
-        input.min = parseInt('{{highest_bid.bid_amount|add_space_separator}}') + 1
+      '{% if highest_bid.status == "declined" %}'
+      '{% else %}'
+      var bidAmount = '{{highest_bid.bid_amount|add_space_separator}}';
+      minPriceValue.innerHTML = '{{highest_bid.bid_amount|add_space_separator}}'
+      input.min = parseInt('{{highest_bid.bid_amount|add_space_separator}}') + 1
+      '{% endif %}'
         '{% else %}'
         '{% endif %}'
       '{% else %}'

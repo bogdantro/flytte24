@@ -694,14 +694,14 @@ $txt: #183b56;
                 border-bottom: 1px solid lightgray;
                 height: 90px;
                 position: relative;
-                width: 420px;
-                margin-inline: unset;
+                width: 540px;
                 cursor: pointer;
                 p{
                   color: $black;
                   font-weight: 500;
                   margin-bottom: 0;
                   font-size: 22px;
+                  padding-right: 105px;
                 }
                 svg{
                   color: $black;
@@ -718,16 +718,16 @@ $txt: #183b56;
               }
               .answer{
                 padding: 8px;
-                transform: translateY(-21px);
                 border-radius: 2px;
                 height: 0;
                 transition: .2s;
                 pointer-events: none;
                 opacity: 0;
-                width: 420px;
-                margin-inline: unset;
+                width: 540px;
+                margin-top: 0;
                 &.active{
                   pointer-events: visible;
+                  margin-top: 10px;
                   opacity: 1;
                   height: 140px;
                 }
@@ -1115,14 +1115,14 @@ $txt: #183b56;
                 border-bottom: 1px solid lightgray;
                 height: 90px;
                 position: relative;
-                width: 420px;
-                margin-inline: unset;
+                width: 640px;
                 cursor: pointer;
                 p{
                   color: $black;
                   font-weight: 500;
                   margin-bottom: 0;
                   font-size: 22px;
+                  padding-right: 65px;
                 }
                 svg{
                   color: $black;
@@ -1145,8 +1145,7 @@ $txt: #183b56;
                 transition: .2s;
                 pointer-events: none;
                 opacity: 0;
-                width: 420px;
-                margin-inline: unset;
+                width: 640px;
                 &.active{
                   pointer-events: visible;
                   opacity: 1;

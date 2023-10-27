@@ -678,8 +678,7 @@
     border-bottom: 1px solid lightgray;
     height: 90px;
     position: relative;
-    width: 420px;
-    margin-inline: unset;
+    width: 540px;
     cursor: pointer;
   }
   .about-us .faq .content .ask p {
@@ -687,6 +686,7 @@
     font-weight: 500;
     margin-bottom: 0;
     font-size: 22px;
+    padding-right: 105px;
   }
   .about-us .faq .content .ask svg {
     color: #1F1F1F;
@@ -702,17 +702,17 @@
   }
   .about-us .faq .content .answer {
     padding: 8px;
-    transform: translateY(-21px);
     border-radius: 2px;
     height: 0;
     transition: 0.2s;
     pointer-events: none;
     opacity: 0;
-    width: 420px;
-    margin-inline: unset;
+    width: 540px;
+    margin-top: 0;
   }
   .about-us .faq .content .answer.active {
     pointer-events: visible;
+    margin-top: 10px;
     opacity: 1;
     height: 140px;
   }
@@ -1090,8 +1090,7 @@
     border-bottom: 1px solid lightgray;
     height: 90px;
     position: relative;
-    width: 420px;
-    margin-inline: unset;
+    width: 640px;
     cursor: pointer;
   }
   .about-us .faq .content .ask p {
@@ -1099,6 +1098,7 @@
     font-weight: 500;
     margin-bottom: 0;
     font-size: 22px;
+    padding-right: 65px;
   }
   .about-us .faq .content .ask svg {
     color: #1F1F1F;
@@ -1120,8 +1120,7 @@
     transition: 0.2s;
     pointer-events: none;
     opacity: 0;
-    width: 420px;
-    margin-inline: unset;
+    width: 640px;
   }
   .about-us .faq .content .answer.active {
     pointer-events: visible;

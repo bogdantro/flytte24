@@ -66,11 +66,11 @@
         </div>
         {% else %}
         {% if bud.status == 'declined' %}
-        <div class="bid expired" id="bid">
+        <div class="bid expired" id="bid" onclick="window.location.href='{% url  'car_detail' bud.car.slug bud.car.id %}'">
         {% elif bud.status == 'accepted' %}
-        <div class="bid accepted" id="bid">
+        <div class="bid accepted" id="bid" onclick="window.location.href='{% url  'car_detail' bud.car.slug bud.car.id %}'">
             {% else %}   
-            <div class="bid" id="bid">
+            <div class="bid" id="bid" onclick="window.location.href='{% url  'car_detail' bud.car.slug bud.car.id %}'">
         {% endif %}
 
             <h1 class="name">{{bud.car.name}} <span> {% if bud.days_until_expiry < 0 %} 0 {% else %} {{bud.days_until_expiry}} {% endif %} {% if bud.days_until_expiry == 1 %} dag igjen {% else %} dager igjen {% endif %}</span></h1>

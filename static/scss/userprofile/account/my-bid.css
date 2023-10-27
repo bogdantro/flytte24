@@ -10,6 +10,11 @@
   padding: 10px;
   border-radius: 5px;
   margin-bottom: 25px;
+  transition: 0.2s;
+  cursor: pointer;
+}
+.bids .bid:hover {
+  transform: scale(1.02);
 }
 .bids .bid.expired {
   background: rgba(255, 38, 0, 0.137);

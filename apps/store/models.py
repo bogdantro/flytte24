@@ -256,7 +256,7 @@ class Car(models.Model):
         return highest_bid or 0
 
     def __str__(self):
-        return self.name
+        return f"Bil: {self.name} {self.car_spesifikasjoner}"
     
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)

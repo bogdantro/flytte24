@@ -38,7 +38,7 @@
 
   
             {% if bud.days_until_expiry < 0 %}
-            <div class="bid expired" id="bid">
+            <div class="bid expired" id="bid" onclick="window.location.href='{% url  'car_detail' bud.car.slug bud.car.id %}'">
             <h1 class="name">{{bud.car.name}} <span>
                 {% if bud.days_until_expiry < 0 %} 
                     Utløpt

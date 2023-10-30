@@ -89,11 +89,17 @@ def car_detail(request, slug, id):
     display_bids = car.bud_set.filter(Q(status='pending') | Q(status='accepted'))
     highest_bid = display_bids.order_by('-bid_amount').first()
 
+     # Calculate the status and days_until_expiry
+    highest_bid_status = highest_bid.status if highest_bid else None
+    days_until_expiry = highest_bid.days_until_expiry if highest_bid else None
+
     context = {
         'car': car,
         'bids': display_bids,
         'highest_bid': highest_bid,  # Pass the highest bid to the context
         'mapbox_access_token': mapbox_access_token,
+        'highest_bid_status': highest_bid_status,
+        'days_until_expiry': days_until_expiry,
     }
 
     return render(request, 'core/product.html', context)

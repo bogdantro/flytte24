@@ -3,6 +3,7 @@ $white: rgb(246,246,246);
 $primBtn: #f0a432;
 $txt: #183b56;
 
+
 .cover{
     width: 100%;
     min-height: max-content;
@@ -285,6 +286,18 @@ $txt: #183b56;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       padding: 18px 10px;
       border-radius: 12px;
+      position: relative;
+      .number{
+        position: absolute;
+        top: -15px;
+        right: 15px;
+        background: $primBtn;
+        border-radius: 100%;
+        color: white;
+        padding: 6px 14px;
+        font-size: 17px;
+        font-weight: 600;
+      }
       .icon{
         margin-bottom: 5px;
         i{

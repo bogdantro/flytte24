@@ -24,9 +24,50 @@
 
 
 
- <div class="page">
-  <div id="overlay"></div>
+<div id="onlyDes">
+  <div class="first-info">
+    
+    <div class="info" style="margin-bottom: 30px;">
+      <div class="left"><i class="fa-regular fa-calendar-days"></i></div>
+      <div class="right">
+        <p>Modellår</p>
+        <p style="font-weight: 600;">{{car.year}}</p>
+      </div>
+    </div>
+    
+    <div class="info" style="margin-bottom: 30px;">
+      <div class="left"><i class="fa-solid fa-gauge-simple-high"></i></div>
+      <div class="right">
+        <p>Kilometer</p>
+        <p style="font-weight: 600;">{{car.km}}</p>
+      </div>
+    </div>
+    
+    <div class="info">
+      <div class="left"><i class="fa-solid fa-gear"></i></div>
+      <div class="right">
+        <p>Girkasse</p>
+        <p style="font-weight: 600;">{{car.girkasse}}</p>
+      </div>
+    </div>
+    
+    <div class="info">
+      <div class="left"><i class="fa-solid fa-gas-pump"></i></div>
+      <div class="right">
+        <p>Drivstoff</p>
+        <p style="font-weight: 600;">{{car.drivstoff}}</p>
+      </div>
+    </div>
 
+  </div>
+</div>
+
+
+ <div class="page">
+   
+   <div id="overlay"></div>
+   
+   <div class="max-w">
 
    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
 
@@ -461,7 +502,8 @@
       </div>
 
 
-      <div class="main-info">
+
+    <div class="main-info">
 
         <div class="name"><strong style="font-weight: 600;">{{car.name}}</strong> {{ car.car_spesifikasjoner }}</div>
         <p style="margin-bottom: 0; margin-top: 15px; color: black; font-size: 16px; opacity: 0.7;">Pris</p>
@@ -483,30 +525,32 @@
 
         <div class="actions">
           {% if request.user == car.user %}
-
           {% else %}
-
             {% if car.sold %}
             {% else %}
-            
-            {% if highest_bid %}
-            <button onclick="testDrive()" class="secondary">Prøvekjøring</button>
-            <button onclick="contactOwner()" class="secondary">Kontakt eier</button>
-            <button onclick="makeBid()" class="secondary">Gi bud</button>
-            {% else %}
-            <button onclick="testDrive()" class="secondary">Prøvekjøring</button>
-            <button onclick="contactOwner()" class="secondary">Kontakt eier</button>
-            <button onclick="makeBid()" class="secondary">Gi bud</button>
-            <button onclick="confirmBuy()">Kjøp bilen</button>
+              {% if highest_bid %}
+                {% if highest_bid.status == 'pending' %}
+                <button onclick="testDrive()" class="secondary">Prøvekjøring</button>
+                <button onclick="contactOwner()" class="secondary">Kontakt eier</button>
+                <button onclick="makeBid()" class="secondary">Gi bud</button>
+                {% endif %}
+              {% else %}
+                <button onclick="testDrive()" class="secondary">Prøvekjøring</button>
+                <button onclick="contactOwner()" class="secondary">Kontakt eier</button>
+                <button onclick="makeBid()" class="secondary">Gi bud</button>
+              {% endif %}
+              {% if highest_bid_status|default:'' == 'declined' or days_until_expiry|default:0 == 0 %}
+                <button onclick="confirmBuy()">Kjøp bilen</button>
+              {% elif highest_bid_status|default:'' == 'expired' %}
+                <button onclick="confirmBuy()">Kjøp bilen</button>
+              {% endif %}
             {% endif %}
-
-            {% endif %}
-
           {% endif %}
         </div>
-
+        
       </div>
 
+    <div id="onlyMob">
       <div class="first-info">
         
         <div class="info" style="margin-bottom: 30px;">
@@ -542,8 +586,9 @@
         </div>
 
       </div>
-      
+    </div>
 
+      
       <!-- Usynlig -->
       <div style="opacity: 0;">
         <h1>Høyste bud</h1>her: {{highest_bid.bid_amount}} <h1>Dager igjen</h1>{{ highest_bid.days_until_expiry }} <p>OBS: her vil høyeste budet komme opp. Både prisen og dato til den går bort kan bli vist. Dette er valgfritt</p>
@@ -866,6 +911,7 @@
     {% endif %}
 
   </div>
+</div>
 
   </div>
 

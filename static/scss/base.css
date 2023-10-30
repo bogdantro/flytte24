@@ -284,6 +284,18 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   padding: 18px 10px;
   border-radius: 12px;
+  position: relative;
+}
+.proccess .content .proccess-card .number {
+  position: absolute;
+  top: -15px;
+  right: 15px;
+  background: #f0a432;
+  border-radius: 100%;
+  color: white;
+  padding: 6px 14px;
+  font-size: 17px;
+  font-weight: 600;
 }
 .proccess .content .proccess-card .icon {
   margin-bottom: 5px;

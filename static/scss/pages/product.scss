@@ -1875,7 +1875,7 @@ $txt: #183b56;
                 .main-info{
                     position: relative;
                     top: -395px;
-                    left: 600px;
+                    left: 630px;
                     z-index: 10;
                     pointer-events: visible;
                 }
@@ -1895,7 +1895,8 @@ $txt: #183b56;
 
 
                .second-info{
-                transform: translateY(-500px) translateX(15px);
+                transform: translateY(-530px) translateX(15px);
+                margin-bottom: -480px;
                 .spec{
                     p{
                         margin-bottom: 4px;
@@ -1909,7 +1910,8 @@ $txt: #183b56;
                 }
                }
                .third-info{
-                transform: translateY(-140px) translateX(15px);
+                transform: translateY(-530px) translateX(15px);
+                margin-bottom: -480px;
                 li{
                     transform: translateX(30px);
                     font-size: 17px;
@@ -1927,8 +1929,9 @@ $txt: #183b56;
                 }
                }
                .fourth-info{
-                transform: translateY(-140px) translateX(15px);
+                transform: translateY(-530px) translateX(15px);
                 max-width: 480px !important;
+                margin-bottom: -480px;
                 .des{
                     font-size: 16px !important;
                     max-width: 480px !important;

@@ -1905,7 +1905,7 @@
   .page .car .info .main-info {
     position: relative;
     top: -395px;
-    left: 600px;
+    left: 630px;
     z-index: 10;
     pointer-events: visible;
   }
@@ -1923,7 +1923,8 @@
     margin-top: 3px;
   }
   .page .car .info .second-info {
-    transform: translateY(-500px) translateX(15px);
+    transform: translateY(-530px) translateX(15px);
+    margin-bottom: -480px;
   }
   .page .car .info .second-info .spec p {
     margin-bottom: 4px;
@@ -1935,7 +1936,8 @@
     font-size: 17px;
   }
   .page .car .info .third-info {
-    transform: translateY(-140px) translateX(15px);
+    transform: translateY(-530px) translateX(15px);
+    margin-bottom: -480px;
   }
   .page .car .info .third-info li {
     transform: translateX(30px);
@@ -1953,8 +1955,9 @@
     transform: translateY(2px);
   }
   .page .car .info .fourth-info {
-    transform: translateY(-140px) translateX(15px);
+    transform: translateY(-530px) translateX(15px);
     max-width: 480px !important;
+    margin-bottom: -480px;
   }
   .page .car .info .fourth-info .des {
     font-size: 16px !important;

@@ -12,6 +12,14 @@
   display: block;
 }
 
+#onlyDesTwo {
+  display: none;
+}
+
+#onlyMobTwo {
+  display: block;
+}
+
 .page {
   padding-top: 68px;
 }
@@ -1801,6 +1809,93 @@
     color: #1F1F1F;
     margin-bottom: 2px;
   }
+  #onlyMobTwo {
+    display: none;
+  }
+  #onlyDesTwo {
+    display: block;
+    position: absolute;
+    top: 650px;
+    left: 650px;
+  }
+  #onlyDesTwo .additional-info {
+    width: 120%;
+    height: auto;
+    margin-left: 0;
+    margin-top: 0;
+    border-radius: 4px;
+    position: relative !important;
+    left: 0 !important;
+    top: 0;
+  }
+  #onlyDesTwo .additional-info #addInfoChoices {
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+    padding: 10px 20px;
+    background: hsla(36, 100%, 90%, 0.484);
+    width: -moz-max-content;
+    width: max-content;
+    position: relative;
+    display: flex;
+    cursor: pointer;
+  }
+  #onlyDesTwo .additional-info #addInfoChoices i {
+    position: absolute;
+    top: -35px;
+    color: #f0a432;
+    font-size: 26px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  #onlyDesTwo .additional-info #addInfoChoices p {
+    margin-bottom: 0;
+    color: #1F1F1F;
+    font-size: 16px;
+    font-weight: 600;
+    width: -moz-max-content;
+    width: max-content;
+  }
+  #onlyDesTwo .additional-info #addInfoChoices p:first-child {
+    padding-left: 0 !important;
+  }
+  #onlyDesTwo .additional-info #addInfoChoices #service {
+    padding: 10px 20px;
+    margin: -10px -20px;
+  }
+  #onlyDesTwo .additional-info #addInfoChoices #service.active {
+    background: hsla(36, 100%, 86%, 0.484);
+  }
+  #onlyDesTwo .additional-info #addInfoChoices #garanti {
+    padding: 10px 20px;
+    margin: -10px -20px;
+  }
+  #onlyDesTwo .additional-info #addInfoChoices #garanti.active {
+    background: hsla(36, 100%, 86%, 0.484);
+  }
+  #onlyDesTwo .additional-info .content {
+    background: hsla(36, 100%, 90%, 0.484);
+    padding: 20px;
+  }
+  #onlyDesTwo .additional-info .content p {
+    margin-bottom: 0;
+    color: #1F1F1F;
+    font-size: 16px;
+    font-weight: 400;
+  }
+  #onlyDesTwo .additional-info .content #serviceText {
+    display: none;
+    max-width: 520px;
+  }
+  #onlyDesTwo .additional-info .content #serviceText.active {
+    display: block;
+  }
+  #onlyDesTwo .additional-info .content #garantiText {
+    display: none;
+    max-width: 520px;
+  }
+  #onlyDesTwo .additional-info .content #garantiText.active {
+    display: block;
+  }
   .page {
     padding-top: 250px;
     width: 100%;
@@ -1963,83 +2058,12 @@
     font-size: 16px !important;
     max-width: 480px !important;
   }
-  .page .car .info .additional-info {
-    width: 120%;
-    height: auto;
-    margin-left: -20px;
-    margin-top: 80px;
-    border-radius: 4px;
+  .page .car .info .max-width {
     position: absolute;
-    left: 752px;
-    top: 675px;
-  }
-  .page .car .info .additional-info #addInfoChoices {
-    border-top-right-radius: 4px;
-    border-top-left-radius: 4px;
-    padding: 10px 20px;
-    background: hsla(36, 100%, 90%, 0.484);
-    width: -moz-max-content;
-    width: max-content;
-    position: relative;
-    display: flex;
-    cursor: pointer;
-  }
-  .page .car .info .additional-info #addInfoChoices i {
-    position: absolute;
-    top: -35px;
-    color: #f0a432;
-    font-size: 26px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-  .page .car .info .additional-info #addInfoChoices p {
-    margin-bottom: 0;
-    color: #1F1F1F;
-    font-size: 16px;
-    font-weight: 600;
-    width: -moz-max-content;
-    width: max-content;
-  }
-  .page .car .info .additional-info #addInfoChoices p:first-child {
-    padding-left: 0 !important;
-  }
-  .page .car .info .additional-info #addInfoChoices #service {
-    padding: 10px 20px;
-    margin: -10px -20px;
-  }
-  .page .car .info .additional-info #addInfoChoices #service.active {
-    background: hsla(36, 100%, 86%, 0.484);
-  }
-  .page .car .info .additional-info #addInfoChoices #garanti {
-    padding: 10px 20px;
-    margin: -10px -20px;
-  }
-  .page .car .info .additional-info #addInfoChoices #garanti.active {
-    background: hsla(36, 100%, 86%, 0.484);
-  }
-  .page .car .info .additional-info .content {
-    background: hsla(36, 100%, 90%, 0.484);
-    padding: 20px;
-  }
-  .page .car .info .additional-info .content p {
-    margin-bottom: 0;
-    color: #1F1F1F;
-    font-size: 16px;
-    font-weight: 400;
-  }
-  .page .car .info .additional-info .content #serviceText {
-    display: none;
-    max-width: 520px;
-  }
-  .page .car .info .additional-info .content #serviceText.active {
-    display: block;
-  }
-  .page .car .info .additional-info .content #garantiText {
-    display: none;
-    max-width: 520px;
-  }
-  .page .car .info .additional-info .content #garantiText.active {
-    display: block;
+    left: 700px;
+    top: 600px;
+    max-width: -moz-max-content;
+    max-width: max-content;
   }
   .page .car .actions {
     width: 100%;

@@ -16,6 +16,14 @@ $txt: #183b56;
     display: block;
 }
 
+#onlyDesTwo{
+    display: none;
+}
+
+#onlyMobTwo{
+    display: block;
+}
+
 .page{
     padding-top: 68px;
     #overlay{
@@ -1777,6 +1785,92 @@ $txt: #183b56;
             }
            }
     }
+    #onlyMobTwo{
+        display: none;
+    }
+    #onlyDesTwo{
+        display: block;
+        position: absolute;
+        top: 650px;
+        left: 650px;
+        .additional-info{
+            width: 120%;
+            height: auto;
+            margin-left: 0;
+            margin-top: 0;
+             border-radius: 4px;
+             position: relative !important;
+             left: 0 !important;
+             top: 0;
+             #addInfoChoices{
+                 border-top-right-radius: 4px;
+                 border-top-left-radius: 4px;
+                 padding: 10px 20px;
+                 background: hsla(36, 100%, 90%, 0.484);
+                 width: max-content;
+                 position: relative;
+                 display: flex;
+                 cursor: pointer;
+                 i{
+                     position: absolute;
+                     top: -35px;
+                     color: $primBtn;
+                     font-size: 26px;
+                     left: 50%;
+                     transform: translateX(-50%);
+                 }
+                 p{
+                     margin-bottom: 0;
+                     color: $black;
+                     font-size: 16px;
+                     font-weight: 600;
+                     width: max-content;
+                    &:first-child{
+                     padding-left: 0 !important;
+                    }
+                 }
+                 #service{
+                     padding: 10px 20px;
+                     margin: -10px -20px;
+                     &.active{
+                         background: hsla(36, 100%, 86%, 0.484);
+                     }
+                 }
+                 #garanti{
+                     padding: 10px 20px;
+                     margin: -10px -20px;
+                     &.active{
+                         background: hsla(36, 100%, 86%, 0.484);
+                     }
+                 }
+             }
+             .content{
+                 background: hsla(36, 100%, 90%, 0.484);
+                 padding: 20px;
+                 p{
+                     margin-bottom: 0;
+                     color: $black;
+                     font-size: 16px;
+                     font-weight: 400;
+                 }
+                 #serviceText{
+                     display: none;
+                     max-width: 520px;
+                     &.active{
+                         display: block;
+                        }
+                    }
+                 #garantiText{
+                     display: none;
+                    max-width: 520px;
+                     &.active{
+                         display: block;
+                     }
+                 }
+             }
+        }
+    }
+    
     .page{
         padding-top: 250px;
         width: 100%;
@@ -1937,82 +2031,13 @@ $txt: #183b56;
                     max-width: 480px !important;
                 }
                 }
-                .additional-info{
-                    width: 120%;
-                    height: auto;
-                    margin-left: -20px;
-                    margin-top: 80px;
-                     border-radius: 4px;
-                     position: absolute;
-                     left: 752px;
-                     top: 675px;
-                     #addInfoChoices{
-                         border-top-right-radius: 4px;
-                         border-top-left-radius: 4px;
-                         padding: 10px 20px;
-                         background: hsla(36, 100%, 90%, 0.484);
-                         width: max-content;
-                         position: relative;
-                         display: flex;
-                         cursor: pointer;
-                         i{
-                             position: absolute;
-                             top: -35px;
-                             color: $primBtn;
-                             font-size: 26px;
-                             left: 50%;
-                             transform: translateX(-50%);
-                         }
-                         p{
-                             margin-bottom: 0;
-                             color: $black;
-                             font-size: 16px;
-                             font-weight: 600;
-                             width: max-content;
-                            &:first-child{
-                             padding-left: 0 !important;
-                            }
-                         }
-                         #service{
-                             padding: 10px 20px;
-                             margin: -10px -20px;
-                             &.active{
-                                 background: hsla(36, 100%, 86%, 0.484);
-                             }
-                         }
-                         #garanti{
-                             padding: 10px 20px;
-                             margin: -10px -20px;
-                             &.active{
-                                 background: hsla(36, 100%, 86%, 0.484);
-                             }
-                         }
-                     }
-                     .content{
-                         background: hsla(36, 100%, 90%, 0.484);
-                         padding: 20px;
-                         p{
-                             margin-bottom: 0;
-                             color: $black;
-                             font-size: 16px;
-                             font-weight: 400;
-                         }
-                         #serviceText{
-                             display: none;
-                             max-width: 520px;
-                             &.active{
-                                 display: block;
-                                }
-                            }
-                         #garantiText{
-                             display: none;
-                            max-width: 520px;
-                             &.active{
-                                 display: block;
-                             }
-                         }
-                     }
+                .max-width{
+                    position: absolute;
+                    left: 700px;
+                    top: 600px;
+                    max-width: max-content;
                 }
+        
             }
             .actions{
                 width: 100%;

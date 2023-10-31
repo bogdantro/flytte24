@@ -1,0 +1,15 @@
+{% load static %}
+
+<div class="inline-group">
+  {% for field in inline_admin_form %}
+    <div class="form-row">
+      <div class="field-box">
+        {{ field.label_tag }}
+        {{ field }}
+        {% if field.field.help_text %}
+          <p class="help">{{ field.field.help_text|safe }}</p>
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
+</div>

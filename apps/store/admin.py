@@ -7,23 +7,47 @@ from ckeditor.widgets import CKEditorWidget
 # Register your models here.
 
 
-class BudInline(admin.TabularInline):
+class TestDriveForm(forms.ModelForm):
+    class Meta:
+        model = TestDrive
+        fields = ['name', 'date1_Y_m_d', 'time1', 'date2_Y_m_d', 'time2']
+
+
+class BidInline(admin.TabularInline):
     model = Bud
     extra = 1
 
-class CarPostAdminForm(forms.ModelForm):
-    description = forms.CharField(widget=CKEditorWidget())
-    inlines = [BudInline]
-    class Meta:
-        model = Car
-        fields = '__all__'
+    def has_add_permission(self, request):
+        return False  # Disable the "Add Another" button
+
+class BuyInline(admin.TabularInline):
+    model = Buy
+    extra = 1
+
+    def has_add_permission(self, request):
+        return False  # Disable the "Add Another" button
+
+class TestDriveInline(admin.TabularInline):
+    model = TestDrive
+    extra = 1
+    form = TestDriveForm
+
+    def has_add_permission(self, request):
+        return False  # Disable the "Add Another" button
+
+
+
+
 
 class CarPostAdmin(admin.ModelAdmin):
-    form = CarPostAdminForm
-
+    inlines = [BidInline, BuyInline, TestDriveInline]
     list_display = ['id', 'name', 'car_spesifikasjoner', 'car_brand', 'price']
     search_fields = ('id', 'name', 'car_brand', 'car_spesifikasjoner', 'km')
 
+    class Media:
+        css = {
+            'all': ('/static/scss/admin_custom.css',),  # Update the path to your CSS file
+        }
 
     fieldsets = (
       ('Hoved informasjon', {

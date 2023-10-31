@@ -1132,6 +1132,14 @@ $txt: #183b56;
                          }
                      }
                 }
+                .location{
+                    position: absolute;
+                    left: 625px;
+                    top: 830px;
+                    iframe{
+                        min-width: 520px !important;
+                    }
+                }
             }
             .actions{
                 width: 100%;
@@ -2051,7 +2059,14 @@ $txt: #183b56;
                     top: 600px;
                     max-width: max-content;
                 }
-        
+                .location{
+                    position: absolute;
+                    left: 670px;
+                    top: 610px;
+                    iframe{
+                        min-width: 600px !important;
+                    }
+                }
             }
             .actions{
                 width: 100%;

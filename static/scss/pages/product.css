@@ -1146,6 +1146,14 @@
   .page .car .info .additional-info .content #garantiTextOne.active {
     display: block;
   }
+  .page .car .info .location {
+    position: absolute;
+    left: 625px;
+    top: 830px;
+  }
+  .page .car .info .location iframe {
+    min-width: 520px !important;
+  }
   .page .car .actions {
     width: 100%;
     margin-top: 10px;
@@ -2082,6 +2090,14 @@
     top: 600px;
     max-width: -moz-max-content;
     max-width: max-content;
+  }
+  .page .car .info .location {
+    position: absolute;
+    left: 670px;
+    top: 610px;
+  }
+  .page .car .info .location iframe {
+    min-width: 600px !important;
   }
   .page .car .actions {
     width: 100%;

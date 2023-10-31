@@ -168,7 +168,14 @@ $txt: #183b56;
             }
            }
            .second-info{
+            .specs{
+                display: flex;
+                flex-wrap: wrap;
+            }
             .spec{
+                width: 50%;
+                min-width: 50%;
+                margin-bottom: 15px;
                 p{
                     margin-bottom: 4px;
                     font-size: 16px;
@@ -191,7 +198,7 @@ $txt: #183b56;
                margin-left: -20px;
                margin-top: 80px;
                 border-radius: 4px;
-                #addInfoChoices{
+                #addInfoChoicesOne{
                     border-top-right-radius: 4px;
                     border-top-left-radius: 4px;
                     padding: 10px 20px;
@@ -217,14 +224,14 @@ $txt: #183b56;
                         padding-left: 0 !important;
                        }
                     }
-                    #service{
+                    #serviceOne{
                         padding: 10px 20px;
                         margin: -10px -20px;
                         &.active{
                             background: hsla(36, 100%, 86%, 0.484);
                         }
                     }
-                    #garanti{
+                    #garantiOne{
                         padding: 10px 20px;
                         margin: -10px -20px;
                         &.active{
@@ -241,13 +248,13 @@ $txt: #183b56;
                         font-size: 16px;
                         font-weight: 400;
                     }
-                    #serviceText{
+                    #serviceTextOne{
                         display: none;
                         &.active{
                             display: block;
                         }
                     }
-                    #garantiText{
+                    #garantiTextOne{
                         display: none;
                         &.active{
                             display: block;
@@ -1011,7 +1018,8 @@ $txt: #183b56;
                 }
                }
                .second-info{
-                transform: translateY(-140px) translateX(15px);
+                transform: translateY(-125px) translateX(15px);
+                max-width: 480px;
                 .spec{
                     p{
                         margin-bottom: 4px;
@@ -1025,7 +1033,7 @@ $txt: #183b56;
                 }
                }
                .third-info{
-                transform: translateY(-140px) translateX(15px);
+                transform: translateY(-125px) translateX(15px);
                 li{
                     transform: translateX(30px);
                     font-size: 17px;
@@ -1043,7 +1051,7 @@ $txt: #183b56;
                 }
                }
                .fourth-info{
-                transform: translateY(-140px) translateX(15px);
+                transform: translateY(-125px) translateX(15px);
                 max-width: 480px !important;
                 .des{
                     font-size: 16px !important;
@@ -1059,7 +1067,7 @@ $txt: #183b56;
                      position: absolute;
                      left: 642px;
                      top: 625px;
-                     #addInfoChoices{
+                     #addInfoChoicesOne{
                          border-top-right-radius: 4px;
                          border-top-left-radius: 4px;
                          padding: 10px 20px;
@@ -1086,14 +1094,14 @@ $txt: #183b56;
                              padding-left: 0 !important;
                             }
                          }
-                         #service{
+                         #serviceOne{
                              padding: 10px 20px;
                              margin: -10px -20px;
                              &.active{
                                  background: hsla(36, 100%, 86%, 0.484);
                              }
                          }
-                         #garanti{
+                         #garantiOne{
                              padding: 10px 20px;
                              margin: -10px -20px;
                              &.active{
@@ -1110,13 +1118,13 @@ $txt: #183b56;
                              font-size: 16px;
                              font-weight: 400;
                          }
-                         #serviceText{
+                         #serviceTextOne{
                              display: none;
                              &.active{
                                  display: block;
                              }
                          }
-                         #garantiText{
+                         #garantiTextOne{
                              display: none;
                              &.active{
                                  display: block;
@@ -1157,7 +1165,7 @@ $txt: #183b56;
                 justify-content: space-between;
                 max-width: 480px;
                 padding-left: 15px;
-                transform: translateY(-135px);
+                transform: translateY(-115px);
                 p{
                     font-size: 18px;
                     cursor: pointer;
@@ -1993,7 +2001,11 @@ $txt: #183b56;
                .second-info{
                 transform: translateY(-530px) translateX(15px);
                 margin-bottom: -480px;
+                justify-content: center;
                 .spec{
+                    min-width: 33%;
+                    max-width: 33%;
+                    flex: 1;
                     p{
                         margin-bottom: 4px;
                         font-size: 16px !important;

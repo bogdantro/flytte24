@@ -166,6 +166,15 @@
   font-size: 24px;
   transform: translateY(2px);
 }
+.page .car .info .second-info .specs {
+  display: flex;
+  flex-wrap: wrap;
+}
+.page .car .info .second-info .spec {
+  width: 50%;
+  min-width: 50%;
+  margin-bottom: 15px;
+}
 .page .car .info .second-info .spec p {
   margin-bottom: 4px;
   font-size: 16px;
@@ -185,7 +194,7 @@
   margin-top: 80px;
   border-radius: 4px;
 }
-.page .car .info .additional-info #addInfoChoices {
+.page .car .info .additional-info #addInfoChoicesOne {
   border-top-right-radius: 4px;
   border-top-left-radius: 4px;
   padding: 10px 20px;
@@ -195,7 +204,7 @@
   position: relative;
   display: flex;
 }
-.page .car .info .additional-info #addInfoChoices i {
+.page .car .info .additional-info #addInfoChoicesOne i {
   position: absolute;
   top: -35px;
   color: #f0a432;
@@ -203,7 +212,7 @@
   left: 50%;
   transform: translateX(-50%);
 }
-.page .car .info .additional-info #addInfoChoices p {
+.page .car .info .additional-info #addInfoChoicesOne p {
   margin-bottom: 0;
   color: #1F1F1F;
   font-size: 16px;
@@ -211,21 +220,21 @@
   width: -moz-max-content;
   width: max-content;
 }
-.page .car .info .additional-info #addInfoChoices p:first-child {
+.page .car .info .additional-info #addInfoChoicesOne p:first-child {
   padding-left: 0 !important;
 }
-.page .car .info .additional-info #addInfoChoices #service {
+.page .car .info .additional-info #addInfoChoicesOne #serviceOne {
   padding: 10px 20px;
   margin: -10px -20px;
 }
-.page .car .info .additional-info #addInfoChoices #service.active {
+.page .car .info .additional-info #addInfoChoicesOne #serviceOne.active {
   background: hsla(36, 100%, 86%, 0.484);
 }
-.page .car .info .additional-info #addInfoChoices #garanti {
+.page .car .info .additional-info #addInfoChoicesOne #garantiOne {
   padding: 10px 20px;
   margin: -10px -20px;
 }
-.page .car .info .additional-info #addInfoChoices #garanti.active {
+.page .car .info .additional-info #addInfoChoicesOne #garantiOne.active {
   background: hsla(36, 100%, 86%, 0.484);
 }
 .page .car .info .additional-info .content {
@@ -238,16 +247,16 @@
   font-size: 16px;
   font-weight: 400;
 }
-.page .car .info .additional-info .content #serviceText {
+.page .car .info .additional-info .content #serviceTextOne {
   display: none;
 }
-.page .car .info .additional-info .content #serviceText.active {
+.page .car .info .additional-info .content #serviceTextOne.active {
   display: block;
 }
-.page .car .info .additional-info .content #garantiText {
+.page .car .info .additional-info .content #garantiTextOne {
   display: none;
 }
-.page .car .info .additional-info .content #garantiText.active {
+.page .car .info .additional-info .content #garantiTextOne.active {
   display: block;
 }
 .page .car .actions {
@@ -1023,7 +1032,8 @@
     margin-bottom: 2px;
   }
   .page .car .info .second-info {
-    transform: translateY(-140px) translateX(15px);
+    transform: translateY(-125px) translateX(15px);
+    max-width: 480px;
   }
   .page .car .info .second-info .spec p {
     margin-bottom: 4px;
@@ -1035,7 +1045,7 @@
     font-size: 17px;
   }
   .page .car .info .third-info {
-    transform: translateY(-140px) translateX(15px);
+    transform: translateY(-125px) translateX(15px);
   }
   .page .car .info .third-info li {
     transform: translateX(30px);
@@ -1053,7 +1063,7 @@
     transform: translateY(2px);
   }
   .page .car .info .fourth-info {
-    transform: translateY(-140px) translateX(15px);
+    transform: translateY(-125px) translateX(15px);
     max-width: 480px !important;
   }
   .page .car .info .fourth-info .des {
@@ -1070,7 +1080,7 @@
     left: 642px;
     top: 625px;
   }
-  .page .car .info .additional-info #addInfoChoices {
+  .page .car .info .additional-info #addInfoChoicesOne {
     border-top-right-radius: 4px;
     border-top-left-radius: 4px;
     padding: 10px 20px;
@@ -1081,7 +1091,7 @@
     display: flex;
     cursor: pointer;
   }
-  .page .car .info .additional-info #addInfoChoices i {
+  .page .car .info .additional-info #addInfoChoicesOne i {
     position: absolute;
     top: -35px;
     color: #f0a432;
@@ -1089,7 +1099,7 @@
     left: 50%;
     transform: translateX(-50%);
   }
-  .page .car .info .additional-info #addInfoChoices p {
+  .page .car .info .additional-info #addInfoChoicesOne p {
     margin-bottom: 0;
     color: #1F1F1F;
     font-size: 16px;
@@ -1097,21 +1107,21 @@
     width: -moz-max-content;
     width: max-content;
   }
-  .page .car .info .additional-info #addInfoChoices p:first-child {
+  .page .car .info .additional-info #addInfoChoicesOne p:first-child {
     padding-left: 0 !important;
   }
-  .page .car .info .additional-info #addInfoChoices #service {
+  .page .car .info .additional-info #addInfoChoicesOne #serviceOne {
     padding: 10px 20px;
     margin: -10px -20px;
   }
-  .page .car .info .additional-info #addInfoChoices #service.active {
+  .page .car .info .additional-info #addInfoChoicesOne #serviceOne.active {
     background: hsla(36, 100%, 86%, 0.484);
   }
-  .page .car .info .additional-info #addInfoChoices #garanti {
+  .page .car .info .additional-info #addInfoChoicesOne #garantiOne {
     padding: 10px 20px;
     margin: -10px -20px;
   }
-  .page .car .info .additional-info #addInfoChoices #garanti.active {
+  .page .car .info .additional-info #addInfoChoicesOne #garantiOne.active {
     background: hsla(36, 100%, 86%, 0.484);
   }
   .page .car .info .additional-info .content {
@@ -1124,16 +1134,16 @@
     font-size: 16px;
     font-weight: 400;
   }
-  .page .car .info .additional-info .content #serviceText {
+  .page .car .info .additional-info .content #serviceTextOne {
     display: none;
   }
-  .page .car .info .additional-info .content #serviceText.active {
+  .page .car .info .additional-info .content #serviceTextOne.active {
     display: block;
   }
-  .page .car .info .additional-info .content #garantiText {
+  .page .car .info .additional-info .content #garantiTextOne {
     display: none;
   }
-  .page .car .info .additional-info .content #garantiText.active {
+  .page .car .info .additional-info .content #garantiTextOne.active {
     display: block;
   }
   .page .car .actions {
@@ -1168,7 +1178,7 @@
     justify-content: space-between;
     max-width: 480px;
     padding-left: 15px;
-    transform: translateY(-135px);
+    transform: translateY(-115px);
   }
   .page .car #infoChoices p {
     font-size: 18px;
@@ -2022,6 +2032,12 @@
   .page .car .info .second-info {
     transform: translateY(-530px) translateX(15px);
     margin-bottom: -480px;
+    justify-content: center;
+  }
+  .page .car .info .second-info .spec {
+    min-width: 33%;
+    max-width: 33%;
+    flex: 1;
   }
   .page .car .info .second-info .spec p {
     margin-bottom: 4px;

@@ -2,7 +2,8 @@ from django.contrib import admin
 from .models import *
 from django import forms
 from .forms import *
-from ckeditor.widgets import CKEditorWidget
+from .forms import CarForm  # Import the custom form
+from ckeditor.widgets import CKEditorWidget  # Import CKEditorWidget
 
 # Register your models here.
 
@@ -36,6 +37,9 @@ class CarPostAdmin(admin.ModelAdmin):
     list_display = ['id', 'name', 'car_spesifikasjoner', 'car_brand', 'price']
     search_fields = ('id', 'name', 'car_brand', 'car_spesifikasjoner', 'km')
 
+    formfield_overrides = {
+        models.TextField: {'widget': CKEditorWidget()},
+    }
 
     fieldsets = (
       ('Hoved informasjon', {

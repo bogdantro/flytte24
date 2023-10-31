@@ -580,6 +580,10 @@
 
         <div class="actions">
           {% if request.user == car.user %}
+                <button  style=" pointer-events: none;" class="secondary">Du eier bilen</button>
+                <button style="opacity: 0; pointer-events: none;"  class="secondary">Se annonsen under min bruker</button>
+                <button  style="opacity: 0; pointer-events: none;" class="secondary">Du eier bilen</button>
+                <button  style="opacity: 0; pointer-events: none;" >Du eier bilen</button>
           {% else %}
             {% if car.sold %}
             {% else %}
@@ -798,7 +802,7 @@
 
       <div class="fourth-info" id="beskrivelse">
         <p style="margin-bottom: 10px; margin-top: 25px; color: black; font-size: 22px;">Beskrivelse</p>
-          <p class="des">{{car.description|safe}}</p>
+          <p style="font-size: 16px !important;" class="des">{{car.description|safe}}</p>
       </div>
 
 

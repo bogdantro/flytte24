@@ -33,7 +33,7 @@ class Car(models.Model):
     # Main
     name = models.CharField(max_length=300)
     slug = models.SlugField(max_length=150)
-    description = models.TextField(blank=False)
+    description = models.TextField(max_length=1000000000000000, blank=True, null=True)
     # Viktig
     expiry_date = models.DateField()
     # Price
@@ -55,8 +55,6 @@ class Car(models.Model):
     amount_of_owners = models.CharField(max_length=100, blank=True, null=True)
     last_EU_accepted = models.CharField(max_length=100, blank=True, null=True)
     next_EU_test_deadline = models.CharField(max_length=100, blank=True, null=True)
-    # Description
-    description = models.CharField(max_length=8000, blank=True, null=True)
     # Contact
     adress = models.CharField(max_length=100, blank=True, null=True)
     post_nr = models.CharField(max_length=100, blank=True, null=True)

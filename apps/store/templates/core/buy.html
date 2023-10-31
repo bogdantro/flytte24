@@ -37,15 +37,11 @@
                 <div class="top">
                     <img src="{{car.image1.url}}" alt="" class="car-image" >
                 </div>
-                {% if car.days_until_expiry > 0 %}
+
                 {% if car.sold %}
                 <div class="status" id="status" style="background: #ffc876;">Solgt</div>
                 {% endif %}
-                {% if car.buys %}
-                <div class="status" id="status" style="background: #ffc876;">Solgt</div>
-                {% endif %}
-                
-              {% endif %}
+
                 <div class="bottom">
                     <div class="adress">{{car.adress}}</div>
                       <div class="name"><strong style="font-weight: 600 !important;">{{car.name}}</strong> {{car.car_spesifikasjoner}}</div>

@@ -15,25 +15,17 @@ class TestDriveForm(forms.ModelForm):
 
 class BidInline(admin.TabularInline):
     model = Bud
-    extra = 1
-
-    def has_add_permission(self, request):
-        return False  # Disable the "Add Another" button
+    extra = 0
 
 class BuyInline(admin.TabularInline):
     model = Buy
-    extra = 1
+    extra = 0
 
-    def has_add_permission(self, request):
-        return False  # Disable the "Add Another" button
 
 class TestDriveInline(admin.TabularInline):
     model = TestDrive
-    extra = 1
+    extra = 0
     form = TestDriveForm
-
-    def has_add_permission(self, request):
-        return False  # Disable the "Add Another" button
 
 
 
@@ -44,10 +36,6 @@ class CarPostAdmin(admin.ModelAdmin):
     list_display = ['id', 'name', 'car_spesifikasjoner', 'car_brand', 'price']
     search_fields = ('id', 'name', 'car_brand', 'car_spesifikasjoner', 'km')
 
-    class Media:
-        css = {
-            'all': ('/static/scss/admin_custom.css',),  # Update the path to your CSS file
-        }
 
     fieldsets = (
       ('Hoved informasjon', {

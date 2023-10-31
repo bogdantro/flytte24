@@ -1790,9 +1790,10 @@ $txt: #183b56;
     }
     #onlyDesTwo{
         display: block;
-        position: absolute;
-        top: 650px;
-        left: 650px;
+        position: absolute; /* Change position to sticky */
+        top: 480px;
+        left: 667px; /* Remove left property */
+        width: 100%;
         .additional-info{
             width: 120%;
             height: auto;
@@ -1877,6 +1878,7 @@ $txt: #183b56;
         .max-w{
             max-width: 1290px;
             margin: 0 auto;
+            position: relative;
         }
         #overlay{
             position: fixed;

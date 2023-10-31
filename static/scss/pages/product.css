@@ -1814,9 +1814,10 @@
   }
   #onlyDesTwo {
     display: block;
-    position: absolute;
-    top: 650px;
-    left: 650px;
+    position: absolute; /* Change position to sticky */
+    top: 480px;
+    left: 667px; /* Remove left property */
+    width: 100%;
   }
   #onlyDesTwo .additional-info {
     width: 120%;
@@ -1903,6 +1904,7 @@
   .page .max-w {
     max-width: 1290px;
     margin: 0 auto;
+    position: relative;
   }
   .page #overlay {
     position: fixed;

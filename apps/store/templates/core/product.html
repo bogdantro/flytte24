@@ -585,6 +585,12 @@
                 <button  style="opacity: 0; pointer-events: none;" class="secondary">Du eier bilen</button>
                 <button  style="opacity: 0; pointer-events: none;" >Du eier bilen</button>
           {% else %}
+          {% if car.sold %}
+          <button  style=" pointer-events: none;" class="secondary">Bilen ble solgt</button>
+          <button style="opacity: 0; pointer-events: none;"  class="secondary">Se annonsen under min bruker</button>
+          <button  style="opacity: 0; pointer-events: none;" class="secondary">Du eier bilen</button>
+          <button  style="opacity: 0; pointer-events: none;" >Du eier bilen</button>
+          {% else %}
             {% if car.sold %}
             <button  style=" pointer-events: none;" class="secondary">Bilen ble solgt</button>
             <button style="opacity: 0; pointer-events: none;"  class="secondary">Se annonsen under min bruker</button>

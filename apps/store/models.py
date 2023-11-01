@@ -244,6 +244,7 @@ class Car(models.Model):
     image78 = models.ImageField(blank=True, default='', upload_to='static/images/other/cars/')
     image79 = models.ImageField(blank=True, default='', upload_to='static/images/other/cars/')
     image80 = models.ImageField(blank=True, default='', upload_to='static/images/other/cars/')
+    image81 = models.ImageField(blank=True, default='', upload_to='static/images/other/cars/')
     
     def days_until_expiry(self):
         today = timezone.now().date()

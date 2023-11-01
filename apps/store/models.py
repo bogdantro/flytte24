@@ -4,7 +4,6 @@ from django.conf import settings
 from django.utils.text import slugify
 from django.contrib.auth.models import User
 
-
 class Car(models.Model):
 
     PLACE = [
@@ -162,7 +161,6 @@ class Car(models.Model):
     drivstoff = models.CharField(max_length=100, blank=True, null=True, choices=DRIVSTOFF)
     effekt_i_hk = models.CharField(max_length=100, blank=True, null=True)
     batterikapasitet_i_kWh = models.CharField(max_length=100, blank=True, null=True)
-    
     # Images
     image1 = models.ImageField(blank=False, default='', upload_to='static/images/other/cars/')
     image2 = models.ImageField(blank=True, default='', upload_to='static/images/other/cars/')
@@ -244,7 +242,6 @@ class Car(models.Model):
     image78 = models.ImageField(blank=True, default='', upload_to='static/images/other/cars/')
     image79 = models.ImageField(blank=True, default='', upload_to='static/images/other/cars/')
     image80 = models.ImageField(blank=True, default='', upload_to='static/images/other/cars/')
-    image81 = models.ImageField(blank=True, default='', upload_to='static/images/other/cars/')
     
     def days_until_expiry(self):
         today = timezone.now().date()

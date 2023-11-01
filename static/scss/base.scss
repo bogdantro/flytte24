@@ -692,8 +692,8 @@ $txt: #183b56;
       overflow: hidden !important;
       position: relative;
        /* The image used */
-      background:linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.15)), url("/static/images/covers/cover-1.png");
-
+      background:linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.15)), url("/static/images/covers/cover-1-new2.png");
+      background-position: center;
       /* Full height */
       height: 560px;
 
@@ -753,7 +753,7 @@ $txt: #183b56;
           font-size: 17px;
           width: 415px;
           display: block;
-          height: 48px;
+          height: 52px;
           &.secondary{
             border-color: $primBtn;
             color: $primBtn;
@@ -1427,7 +1427,7 @@ $txt: #183b56;
 @media only screen and (min-device-width: 1290px) {
   .cover{
     width: 100%;
-    min-height: max-content;
+    max-height: 670px;
     margin-bottom: 20px;
     position: relative;
     padding-bottom: 5px;
@@ -1467,16 +1467,16 @@ $txt: #183b56;
         margin-top: 28px;
         .cover-h1{
           color: white;
-          font-size: 42px;
+          font-size: 46px;
           font-weight: 600;
           margin-bottom: 10px;
         }
         .cover-p{
-          font-size: 20px;
+          font-size: 22px;
           margin-bottom: 0;
           color: white;
           font-weight: 500;
-          width: 400px;
+          width: 440px;
         }
       }
       .cover-actions{
@@ -1493,7 +1493,7 @@ $txt: #183b56;
           font-size: 17px;
           width: 425px;
           display: block;
-          height: 50px;
+          height: 54px;
           &.secondary{
             border-color: $primBtn;
             color: $primBtn;

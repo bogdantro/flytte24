@@ -1043,10 +1043,61 @@
   </div>
 
 
+  <style>
+    .fullscreen-image {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 9999;
+      background-color: rgba(0, 0, 0, 0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  
+    .fullscreen-image img {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+    }
+  </style>
+  
 
 
-
-
+  <script>
+    // Function to open fullscreen image
+    function openFullScreenImage(imageUrl) {
+      const fullscreenContainer = document.createElement('div');
+      fullscreenContainer.className = 'fullscreen-image';
+  
+      const imgElement = document.createElement('img');
+      imgElement.src = imageUrl;
+      imgElement.alt = 'Fullscreen Image';
+  
+      // Close the fullscreen image when clicking on the black overlay
+      fullscreenContainer.onclick = () => {
+        fullscreenContainer.remove();
+      };
+  
+      fullscreenContainer.appendChild(imgElement);
+      document.body.appendChild(fullscreenContainer);
+    }
+  
+    // Attach click event to each carousel item
+    const carouselItems = document.querySelectorAll('.carousel-item');
+    carouselItems.forEach((item, index) => {
+      const image = item.querySelector('.pr-img');
+      const imageUrl = image.getAttribute('src');
+  
+      image.onclick = () => {
+        openFullScreenImage(imageUrl);
+      };
+    });
+  </script>
+  
+  
 
   <script type="text/javascript">
 

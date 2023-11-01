@@ -155,7 +155,7 @@ class Car(models.Model):
     rekkevidde = models.CharField(max_length=100, blank=True, null=True)
     girkasse = models.CharField(max_length=100, blank=True, null=True, choices=GIRKASSE)
     girkassebetegnelse = models.CharField(max_length=100, blank=True, null=True)
-    hjuldrift = models.CharField(max_length=200, choices=[('Forhjulsdrift', 'Forhjulsdrift'), ('bBakhjulsdriftk', 'Bakhjulsdrift'), ['Firhjulsdrift', 'Firhjulsdrift']], blank=True, null=True)
+    hjuldrift = models.CharField(max_length=200, choices=[('Forhjulsdrift', 'Forhjulsdrift'), ('Bakhjulsdrift', 'Bakhjulsdrift'), ['Firhjulsdrift', 'Firhjulsdrift']], blank=True, null=True)
     hjuldriftbetegnelse = models.CharField(max_length=100, blank=True, null=True)
     modellspesifikasjon = models.CharField(max_length=100, blank=True, null=True)
     bilen_står_i = models.CharField(choices=PLACE,max_length=100, blank=True, null=True)

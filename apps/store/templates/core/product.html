@@ -549,9 +549,7 @@
 
       <div class="flex">
         {% if car.days_until_expiry > 0 %}
-          {% if car.sold %}
-          <div class="status" id="status" style="background: #ffc876;">Solgt</div>
-          {% endif %}
+      
 
         {% endif %}
       </div>
@@ -580,19 +578,17 @@
 
         <div class="actions">
           {% if request.user == car.user %}
-                <button  style=" pointer-events: none;" class="secondary">Du eier bilen</button>
-                <button style="opacity: 0; pointer-events: none;"  class="secondary">Se annonsen under min bruker</button>
+                <button  style=" background: #ffc876; color: #1F1F1F; border: none; pointer-events: none;" class="secondary">Du eier bilen</button>
+                {% if car.sold %}
+                <button style="background: #ffc876; color: #1F1F1F; border: none; pointer-events: none;"  class="secondary">Bilen ble solgt</button>
+                {% else %}
+                <button style="opacity: 0; pointer-events: none;"  class="secondary">Bilen ble solgt</button>
+                {% endif %}
                 <button  style="opacity: 0; pointer-events: none;" class="secondary">Du eier bilen</button>
                 <button  style="opacity: 0; pointer-events: none;" >Du eier bilen</button>
           {% else %}
-          {% if car.sold %}
-          <button  style=" pointer-events: none;" class="secondary">Bilen ble solgt</button>
-          <button style="opacity: 0; pointer-events: none;"  class="secondary">Se annonsen under min bruker</button>
-          <button  style="opacity: 0; pointer-events: none;" class="secondary">Du eier bilen</button>
-          <button  style="opacity: 0; pointer-events: none;" >Du eier bilen</button>
-          {% else %}
             {% if car.sold %}
-            <button  style=" pointer-events: none;" class="secondary">Bilen ble solgt</button>
+            <button   style=" background: #ffc876; color: #1F1F1F; border: none; pointer-events: none;" class="secondary">Bilen ble solgt</button>
             <button style="opacity: 0; pointer-events: none;"  class="secondary">Se annonsen under min bruker</button>
             <button  style="opacity: 0; pointer-events: none;" class="secondary">Du eier bilen</button>
             <button  style="opacity: 0; pointer-events: none;" >Du eier bilen</button>
@@ -851,17 +847,17 @@
           <div class="content">
             {% if car.service %}
             <div id="serviceTextOne" class="active">
-              <p>{{car.service}}</p>
+              <p>{{car.service|safe}}</p>
             </div>
             {% endif %}
             {% if car.garanti %}
               {% if car.service %}
                 <div id="garantiTextOne">
-                  <p>{{car.garanti}}</p>
+                  <p>{{car.garanti|safe}}</p>
                 </div>
                 {% else %}
                 <div id="garantiTextOne" class="active">
-                  <p>{{car.garanti}}</p>
+                  <p>{{car.garanti|safe}}</p>
                 </div>
               {% endif %}
             {% endif %}

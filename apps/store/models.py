@@ -15,8 +15,8 @@ class Car(models.Model):
     ]
 
     CHASIS = [
-        ("Kombi-5", "Kombi-5 dørs"),
-        ("SUV", "SUV"),
+        ("Kombi-5 dørs", "Kombi-5 dørs"),
+        ("SUV/Offroad", "SUV/Offroad"),
     ]
 
     GIRKASSE = [
@@ -43,11 +43,11 @@ class Car(models.Model):
     fritak_for_reg_pris = models.BooleanField(default=False)
     price = models.IntegerField(max_length=300, default=0, blank=True, null=True)
     # Aditional info 
-    service = models.TextField(max_length=700, blank=True, null=True, default="Bilens serviceprogram er fulgt. Det er tatt servicer på bilen i henhold til fabrikkens retningslinjer.")
-    garanti = models.TextField(max_length=700, blank=True, null=True, default="Denne bilen kan selges med bruktbilgaranti 24måneder eller frem til 200000km.")
+    service = models.CharField(max_length=700, blank=True, null=True, default="Bilens serviceprogram er fulgt. Det er tatt servicer på bilen i henhold til fabrikkens retningslinjer.")
+    garanti = models.CharField(max_length=700, blank=True, null=True, default="Denne bilen kan selges med bruktbilgaranti 24måneder eller frem til 200000km.")
 
     # Quality
-    chasis = models.CharField(max_length=100, choices=CHASIS, blank=True, null=True)
+    karosseritype = models.CharField(max_length=100, choices=CHASIS, blank=True, null=True)
     reg_nr = models.CharField(max_length=100, blank=True, null=True)
     year = models.CharField(max_length=100, blank=True, null=True)
     car_brand = models.CharField(max_length=100, blank=True, null=True)
@@ -148,7 +148,6 @@ class Car(models.Model):
     fargebeskrivelse = models.CharField(max_length=100, blank=True, null=True)
     interiorfarge = models.CharField(max_length=100, blank=True, null=True)
     # Karosseritype
-    karosseritype = models.CharField(max_length=100, blank=True, null=True)
     avgiftsklasse = models.CharField(max_length=100, blank=True, null=True)
     antall_seter = models.CharField(max_length=100, blank=True, null=True)
     antall_dører = models.CharField(max_length=100, blank=True, null=True)

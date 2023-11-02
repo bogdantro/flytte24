@@ -4,6 +4,9 @@ from django.conf import settings
 from django.utils.text import slugify
 from django.contrib.auth.models import User
 
+
+
+
 class Car(models.Model):
 
     PLACE = [
@@ -154,7 +157,7 @@ class Car(models.Model):
     rekkevidde = models.CharField(max_length=100, blank=True, null=True)
     girkasse = models.CharField(max_length=100, blank=True, null=True, choices=GIRKASSE)
     girkassebetegnelse = models.CharField(max_length=100, blank=True, null=True)
-    hjuldrift = models.CharField(max_length=200, choices=[('Forhjulsdrift', 'Forhjulsdrift'), ('Bakhjulsdrift', 'Bakhjulsdrift'), ['Firhjulsdrift', 'Firhjulsdrift']], blank=True, null=True)
+    hjuldrift = models.CharField(max_length=200, choices=[('Forhjulsdrift', 'Forhjulsdrift'), ('Bakhjulsdrift', 'Bakhjulsdrift'), ['Firehjulsdrift', 'Firehjulsdrift']], blank=True, null=True)
     hjuldriftbetegnelse = models.CharField(max_length=100, blank=True, null=True)
     modellspesifikasjon = models.CharField(max_length=100, blank=True, null=True)
     bilen_står_i = models.CharField(choices=PLACE,max_length=100, blank=True, null=True)
@@ -266,6 +269,9 @@ class Car(models.Model):
     def image_url(self):
         return '%s%s' % (settings.ALLOWED_HOSTS, self.image.url) if self.image else ''    
       
+
+
+
 
 class Bud(models.Model):
     car = models.ForeignKey(Car, on_delete=models.CASCADE, blank=True, default='')

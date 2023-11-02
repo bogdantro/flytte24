@@ -14,7 +14,7 @@ from apps.store.views import *
 from django.contrib import admin
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('bilmeglerne/admin/login/', admin.site.urls),
 
     path('', home, name='home'),
     path('søke-resultater/', home_page_search, name='home_page_search'),

@@ -1065,6 +1065,7 @@
   .page .car .info .fourth-info {
     transform: translateY(-125px) translateX(15px);
     max-width: 480px !important;
+    display: inline-block;
   }
   .page .car .info .fourth-info .des {
     font-size: 16px !important;
@@ -2080,6 +2081,7 @@
     transform: translateY(-530px) translateX(15px);
     max-width: 480px !important;
     margin-bottom: -480px;
+    display: inline-block;
   }
   .page .car .info .fourth-info .des {
     font-size: 16px !important;

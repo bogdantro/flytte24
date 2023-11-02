@@ -724,7 +724,7 @@
         
       </div>
 
-      <div class="second-info" id="spesifikasjoner">
+      <div class="second-info" id="spesifikasjoner" >
         <p style="margin-bottom: 18px; margin-top: 25px; color: black; font-size: 22px;">Spesifikasjoner</p>
         <div class="specs">
           <div class="spec">
@@ -786,7 +786,7 @@
         </div>
       </div>
 
-      <div class="fourth-info" id="beskrivelse">
+      <div class="fourth-info" id="beskrivelse" style="display: inline-block;">
         <p style="margin-bottom: 10px; margin-top: 25px; color: black; font-size: 22px;">Beskrivelse</p>
           <p style="font-size: 16px !important;" class="des">{{car.description|safe}}</p>
       </div>
@@ -1244,7 +1244,7 @@
 
 
 function infoChoicesOne(){
-  document.getElementById('beskrivelse').style.display = 'block';
+  document.getElementById('beskrivelse').style.display = 'inline-block';
   document.getElementById('utstyr').style.display = 'none';
   document.getElementById('spesifikasjoner').style.display = 'none';
   
@@ -1256,7 +1256,7 @@ function infoChoicesOne(){
 }
 
 function infoChoicesTwo(){
-  document.getElementById('utstyr').style.display = 'block';
+  document.getElementById('utstyr').style.display = 'inline-block';
   document.getElementById('spesifikasjoner').style.display = 'none';
   document.getElementById('beskrivelse').style.display = 'none';
 
@@ -1268,7 +1268,7 @@ function infoChoicesTwo(){
 }
 
 function infoChoicesThree(){
-  document.getElementById('spesifikasjoner').style.display = 'block';
+  document.getElementById('spesifikasjoner').style.display = 'inline-block';
   document.getElementById('beskrivelse').style.display = 'none';
   document.getElementById('utstyr').style.display = 'none';
 

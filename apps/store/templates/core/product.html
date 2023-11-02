@@ -668,76 +668,60 @@
       <div class="third-info" id="utstyr">
         <p style="margin-bottom: 10px; margin-top: 25px; color: black; font-size: 22px;">Utstyr</p>
         {% if car.ABS_bremser %}<li>ABS bremser</li>{% endif %}
-        {% if car.airbag_foran %}<li>Airbag foran</li>{% endif %}
-        {% if car.gjenfinningssystem %}<li>Gjenfinningssystem</li>{% endif %}
-        {% if car.isofix %}<li>Isofix</li>{% endif %}
-        {% if car.sentrallås %}<li>Sentrallås</li>{% endif %}
-        {% if car.sideairbager %}<li>Sideairbager</li>{% endif %}
-        {% if car.startsperre %}<li>Startsperre</li>{% endif %}
-        
         {% if car.AUX_inngang %}<li>AUX inngang</li>{% endif %}
-        {% if car.bluetooth %}<li>Bluetooth</li>{% endif %}
-        {% if car.CD_spiller %}<li>CD spiller</li>{% endif %}
-        {% if car.handsfree_opplegg %}<li>Handsfree</li>{% endif %}
-        {% if car.head_up_display %}<li>Head up display</li>{% endif %}
-        {% if car.kassetspiller %}<li>Kassetspiller</li>{% endif %}
-        {% if car.multifunksjonsratt %}<li>Multifunksjonsratt</li>{% endif %}
-        {% if car.navigasjonssystem %}<li>Navigasjonssystem</li>{% endif %}
-        {% if car.original_telefon %}<li>Original telefon</li>{% endif %}
-        {% if car.radio_DAB %}<li>Radio DAB</li>{% endif %}
-        {% if car.radio_FM %}<li>Radio FM</li>{% endif %}
-        {% if car.TV_skjerm_i_baksetet %}<li>TV skjerm i baksetet</li>{% endif %}
-        
+        {% if car.air_Condition %}<li>Air Condition</li>{% endif %}
+        {% if car.airbag_foran %}<li>Airbag foran</li>{% endif %}
+        {% if car.alarm %}<li>Alarm</li>{% endif %}
         {% if car.antiskrens %}<li>Antiskrens</li>{% endif %}
         {% if car.antispin %}<li>Antispin</li>{% endif %}
+        {% if car.bagasjeromstrekk %}<li>Bagasjeromstrekk</li>{% endif %}
+        {% if car.bluetooth %}<li>Bluetooth</li>{% endif %}
+        {% if car.CD_spiller %}<li>CD spiller</li>{% endif %}
+        {% if car.cruisekontroll %}<li>Cruisekontroll</li>{% endif %}
+        {% if car.cruisekontroll_Adaptiv %}<li>Cruisekontroll Adaptiv</li>{% endif %}
         {% if car.diesel_partikkelfilter %}<li>Diesel partikkelfilter</li>{% endif %}
         {% if car.diffsperre %}<li>Diffsperre</li>{% endif %}
-        {% if car.kjørecomputer %}<li>Kjørecomputer</li>{% endif %}
-        {% if car.servostyring %}<li>Servostyring</li>{% endif %}
-
+        {% if car.elektrisk_sete_med_memory %}<li>Elektrisk sete med memory</li>{% endif %}
+        {% if car.elektrisk_sete_uten_memory %}<li>Elektrisk sete uten memory</li>{% endif %}
         {% if car.elvinduer %}<li>El vinduer</li>{% endif %}
-        {% if car.mørke_ruter_bak %}<li>mørke ruter bak</li>{% endif %}
+        {% if car.fjernlysassitent %}<li>Fjernlysassitent</li>{% endif %}
+        {% if car.gjenfinningssystem %}<li>Gjenfinningssystem</li>{% endif %}
+        {% if car.handsfree_opplegg %}<li>Handsfree</li>{% endif %}
+        {% if car.head_up_display %}<li>Head up display</li>{% endif %}
+        {% if car.helårsdekk %}<li>Helårsdekk</li>{% endif %}
+        {% if car.hengerfeste_eller_svingbart %}<li>Hengerfeste / Svingbart speil</li>{% endif %}
+        {% if car.isofix %}<li>Isofix</li>{% endif %}
+        {% if car.kassetspiller %}<li>Kassetspiller</li>{% endif %}
+        {% if car.kjørecomputer %}<li>Kjørecomputer</li>{% endif %}
+        {% if car.LED_lys %}<li>LED lys</li>{% endif %}
+        {% if car.laserlys %}<li>Laserlys speil</li>{% endif %}
+        {% if car.lasterholdere_eller_skistativ %}<li>Lasterholdere / Skistativ</li>{% endif %}
+        {% if car.luftfjæring %}<li>Luftfjæring</li>{% endif %}
+        {% if car.lyssensor %}<li>Lyssensor</li>{% endif %}
+        {% if car.mørke_ruter_bak %}<li>Mørke ruter bak</li>{% endif %}
+        {% if car.metalic_lakk %}<li>Metalic lakk</li>{% endif %}
+        {% if car.motorvarmer %}<li>Motorvarmer</li>{% endif %}
+        {% if car.multifunksjonsratt %}<li>Multifunksjonsratt</li>{% endif %}
+        {% if car.navigasjonssystem %}<li>Navigasjonssystem</li>{% endif %}
+        {% if car.nivåregulering %}<li>Nivåregulering</li>{% endif %}
+        {% if car.nøkkelløs_start %}<li>Nøkkelløs start</li>{% endif %}
+        {% if car.oppvarmende_seter %}<li>Oppvarmende seter</li>{% endif %}
+        {% if car.original_telefon %}<li>Original telefon</li>{% endif %}
+        {% if car.parkeringsensor_bak %}<li>Parkeringsensor bak</li>{% endif %}
+        {% if car.parkeringsensor_foran %}<li>Parkeringsensor foran</li>{% endif %}
+        {% if car.radio_DAB %}<li>Radio DAB</li>{% endif %}
+        {% if car.radio_FM %}<li>Radio FM</li>{% endif %}
+        {% if car.regnesensor %}<li>Regnesensor</li>{% endif %}
+        {% if car.ruggekamera %}<li>Ryggekamera</li>{% endif %}
+        {% if car.sentrallås %}<li>Sentrallås</li>{% endif %}
+        {% if car.servostyring %}<li>Servostyring</li>{% endif %}
         {% if car.seter_i_delskinn %}<li>Seter i delskinn</li>{% endif %}
         {% if car.seter_i_helskinn %}<li>Seter i helskinn</li>{% endif %}
         {% if car.soltak_eller_glasstak %}<li>Soltak / Glasstak</li>{% endif %}
         {% if car.sportsseter %}<li>Sportsseter</li>{% endif %}
-
-        {% if car.air_Condition %}<li>Air Condition</li>{% endif %}
-        {% if car.bagasjeromstrekk %}<li>Bagasjeromstrekk</li>{% endif %}
-        {% if car.cruisekontroll %}<li>Cruisekontroll</li>{% endif %}
-        {% if car.cruisekontroll_Adaptiv %}<li>Cruisekontroll Adaptiv</li>{% endif %}
-        {% if car.elektrisk_sete_med_memory %}<li>Elektrisk sete med memory</li>{% endif %}
-        {% if car.elektrisk_sete_uten_memory %}<li>Elektrisk sete uten memory</li>{% endif %}
-        {% if car.klimaanlegg %}<li>Klimaanlegg</li>{% endif %}
-        {% if car.kupevarmer %}<li>Kupevarmer</li>{% endif %}
-        {% if car.luftfjæring %}<li>Luftfjæring</li>{% endif %}
-        {% if car.midtarmlene %}<li>Midtarmlene</li>{% endif %}
-        {% if car.motorvarmer %}<li>Motorvarmer</li>{% endif %}
-        {% if car.nivåregulering %}<li>Nivåregulering</li>{% endif %}
-        {% if car.nøkkelløs_start %}<li>Nøkkelløs start</li>{% endif %}
-        {% if car.oppvarmende_seter %}<li>Oppvarmende seter</li>{% endif %}
-
-        {% if car.elektriske_speil %}<li>Elektriske speil</li>{% endif %}
-        {% if car.helårsdekk %}<li>Helårsdekk</li>{% endif %}
-        {% if car.hengerfeste_eller_svingbart %}<li>Hengerfeste / Svingbart speil</li>{% endif %}
-        {% if car.LED_lys %}<li>LED lys</li>{% endif %}
-        {% if car.laserlys %}<li>Laserlys speil</li>{% endif %}
-        {% if car.lasterholdere_eller_skistativ %}<li>Lasterholdere / Skistativ</li>{% endif %}
-        {% if car.lettmet_felg_sommer %}<li>Lettmet felg sommer</li>{% endif %}
-        {% if car.lettmet_felg_vinter %}<li>Lettmet felg vinter</li>{% endif %}
-        {% if car.metalic_lakk %}<li>Metalic lakk</li>{% endif %}
-        {% if car.sommerhjul %}<li>Sommerhjul</li>{% endif %}
-        {% if car.vinterhjul %}<li>Vinterhjul</li>{% endif %}
-        {% if car.takrails %}<li>Takrails</li>{% endif %}
+        {% if car.startsperre %}<li>Startsperre</li>{% endif %}
         {% if car.xenolys %}<li>Xenolys</li>{% endif %}
-
-        {% if car.fjernlysassitent %}<li>Fjernlysassitent</li>{% endif %}
-        {% if car.lyssensor %}<li>Lyssensor</li>{% endif %}
-        {% if car.parkeringsensor_bak %}<li>Parkeringsensor bak</li>{% endif %}
-        {% if car.parkeringsensor_foran %}<li>Parkeringsensor foran</li>{% endif %}
-        {% if car.regnesensor %}<li>Regnesensor</li>{% endif %}
-        {% if car.ryggekamera %}<li>Ryggekamera</li>{% endif %}
-
+        
       </div>
 
       <div class="second-info" id="spesifikasjoner">
@@ -773,7 +757,7 @@
           </div>
           <div class="spec">
             <p class="spec-heading">Karosseri</p>
-            <p class="spec-body">{{car.chasis}}</p>
+            <p class="spec-body">{{car.karosseritype}}</p>
           </div>
           <div class="spec">
             <p class="spec-heading">Rekkevidde </p>
@@ -786,10 +770,6 @@
           <div class="spec">
             <p class="spec-heading">Antall dører</p>
             <p class="spec-body">{{car.antall_dører}}</p>
-          </div>
-          <div class="spec">
-            <p class="spec-heading">Fargebeskrivelse</p>
-            <p class="spec-body">{{car.fargebeskrivelse}}</p>
           </div>
           <div class="spec">
             <p class="spec-heading">Bilen står i</p>

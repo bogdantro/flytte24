@@ -39,7 +39,7 @@
       <div class="left"><i class="fa-solid fa-gauge-simple-high"></i></div>
       <div class="right">
         <p>Kilometer</p>
-        <p style="font-weight: 600;">{{car.km}}</p>
+        <p style="font-weight: 600;">{{car.km}} km</p>
       </div>
     </div>
     
@@ -630,7 +630,7 @@
           <div class="left"><i class="fa-solid fa-gauge-simple-high"></i></div>
           <div class="right">
             <p>Kilometer</p>
-            <p style="font-weight: 600;">{{car.km}}</p>
+            <p style="font-weight: 600;">{{car.km}} km</p>
           </div>
         </div>
         
@@ -753,7 +753,7 @@
           </div>
           <div class="spec">
             <p class="spec-heading">1. gang registrert</p>
-            <p class="spec-body">{{car.first_registered}}</p>
+            <p class="spec-body">{{car.first_registered|date:"d,m,Y"}}</p>
           </div>
           <div class="spec">
             <p class="spec-heading">Karosseri</p>

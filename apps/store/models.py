@@ -82,7 +82,7 @@ class Car(models.Model):
     # Media
     AUX_inngang = models.BooleanField(default=False)
     bluetooth = models.BooleanField(default=False)
-    CD_spiller = models.BooleanField(default=False)
+    cd_spiller = models.BooleanField(default=False)
     handsfree_opplegg = models.BooleanField(default=False)
     head_up_display = models.BooleanField(default=False)
     kassetspiller = models.BooleanField(default=False)
@@ -91,7 +91,7 @@ class Car(models.Model):
     original_telefon = models.BooleanField(default=False)
     radio_DAB = models.BooleanField(default=False)
     radio_FM = models.BooleanField(default=False)
-    TV_skjerm_i_baksetet = models.BooleanField(default=False)
+    tv_skjerm_i_baksetet = models.BooleanField(default=False)
     # Motor
     antiskrens = models.BooleanField(default=False)
     antispin = models.BooleanField(default=False)
@@ -125,7 +125,7 @@ class Car(models.Model):
     elektriske_speil = models.BooleanField(default=False)
     helårsdekk = models.BooleanField(default=False)
     hengerfeste_eller_svingbart = models.BooleanField(default=False)
-    LED_lys = models.BooleanField(default=False)
+    led_lys = models.BooleanField(default=False)
     laserlys = models.BooleanField(default=False)
     lasterholdere_eller_skistativ = models.BooleanField(default=False)
     lettmet_felg_sommer = models.BooleanField(default=False)

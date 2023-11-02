@@ -49,7 +49,6 @@ class CarPostAdmin(admin.ModelAdmin):
       }),
       ('Kvalitet', {
           'fields': (
-              'chasis',
               'reg_nr',
               'year',
               'km',

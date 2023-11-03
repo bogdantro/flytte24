@@ -110,7 +110,7 @@ def bid_success(request):
 
 
 def buy_car(request):
-    cars = Car.objects.all().order_by('-date_added')
+    cars = Car.objects.all().order_by('-id')
 
     # Retrieve filtering options from query parameters
     price_order = request.GET.get('price_order')

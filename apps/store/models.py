@@ -17,6 +17,7 @@ class Car(models.Model):
     CHASIS = [
         ("Kombi-5 dørs", "Kombi-5 dørs"),
         ("SUV/Offroad", "SUV/Offroad"),
+        ("Sedan", "Sedan"),
     ]
 
     GIRKASSE = [

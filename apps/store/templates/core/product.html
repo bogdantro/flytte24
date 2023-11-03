@@ -769,6 +769,12 @@
             <p class="spec-body">{{car.rekkevidde}} km</p>
           </div>
           {% endif %}
+          {% if car.batterikapasitet_i_kWh %}
+          <div class="spec">
+            <p class="spec-heading">Batterikapasitet </p>
+            <p class="spec-body">{{car.batterikapasitet_i_kWh}} kWh</p>
+          </div>
+          {% endif %}
           <div class="spec">
             <p class="spec-heading">Farge</p>
             <p class="spec-body">{{car.hovedfarge}}</p>

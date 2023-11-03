@@ -28,6 +28,7 @@ class Car(models.Model):
         ("Bensin", "Bensin"),
         ("Diesel ", "Diesel"),
         ("Elektrisk ", "Elektrisk"),
+        ("Hybrid ", "Hybrid"),
     ]
 
     user = models.ForeignKey(User, related_name='cars', on_delete=models.CASCADE, blank=True, null=True)

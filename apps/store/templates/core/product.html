@@ -763,10 +763,12 @@
             <p class="spec-heading">Antall eiere</p>
             <p class="spec-body">{{car.amount_of_owners}}</p>
           </div>
+          {% if car.rekkevidde %}
           <div class="spec">
             <p class="spec-heading">Rekkevidde </p>
             <p class="spec-body">{{car.rekkevidde}} km</p>
           </div>
+          {% endif %}
           <div class="spec">
             <p class="spec-heading">Farge</p>
             <p class="spec-body">{{car.hovedfarge}}</p>

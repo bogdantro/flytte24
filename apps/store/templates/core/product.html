@@ -759,10 +759,12 @@
             <p class="spec-heading">Karosseri</p>
             <p class="spec-body">{{car.karosseritype}}</p>
           </div>
+          {% if car.amount_of_owners %}
           <div class="spec">
             <p class="spec-heading">Antall eiere</p>
             <p class="spec-body">{{car.amount_of_owners}}</p>
           </div>
+          {% endif %}
           {% if car.rekkevidde %}
           <div class="spec">
             <p class="spec-heading">Rekkevidde </p>

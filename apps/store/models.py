@@ -18,6 +18,7 @@ class Car(models.Model):
         ("Kombi-5 dørs", "Kombi-5 dørs"),
         ("SUV/Offroad", "SUV/Offroad"),
         ("Sedan", "Sedan"),
+        ("Stasjonsvogn", "Stasjonsvogn"),
     ]
 
     GIRKASSE = [

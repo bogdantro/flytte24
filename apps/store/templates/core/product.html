@@ -777,10 +777,22 @@
             <p class="spec-body">{{car.batterikapasitet_i_kWh}} kWh</p>
           </div>
           {% endif %}
+          {% if car.fargebeskrivelse %}
+          <div class="spec">
+            <p class="spec-heading">Fargebeskrivelse </p>
+            <p class="spec-body">{{car.fargebeskrivelse}} kWh</p>
+          </div>
+          {% endif %}
           <div class="spec">
             <p class="spec-heading">Farge</p>
             <p class="spec-body">{{car.hovedfarge}}</p>
           </div>
+          {% if car.interiorfarge %}
+          <div class="spec">
+            <p class="spec-heading">Interiorfarge </p>
+            <p class="spec-body">{{car.interiorfarge}} kWh</p>
+          </div>
+          {% endif %}
           <div class="spec">
             <p class="spec-heading">Antall dører</p>
             <p class="spec-body">{{car.antall_dører}}</p>

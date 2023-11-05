@@ -23,7 +23,7 @@ class Car(models.Model):
 
     GIRKASSE = [
         ("Automat", "Automat"),
-        ("Manuelt ", "Manuelt"),
+        ("Manuell ", "Manuell"),
     ]
 
     DRIVSTOFF = [

@@ -38,7 +38,7 @@ def update_bid_statuses(car):
             bid.save()
 
 def car_detail(request, slug, id):
-    car = get_object_or_404(Car, slug=slug)
+    car = get_object_or_404(Car, slug=slug, id=id)
     mapbox_access_token = settings.MAP_BOX_ACCESS_TOKEN
 
     if request.method == 'POST' and 'testdrive' in request.POST:

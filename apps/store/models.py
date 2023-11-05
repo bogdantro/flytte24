@@ -3,6 +3,7 @@ from django.db import models
 from django.conf import settings
 from django.utils.text import slugify
 from django.contrib.auth.models import User
+from django.utils.safestring import mark_safe
 
 
 
@@ -247,7 +248,7 @@ class Car(models.Model):
     image78 = models.ImageField(blank=True, default='', upload_to='static/images/other/cars/')
     image79 = models.ImageField(blank=True, default='', upload_to='static/images/other/cars/')
     image80 = models.ImageField(blank=True, default='', upload_to='static/images/other/cars/')
-    
+
     def days_until_expiry(self):
         today = timezone.now().date()
         return (self.expiry_date - today).days
@@ -266,6 +267,11 @@ class Car(models.Model):
     
     def get_absolute_url(self):
         return f'/{self.slug}/'
+    
+    def admin_photo(self):
+            return mark_safe('<img src="{}" width="100" />'.format(self.image1.url))
+    admin_photo.short_description = 'image'
+    admin_photo.allow_tags = True
 
     @property
     def image_url(self):

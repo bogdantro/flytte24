@@ -33,7 +33,7 @@ class TestDriveInline(admin.TabularInline):
 
 class CarPostAdmin(admin.ModelAdmin):
     inlines = [BidInline, BuyInline, TestDriveInline]
-    list_display = ['id', 'image1', 'name', 'car_spesifikasjoner', 'car_brand', 'price']
+    list_display = ['id', 'admin_photo', 'name', 'car_spesifikasjoner', 'car_brand', 'price']
     search_fields = ('id', 'name', 'car_brand', 'car_spesifikasjoner', 'km')
 
     formfield_overrides = {

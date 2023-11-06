@@ -20,6 +20,7 @@ class Car(models.Model):
         ("SUV/Offroad", "SUV/Offroad"),
         ("Sedan", "Sedan"),
         ("Stasjonsvogn", "Stasjonsvogn"),
+        ("Coupe", "Coupe"),
     ]
 
     GIRKASSE = [

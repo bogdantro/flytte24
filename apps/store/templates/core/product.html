@@ -768,7 +768,7 @@
           {% endif %}
           {% if car.rekkevidde %}
           <div class="spec">
-            <p class="spec-heading">Rekkevidde </p>
+            <p class="spec-heading">Rekkevidde (WLTP)</p>
             <p class="spec-body">{{car.rekkevidde}} km</p>
           </div>
           {% endif %}
@@ -781,19 +781,13 @@
           {% if car.fargebeskrivelse %}
           <div class="spec">
             <p class="spec-heading">Fargebeskrivelse </p>
-            <p class="spec-body">{{car.fargebeskrivelse}} kWh</p>
+            <p class="spec-body">{{car.fargebeskrivelse}}</p>
           </div>
           {% endif %}
           <div class="spec">
             <p class="spec-heading">Farge</p>
             <p class="spec-body">{{car.hovedfarge}}</p>
           </div>
-          {% if car.interiorfarge %}
-          <div class="spec">
-            <p class="spec-heading">Interiorfarge </p>
-            <p class="spec-body">{{car.interiorfarge}} kWh</p>
-          </div>
-          {% endif %}
           <div class="spec">
             <p class="spec-heading">Antall dører</p>
             <p class="spec-body">{{car.antall_dører}}</p>
@@ -802,6 +796,12 @@
             <p class="spec-heading">Bilen står i</p>
             <p class="spec-body">{{car.bilen_står_i}}</p>
           </div>
+          {% if car.interiorfarge %}
+          <div class="spec">
+            <p class="spec-heading">Interiorfarge </p>
+            <p class="spec-body">{{car.interiorfarge}}</p>
+          </div>
+          {% endif %}
           <div class="spec">
             <p class="spec-heading">Neste frist for EU-kontroll</p>
             <p class="spec-body">{{car.next_EU_test_deadline}}</p>

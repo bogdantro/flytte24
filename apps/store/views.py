@@ -127,10 +127,13 @@ def buy_car(request):
         cars = cars.order_by('year')
 
     if price_order == 'km_high_to_low':
-        cars = cars.extra(select={'km_int': 'km::integer'}).order_by('-km_int')
+        # Clean up 'km' field by removing spaces and commas
+        cars = cars.annotate(km_cleaned=Replace('km', ' ', '', output_field=IntegerField()))
+        cars = cars.order_by('-km_cleaned')
     elif price_order == 'km_low_to_high':
-        cars = cars.extra(select={'km_int': 'km::integer'}).order_by('km_int')
-
+        # Clean up 'km' field by removing spaces and commas
+        cars = cars.annotate(km_cleaned=Replace('km', ' ', '', output_field=IntegerField()))
+        cars = cars.order_by('km_cleaned')
 
 
 

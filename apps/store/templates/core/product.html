@@ -541,7 +541,7 @@
      {% else %}
      {% endif %}
    </div>
-
+   <p id="imageCount">{{ forloop.counter }}/{{ car_images|length }}</p>
 
 
   <div class="car">
@@ -1071,6 +1071,19 @@
     }
   </style>
   
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+        $('#carouselExampleIndicators').on('slid.bs.carousel', function () {
+            var currentIndex = $('div.carousel-item.active').index() + 1;
+            $('#imageCount').text(currentIndex + '/' + {{ car_images|length }});
+        });
+    });
+</script>
 
 
   <script>

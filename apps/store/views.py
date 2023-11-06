@@ -127,9 +127,12 @@ def buy_car(request):
         cars = cars.order_by('year')
 
     if price_order == 'km_high_to_low':
-        cars = cars.order_by('-km')
+        cars = cars.extra(select={'km_int': 'CAST(km AS SIGNED)'}).order_by('-km_int')
     elif price_order == 'km_low_to_high':
-        cars = cars.order_by('km')
+        cars = cars.extra(select={'km_int': 'CAST(km AS SIGNED)'}).order_by('km_int')
+
+
+
 
     context = {
         'cars': cars,

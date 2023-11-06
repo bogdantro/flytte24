@@ -23,7 +23,8 @@ from django.conf import settings
 from .forms import *
 from datetime import datetime
 from django.db.models import Q
-
+from django.db.models import IntegerField
+from django.db.models.functions import Replace
 
 
 

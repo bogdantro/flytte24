@@ -24,7 +24,7 @@ from .forms import *
 from datetime import datetime
 from django.db.models import Q
 from django.db.models import IntegerField
-from django.db.models.functions import Replace
+from django.db.models.functions import Replace, Cast
 
 
 
@@ -128,14 +128,21 @@ def buy_car(request):
         cars = cars.order_by('year')
 
     if price_order == 'km_high_to_low':
-        # Clean up 'km' field by removing spaces and commas
-        cars = cars.annotate(km_cleaned=Replace('km', ' ', '', output_field=IntegerField()))
+        cars = cars.annotate(
+            km_cleaned=Cast(
+                Replace('km', Value(' '), Value(''), output_field=IntegerField()),
+                output_field=IntegerField()
+            )
+        )
         cars = cars.order_by('-km_cleaned')
     elif price_order == 'km_low_to_high':
-        # Clean up 'km' field by removing spaces and commas
-        cars = cars.annotate(km_cleaned=Replace('km', ' ', '', output_field=IntegerField()))
+        cars = cars.annotate(
+            km_cleaned=Cast(
+                Replace('km', Value(' '), Value(''), output_field=IntegerField()),
+                output_field=IntegerField()
+            )
+        )
         cars = cars.order_by('km_cleaned')
-
 
 
 

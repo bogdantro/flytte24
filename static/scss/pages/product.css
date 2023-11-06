@@ -1105,7 +1105,6 @@
     color: #1F1F1F;
     font-size: 16px;
     font-weight: 600;
-    max-width: 400px;
   }
   .page .car .info .additional-info #addInfoChoicesOne p:first-child {
     padding-left: 0 !important;
@@ -1133,6 +1132,7 @@
     color: #1F1F1F;
     font-size: 16px;
     font-weight: 400;
+    max-width: 400px;
   }
   .page .car .info .additional-info .content #serviceTextOne {
     display: none;

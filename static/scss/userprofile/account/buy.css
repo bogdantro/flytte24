@@ -667,7 +667,8 @@
 @media only screen and (min-device-width: 1140px) {
   .car {
     padding-inline: 35px;
-    max-width: 1300px;
+    max-width: 1290px;
+    margin-inline: auto;
   }
   .car .heading {
     font-size: 28px;
@@ -675,6 +676,8 @@
     margin-bottom: 25px;
     text-align: center;
     font-weight: 600;
+    max-width: 480px;
+    margin-inline: auto;
   }
   .car .step {
     background: rgb(237, 237, 237);

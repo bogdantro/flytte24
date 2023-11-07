@@ -106,6 +106,8 @@
     position: relative;
     border-radius: 6px;
     display: flex;
+    max-width: 1290px;
+    margin-inline: auto;
   }
   .myaccount .user-cars .car {
     min-width: 400px;

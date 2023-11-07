@@ -845,7 +845,7 @@
     margin-top: 25px;
     width: 380px;
     margin-inline: auto;
-    transform: translateX(40px);
+    transform: translateX(60px);
   }
   .verdivurdering .content form .inputs-labels .step-one input {
     height: 54px;
@@ -1588,7 +1588,7 @@
     margin-top: 25px;
     width: 380px;
     margin-inline: auto;
-    transform: translateX(40px);
+    transform: translateX(45px);
   }
   .verdivurdering .content form .inputs-labels .step-one input {
     height: 54px;

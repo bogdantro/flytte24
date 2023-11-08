@@ -44,13 +44,23 @@
         <img src="{{car.image1.url}}" alt="" class="car-image" onclick="window.location.href='{% url  'car_detail' car.slug car.id  %}'">
         <div class="flex">
           {% if car.days_until_expiry > 0 %}
-            {% if car.sold %}
-            <div class="status" id="status" style="background: #ffc876;">Solgt for {{ car.highest_bid|add_space_separator }}kr</div>
-            {% else %}
-            <div class="status" id="status">Aktiv</div>
-            <div class="time-left">{{car.days_until_expiry}} dager igjen</div>
+
+            {% if highest_bid.status == 'accepted' %}
+              {% if car.sold %}
+              <div class="status" id="status" style="background: #ffc876;">Solgt for {{ car.highest_bid|add_space_separator }}kr</div>
+              {% else %}
+              <div class="status" id="status">Aktiv</div>
+              <div class="time-left">{{car.days_until_expiry}} dager igjen</div>
+              {% endif %}
+              {% else %}
+                {% if car.sold %}
+                <div class="status" id="status" style="background: #ffc876;">Solgt for {{ car.price|add_space_separator }}kr</div>
+                {% else %}
+                <div class="status" id="status">Aktiv</div>
+                <div class="time-left">{{car.days_until_expiry}} dager igjen</div>
+                {% endif %}
             {% endif %}
-  
+
             {% else %}
             <div class="status" id="status" style="background: #ff8686;">Uaktiv</div>
             <div class="time-left">0 dager igjen</div>
@@ -135,7 +145,7 @@
       {% endif %}
 
       {% empty %}
-      <h1 style="color: #1F1F1F; font-size: 22px; font-weight: 500; padding-top: 25px; text-align: center;">Ingen annonser enda...</h1>
+      <h1 style="color: #1F1F1F; font-size: 22px; font-weight: 500; padding-top: 25px; text-align: center; margin-inline: auto;">Ingen annonser enda...</h1>
       {% endfor %}
     </div>
 </div>

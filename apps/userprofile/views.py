@@ -280,9 +280,11 @@ def decline_highest_bid(request, car_id):
 @login_required
 def kommende_visninger(request):
     visninger = request.user.visninger.all()
+    antall_visninger = visninger.count()
 
     context = {
         'visninger': visninger,
+        'antall_visninger': antall_visninger,
     }
     return render(request, 'core/account/timer.html', context)
 

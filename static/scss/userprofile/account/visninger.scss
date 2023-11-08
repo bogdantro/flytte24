@@ -1,0 +1,45 @@
+$black: #1F1F1F;
+$white: rgb(246,246,246);
+$primBtn: #f0a432;
+$txt: #183b56;
+
+
+.upcoming-meetings {
+    padding: 20px;
+    max-width: 400px;
+    margin-inline: auto;
+    margin-top: 20px;
+    .labels{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        padding: 0 12px;
+        label{
+            font-weight: 500;
+            font-size: 17px;
+            color: $black;
+        }
+    }
+
+    .meeting-card {
+        border-radius: 4px;
+        .meeting-info {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 12px;
+            margin-block: 4px;
+            p {
+                font-size: 16px;
+                color: $black;
+                margin-bottom: 0;
+            }
+        }
+        &.blue-bg {
+            background-color: #f0a4324f; // Blue background
+        }
+
+        &.red-bg {
+            background-color: rgba(211, 211, 211, 0.436); // Red background
+        }
+    }
+}

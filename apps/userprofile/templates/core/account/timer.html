@@ -31,17 +31,33 @@
         <h1 class="heading">Kommende visninger</h1>
     </div>
 
-    {% for visning in visninger %}
-    {{ visning.date|date:"d.m.Y" }}
-    <br>
-    {{ visning.time }}
-    {% empty %}
-    <h1 style="color: #1F1F1F; font-size: 22px; font-weight: 500; padding-top: 20px; text-align: center;">Ingen visninger enda...</h1>
-    {% endfor %}
+    <section class="upcoming-meetings">
+        <div class="labels">
+            <label>Dato</label>
+            <label>Tidspunkt</label>
+        </div>
+        {% for meeting in visninger %}
+        <div class="meeting-card{% cycle ' blue-bg' ' red-bg'  as cycle_class %}">
+            {% if forloop.counter > antall_visninger %}
+            {% cycle '' '' '' as cycle_class %}
+            {% endif %}
+            <div class="meeting-info">
+                <p>{{ meeting.date|date:"d.m.Y" }}</p>
+                <p>{{ meeting.time }}</p>
+            </div>
+        </div>
+        {% empty %}
+        <h1 style="color: #1F1F1F; font-size: 22px; font-weight: 500; padding-top: 20px; text-align: center;">Ingen visninger enda...</h1>
+        {% endfor %}
+    </section>
 </div>
 
 
 <div class="account-footer-mob">
     <p>&#169; 2023 Bilmeglerne.no AS</p>
 </div>
+
+
+
+
 {% endblock %}

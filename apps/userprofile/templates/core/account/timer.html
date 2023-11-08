@@ -32,10 +32,12 @@
     </div>
 
     <section class="upcoming-meetings">
+        {% if visninger %}
         <div class="labels">
             <label>Dato</label>
             <label>Tidspunkt</label>
         </div>
+        {% endif %}
         {% for meeting in visninger %}
         <div class="meeting-card{% cycle ' blue-bg' ' red-bg'  as cycle_class %}">
             {% if forloop.counter > antall_visninger %}

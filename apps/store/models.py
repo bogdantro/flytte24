@@ -169,7 +169,7 @@ class Car(models.Model):
     effekt_i_hk = models.CharField(max_length=100, blank=True, null=True)
     batterikapasitet_i_kWh = models.CharField(max_length=100, blank=True, null=True)
     # Images
-    map_images = models.ImageField(blank=False, default='', upload_to='static/images/other/')
+    map_images = models.ImageField(blank=True, default='', upload_to='static/images/other/')
     image1 = models.ImageField(blank=False, default='', upload_to='static/images/other/cars/')
     image2 = models.ImageField(blank=True, default='', upload_to='static/images/other/cars/')
     image3 = models.ImageField(blank=True, default='', upload_to='static/images/other/cars/')

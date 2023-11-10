@@ -60,6 +60,7 @@ class CarPostAdmin(admin.ModelAdmin):
       }),
       ('Bilder', {
           'fields': (
+              'map_images',
               'image1',
               'image2',
               'image3',

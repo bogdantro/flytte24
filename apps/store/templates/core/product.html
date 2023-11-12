@@ -755,12 +755,6 @@
             <p class="spec-heading">Vekt</p>
             <p class="spec-body">{{car.egenvekt_i_kg}} kg</p>
           </div>
-          {% if car.maks_tilhengervekt_i_kg %}
-          <div class="spec">
-            <p class="spec-heading">Maks tilhengervekt</p>
-            <p class="spec-body">{{car.maks_tilhengervekt_i_kg}} kg</p>
-          </div>
-          {% endif %}
           <div class="spec">
             <p class="spec-heading">Reg.nr.</p>
             <p class="spec-body">{{car.reg_nr}}</p>
@@ -827,6 +821,12 @@
             <p class="spec-heading">Hjuldrift</p>
             <p class="spec-body">{{car.hjuldrift}}</p>
           </div>
+          {% if car.maks_tilhengervekt_i_kg %}
+          <div class="spec">
+            <p class="spec-heading">Maks tilhengervekt</p>
+            <p class="spec-body">{{car.maks_tilhengervekt_i_kg}} kg</p>
+          </div>
+          {% endif %}
         </div>
       </div>
 

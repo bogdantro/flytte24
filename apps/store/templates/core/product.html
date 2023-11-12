@@ -1010,17 +1010,29 @@
       <div class="time">
         <label for="">Fullt navn</label>
         <br>
+        {% if car.user.get_full_name %}
         {{car.user.get_full_name}}
+        {% else %}
+        Ikke oppgitt
+        {% endif %}
       </div>
       <div class="time">
         <label for="">Telefonnummer</label>
         <br>
-        <a>{{car.owner_mobile_nr}}</a>
+        {% if car.owner_mobile_nr %}
+        {{car.owner_mobile_nr}}
+        {% else %}
+        Ikke oppgitt
+        {% endif %}
       </div>
       <div class="time">
         <label for="">Epost</label>
         <br>
-        <a>{{car.user.email}}</a>
+        {% if car.user.email %}
+        {{car.user.email}}
+        {% else %}
+        Ikke oppgitt
+        {% endif %}
       </div>
     </div>
 

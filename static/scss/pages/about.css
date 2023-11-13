@@ -273,8 +273,10 @@
   justify-content: space-between;
   border-bottom: 1px solid lightgray;
   width: 100%;
-  height: 90px;
+  height: -moz-max-content;
+  height: max-content;
   position: relative;
+  padding-block: 20px;
 }
 .about-us .faq .content .ask p {
   color: #1F1F1F;
@@ -287,6 +289,11 @@
   font-size: 41px;
   padding: 8px;
   margin: -8px;
+  font-size: 41px !important;
+  min-width: 35px !important;
+  min-height: 41px !important;
+  max-width: 35px !important;
+  max-height: 41px !important;
 }
 .about-us .faq .content .ask .plus {
   display: block;
@@ -296,7 +303,6 @@
 }
 .about-us .faq .content .answer {
   padding: 8px;
-  transform: translateY(-21px);
   border-radius: 2px;
   height: 0;
   transition: 0.2s;
@@ -306,7 +312,7 @@
 .about-us .faq .content .answer.active {
   pointer-events: visible;
   opacity: 1;
-  height: 140px;
+  height: 160px;
 }
 .about-us .faq .content .answer p {
   font-size: 16px;
@@ -676,10 +682,12 @@
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid lightgray;
-    height: 90px;
+    height: -moz-max-content;
+    height: max-content;
     position: relative;
     width: 540px;
     cursor: pointer;
+    padding-block: 25px;
   }
   .about-us .faq .content .ask p {
     color: #1F1F1F;
@@ -708,7 +716,7 @@
     pointer-events: none;
     opacity: 0;
     width: 540px;
-    margin-top: 0;
+    margin-top: 5px;
   }
   .about-us .faq .content .answer.active {
     pointer-events: visible;
@@ -717,7 +725,7 @@
     height: 140px;
   }
   .about-us .faq .content .answer p {
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 500;
     color: #1F1F1F;
   }
@@ -1088,10 +1096,12 @@
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid lightgray;
-    height: 90px;
+    height: -moz-max-content;
+    height: max-content;
     position: relative;
     width: 640px;
     cursor: pointer;
+    padding-block: 30px;
   }
   .about-us .faq .content .ask p {
     color: #1F1F1F;
@@ -1114,7 +1124,7 @@
   }
   .about-us .faq .content .answer {
     padding: 8px;
-    transform: translateY(-21px);
+    transform: translateY(-15px);
     border-radius: 2px;
     height: 0;
     transition: 0.2s;
@@ -1128,7 +1138,7 @@
     height: 140px;
   }
   .about-us .faq .content .answer p {
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 500;
     color: #1F1F1F;
   }

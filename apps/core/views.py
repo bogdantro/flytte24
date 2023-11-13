@@ -158,7 +158,7 @@ def book_time(request):
             booking.save()
             
             # Replace 'YOUR_ZAPIER_WEBHOOK_URL' with your actual Zapier webhook URL
-            zapier_webhook_url = 'https://hooks.zapier.com/hooks/catch/16531899/3rcbk2o/'
+            zapier_webhook_url = 'https://hooks.zapier.com/hooks/catch/13544280/3zlwsa0/'
 
             # Make a POST request to Zapier webhook
             response = requests.post(zapier_webhook_url, json=data)

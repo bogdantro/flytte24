@@ -3,6 +3,17 @@
 {% load custom_filters  %}
 
 {% block content %}
+
+{% block head %}
+<title>Bil {{car.name}}</title>
+<meta name="description" content="{{car.name}}, {{car.description}}, Bilmeglerne har spesialisert seg på salg av bil. Vi har utviklet denne tjenesten for å gjøre deg trygg på at bilsalget foregår i henhold til gjeldende lover og forskrifter">
+<meta name="author" content="Bilmeglerne">
+<meta name="keywords" content="Bilmeglerne, Selge bil, Kjøpe bil, Biler til salg, Kjøp ny bil, Kjøp en bil, Bil, Biler, Bilene">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ request.get_full_path }}">
+<meta property="og:description" content="{{car.name}}, {{car.description}}, Bilmeglerne har spesialisert seg på salg av bil. Vi har utviklet denne tjenesten for å gjøre deg trygg på at bilsalget foregår i henhold til gjeldende lover og forskrifter">
+{% endblock %}
+
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
@@ -810,6 +821,12 @@
             <p class="spec-heading">Hjuldrift</p>
             <p class="spec-body">{{car.hjuldrift}}</p>
           </div>
+          {% if car.maks_tilhengervekt_i_kg %}
+          <div class="spec">
+            <p class="spec-heading">Maks tilhengervekt</p>
+            <p class="spec-body">{{car.maks_tilhengervekt_i_kg}} kg</p>
+          </div>
+          {% endif %}
         </div>
       </div>
 
@@ -875,8 +892,7 @@
 
       <div class="location">
         <h1 style="font-size: 18px; font-weight: 500; color: #1F1F1F; margin-top: 50px;">Bilen står i {{car.post_nr}} {{car.adress}}</h1>
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d90522.4209809734!2d10.87811284318593!3d59.91087035657874!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xa8bcfd4a51da6815%3A0x12be8b1e2cd1a401!2sBilmeglerne!5e0!3m2!1sen!2sno!4v1697144650799!5m2!1sen!2sno" 
-        style="border:0; width: 100%; height: 450px; max-width: 900px; border-radius: 4px; margin-inline: auto; position: relative; left: 50%; transform: translateX(-50%) translateY(12px);" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <img style="border:0; width: 100%;  height: 400px; max-width: 900px; object-fit: cover; border-radius: 4px; margin-inline: auto; position: relative; left: 50%; transform: translateX(-50%) translateY(12px);"  src="{{car.map_images.url}}" alt="{{car.name}}  image2" draggable="false">
       </div>
 
 
@@ -994,17 +1010,29 @@
       <div class="time">
         <label for="">Fullt navn</label>
         <br>
+        {% if car.user.get_full_name %}
         {{car.user.get_full_name}}
+        {% else %}
+        Ikke oppgitt
+        {% endif %}
       </div>
       <div class="time">
         <label for="">Telefonnummer</label>
         <br>
-        <a>{{car.owner_mobile_nr}}</a>
+        {% if car.owner_mobile_nr %}
+        {{car.owner_mobile_nr}}
+        {% else %}
+        Ikke oppgitt
+        {% endif %}
       </div>
       <div class="time">
         <label for="">Epost</label>
         <br>
-        <a>{{car.user.email}}</a>
+        {% if car.user.email %}
+        {{car.user.email}}
+        {% else %}
+        Ikke oppgitt
+        {% endif %}
       </div>
     </div>
 

@@ -623,8 +623,9 @@ $txt: #183b56;
       justify-content: space-between;
       border-bottom: 1px solid lightgray;
       width: 100%;
-      height: 90px;
+      height: max-content;
       position: relative;
+      padding-block: 25px;
       p{
         color: $black;
         font-weight: 500;
@@ -633,7 +634,11 @@ $txt: #183b56;
       }
       svg{
         color: $black;
-        font-size: 41px;
+        font-size: 41px !important;
+        min-width: 35px !important;
+        min-height: 41px !important;
+        max-width: 35px !important;
+        max-height: 41px !important;
         padding: 8px;
         margin: -8px;
       }
@@ -646,7 +651,8 @@ $txt: #183b56;
     }
     .answer{
       padding: 8px;
-      transform: translateY(-21px);
+      transform: translateY(0);
+      margin-top: 0px;
       border-radius: 2px;
       height: 0;
       transition: .2s;
@@ -1372,11 +1378,12 @@ $txt: #183b56;
         align-items: center;
         justify-content: space-between;
         border-bottom: 1px solid lightgray;
-        height: 90px;
+        height: max-content;
         position: relative;
         width: 540px;
         margin-inline: auto;
         cursor: pointer;
+        padding-block: 30px;
         p{
           color: $black;
           font-weight: 500;
@@ -1406,7 +1413,7 @@ $txt: #183b56;
         opacity: 0;
         width: 540px;
         margin-inline: auto;
-        margin-top: 0;
+        transform: translateY(-15px);
         &.active{
           pointer-events: visible;
           margin-top: 10px;
@@ -2115,11 +2122,12 @@ $txt: #183b56;
         align-items: center;
         justify-content: space-between;
         border-bottom: 1px solid lightgray;
-        height: 90px;
+        height: max-content;
         position: relative;
         width: 640px;
         margin-inline: auto;
         cursor: pointer;
+        padding-block: 30px;
         p{
           color: $black;
           font-weight: 500;
@@ -2142,7 +2150,7 @@ $txt: #183b56;
       }
       .answer{
         padding: 8px;
-        transform: translateY(-21px);
+        transform: translateY(-15px);
         border-radius: 2px;
         height: 0;
         transition: .2s;

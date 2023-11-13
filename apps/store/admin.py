@@ -34,7 +34,7 @@ class TestDriveInline(admin.TabularInline):
 class CarPostAdmin(admin.ModelAdmin):
     inlines = [BidInline, BuyInline, TestDriveInline]
     list_display = ['id', 'admin_photo', 'name', 'reg_nr', 'car_brand', 'price']
-    search_fields = ('id', 'name', 'car_brand', 'car_spesifikasjoner', 'km')
+    search_fields = ('id', 'name', 'car_brand', 'car_spesifikasjoner', 'km', 'reg_nr')
 
     formfield_overrides = {
         models.TextField: {'widget': CKEditorWidget()},
@@ -60,6 +60,7 @@ class CarPostAdmin(admin.ModelAdmin):
       }),
       ('Bilder', {
           'fields': (
+              'map_images',
               'image1',
               'image2',
               'image3',

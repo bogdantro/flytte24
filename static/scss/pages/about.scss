@@ -282,8 +282,9 @@ $txt: #183b56;
             justify-content: space-between;
             border-bottom: 1px solid lightgray;
             width: 100%;
-            height: 90px;
+            height: max-content;
             position: relative;
+            padding-block: 20px;
             p{
               color: $black;
               font-weight: 500;
@@ -295,6 +296,11 @@ $txt: #183b56;
               font-size: 41px;
               padding: 8px;
               margin: -8px;
+              font-size: 41px !important;
+              min-width: 35px !important;
+              min-height: 41px !important;
+              max-width: 35px !important;
+              max-height: 41px !important;
             }
             .plus{
               display: block;
@@ -305,7 +311,6 @@ $txt: #183b56;
           }
           .answer{
             padding: 8px;
-            transform: translateY(-21px);
             border-radius: 2px;
             height: 0;
             transition: .2s;
@@ -314,7 +319,7 @@ $txt: #183b56;
             &.active{
               pointer-events: visible;
               opacity: 1;
-              height: 140px;
+              height: 160px;
             }
             p{
               font-size: 16px;
@@ -692,10 +697,11 @@ $txt: #183b56;
                 align-items: center;
                 justify-content: space-between;
                 border-bottom: 1px solid lightgray;
-                height: 90px;
+                height: max-content;
                 position: relative;
                 width: 540px;
                 cursor: pointer;
+                padding-block: 25px;
                 p{
                   color: $black;
                   font-weight: 500;
@@ -724,7 +730,7 @@ $txt: #183b56;
                 pointer-events: none;
                 opacity: 0;
                 width: 540px;
-                margin-top: 0;
+                margin-top: 5px;
                 &.active{
                   pointer-events: visible;
                   margin-top: 10px;
@@ -732,7 +738,7 @@ $txt: #183b56;
                   height: 140px;
                 }
                 p{
-                  font-size: 16px;
+                  font-size: 17px;
                   font-weight: 500;
                   color: $black;
                 }
@@ -1113,10 +1119,11 @@ $txt: #183b56;
                 align-items: center;
                 justify-content: space-between;
                 border-bottom: 1px solid lightgray;
-                height: 90px;
+                height: max-content;
                 position: relative;
                 width: 640px;
                 cursor: pointer;
+                padding-block: 30px;
                 p{
                   color: $black;
                   font-weight: 500;
@@ -1139,7 +1146,7 @@ $txt: #183b56;
               }
               .answer{
                 padding: 8px;
-                transform: translateY(-21px);
+                transform: translateY(-15px);
                 border-radius: 2px;
                 height: 0;
                 transition: .2s;
@@ -1152,7 +1159,7 @@ $txt: #183b56;
                   height: 140px;
                 }
                 p{
-                  font-size: 16px;
+                  font-size: 17px;
                   font-weight: 500;
                   color: $black;
                 }

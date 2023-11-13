@@ -176,12 +176,31 @@ def verdivurdering(request):
         vilkaar = request.POST.get('vilkaar', '')
         reg_nr = request.POST.get('reg_nr', '')
         km = request.POST.get('km', '')
+
+        
         if vilkaar == 'on':
             vilkaar = True
         else:
             vilkaar = False
 
+
+        data = {
+            'name': name,
+            'email': email,
+            'telefon': telefon,
+            'vilkaar': vilkaar,
+            'reg_nr': reg_nr,
+            'km': km,
+        }   
+
         verdivurdering = Verdivurdering.objects.create(name=name, telefon=telefon, email=email, vilkaar=vilkaar, reg_nr=reg_nr, km=km)
+
+        # Replace 'YOUR_ZAPIER_WEBHOOK_URL' with your actual Zapier webhook URL
+        zapier_webhook_url = 'https://hooks.zapier.com/hooks/catch/13544280/3z0bazi/'
+
+        # Make a POST request to Zapier webhook
+        response = requests.post(zapier_webhook_url, json=data)
+
         return redirect('success')
     return render(request, 'pages/contact/verdivurdering.html')  
 

@@ -1,3 +1,6 @@
+import requests
+
+
 from webbrowser import get
 from django.shortcuts import render, redirect,get_object_or_404
 from django.views import generic
@@ -42,6 +45,7 @@ def car_detail(request, slug, id):
     car = get_object_or_404(Car, slug=slug, id=id)
     mapbox_access_token = settings.MAP_BOX_ACCESS_TOKEN
 
+
     if request.method == 'POST' and 'testdrive' in request.POST:
         name = request.POST.get('name', '')
         email = request.POST.get('email', '')
@@ -50,6 +54,16 @@ def car_detail(request, slug, id):
         time1 = request.POST.get('time1', '')
         date2_Y_m_d = request.POST.get('date2_Y_m_d', '')
         time2 = request.POST.get('time2', '')
+
+        data = {
+            'car': car.to_dict(),
+            'email': email,
+            'message': message,
+            'date1_Y_m_d': date1_Y_m_d,
+            'time1': time1,
+            'date2_Y_m_d': date2_Y_m_d,
+            'time2': time2,
+        }   
 
         testdrive = TestDrive.objects.create(
             car=car,
@@ -61,7 +75,15 @@ def car_detail(request, slug, id):
             date2_Y_m_d=date2_Y_m_d,
             time2=time2,
         )
+
+        # Replace 'YOUR_ZAPIER_WEBHOOK_URL' with your actual Zapier webhook URL
+        zapier_webhook_url = 'https://hooks.zapier.com/hooks/catch/13544280/3zxbt19/'
+
+        # Make a POST request to Zapier webhook
+        response = requests.post(zapier_webhook_url, json=data)
+
         return redirect('/success/')
+    
 
     if request.method == 'POST' and 'make_bid' in request.POST:
         user = request.user
@@ -70,7 +92,20 @@ def car_detail(request, slug, id):
 
         status = 'pending'
 
+        data = {
+            'car': car.to_dict(),
+            'bid_amount': bid_amount,
+            'expiry_date': expiry_date,
+        }   
+
         bid = car.bud_set.create(user=user, bid_amount=bid_amount, expiry_date=expiry_date, status=status)
+
+        # Replace 'YOUR_ZAPIER_WEBHOOK_URL' with your actual Zapier webhook URL
+        zapier_webhook_url = 'https://hooks.zapier.com/hooks/catch/13544280/3zxyd23/'
+
+        # Make a POST request to Zapier webhook
+        response = requests.post(zapier_webhook_url, json=data)
+
 
         update_bid_statuses(car)  # Update bid statuses after creating a new bid
 

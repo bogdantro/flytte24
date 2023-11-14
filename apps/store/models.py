@@ -251,6 +251,16 @@ class Car(models.Model):
     image79 = models.ImageField(blank=True, default='', upload_to='static/images/other/cars/')
     image80 = models.ImageField(blank=True, default='', upload_to='static/images/other/cars/')
 
+
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'reg_nr': self.reg_nr,
+            'car_spesifikasjoner': self.car_spesifikasjoner,
+        }
+
     def days_until_expiry(self):
         today = timezone.now().date()
         return (self.expiry_date - today).days

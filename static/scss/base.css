@@ -498,6 +498,13 @@
 .location .content .text {
   text-align: left;
   margin-top: 28px;
+  background-color: rgb(248, 248, 248);
+  overflow: hidden;
+  z-index: 10000000000 !important;
+  position: relative;
+  padding-bottom: 18px;
+  padding-top: 35px;
+  margin-top: -35px;
 }
 .location .content .text h1 {
   color: #1F1F1F;
@@ -505,10 +512,9 @@
   font-weight: 600;
   margin-bottom: 13px;
 }
-.location .content .place {
-  color: #1F1F1F;
-  font-size: 16px;
-  text-decoration: underline;
+.location .content iframe {
+  top: -80px;
+  border-radius: 4px !important;
 }
 
 .reviews {

@@ -31,42 +31,39 @@
     </div>
 </div>
 
-<div class="account-card">
-    <div class="text">
-        <h1 class="heading">Endre min info</h1>
-    </div>
-    <div class="flex">
-        <div class="your-info">
-            <div class="user-info">
-                <form method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {{u_form.errors}}
-                    <br>
-                    <label for="username">Brukernavn</label>
-                    <br>
-                    <input id="username" name="username" type="text" value="{{ request.user.username}}">
-                    <br>
-                    <br>
-                    <label for="first_name">Fornavn</label>
-                    <br>
-                    <input id="first_name" name="first_name" type="text" value="{{ request.user.first_name }}">
-                    <br>
-                    <br>
-                    <label for="last_name">Etternavn</label>
-                    <br>
-                    <input id="last_name" name="last_name" type="text" value="{{request.user.last_name}}">
-                    <br>
-                    <br>
-                    <label for="email">Epost</label>
-                    <br>
-                    <input id="email" name="email" type="text" value="{{ request.user.email }}">
-                    <br>
-                    <br>
-                    <button type="submit">Endre info</button>
-                </form>
-            </div>
+<div class="page" style="min-height: 88vh !important;">
 
- 
+    <div class="account-card">
+        <div class="text">
+            <h1 class="heading">Endre min info</h1>
+        </div>
+        <div class="flex">
+            <div class="your-info">
+                <div class="user-info">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{u_form.errors}}
+                        <label for="first_name">Fornavn</label>
+                        <br>
+                        <input id="first_name" name="first_name" type="text" value="{{ request.user.first_name }}">
+                        <br>
+                        <br>
+                        <label for="last_name">Etternavn</label>
+                        <br>
+                        <input id="last_name" name="last_name" type="text" value="{{request.user.last_name}}">
+                        <br>
+                        <br>
+                        <label for="email">Epost</label>
+                        <br>
+                        <input id="email" name="email" type="text" value="{{ request.user.email }}">
+                        <br>
+                        <br>
+                        <button type="submit">Endre info</button>
+                    </form>
+                </div>
+    
+     
+            </div>
         </div>
     </div>
 </div>

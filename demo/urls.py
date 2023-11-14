@@ -72,6 +72,7 @@ urlpatterns = [
     path('decline_bid/<int:car_id>/', decline_highest_bid, name='decline_highest_bid'),
 
     path('passord-reset/', pass_reset, name='pass_reset'),
+    path('passord-change/', password_change, name='password_change'),
 
 
 

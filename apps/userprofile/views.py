@@ -1,3 +1,6 @@
+import requests
+
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import SignUpForm, UserprofileForm
@@ -379,6 +382,21 @@ def signup(request, backend='django.contrib.auth.backends.ModelBackend'):
     return render(request, 'core/signup.html', {'form': form, 'userprofileform': userprofileform})    
 
 
+
+@login_required
+def password_change(request):
+    user = request.user
+    if request.method == 'POST':
+        form = SetPasswordForm(user, request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/logg-inn/')
+        
+            
+    form = SetPasswordForm(user)
+    return render(request, 'core/password_reset_confirm.html', {'form': form})
+
+
 def pass_reset(request):
     if request.method == 'POST':
         form = PasswordResetForm(request.POST)
@@ -386,29 +404,26 @@ def pass_reset(request):
             user_email = form.cleaned_data['email']
             associated_user = User.objects.filter(Q(email=user_email)).first()
             if associated_user:
-                subject = "Password Reset request"
-                message = render_to_string("template_reset_password.html", {
-                    'user': associated_user,
+                subject = "Forespørsel om tilbakestilling av passord"
+                message = render_to_string("core/template_reset_password.html", {
                     'domain': get_current_site(request).domain,
                     'uid': urlsafe_base64_encode(force_bytes(associated_user.pk)),
                     'token': account_activation_token.make_token(associated_user),
                     "protocol": 'https' if request.is_secure() else 'http'
                 })
-                email = EmailMessage(subject, message, to=[associated_user.email])
-                if email.send():
-                    message.success(request,
-                        """
-                        <h2>Password reset sent</h2><hr>
-                        <p>
-                            We've emailed you instructions for setting your password, if an account exists with the email you entered. 
-                            You should receive them shortly.<br>If you don't receive an email, please make sure you've entered the address 
-                            you registered with, and check your spam folder.
-                        </p>
-                        """
-                    )
-                else:
-                    message.error(request, "Problem sending reset password email, <b>SERVER PROBLEM</b>")
 
+                data = {
+                        'user_email': user_email,
+                        'subject': subject,
+                        'message': message,
+                    }   
+
+
+                # Replace 'YOUR_ZAPIER_WEBHOOK_URL' with your actual Zapier webhook URL
+                zapier_webhook_url = 'https://hooks.zapier.com/hooks/catch/13544280/3z7w5kd/'
+
+                # Make a POST request to Zapier webhook
+                response = requests.post(zapier_webhook_url, json=data)
             
             return redirect('/')
 
@@ -419,4 +434,3 @@ def pass_reset(request):
         context={'form':form}
     )
 
-# def passwordResetConfirm():

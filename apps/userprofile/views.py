@@ -32,9 +32,20 @@ def myaccount(request):
 def edit_user_info(request):
 
     if request.method == 'POST':
-        u_form =  UserUpdateForm(request.POST, instance=request.user)
-        p_form =  ProfileUpdateForm(request.POST, instance=request.user.profile)
+        user = request.user
+
+        
+        # Try to get the existing profile or create a new one
+        profile, created = Profile.objects.get_or_create(user=user)
+
+
+        u_form =  UserUpdateForm(request.POST, instance=user)
+        p_form =  ProfileUpdateForm(request.POST, instance=profile)
+
+
         if p_form.is_valid():
+
+
             telefon = p_form.cleaned_data['telefon']
             
             p_form.save()

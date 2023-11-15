@@ -30,8 +30,19 @@ def myaccount(request):
 
 @login_required
 def edit_user_info(request):
+
     if request.method == 'POST':
         u_form =  UserUpdateForm(request.POST, instance=request.user)
+        p_form =  ProfileUpdateForm(request.POST, instance=request.user.profile)
+        if p_form.is_valid():
+            telefon = p_form.cleaned_data['telefon']
+            
+            p_form.save()
+
+        else:
+            p_form = ProfileUpdateForm() 
+
+
         if u_form.is_valid():
             username = u_form.cleaned_data['username']
             email = u_form.cleaned_data['email']

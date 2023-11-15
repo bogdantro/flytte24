@@ -43,6 +43,16 @@
                     <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         {{u_form.errors}}
+                        <label for="email">Epost</label>
+                        <br>
+                        <input id="email" name="email" type="text" value="{{ request.user.email }}">
+                        <br>
+                        <br>
+                        <label for="image">Telefonnummer</label>
+                        <br>
+                        <input type="number" name="telefon" id="telefon" value="{{ request.user.profile.telefon }}">
+                        <br>
+                        <br>
                         <label for="first_name">Fornavn</label>
                         <br>
                         <input id="first_name" name="first_name" type="text" value="{{ request.user.first_name }}">
@@ -53,15 +63,10 @@
                         <input id="last_name" name="last_name" type="text" value="{{request.user.last_name}}">
                         <br>
                         <br>
-                        <label for="email">Epost</label>
-                        <br>
-                        <input id="email" name="email" type="text" value="{{ request.user.email }}">
-                        <br>
-                        <br>
-                        <a style="font-weight: 500; position: relative; top: 0; font-size: 14px; opacity: 0.8;" href="{% url 'password_change' %}">Lag en ny passord</a>
+                        <a style="font-weight: 500; position: relative; top: 0; font-size: 16px; opacity: 0.8;" href="{% url 'password_change' %}">Lag en ny passord</a>
                         <hr style="background: transparent; margin-bottom: 12px; margin-top: 2px; border-color: transparent;">
 
-                        <button type="submit">Endre info</button>
+                        <button type="submit">Bekreft endring av info</button>
                     </form>
                 </div>
     

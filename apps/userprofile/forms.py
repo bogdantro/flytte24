@@ -57,3 +57,10 @@ class SetPasswordForm(SetPasswordForm):
 
 class AcceptBidForm(forms.Form):
     pass     
+
+
+
+class ProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['telefon']

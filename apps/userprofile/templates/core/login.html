@@ -36,13 +36,13 @@
             <div class="inputs-labels">
                 {% if form.errors %}
                     <div class="alert alert-danger">
-                        <strong>Brukernavn eller passord er feil</strong>
+                        <strong>Epost eller passord er feil</strong>
                     </div>
                 {% endif %}
                 <!-- NAME -->
                 <label for="username">Epost</label>
                 <br>
-                <input type="email" name="username" id="username" autocomplete="off" required oninvalid="this.setCustomValidity('Kan ikke være tom')" oninput="this.setCustomValidity('')">
+                <input type="text" name="username" id="username" autocomplete="off" required oninvalid="this.setCustomValidity('Kan ikke være tom')" oninput="this.setCustomValidity('')">
                 <hr style="border-color: transparent; margin-block: 17px;">
                 <!-- PASSWORD -->
                 <label for="password">Passord</label>

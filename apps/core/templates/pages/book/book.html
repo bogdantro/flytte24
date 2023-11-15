@@ -26,7 +26,7 @@
             <div class="content">
                 <div class="text">
                     <h1 class="cover-h1">Vi gleder oss til å se deg som kunde</h1>
-                    <p class="cover-p">Å booke en time er veldig enkel. Bruk skjema nedenfor</p>
+                    <p class="cover-p">Å booke en time er veldig enkelt. Bruk skjema nedenfor</p>
                 </div>  
             </div>
         </div>
@@ -68,12 +68,13 @@
                     <br>
                     <select class="location" name="location" id="location">
                         <option disabled selected value>Plassering</option>
-                        <option value="Oslo Skøyen">Oslo Skøyen</option>
-                        <option value="Kristiansand Sørlandsparken">Kristiansand Sørlandsparken</option>
-                        <option value="Lillestrøm Stasjon">Lillestrøm Stasjon</option>
-                        <option value="Bergen Kokstad">Bergen Kokstad</option>
-                        <option value="Haugesund">Haugesund</option>
-                        <option value="Stavanger">Stavanger</option>
+                        <option value="Oslo Skøyen - Bygdøy allé 119, 0273 Oslo">Oslo Skøyen</option>
+                        <option value="Kristiansand Sørlandsparken - Skibåsen 33, 4636 Kristiansand">Kristiansand Sørlandsparken</option>
+                        <option value="Lillestrøm Stasjon - Tærudgata 2, 2004 Lillestrøm">Lillestrøm Stasjon</option>
+                        <option value="Bergen Kokstad - Kokstadvegen 29, 5257 Bergen">Bergen Kokstad</option>
+                        <option value="Bergen Åsane - Åsamyrane 76, 5116 Ulset">Bergen Åsane</option>
+                        <option value="Haugesund - Raglamyrvegen 20, 5536 Haugesund">Haugesund</option>
+                        <option value="Stavanger - Vassbotnen 13, 4031 Stavanger">Stavanger</option>
                     </select>
                     <br>
                     <br>
@@ -117,7 +118,7 @@
                     </div>
                     <div class="checkbox">
                         <input type="checkbox" id="sms_reminder" name="sms_reminder">
-                        <p onclick="smsCheckBox()">Jeg vil mota en SMS-påminelse før denne økten starter</p>
+                        <p onclick="smsCheckBox()">Jeg vil motta en SMS-påminnelse før denne økten starter</p>
                     </div>
                     <div class="reg-nr">
                         <img src="{% static 'images/other/skilt-no.svg' %}" alt="">
@@ -138,7 +139,7 @@
                     </div>
                     <div class="checkbox" style="margin-bottom: 26px;">
                         <input type="checkbox" id="vilkaar" name="vilkaar" required>
-                        <p onclick="vilkaarCheckBox()">Jeg godtar vilkårene for formidllingssalg. <a href="" style="color: unset; font-weight: 500; text-decoration: underline;">Avale om formidllingssalg</a></p>
+                        <p onclick="vilkaarCheckBox()">Jeg godtar vilkårene for formidlingssalg. <a href="" style="color: unset; font-weight: 500; text-decoration: underline;">Avtale om formidlingssalg</a></p>
                     </div>
                     <label for="car_name_model">Bil og modell</label>
                     <br>

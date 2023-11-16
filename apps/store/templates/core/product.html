@@ -1003,7 +1003,7 @@
     {% endif %}
 
 
-
+    {% if request.user.is_authenticated %}
     <div id="contactOwner">
       <div onclick="contactOwnerClose()" class="close"><i class="fa-solid fa-x"></i>Lukk</div>
       <h1 class="heading" style="margin-bottom: 20px;">Kontakt eier</h1>
@@ -1019,8 +1019,8 @@
       <div class="time">
         <label for="">Telefonnummer</label>
         <br>
-        {% if car.owner_mobile_nr %}
-        {{car.owner_mobile_nr}}
+        {% if car.user.profile.telefon %}
+        +47 {{car.user.profile.telefon}}
         {% else %}
         Ikke oppgitt
         {% endif %}
@@ -1035,8 +1035,15 @@
         {% endif %}
       </div>
     </div>
-
-
+    {% else %}
+    <div id="contactOwner">
+      <div onclick="contactOwnerClose()" class="close"><i class="fa-solid fa-x"></i>Lukk</div>
+      <h1 class="heading">Logg inn for å se info</h1>
+      <div class="form-actions">
+        <button type="button" onclick="window.location.href='/logg-inn/?next={% firstof request.path '/' %}'">Logg inn</button>
+        </div>
+    </div>
+    {% endif %}
 
 
     {% if request.user.is_authenticated %}

@@ -719,6 +719,19 @@
   color: #1F1F1F;
   opacity: 0.6;
 }
+.page .car #contactOwner .form-actions button {
+  border: 1px solid transparent;
+  border-radius: 6px;
+  outline: none;
+  background: linear-gradient(to bottom right, #f0a432, #ffb649);
+  color: white;
+  font-weight: 500;
+  font-size: 17px;
+  width: 100%;
+  display: block;
+  height: 44px;
+  margin-top: 32px;
+}
 .page .car #confirmBuy {
   background: white;
   border-radius: 12px;

@@ -623,6 +623,7 @@ $txt: #183b56;
             opacity: 0;
             pointer-events: none;
             transition: .2s;
+
             &.active{
                 opacity: 1;
                 transform: translateX(-50%) translateY(0);
@@ -709,6 +710,21 @@ $txt: #183b56;
                         opacity: 0.6;
                     }
                 }
+            }
+            .form-actions{
+                button{
+                    border: 1px solid transparent;
+                    border-radius: 6px;
+                    outline: none;
+                    background: linear-gradient(to bottom right, $primBtn, #ffb649);
+                    color: white;
+                    font-weight: 500;
+                    font-size: 17px;
+                    width: 100%;
+                    display: block;
+                    height: 44px;
+                    margin-top: 32px;
+                  }
             }
         }
         

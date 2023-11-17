@@ -54,6 +54,36 @@ $txt: #183b56;
             color: $black;
             font-size: 30px;
         }
+        .mobile_number{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            .nr{
+              width: 20%;
+              background: rgba(220, 220, 220, 0.6);
+              color: $black;
+              font-size: 16px;
+              height: 48px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              font-weight: 500;
+              border-top-left-radius: 7px;
+              border-bottom-left-radius: 7px;
+              border: 1px solid lightgray;
+              border-right: 0;
+            }
+            input{
+              width: 80% !important;
+              border-top-left-radius: 0 !important;
+              border-bottom-left-radius: 0 !important;
+              &:focus, &:active{
+                border: 1px solid $primBtn;
+                cursor: text;
+                background: rgba(255,255,255,1);
+            }
+            }
+          }
         .time{
             background: #ffeccfa5;
             padding: 14px;

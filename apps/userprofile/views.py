@@ -43,27 +43,23 @@ def edit_user_info(request):
         p_form =  ProfileUpdateForm(request.POST, instance=profile)
 
 
-        if p_form.is_valid():
+        if p_form.is_valid() and u_form.is_valid(): 
 
 
             telefon = p_form.cleaned_data['telefon']
             
-            p_form.save()
 
-        else:
-            p_form = ProfileUpdateForm() 
-
-
-        if u_form.is_valid():
             username = u_form.cleaned_data['username']
-            email = u_form.cleaned_data['email']
             first_name = u_form.cleaned_data['first_name']
             last_name = u_form.cleaned_data['last_name']
             
+            p_form.save()
             u_form.save()
 
         else:
             u_form = UserUpdateForm() 
+            p_form = ProfileUpdateForm() 
+
     return render(request, 'core/account/edit.html')
 
 @login_required

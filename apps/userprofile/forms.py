@@ -37,12 +37,6 @@ class SignUpForm(UserCreationForm):
         model = User
         fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
 
-class UserUpdateForm(forms.ModelForm):
-    email = forms.EmailField()
-
-    class Meta:
-        model = User
-        fields = ['username', 'email', 'first_name', 'last_name']
 
 
 class PasswordResetForm(PasswordResetForm):
@@ -58,6 +52,13 @@ class SetPasswordForm(SetPasswordForm):
 class AcceptBidForm(forms.Form):
     pass     
 
+
+
+
+class UserUpdateForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'first_name', 'last_name']
 
 
 class ProfileUpdateForm(forms.ModelForm):

@@ -53,7 +53,7 @@
         {% endif %}
             <div class="left">
                 <i class="fa-solid fa-address-book"></i>
-                <h1>Kontakt-info</h1>
+                <h1>Kontaktinfo</h1>
             </div>
             <div class="right">
                 {% if egnerklæring.stepOne %}
@@ -143,17 +143,20 @@
             <div onclick="contactInfoClose()" class="close"><i class="fa-solid fa-x"></i>Lukk</div>
             <br>
             <br>
-            <h1>Kontakt-info</h1>
+            <h1>Kontaktinfo</h1>
             <br>
             <div class="inputs-labels">
                 <div class="time">
                     <label for="">Personalia</label>
                     <input type="checkbox" checked="stepOne" name="stepOne" style="display: none;">
                     <br>
-                    <input type="text" required name="name" id="name" placeholder="Fullt navn">
+                    <input type="text" required name="name" id="name" placeholder="Fullt navn" value="{{car.user.get_full_name}}">
                     <br>
                     <br>
-                    <input type="text" required name="mobile_nr" id="mobile_nr" placeholder="Telefonnummer">
+                    <div class="mobile_number">
+                        <div class="nr">+47</div>
+                        <input type="text" required name="mobile_nr" id="mobile_nr" placeholder="Telefonnummer" value="{{car.user.profile.telefon}}">
+                    </div>
                     <br>
                     <br>
                     <input type="text" required name="adress" id="adress" placeholder="Adresse">

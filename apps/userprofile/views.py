@@ -147,7 +147,30 @@ def mine_annonser_egenerklering(request, car_id):
             owners = request.POST.get('owners', '')
             bruktimportert = request.POST.get('bruktimportert', '')
             demobil = request.POST.get('demobil', '')
+
+
             bruksmerker_bilde1 = request.POST.get('bruksmerker_bilde1', '')
+            bruksmerker_bilde2 = request.POST.get('bruksmerker_bilde2', '')
+            bruksmerker_bilde3 = request.POST.get('bruksmerker_bilde3', '')
+            bruksmerker_bilde4 = request.POST.get('bruksmerker_bilde4', '')
+            bruksmerker_bilde5 = request.POST.get('bruksmerker_bilde5', '')
+            bruksmerker_bilde6 = request.POST.get('bruksmerker_bilde6', '')
+            bruksmerker_bilde7 = request.POST.get('bruksmerker_bilde7', '')
+            bruksmerker_bilde8 = request.POST.get('bruksmerker_bilde8', '')
+            bruksmerker_bilde9 = request.POST.get('bruksmerker_bilde9', '')
+            bruksmerker_bilde10 = request.POST.get('bruksmerker_bilde10', '')
+            bruksmerker_bilde11 = request.POST.get('bruksmerker_bilde11', '')
+            bruksmerker_bilde12 = request.POST.get('bruksmerker_bilde12', '')
+            bruksmerker_bilde13 = request.POST.get('bruksmerker_bilde13', '')
+            bruksmerker_bilde14 = request.POST.get('bruksmerker_bilde14', '')
+            bruksmerker_bilde15 = request.POST.get('bruksmerker_bilde15', '')
+            bruksmerker_bilde16 = request.POST.get('bruksmerker_bilde16', '')
+            bruksmerker_bilde17 = request.POST.get('bruksmerker_bilde17', '')
+            bruksmerker_bilde18 = request.POST.get('bruksmerker_bilde18', '')
+            bruksmerker_bilde19 = request.POST.get('bruksmerker_bilde19', '')
+            bruksmerker_bilde20 = request.POST.get('bruksmerker_bilde20', '')
+
+
             bruksmerker_text = request.POST.get('bruksmerker_text', '')
 
             # Check if egnerklæring is an instance of Egenerkeling
@@ -158,7 +181,29 @@ def mine_annonser_egenerklering(request, car_id):
                 egnerklæring.owners = owners
                 egnerklæring.bruktimportert = bruktimportert
                 egnerklæring.demobil = demobil
+
                 egnerklæring.bruksmerker_bilde1 = bruksmerker_bilde1
+                egnerklæring.bruksmerker_bilde2 = bruksmerker_bilde2
+                egnerklæring.bruksmerker_bilde3 = bruksmerker_bilde3
+                egnerklæring.bruksmerker_bilde4 = bruksmerker_bilde4
+                egnerklæring.bruksmerker_bilde5 = bruksmerker_bilde5
+                egnerklæring.bruksmerker_bilde6 = bruksmerker_bilde6
+                egnerklæring.bruksmerker_bilde7 = bruksmerker_bilde7
+                egnerklæring.bruksmerker_bilde8 = bruksmerker_bilde8
+                egnerklæring.bruksmerker_bilde9 = bruksmerker_bilde9
+                egnerklæring.bruksmerker_bilde10 = bruksmerker_bilde10
+                egnerklæring.bruksmerker_bilde11 = bruksmerker_bilde11
+                egnerklæring.bruksmerker_bilde12 = bruksmerker_bilde12
+                egnerklæring.bruksmerker_bilde13 = bruksmerker_bilde13
+                egnerklæring.bruksmerker_bilde14 = bruksmerker_bilde14
+                egnerklæring.bruksmerker_bilde15 = bruksmerker_bilde15
+                egnerklæring.bruksmerker_bilde16 = bruksmerker_bilde16
+                egnerklæring.bruksmerker_bilde17 = bruksmerker_bilde17
+                egnerklæring.bruksmerker_bilde18 = bruksmerker_bilde18
+                egnerklæring.bruksmerker_bilde19 = bruksmerker_bilde19
+                egnerklæring.bruksmerker_bilde20 = bruksmerker_bilde20
+
+
                 egnerklæring.bruksmerker_text = bruksmerker_text
                 egnerklæring.save()
             else:
@@ -171,7 +216,29 @@ def mine_annonser_egenerklering(request, car_id):
                     owners=owners,
                     bruktimportert=bruktimportert,
                     demobil=demobil,
+
                     bruksmerker_bilde1=bruksmerker_bilde1,
+                    bruksmerker_bilde2=bruksmerker_bilde2,
+                    bruksmerker_bilde3=bruksmerker_bilde3,
+                    bruksmerker_bilde4=bruksmerker_bilde4,
+                    bruksmerker_bilde5=bruksmerker_bilde5,
+                    bruksmerker_bilde6 = bruksmerker_bilde6,
+                    bruksmerker_bilde7 = bruksmerker_bilde7,
+                    bruksmerker_bilde8 = bruksmerker_bilde8,
+                    bruksmerker_bilde9 = bruksmerker_bilde9,
+                    bruksmerker_bilde10 = bruksmerker_bilde10,
+                    bruksmerker_bilde11 = bruksmerker_bilde11,
+                    bruksmerker_bilde12 = bruksmerker_bilde12,
+                    bruksmerker_bilde13 = bruksmerker_bilde13,
+                    bruksmerker_bilde14 = bruksmerker_bilde14,
+                    bruksmerker_bilde15 = bruksmerker_bilde15,
+                    bruksmerker_bilde16 = bruksmerker_bilde16,
+                    bruksmerker_bilde17 = bruksmerker_bilde17,
+                    bruksmerker_bilde18 = bruksmerker_bilde18,
+                    bruksmerker_bilde19 = bruksmerker_bilde19,
+                    bruksmerker_bilde20 = bruksmerker_bilde20,
+
+
                     bruksmerker_text=bruksmerker_text,
                 )
 

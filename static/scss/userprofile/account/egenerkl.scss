@@ -231,6 +231,20 @@ $txt: #183b56;
             background: #ffeccfa5;
             padding: 14px;
             border-radius: 5px;
+            button{
+                border: 1px solid transparent;
+                border-radius: 6px;
+                outline: none;
+                background: linear-gradient(to bottom right, $primBtn, #ffb649);
+                color: white;
+                font-weight: 500;
+                font-size: 17px;
+                width: 92%;
+                display: block;
+                height: 38px;
+                margin-top: 32px;
+                margin-inline: auto;
+              }
             label{
                 font-size: 19px;
                 color: $black;
@@ -254,6 +268,13 @@ $txt: #183b56;
                 padding-left: 6px;
                 color: $black;
                 font-size: 16px;
+                display: unset;
+                &[type="file"]{
+                    margin-top: 25px;
+                }
+                &.hidden{
+                    display: none;
+                }
                 &::placeholder{
                     padding-left: 6px;
                 }

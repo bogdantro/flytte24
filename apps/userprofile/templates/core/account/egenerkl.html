@@ -189,31 +189,53 @@
                     <label for="">Om bilen</label>
                     <input type="checkbox" checked="stepTwo" name="stepTwo" style="display: none;">
                     <br>
-                    <input type="text" name="reg_nr" id="reg_nr" placeholder="Registreringsnummer">
+                    <input type="text" name="reg_nr" id="reg_nr" placeholder="Registreringsnummer" required>
                     <br>
                     <br>
-                    <input type="text" name="km" id="km" placeholder="Kilometerstand">
+                    <input type="text" name="km" id="km" placeholder="Kilometerstand" required>
                     <br>
                     <br>
-                    <input type="text" name="owners" id="owners" placeholder="Antall eiere">
+                    <input type="text" name="owners" id="owners" placeholder="Antall eiere" required>
                     <br>
                     <br>
-                    <input type="text" name="bruktimportert" id="bruktimportert" placeholder="Bruktimportert (ja/nei)">
+                    <input type="text" name="bruktimportert" id="bruktimportert" placeholder="Bruktimportert (ja/nei)" required>
                     <br>
                     <br>
-                    <input type="text" name="demobil" id="demobil" placeholder="Demobil (ja/nei)">
+                    <input type="text" name="demobil" id="demobil" placeholder="Demobil (ja/nei)" required>
                 </div>
                 <br>
                 <div class="time">
                     <label for="">Bruksmerker</label>
-                    <p>Legg inn bilder av bruksmerkene</p>
-                    <input type="file" name="" id="">
-                    <br>
-                    <br>
-                    <input type="file" name="" id="">
-                    <br>
-                    <br>
-                    <button type="button">Legg til et nytt bilde</button>
+                    <p style="margin-bottom: -10px; margin-top: -5px;">Legg inn bilder av bruksmerkene</p>
+
+
+
+                    <input type="file" name="bruksmerker_bilde1" id="bruksmerker_bilde1">
+                    <input type="file" name="bruksmerker_bilde2" id="bruksmerker_bilde2">
+                    <input type="file" name="bruksmerker_bilde3" id="bruksmerker_bilde3">
+                    <input type="file" class="hidden" name="bruksmerker_bilde4" id="bruksmerker_bilde4">
+                    <input type="file" class="hidden" name="bruksmerker_bilde5" id="bruksmerker_bilde5">
+                    <input type="file" class="hidden" name="bruksmerker_bilde6" id="bruksmerker_bilde6">
+                    <input type="file" class="hidden" name="bruksmerker_bilde7" id="bruksmerker_bilde7">
+                    <input type="file" class="hidden" name="bruksmerker_bilde8" id="bruksmerker_bilde8">
+                    <input type="file" class="hidden" name="bruksmerker_bilde9" id="bruksmerker_bilde9">
+                    <input type="file" class="hidden" name="bruksmerker_bilde10" id="bruksmerker_bilde10">
+                    <input type="file" class="hidden" name="bruksmerker_bilde11" id="bruksmerker_bilde11">
+                    <input type="file" class="hidden" name="bruksmerker_bilde12" id="bruksmerker_bilde12">
+                    <input type="file" class="hidden" name="bruksmerker_bilde13" id="bruksmerker_bilde13">
+                    <input type="file" class="hidden" name="bruksmerker_bilde14" id="bruksmerker_bilde14">
+                    <input type="file" class="hidden" name="bruksmerker_bilde15" id="bruksmerker_bilde15">
+                    <input type="file" class="hidden" name="bruksmerker_bilde16" id="bruksmerker_bilde16">
+                    <input type="file" class="hidden" name="bruksmerker_bilde17" id="bruksmerker_bilde17">
+                    <input type="file" class="hidden" name="bruksmerker_bilde18" id="bruksmerker_bilde18">
+                    <input type="file" class="hidden" name="bruksmerker_bilde19" id="bruksmerker_bilde19">
+                    <input type="file" class="hidden" name="bruksmerker_bilde20" id="bruksmerker_bilde20">
+
+
+
+
+
+                    <button type="button" id="newImageBtn" onclick="newImage()">Legg til et nytt bilde</button>
                     <br>
                     <br>
                     <textarea name="" id="" cols="30" rows="10" placeholder="Andre feil eller mangler du har kunnskap om?"></textarea>
@@ -347,6 +369,26 @@
 
 
 <script type="text/javascript">
+
+
+
+    function newImage(){
+        var hiddenInputs = document.querySelectorAll('.hidden');
+    
+    if (hiddenInputs.length > 0) {
+        // Find the first hidden input and remove the 'hidden' class
+        hiddenInputs[0].classList.remove('hidden');
+    } else {
+        // All inputs are visible, hide the button
+        var button = document.getElementById('newImageBtn');
+        if (button) {
+            button.style.display = 'none';
+        }
+    }
+    }
+
+
+
     function contactInfo(){
      document.getElementById('kontaktForm').classList.add('active')
      document.getElementById('overlay').style.display = 'block';

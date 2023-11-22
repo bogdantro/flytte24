@@ -1877,6 +1877,13 @@ $txt: #183b56;
                          background: hsla(36, 100%, 86%, 0.484);
                      }
                  }
+                 #bruksmerker{
+                     padding: 10px 20px;
+                     margin: -10px -20px;
+                     &.active{
+                         background: hsla(36, 100%, 86%, 0.484);
+                     }
+                 }
              }
              .content{
                  background: hsla(36, 100%, 90%, 0.484);

@@ -6,12 +6,12 @@
 
 {% block head %}
 <title>Bil {{car.name}}</title>
-<meta name="description" content="{{car.name}}, {{car.description}}, Bilmeglerne har spesialisert seg på salg av bil. Vi har utviklet denne tjenesten for å gjøre deg trygg på at bilsalget foregår i henhold til gjeldende lover og forskrifter">
+<meta name="description" content="{{car.name}}, {{car.description|safe}}, Bilmeglerne har spesialisert seg på salg av bil. Vi har utviklet denne tjenesten for å gjøre deg trygg på at bilsalget foregår i henhold til gjeldende lover og forskrifter">
 <meta name="author" content="Bilmeglerne">
 <meta name="keywords" content="Bilmeglerne, Selge bil, Kjøpe bil, Biler til salg, Kjøp ny bil, Kjøp en bil, Bil, Biler, Bilene">
 <meta property="og:type" content="website">
 <meta property="og:url" content="{{ request.get_full_path }}">
-<meta property="og:description" content="{{car.name}}, {{car.description}}, Bilmeglerne har spesialisert seg på salg av bil. Vi har utviklet denne tjenesten for å gjøre deg trygg på at bilsalget foregår i henhold til gjeldende lover og forskrifter">
+<meta property="og:description" content="{{car.name}}, {{car.description|safe}}, Bilmeglerne har spesialisert seg på salg av bil. Vi har utviklet denne tjenesten for å gjøre deg trygg på at bilsalget foregår i henhold til gjeldende lover og forskrifter">
 {% endblock %}
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -85,6 +85,8 @@
     <div id="onlyDesTwo">
       <div class="additional-info">
         <div id="addInfoChoices">
+
+
           {% if car.service %}
               {% if car.garanti %}
               <div id="service" class="active" style="width: auto; position: relative; margin-right: 15px;" onclick="serviceChoice()">
@@ -99,26 +101,55 @@
             {% endif %}
           {% endif %}
     
+      
           {% if car.garanti %}
             {% if car.service %}
-              <div id="garanti" style="width: auto; position: relative;" onclick="garantiChoice()">
+            {% if egenerkling_data.bruksmerker_bilde1 or egenerkling_data.bruksmerker_text %}
+            <div id="garanti" style="width: auto; position: relative; margin-right: 15px;" onclick="garantiChoice()">
+            {% else %}
+            <div id="garanti" style="width: auto; position: relative;" onclick="garantiChoice()">
+            {% endif %}
                 <i class="fa-regular fa-shield-heart"></i>
                 <p>Garanti</p>
               </div>
               {% else %}
-              <div id="garanti" class="active" style="width: auto; position: relative;" onclick="garantiChoice()">
+              {% if egenerkling_data.bruksmerker_bilde1 or egenerkling_data.bruksmerker_text %}
+              <div id="garanti" style="width: auto; position: relative; margin-right: 15px;" onclick="garantiChoice()">
+              {% else %}
+              <div id="garanti" style="width: auto; position: relative;" onclick="garantiChoice()">
+              {% endif %}
                 <i class="fa-regular fa-shield-heart"></i>
                 <p>Garanti</p>
               </div>
-            {% endif %}
-          {% endif %}
+              {% endif %}
+    
+              {% endif %}
+
+              {% for egenerkling in egenerkling_data %}
+              {% if egenerkling_data.bruksmerker_bilde1 or egenerkling_data.bruksmerker_text %}
+              <div id="bruksmerker" style="width: auto; position: relative;" onclick="garantiChoice()">
+                <i class="fa-solid fa-hammer-crash"></i>
+                <p>Service</p>
+              </div>
+              {% else %}
+              <div id="bruksmerker" class="active" style="width: auto; position: relative;" onclick="garantiChoice()">
+                <i class="fa-solid fa-hammer-crash"></i>
+                <p>Service</p>
+              </div>
+              {% endif %}
+              {% endfor %} 
+
+
         </div>
+
+
         <div class="content">
           {% if car.service %}
           <div id="serviceText" class="active">
             <p>{{car.service}}</p>
           </div>
           {% endif %}
+
           {% if car.garanti %}
             {% if car.service %}
               <div id="garantiText">
@@ -129,8 +160,17 @@
                 <p>{{car.garanti}}</p>
               </div>
             {% endif %}
+                      
+            <!-- {% for egenerkling in egenerkling_data %}
+            {% if egenerkling.bruksmerker_bilde1 or egenerkling.bruksmerker_text %} 
+                <li>Name: {{ egenerkling.name }}</li>
+                {% endif %}
+            {% endfor %} -->
+
           {% endif %}
         </div>
+
+
       </div>
     </div>
     {% endif %}
@@ -667,7 +707,7 @@
 
       
       <!-- Usynlig -->
-      <div style="opacity: 0;">
+      <div style="opacity: 0; pointer-events: none;">
         <h1>Høyste bud</h1>her: {{highest_bid.bid_amount}} <h1>Dager igjen</h1>{{ highest_bid.days_until_expiry }} <p>OBS: her vil høyeste budet komme opp. Både prisen og dato til den går bort kan bli vist. Dette er valgfritt</p>
       </div>
 
@@ -679,15 +719,7 @@
 
       <div class="third-info" id="utstyr">
         <p style="margin-bottom: 10px; margin-top: 25px; color: black; font-size: 22px;">Utstyr</p>
-<!--         
-        <ul>
-          {% for egenerkling in egenerkling_data %}
-              <li>Name: {{ egenerkling.name }}</li>
-              <li>Mobile Number: {{ egenerkling.mobile_nr }}</li>
-              <hr>
-              <img src="{{ egenerkling.bruksmerker_bilder.url }}" alt="Image">
-          {% endfor %}
-      </ul> -->
+
 
         {% if car.ABS_bremser %}<li>ABS bremser</li>{% endif %}
         {% if car.AUX_inngang %}<li>AUX inngang</li>{% endif %}

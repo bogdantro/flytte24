@@ -129,6 +129,9 @@ def car_detail(request, slug, id):
     highest_bid_status = highest_bid.status if highest_bid else None
     days_until_expiry = highest_bid.days_until_expiry if highest_bid else None
 
+
+    egenerkling_data = Egenerkeling.objects.filter(car=car)
+    
     context = {
         'car': car,
         'bids': display_bids,
@@ -136,8 +139,8 @@ def car_detail(request, slug, id):
         'mapbox_access_token': mapbox_access_token,
         'highest_bid_status': highest_bid_status,
         'days_until_expiry': days_until_expiry,
+        'egenerkling_data': egenerkling_data,
     }
-
     return render(request, 'core/product.html', context)
 
 

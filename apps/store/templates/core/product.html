@@ -587,6 +587,7 @@
           {% endif %}
         {% endif %}
 
+
         <div class="actions">
           {% if request.user == car.user %}
                 <button  style=" background: #ffc876; color: #1F1F1F; border: none; pointer-events: none;" class="secondary">Du eier bilen</button>
@@ -678,6 +679,16 @@
 
       <div class="third-info" id="utstyr">
         <p style="margin-bottom: 10px; margin-top: 25px; color: black; font-size: 22px;">Utstyr</p>
+<!--         
+        <ul>
+          {% for egenerkling in egenerkling_data %}
+              <li>Name: {{ egenerkling.name }}</li>
+              <li>Mobile Number: {{ egenerkling.mobile_nr }}</li>
+              <hr>
+              <img src="{{ egenerkling.bruksmerker_bilder.url }}" alt="Image">
+          {% endfor %}
+      </ul> -->
+
         {% if car.ABS_bremser %}<li>ABS bremser</li>{% endif %}
         {% if car.AUX_inngang %}<li>AUX inngang</li>{% endif %}
         {% if car.air_Condition %}<li>Air Condition</li>{% endif %}

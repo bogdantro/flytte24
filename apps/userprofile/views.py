@@ -147,6 +147,8 @@ def mine_annonser_egenerklering(request, car_id):
             owners = request.POST.get('owners', '')
             bruktimportert = request.POST.get('bruktimportert', '')
             demobil = request.POST.get('demobil', '')
+            bruksmerker_bilde1 = request.POST.get('bruksmerker_bilde1', '')
+            bruksmerker_text = request.POST.get('bruksmerker_text', '')
 
             # Check if egnerklæring is an instance of Egenerkeling
             if egnerklæring and isinstance(egnerklæring, Egenerkeling):
@@ -156,6 +158,8 @@ def mine_annonser_egenerklering(request, car_id):
                 egnerklæring.owners = owners
                 egnerklæring.bruktimportert = bruktimportert
                 egnerklæring.demobil = demobil
+                egnerklæring.bruksmerker_bilde1 = bruksmerker_bilde1
+                egnerklæring.bruksmerker_text = bruksmerker_text
                 egnerklæring.save()
             else:
                 egnerklæring = Egenerkeling.objects.create(
@@ -167,6 +171,8 @@ def mine_annonser_egenerklering(request, car_id):
                     owners=owners,
                     bruktimportert=bruktimportert,
                     demobil=demobil,
+                    bruksmerker_bilde1=bruksmerker_bilde1,
+                    bruksmerker_text=bruksmerker_text,
                 )
 
 

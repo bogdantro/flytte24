@@ -141,6 +141,11 @@ def car_detail(request, slug, id):
 
 
     egenerkling_data = Egenerkeling.objects.filter(car=car)
+
+    if egenerkling_data.exists():
+        egenerkling_data = egenerkling_data    
+    else:
+        egenerkling_data = 'Hello'
     
     context = {
         'car': car,

@@ -81,108 +81,108 @@
    
    <div class="max-w">
 
+      {% for egenerkling in egenerkling_data %}
+        {% if car.service or car.garanti or egenerkling.bruksmerker_bilde1 or egenerkling.bruksmerker_text %}
 
-    {% for egenerkling in egenerkling_data %}
-    {% if car.service or car.garanti or egenerkling.bruksmerker_bilde1 or egenerkling.bruksmerker_text %}
+          <div id="onlyDesTwo">
+              <div class="additional-info">
+                  <div id="addInfoChoices">
 
-    <div id="onlyDesTwo">
-        <div class="additional-info">
-            <div id="addInfoChoices">
+                      {% if car.service %}
+                          {% if car.garanti or egenerkling.bruksmerker_bilde1 or egenerkling.bruksmerker_text %}
+                              <div id="service" class="active" style="width: auto; position: relative; margin-right: 15px;" onclick="serviceChoice()">
+                                <i class="fa-light fa-car-wrench"></i>
+                                <p style="padding-left: 0;">Service</p>
+                              </div>
+                          {% else %}
+                              <div id="service" class="active" style="width: auto; position: relative;" onclick="serviceChoice()">
+                                <i class="fa-light fa-car-wrench"></i>
+                                <p style="padding-left: 0;">Service</p>
+                              </div>
+                          {% endif %}
+                      {% endif %}
 
-                {% if car.service %}
-                    {% if car.garanti or egenerkling.bruksmerker_bilde1 or egenerkling.bruksmerker_text %}
-                        <div id="service" class="active" style="width: auto; position: relative; margin-right: 15px;" onclick="serviceChoice()">
-                          <i class="fa-light fa-car-wrench"></i>
-                          <p style="padding-left: 0;">Service</p>
-                        </div>
-                    {% else %}
-                        <div id="service" class="active" style="width: auto; position: relative;" onclick="serviceChoice()">
-                          <i class="fa-light fa-car-wrench"></i>
-                          <p style="padding-left: 0;">Service</p>
-                        </div>
-                    {% endif %}
-                {% endif %}
+                      {% if car.garanti %}
+                          {% if car.service %}
+                              {% if egenerkling.bruksmerker_bilde1 or egenerkling.bruksmerker_text %}
+                                  <div id="garanti" style="width: auto; position: relative; margin-right: 15px;" onclick="garantiChoice()">
+                                    <i class="fa-regular fa-shield-heart"></i>
+                                    <p>Garanti</p>
+                                </div>
+                              {% else %}
+                                  <div id="garanti" style="width: auto; position: relative;" onclick="garantiChoice()">
+                                    <i class="fa-regular fa-shield-heart"></i>
+                                    <p>Garanti</p>
+                                </div>
+                              {% endif %}
+                          {% else %}
+                              {% if egenerkling.bruksmerker_bilde1 or egenerkling.bruksmerker_text %}
+                                  <div id="garanti" class="active" style="width: auto; position: relative; margin-right: 15px;" onclick="garantiChoice()">
+                                    <i class="fa-regular fa-shield-heart"></i>
+                                    <p>Garanti</p>
+                                </div>
+                              {% else %}
+                                  <div id="garanti" class="active" style="width: auto; position: relative;" onclick="garantiChoice()">
+                                    <i class="fa-regular fa-shield-heart"></i>
+                                    <p>Garanti</p>
+                                </div>
+                              {% endif %}
+                          {% endif %}
+                      {% endif %}
 
-                {% if car.garanti %}
-                    {% if car.service %}
-                        {% if egenerkling.bruksmerker_bilde1 or egenerkling.bruksmerker_text %}
-                            <div id="garanti" style="width: auto; position: relative; margin-right: 15px;" onclick="garantiChoice()">
-                              <i class="fa-regular fa-shield-heart"></i>
-                              <p>Garanti</p>
+                      {% if egenerkling.bruksmerker_bilde1 or egenerkling.bruksmerker_text %}
+                          {% if car.service or car.garanti %}
+                              <div id="bruksmerker" style="width: auto; position: relative;" onclick="bruksmerkerChoice()">
+                                  <i class="fa-regular fa-hammer-crash"></i>
+                                  <p>Bruksmerker</p>
+                              </div>
+                          {% else %}
+                              <div id="bruksmerker" class="active" style="width: auto; position: relative;" onclick="bruksmerkerChoice()">
+                                  <i class="fa-regular fa-hammer-crash"></i>
+                                  <p>Bruksmerker</p>
+                              </div>
+                          {% endif %}
+                      {% endif %}
+
+                  </div>
+
+                  <div class="content">
+                      {% if car.service %}
+                          <div id="serviceText" class="active">
+                              <p>{{car.service}}</p>
                           </div>
-                        {% else %}
-                            <div id="garanti" style="width: auto; position: relative;" onclick="garantiChoice()">
-                              <i class="fa-regular fa-shield-heart"></i>
-                              <p>Garanti</p>
-                          </div>
+                      {% endif %}
+
+                      {% if car.garanti %}
+                          {% if car.service %}
+                              <div id="garantiText">
+                                  <p>{{car.garanti}}</p>
+                              </div>
+                          {% else %}
+                              <div id="garantiText" class="active">
+                                  <p>{{car.garanti}}</p>
+                              </div>
+                          {% endif %}
                         {% endif %}
-                    {% else %}
-                        {% if egenerkling.bruksmerker_bilde1 or egenerkling.bruksmerker_text %}
-                            <div id="garanti" class="active" style="width: auto; position: relative; margin-right: 15px;" onclick="garantiChoice()">
-                              <i class="fa-regular fa-shield-heart"></i>
-                              <p>Garanti</p>
-                          </div>
-                        {% else %}
-                            <div id="garanti" class="active" style="width: auto; position: relative;" onclick="garantiChoice()">
-                              <i class="fa-regular fa-shield-heart"></i>
-                              <p>Garanti</p>
-                          </div>
-                        {% endif %}
-                    {% endif %}
-                {% endif %}
+                          
+                          {% if egenerkling.bruksmerker_bilde1 or egenerkling.bruksmerker_text %}
+                              {% if car.service or car.garanti %}
+                                  <div id="bruksmerkerText">
+                                      <p>Trykk <a href="{% url  'car_bruksmerker' car.slug car.id %}">her for å se bilens bruksmerker</a></p>
+                                  </div>
+                              {% else %}
+                                  <div id="bruksmerkerText" class="active">
+                                      <p>Trykk <a href="{% url  'car_bruksmerker' car.slug car.id %}">her for å se bilens bruksmerker</a></p>
+                                  </div>
+                              {% endif %}
+                          {% endif %}
 
-                {% if egenerkling.bruksmerker_bilde1 or egenerkling.bruksmerker_text %}
-                    {% if car.service or car.garanti %}
-                        <div id="bruksmerker" style="width: auto; position: relative;" onclick="bruksmerkerChoice()">
-                            <i class="fa-regular fa-hammer-crash"></i>
-                            <p>Bruksmerker</p>
-                        </div>
-                    {% else %}
-                        <div id="bruksmerker" class="active" style="width: auto; position: relative;" onclick="bruksmerkerChoice()">
-                            <i class="fa-regular fa-hammer-crash"></i>
-                            <p>Bruksmerker</p>
-                        </div>
-                    {% endif %}
-                {% endif %}
+                  </div>
+              </div>
+          </div>
 
-            </div>
-
-            <div class="content">
-                {% if car.service %}
-                    <div id="serviceText" class="active">
-                        <p>{{car.service}}</p>
-                    </div>
-                {% endif %}
-
-                {% if car.garanti %}
-                    {% if car.service %}
-                        <div id="garantiText">
-                            <p>{{car.garanti}}</p>
-                        </div>
-                    {% else %}
-                        <div id="garantiText" class="active">
-                            <p>{{car.garanti}}</p>
-                        </div>
-                    {% endif %}
-                  {% endif %}
-                    
-                    {% if egenerkling.bruksmerker_bilde1 or egenerkling.bruksmerker_text %}
-                        {% if car.service or car.garanti %}
-                            <div id="bruksmerkerText">
-                                <p>Trykk <a href="{% url  'car_bruksmerker' car.slug car.id %}">her for å se bilens bruksmerker</a></p>
-                            </div>
-                        {% else %}
-                            <div id="bruksmerkerText" class="active">
-                                <p>Trykk <a href="{% url  'car_bruksmerker' car.slug car.id %}">her for å se bilens bruksmerker</a></p>
-                            </div>
-                        {% endif %}
-                    {% endif %}
-
-            </div>
-        </div>
-    </div>
-    {% endif %}
-{% endfor %}
+        {% endif %}
+      {% endfor %}
 
 
 

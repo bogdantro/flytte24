@@ -81,62 +81,78 @@
    
    <div class="max-w">
 
-    {% if car.service or car.garanti %}
+
+    {% for egenerkling in egenerkling_data %}
+    {% if car.service or car.garanti or egenerkling.bruksmerker_bilde1 or egenerkling.bruksmerker_text %}
+
     <div id="onlyDesTwo">
       <div class="additional-info">
         <div id="addInfoChoices">
 
 
           {% if car.service %}
-              {% if car.garanti %}
-              <div id="service" class="active" style="width: auto; position: relative; margin-right: 15px;" onclick="serviceChoice()">
-                <i class="fa-light fa-car-wrench"></i>
-                <p style="padding-left: 0;">Service</p>
-              </div>
-            {% else %}
-            <div id="service" class="active" style="width: auto; position: relative;" onclick="serviceChoice()">
+          {% for egenerkling in egenerkling_data %}
+          {% if car.garanti or egenerkling.bruksmerker_bilde1 or egenerkling.bruksmerker_text %}
+          <div id="service" class="active" style="width: auto; position: relative; margin-right: 15px;" onclick="serviceChoice()">
+            <i class="fa-light fa-car-wrench"></i>
+            <p style="padding-left: 0;">Service</p>
+          </div>
+          {% else %}
+          <div id="service" class="active" style="width: auto; position: relative;" onclick="serviceChoice()">
               <i class="fa-light fa-car-wrench"></i>
               <p style="padding-left: 0;">Service</p>
             </div>
             {% endif %}
+            {% endfor %} 
           {% endif %}
     
       
           {% if car.garanti %}
             {% if car.service %}
-            {% if egenerkling_data.bruksmerker_bilde1 or egenerkling_data.bruksmerker_text %}
-            <div id="garanti" style="width: auto; position: relative; margin-right: 15px;" onclick="garantiChoice()">
-            {% else %}
-            <div id="garanti" style="width: auto; position: relative;" onclick="garantiChoice()">
-            {% endif %}
-                <i class="fa-regular fa-shield-heart"></i>
-                <p>Garanti</p>
-              </div>
+
+            {% for egenerkling in egenerkling_data %}
+              {% if egenerkling.bruksmerker_bilde1 or egenerkling.bruksmerker_text %}
+                <div id="garanti" style="width: auto; position: relative; margin-right: 15px;" onclick="garantiChoice()">
               {% else %}
-              {% if egenerkling_data.bruksmerker_bilde1 or egenerkling_data.bruksmerker_text %}
-              <div id="garanti" style="width: auto; position: relative; margin-right: 15px;" onclick="garantiChoice()">
-              {% else %}
-              <div id="garanti" style="width: auto; position: relative;" onclick="garantiChoice()">
+                <div id="garanti" style="width: auto; position: relative;" onclick="garantiChoice()">
               {% endif %}
-                <i class="fa-regular fa-shield-heart"></i>
-                <p>Garanti</p>
-              </div>
-              {% endif %}
-    
-              {% endif %}
+              {% endfor %} 
+
+                  <i class="fa-regular fa-shield-heart"></i>
+                  <p>Garanti</p>
+                </div>
+                {% else %}
+
+                {% for egenerkling in egenerkling_data %}
+                {% if egenerkling.bruksmerker_bilde1 or egenerkling.bruksmerker_text %}
+                <div id="garanti" class="active" style="width: auto; position: relative; margin-right: 15px;" onclick="garantiChoice()">
+                {% else %}
+                <div id="garanti"  class="active"  style="width: auto; position: relative;" onclick="garantiChoice()">
+                {% endif %}
+                {% endfor %} 
+                  <i class="fa-regular fa-shield-heart"></i>
+                  <p>Garanti</p>
+                </div>
+                {% endif %}
+               {% endif %}
+
 
               {% for egenerkling in egenerkling_data %}
-              {% if egenerkling_data.bruksmerker_bilde1 or egenerkling_data.bruksmerker_text %}
-              <div id="bruksmerker" style="width: auto; position: relative;" onclick="garantiChoice()">
-                <i class="fa-solid fa-hammer-crash"></i>
-                <p>Service</p>
+              
+              {% if egenerkling.bruksmerker_bilde1 or egenerkling.bruksmerker_text %}
+              {% if car.service or car.garanti %}
+              <div id="bruksmerker" style="width: auto; position: relative;" onclick="bruksmerkerChoice()">
+                <i class="fa-regular fa-hammer-crash"></i>
+                <p>Bruksmerker</p>
               </div>
               {% else %}
-              <div id="bruksmerker" class="active" style="width: auto; position: relative;" onclick="garantiChoice()">
-                <i class="fa-solid fa-hammer-crash"></i>
-                <p>Service</p>
+              <div id="bruksmerker" class="active" style="width: auto; position: relative;" onclick="bruksmerkerChoice()">
+                <i class="fa-regular fa-hammer-crash"></i>
+                <p>Bruksmerker</p>
               </div>
               {% endif %}
+              {% endif %}
+
               {% endfor %} 
 
 
@@ -160,20 +176,20 @@
                 <p>{{car.garanti}}</p>
               </div>
             {% endif %}
-                      
-            <!-- {% for egenerkling in egenerkling_data %}
-            {% if egenerkling.bruksmerker_bilde1 or egenerkling.bruksmerker_text %} 
-                <li>Name: {{ egenerkling.name }}</li>
-                {% endif %}
-            {% endfor %} -->
+
+              <div id="bruksmerkerText">
+                <p>{{car.garanti}}</p>
+              </div>
+                    
 
           {% endif %}
         </div>
-
-
+        
+        
       </div>
     </div>
     {% endif %}
+    {% endfor %} 
     
    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
 
@@ -1392,6 +1408,9 @@ function serviceChoice(){
 
   document.getElementById('garanti').classList.remove('active');
   document.getElementById('garantiText').classList.remove('active');
+  document.getElementById('bruksmerker').classList.remove('active');
+  document.getElementById('bruksmerkerText').classList.remove('active');
+
 }
 
 function garantiChoice(){
@@ -1400,6 +1419,20 @@ function garantiChoice(){
 
   document.getElementById('service').classList.remove('active');
   document.getElementById('serviceText').classList.remove('active');
+  document.getElementById('bruksmerker').classList.remove('active');
+  document.getElementById('bruksmerkerText').classList.remove('active');
+
+}
+
+function bruksmerkerChoice(){
+  document.getElementById('bruksmerker').classList.add('active');
+  document.getElementById('bruksmerkerText').classList.add('active');
+
+  document.getElementById('service').classList.remove('active');
+  document.getElementById('serviceText').classList.remove('active');
+  document.getElementById('garanti').classList.remove('active');
+  document.getElementById('garantiText').classList.remove('active');
+
 }
 
 function serviceChoiceOne(){

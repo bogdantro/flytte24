@@ -238,6 +238,13 @@ $txt: #183b56;
                             background: hsla(36, 100%, 86%, 0.484);
                         }
                     }
+                    #bruksmerkerOne{
+                        padding: 10px 20px;
+                        margin: -10px -20px;
+                        &.active{
+                            background: hsla(36, 100%, 86%, 0.484);
+                        }
+                    }
                 }
                 .content{
                     background: hsla(36, 100%, 90%, 0.484);
@@ -255,6 +262,12 @@ $txt: #183b56;
                         }
                     }
                     #garantiTextOne{
+                        display: none;
+                        &.active{
+                            display: block;
+                        }
+                    }
+                    #bruksmerkerTextOne{
                         display: none;
                         &.active{
                             display: block;
@@ -1124,6 +1137,13 @@ $txt: #183b56;
                                  background: hsla(36, 100%, 86%, 0.484);
                              }
                          }
+                         #bruksmerkerOne{
+                             padding: 10px 20px;
+                             margin: -10px -20px;
+                             &.active{
+                                 background: hsla(36, 100%, 86%, 0.484);
+                             }
+                         }
                      }
                      .content{
                          background: hsla(36, 100%, 90%, 0.484);
@@ -1142,6 +1162,12 @@ $txt: #183b56;
                              }
                          }
                          #garantiTextOne{
+                             display: none;
+                             &.active{
+                                 display: block;
+                             }
+                         }
+                         #bruksmerkerTextOne{
                              display: none;
                              &.active{
                                  display: block;
@@ -1895,17 +1921,42 @@ $txt: #183b56;
                      font-weight: 400;
                  }
                  #serviceText{
-                     display: none;
-                     max-width: 520px;
-                     &.active{
-                         display: block;
-                        }
-                    }
-                 #garantiText{
-                     display: none;
+                    opacity: 0;
+                    width:0;
+                    height: 0;
+                    pointer-events: none;
                     max-width: 520px;
                      &.active{
-                         display: block;
+                         opacity: 1;
+                         width: auto;
+                         height: auto;
+                         pointer-events: visible;
+                     }
+                    }
+                 #garantiText{
+                    opacity: 0;
+                    width:0;
+                    height: 0;
+                    pointer-events: none;
+                    max-width: 520px;
+                     &.active{
+                         opacity: 1;
+                         width: auto;
+                         height: auto;
+                         pointer-events: visible;
+                     }
+                 }
+                 #bruksmerkerText{
+                    opacity: 0;
+                    width:0;
+                    height: 0;
+                    pointer-events: none;
+                    max-width: 520px;
+                     &.active{
+                         opacity: 1;
+                         width: auto;
+                         height: auto;
+                         pointer-events: visible;
                      }
                  }
              }

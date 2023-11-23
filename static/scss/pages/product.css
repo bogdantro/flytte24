@@ -237,6 +237,13 @@
 .page .car .info .additional-info #addInfoChoicesOne #garantiOne.active {
   background: hsla(36, 100%, 86%, 0.484);
 }
+.page .car .info .additional-info #addInfoChoicesOne #bruksmerkerOne {
+  padding: 10px 20px;
+  margin: -10px -20px;
+}
+.page .car .info .additional-info #addInfoChoicesOne #bruksmerkerOne.active {
+  background: hsla(36, 100%, 86%, 0.484);
+}
 .page .car .info .additional-info .content {
   background: hsla(36, 100%, 90%, 0.484);
   padding: 20px;
@@ -257,6 +264,12 @@
   display: none;
 }
 .page .car .info .additional-info .content #garantiTextOne.active {
+  display: block;
+}
+.page .car .info .additional-info .content #bruksmerkerTextOne {
+  display: none;
+}
+.page .car .info .additional-info .content #bruksmerkerTextOne.active {
   display: block;
 }
 .page .car .actions {
@@ -1136,6 +1149,13 @@
   .page .car .info .additional-info #addInfoChoicesOne #garantiOne.active {
     background: hsla(36, 100%, 86%, 0.484);
   }
+  .page .car .info .additional-info #addInfoChoicesOne #bruksmerkerOne {
+    padding: 10px 20px;
+    margin: -10px -20px;
+  }
+  .page .car .info .additional-info #addInfoChoicesOne #bruksmerkerOne.active {
+    background: hsla(36, 100%, 86%, 0.484);
+  }
   .page .car .info .additional-info .content {
     background: hsla(36, 100%, 90%, 0.484);
     padding: 20px;
@@ -1157,6 +1177,12 @@
     display: none;
   }
   .page .car .info .additional-info .content #garantiTextOne.active {
+    display: block;
+  }
+  .page .car .info .additional-info .content #bruksmerkerTextOne {
+    display: none;
+  }
+  .page .car .info .additional-info .content #bruksmerkerTextOne.active {
     display: block;
   }
   .page .car .info .location {
@@ -1922,18 +1948,43 @@
     font-weight: 400;
   }
   #onlyDesTwo .additional-info .content #serviceText {
-    display: none;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
     max-width: 520px;
   }
   #onlyDesTwo .additional-info .content #serviceText.active {
-    display: block;
+    opacity: 1;
+    width: auto;
+    height: auto;
+    pointer-events: visible;
   }
   #onlyDesTwo .additional-info .content #garantiText {
-    display: none;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
     max-width: 520px;
   }
   #onlyDesTwo .additional-info .content #garantiText.active {
-    display: block;
+    opacity: 1;
+    width: auto;
+    height: auto;
+    pointer-events: visible;
+  }
+  #onlyDesTwo .additional-info .content #bruksmerkerText {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+    max-width: 520px;
+  }
+  #onlyDesTwo .additional-info .content #bruksmerkerText.active {
+    opacity: 1;
+    width: auto;
+    height: auto;
+    pointer-events: visible;
   }
   .page {
     padding-top: 250px;

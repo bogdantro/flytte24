@@ -25,6 +25,7 @@ urlpatterns = [
     path('kjøp-bil/', buy_car, name='buy_car'),
     path('bid-sucessnkldsf2398ryoiqwepyr3829yr3982/', bid_success, name='bid_success'),
     path('bil/:<slug>:<id>/', car_detail, name='car_detail'),
+    path('bil/bruksmerker/:<slug>:<id>/', car_bruksmerker, name='car_bruksmerker'),
 
     path('kontakt-oss/', contact, name='contact'),
     path('verdivurdering/', verdivurdering, name='verdivurdering'),

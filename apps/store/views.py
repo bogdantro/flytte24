@@ -41,6 +41,16 @@ def update_bid_statuses(car):
             bid.status = 'declined'
             bid.save()
 
+
+
+def car_bruksmerker(request, slug, id):
+    car = get_object_or_404(Car, slug=slug, id=id)
+    context = {
+        'car': car,
+    }
+    return render(request, 'core/bruksmerker.html', context)
+
+
 def car_detail(request, slug, id):
     car = get_object_or_404(Car, slug=slug, id=id)
     mapbox_access_token = settings.MAP_BOX_ACCESS_TOKEN

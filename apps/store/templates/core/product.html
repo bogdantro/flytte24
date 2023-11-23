@@ -925,6 +925,12 @@
             <p class="spec-heading">Hjuldrift</p>
             <p class="spec-body">{{car.hjuldrift}}</p>
           </div>
+          {% if car.hjuldriftbetegnelse %}
+          <div class="spec">
+            <p class="spec-heading">Hjuldriftnavn</p>
+            <p class="spec-body">{{car.hjuldriftbetegnelse}}</p>
+          </div>
+          {% endif %}
           {% if car.maks_tilhengervekt_i_kg %}
           <div class="spec">
             <p class="spec-heading">Maks tilhengervekt</p>

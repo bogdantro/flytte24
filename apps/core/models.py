@@ -50,6 +50,7 @@ class Booking(models.Model):
     less_than_150000km = models.BooleanField(default=False,blank=True, null=True)
     vilkaar = models.BooleanField(default=False,blank=True, null=True)
     is_booked = models.BooleanField(default=False)
+    fakturert = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

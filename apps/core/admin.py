@@ -10,7 +10,8 @@ class VerdivurderingAdmin(admin.ModelAdmin):
 admin.site.register(Verdivurdering, VerdivurderingAdmin)
 
 class BookingAdmin(admin.ModelAdmin):
-    list_display = ['id', 'full_name', 'date', 'time', 'location', 'preference', 'reg_number', 'is_booked']
+    list_display = ['id', 'full_name', 'date', 'time', 'location', 'preference', 'reg_number', 'is_booked', 'fakturert']
+    list_editable = ('is_booked', 'fakturert')
 
 admin.site.register(Booking, BookingAdmin)
 

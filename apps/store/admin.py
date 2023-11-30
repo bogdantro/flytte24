@@ -46,7 +46,7 @@ class CarPostAdmin(admin.ModelAdmin):
 
     fieldsets = (
       ('Hoved informasjon', {
-          'fields': ('sold', 'user', 'name', 'car_spesifikasjoner', 'car_brand', 'slug', 'price','fritak_for_reg_pris','reg_pris','expiry_date','description')
+          'fields': ('sold', 'skjul_annonsen', 'user', 'name', 'car_spesifikasjoner', 'car_brand', 'slug', 'price','fritak_for_reg_pris','reg_pris','expiry_date','description')
       }),
       ('Ekstra informasjon', {
           'fields': ('service', 'garanti')

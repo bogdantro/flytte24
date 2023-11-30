@@ -160,7 +160,8 @@ def bid_success(request):
 
 
 def buy_car(request):
-    cars = Car.objects.all().order_by('-id')
+    cars = Car.objects.filter(skjul_annonsen=False).order_by('-id')
+
 
     # Retrieve filtering options from query parameters
     price_order = request.GET.get('price_order')
@@ -208,12 +209,10 @@ def home_page_search(request):
         queryset = (
             Q(name__icontains=query) |
             Q(car_spesifikasjoner__icontains=query) |
-            Q(car_brand__icontains=query) |
-            Q(description__icontains=query) |
-            Q(adress__icontains=query)
+            Q(car_brand__icontains=query) 
         )
 
-        results = Car.objects.filter(queryset)
+        results = Car.objects.filter(queryset, skjul_annonsen=False)
     else:
        results = []
     return render(request, 'core/search-results.html', {'results':results, 'query':query})

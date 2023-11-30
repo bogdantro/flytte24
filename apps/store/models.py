@@ -37,6 +37,8 @@ class Car(models.Model):
 
     user = models.ForeignKey(User, related_name='cars', on_delete=models.CASCADE, blank=True, null=True)
     sold = models.BooleanField(default=False, blank=True)
+    skjul_annonsen = models.BooleanField(default=False, blank=True)
+    
     # Main
     name = models.CharField(max_length=300)
     slug = models.SlugField(max_length=150)

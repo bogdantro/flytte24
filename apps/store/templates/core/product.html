@@ -249,6 +249,7 @@
     <div class="carousel-inner" style="position: relative;">
       <!-- Add a counter overlay -->
       <div class="image-counter-overlay" id="imageCounter">1 / {{ car.num_active_images }}</div>
+
   
       <style type="text/css">
           .image-counter-overlay {
@@ -268,19 +269,406 @@
           }
       </style>
   
-      <div class="carousel-item active">
-          <img class="pr-img" id="productImageSliderOne" src="{{ car.image1.url }}" alt="{{ car.name }} image1"
-               draggable="false">
-      </div>
-      {% for i in image_count_range %}
-        {% with image_url=car|image_count_range|add:i|default:"" %}
-        {% if car|image_count_range %}
-            <div class="carousel-item{% if forloop.first %} active{% endif %}">
-                <img class="pr-img" src="{{ image_url.url }}" alt="{{ car.name }} image{{ i }}" draggable="false">
-            </div>
-        {% endif %}
-      {% endwith %}
-    {% endfor %}
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img class="pr-img" id="productImageSliderOne" src="{{car.image1.url}}" alt="{{car.name}} image1" draggable="false">
+    </div>
+    {% if car.image2 %}
+    <div class="carousel-item">
+      <img class="pr-img " src="{{car.image2.url}}" alt="{{car.name}}  image2" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image3 %}
+    <div class="carousel-item">
+      <img class="pr-img " src="{{car.image3.url}}" alt="{{car.name}}  image3" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image4 %}
+    <div class="carousel-item">
+      <img class="pr-img " src="{{car.image4.url}}" alt="{{car.name}}  image4" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image5 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image5.url}}" alt="{{car.name}}   image5" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image6 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image6.url}}" alt="{{car.name}}   image6" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image7 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image7.url}}" alt="{{car.name}}   image7" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image8 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image8.url}}" alt="{{car.name}}   image8" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image9 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image9.url}}" alt="{{car.name}}   image9" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image10 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image10.url}}" alt="{{car.name}}   image10" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image11 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image11.url}}" alt="{{car.name}}   image11" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image12 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image12.url}}" alt="{{car.name}}   image12" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image13 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image13.url}}" alt="{{car.name}}   image13" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image14 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image14.url}}" alt="{{car.name}}   image14" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image15 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image15.url}}" alt="{{car.name}}   image15" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image16 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image16.url}}" alt="{{car.name}}   image16" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image17 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image17.url}}" alt="{{car.name}}   image17" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image18 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image18.url}}" alt="{{car.name}}   image18" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image19 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image19.url}}" alt="{{car.name}}   image19" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image20 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image20.url}}" alt="{{car.name}}   image20" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image21 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image21.url}}" alt="{{car.name}}   image21" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image22 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image22.url}}" alt="{{car.name}}   image22" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image23 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image23.url}}" alt="{{car.name}}   image23" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image24 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image24.url}}" alt="{{car.name}}   image24" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image25 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image25.url}}" alt="{{car.name}}   image25" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image26 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image26.url}}" alt="{{car.name}}   image26" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image27 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image27.url}}" alt="{{car.name}}   image27" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image28 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image28.url}}" alt="{{car.name}}   image28" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image29 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image29.url}}" alt="{{car.name}}   image29" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image30 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image30.url}}" alt="{{car.name}}   image30" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image31 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image31.url}}" alt="{{car.name}}   image31" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image32 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image32.url}}" alt="{{car.name}}   image32" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image33 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image33.url}}" alt="{{car.name}}   image33" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image34 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image34.url}}" alt="{{car.name}}   image34" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image35 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image35.url}}" alt="{{car.name}}   image35" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image36 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image36.url}}" alt="{{car.name}}   image36" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image37 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image37.url}}" alt="{{car.name}}   image37" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image38 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image38.url}}" alt="{{car.name}}   image38" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image39 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image39.url}}" alt="{{car.name}}   image39" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image40 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image40.url}}" alt="{{car.name}}   image40" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image41 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image41.url}}" alt="{{car.name}}   image41" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image42 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image42.url}}" alt="{{car.name}}   image42" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image43 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image43.url}}" alt="{{car.name}}   image43" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image44 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image44.url}}" alt="{{car.name}}   image44" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image45 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image45.url}}" alt="{{car.name}}   image45" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image46 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image46.url}}" alt="{{car.name}}   image46" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image47 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image47.url}}" alt="{{car.name}}   image47" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image48 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image48.url}}" alt="{{car.name}}   image48" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image49 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image49.url}}" alt="{{car.name}}   image49" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image50 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image50.url}}" alt="{{car.name}}   image50" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image51 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image51.url}}" alt="{{car.name}}   image51" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image52 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image52.url}}" alt="{{car.name}}   image52" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image53 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image53.url}}" alt="{{car.name}}   image53" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image54 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image54.url}}" alt="{{car.name}}   image54" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image55 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image55.url}}" alt="{{car.name}}   image6" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image56 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image56.url}}" alt="{{car.name}}   image56" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image57 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image57.url}}" alt="{{car.name}}   image57" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image58 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image58.url}}" alt="{{car.name}}   image58" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image59 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image59.url}}" alt="{{car.name}}   image59" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image60 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image60.url}}" alt="{{car.name}}   image60" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image61 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image61.url}}" alt="{{car.name}}   image61" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image62 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image62.url}}" alt="{{car.name}}   image62" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image63 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image63.url}}" alt="{{car.name}}   image63" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image64 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image64.url}}" alt="{{car.name}}   image64" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image65 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image65.url}}" alt="{{car.name}}   image65" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image66 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image66.url}}" alt="{{car.name}}   image66" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image67 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image67.url}}" alt="{{car.name}}   image67" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image68 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image68.url}}" alt="{{car.name}}   image68" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image69 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image69.url}}" alt="{{car.name}}   image69" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image70 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image70.url}}" alt="{{car.name}}   image70" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image71 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image71.url}}" alt="{{car.name}}   image71" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image72 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image72.url}}" alt="{{car.name}}   image72" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image73 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image73.url}}" alt="{{car.name}}   image73" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image74 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image74.url}}" alt="{{car.name}}   image74" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image75 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image75.url}}" alt="{{car.name}}   image75" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image76 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image76.url}}" alt="{{car.name}}   image76" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image77 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image77.url}}" alt="{{car.name}}   image77" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image78 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image78.url}}" alt="{{car.name}}   image78" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image79 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image79.url}}" alt="{{car.name}}   image79" draggable="false">
+    </div>
+    {% endif %}
+    {% if car.image80 %}
+    <div class="carousel-item">
+      <img class="pr-img" src="{{car.image80.url}}" alt="{{car.name}}   image80" draggable="false">
+    </div>
+    {% endif %}
+  </div>
   </div>
 
 
@@ -1152,42 +1540,41 @@
 
 
   <script>
-  $('.carousel').on('touchstart', function(event){
-      const xClick = event.originalEvent.touches[0].pageX;
-      $(this).one('touchmove', function(event){
-          const xMove = event.originalEvent.touches[0].pageX;
-          const sensitivityInPx = 7;
 
-          if( Math.floor(xClick - xMove) > sensitivityInPx ){
-              $(this).carousel('next');
-          }
-          else if( Math.floor(xClick - xMove) < -sensitivityInPx ){
-              $(this).carousel('prev');
-          }
-      });
-      $(this).on('touchend', function(){
-          $(this).off('touchmove');
-      });
+$(document).ready(function () {
+  const touchCarousel = $('#carouselExampleIndicators');
+  const imageCounter = document.getElementById("imageCounter");
+
+  // Update the counter when the carousel finishes sliding to a new item
+  touchCarousel.on('slid.bs.carousel', function () {
+    const activeIndex = touchCarousel.find('.active').index() + 1;
+    const totalImages = '{{ car.num_active_images }}';
+    imageCounter.innerText = activeIndex + " / " + totalImages;
   });
 
-  document.addEventListener("DOMContentLoaded", function () {
-      // Get the total number of images
-      const totalImages = '{{ car.num_active_images }}';
+  // Handle touch events for carousel navigation
+  $('.carousel').on('touchstart', function (event) {
+    const xClick = event.originalEvent.touches[0].pageX;
 
-      // Set the initial counter value
-      let currentImage = 1;
-      document.getElementById("imageCounter").innerText = currentImage + " / " + totalImages;
+    $(this).one('touchmove', function (event) {
+      const xMove = event.originalEvent.touches[0].pageX;
+      const sensitivityInPx = 7;
 
-      // Update the counter when the carousel slides
-      const carousel = new bootstrap.Carousel(document.querySelector('.carousel'), {
-          interval: false,  // Disable auto-sliding
-      });
+      if (Math.floor(xClick - xMove) > sensitivityInPx) {
+        $(this).carousel('next');
+      } else if (Math.floor(xClick - xMove) < -sensitivityInPx) {
+        $(this).carousel('prev');
+      }
+    });
 
-      carousel._element.addEventListener('slid.bs.carousel', function () {
-          const activeIndex = carousel._activeIndex + 1;
-          document.getElementById("imageCounter").innerText = activeIndex + " / " + totalImages;
-      });
+    $(this).on('touchend', function () {
+      $(this).off('touchmove');
+    });
   });
+});
+
+
+
 
 
 function infoChoicesOne(){

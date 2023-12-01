@@ -130,7 +130,7 @@ def book_time(request):
             user_instance = None
 
 
-        if Booking.objects.filter(date=date, time=time, is_booked=True).exists():
+        if Booking.objects.filter(date=date, time=time, location=location, is_booked=True).exists():
             return render(request, 'pages/book/error.html', {'message': 'This time slot is already booked!'})
         else:
             if sms_reminder == 'on':
@@ -152,11 +152,12 @@ def book_time(request):
                 vilkaar = True
             else:
                 vilkaar = False
+
             booking = Booking.objects.create(user=user_instance, time=time, date=date, location=location, preference=preference, full_name=full_name, email=email, mobile_number=mobile_number, reg_number=reg_number, km=km, car_name_model=car_name_model, sms_reminder=sms_reminder, car_younger_than_10=car_younger_than_10, less_than_150000km=less_than_150000km, vilkaar=vilkaar)
             booking.is_booked = True
 
             booking.save()
-            
+        
             # Replace 'YOUR_ZAPIER_WEBHOOK_URL' with your actual Zapier webhook URL
             zapier_webhook_url = 'https://hooks.zapier.com/hooks/catch/13544280/3zlwsa0/'
 

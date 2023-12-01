@@ -54,7 +54,7 @@ def car_bruksmerker(request, slug, id):
 def car_detail(request, slug, id):
     car = get_object_or_404(Car, slug=slug, id=id)
     mapbox_access_token = settings.MAP_BOX_ACCESS_TOKEN
-
+    num_active_images = car.num_active_images()
 
     if request.method == 'POST' and 'testdrive' in request.POST:
         name = request.POST.get('name', '')
@@ -151,6 +151,7 @@ def car_detail(request, slug, id):
         'highest_bid_status': highest_bid_status,
         'days_until_expiry': days_until_expiry,
         'egenerkling_data': egenerkling_data,
+        'num_active_images': num_active_images,
     }
     return render(request, 'core/product.html', context)
 

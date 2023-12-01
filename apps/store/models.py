@@ -267,6 +267,11 @@ class Car(models.Model):
         today = timezone.now().date()
         return (self.expiry_date - today).days
     
+    def num_active_images(self):
+        # Count the number of active images
+        fields = [f.name for f in Car._meta.get_fields() if isinstance(f, models.ImageField)]
+        return sum(bool(getattr(self, field)) for field in fields)
+    
     def highest_bid_price(self):
         highest_bid = self.bud_set.aggregate(models.Max('bid_amount'))['bid_amount__max']
         return highest_bid or 0

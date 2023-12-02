@@ -21,6 +21,7 @@ class Car(models.Model):
         ("Sedan", "Sedan"),
         ("Stasjonsvogn", "Stasjonsvogn"),
         ("Coupe", "Coupe"),
+        ("Pickup", "Pickup"),
     ]
 
     GIRKASSE = [

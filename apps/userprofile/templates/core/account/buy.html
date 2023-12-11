@@ -53,13 +53,47 @@
             <h1>Forsikring</h1>
             <br>
             <div class="time">
-                <p> Bilen må forsikres, vi tilbyr den første måneden gratis hos If forsikring sin beste dekning</p>
+                <p>
+                    Bilen må forsikres. Her kan du velge forsikring gjennom oss! 
+                    <br>
+                    <br>
+                    Vi samarbeider med de to største aktørene på bilforsikring. 
+                    <br>
+                    <br>
+                    If forsikring og Gjensidige. 
+                </p>
             </div>
             <br>
             <div class="time">
                 <label for="forsikring">Ønsker du forsikring</label>
                 <br>
-                <div style="display: flex; width: 300px;"><input type="checkbox" style="width: 30px; height: 30px; cursor: pointer;" name="forsikring" id="forsikring"><p style="margin-left: 10px;">Ja jeg ønsker forsikring</p></div>
+                <div style="display: flex; width: 300px;">
+                    <input type="checkbox" style="width: 30px; height: 30px; cursor: pointer;" name="forsikring" id="forsikring">
+                    <p style="margin-left: 10px;">Ja, jeg ønsker forsikring</p>
+                </div>
+                
+                <br>
+                
+                <div style="display: flex; width: 300px;">
+                    <input type="checkbox" style="width: 30px; height: 30px; cursor: pointer;" name="forsikring_no" id="forsikring_no">
+                    <p style="margin-left: 10px;">Nei, jeg ønsker ikke forsikring</p>
+                </div>
+                
+                
+                <script>
+                    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                    
+                    checkboxes.forEach((checkbox) => {
+                        checkbox.addEventListener('change', () => {
+                            checkboxes.forEach((otherCheckbox) => {
+                                if (otherCheckbox !== checkbox) {
+                                    otherCheckbox.checked = false;
+                                }
+                            });
+                        });
+                    });
+                </script>            
+                
             </div>
             <div class="form-actions">
               <button type="submit" name="stepone">Jeg bekrefter</button>
@@ -122,11 +156,11 @@
               <h1>Omregistrering</h1>
               <br>
               <div class="time">
-                  <p style="margin-bottom: 0;">Oppgjøret er nå mottatt, nå må bilen omregistreres. Du vil motta en sms når dette skjer</p>
+                  <p style="margin-bottom: 0;">Oppgjøret er nå mottatt, og bilen kan omregistreres.</p>
                 </div>
                 <br>
                 <div class="time">
-                    <p style="margin-bottom: 0;">her er linekn til salgmld <a href="https://www.vegvesen.no/kjoretoy/kjop-og-salg/salgsmelding-og-omregistrering/godkjenn-salgsmelding/">vegvesen.no</a></p>
+                    <p style="margin-bottom: 0;">Her er link til omregistreringen:<a href="https://www.vegvesen.no/kjoretoy/kjop-og-salg/salgsmelding-og-omregistrering/godkjenn-salgsmelding/">vegvesen.no</a></p>
                 </div>
             </form>
             {% endfor %}

@@ -45,8 +45,11 @@ def update_bid_statuses(car):
 
 def car_bruksmerker(request, slug, id):
     car = get_object_or_404(Car, slug=slug, id=id)
+    egenerkling_data = get_object_or_404(Egenerkeling, car=car)   
+
     context = {
         'car': car,
+        'egenerkling_data': egenerkling_data,
     }
     return render(request, 'core/bruksmerker.html', context)
 

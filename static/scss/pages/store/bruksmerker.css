@@ -31,6 +31,17 @@
   color: #1F1F1F;
   font-weight: 500;
 }
+.cover .content .images {
+  margin-top: 35px;
+  position: relative;
+}
+.cover .content .images img {
+  width: 100%;
+  height: auto;
+  max-width: 550px;
+  display: block;
+  margin-bottom: 25px;
+}
 
 @media only screen and (min-device-width: 1140px) {
   .page .cover {

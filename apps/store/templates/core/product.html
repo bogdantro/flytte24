@@ -1200,6 +1200,9 @@
           <input type="email" placeholder="Epost" name="email" id="email"  required oninput="this.setCustomValidity('')" value="{{request.user.email}}">
           <br>
           <br>
+          <input type="text" placeholder="Telefonnummer" name="phone_number" id="phone_number"  required oninput="this.setCustomValidity('')" value="+47 {{request.user.profile.telefon}}">
+          <br>
+          <br>
           <textarea name="message" placeholder="Melding" id="message" oninput="this.setCustomValidity('')"></textarea>
         </div>
         </div>

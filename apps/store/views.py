@@ -60,15 +60,24 @@ def car_detail(request, slug, id):
         name = request.POST.get('name', '')
         email = request.POST.get('email', '')
         message = request.POST.get('message', '')
+        phone_number = request.POST.get('phone_number', '')
         date1_Y_m_d = request.POST.get('date1_Y_m_d', '')
         time1 = request.POST.get('time1', '')
         date2_Y_m_d = request.POST.get('date2_Y_m_d', '')
         time2 = request.POST.get('time2', '')
+        user_of_car = car.user
+        user_data = {
+            'id': user_of_car.id,
+            'username': user_of_car.username,
+            # Add more fields as needed
+        }
 
         data = {
+            'user': user_data,
             'car': car.to_dict(),
             'email': email,
             'message': message,
+            'phone_number': phone_number,
             'date1_Y_m_d': date1_Y_m_d,
             'time1': time1,
             'date2_Y_m_d': date2_Y_m_d,
@@ -97,12 +106,19 @@ def car_detail(request, slug, id):
 
     if request.method == 'POST' and 'make_bid' in request.POST:
         user = request.user
+        user_of_car = car.user
+        user_data = {
+            'id': user_of_car.id,
+            'username': user_of_car.username,
+            # Add more fields as needed
+        }
         bid_amount = int(request.POST.get('bid_amount', ''))
         expiry_date = request.POST.get('expiry_date', '')
 
         status = 'pending'
 
         data = {
+            'user': user_data,
             'car': car.to_dict(),
             'bid_amount': bid_amount,
             'expiry_date': expiry_date,

@@ -349,7 +349,7 @@ class Buy(models.Model):
     user = models.ForeignKey(User, related_name='buy', on_delete=models.SET_NULL, blank=True, null=True)
     forsikring = models.CharField(max_length=20, choices=[('no', 'Nei'), ('yes', 'Ja')], default='no')
     garanti = models.CharField(max_length=20, choices=[('no', 'Nei'), ('yes', 'Ja')], default='no')
-    steps = models.CharField(max_length=20, choices=[('zero', '0'), ('one', '1'), ('two', '2'), ('three', '3'), ('four', '4')], default='zero')
+    steps = models.CharField(max_length=20, choices=[('zero', '0'), ('one', '1'), ('two', '2'), ('three', '3'), ('three-half', '3.5'), ('four', '4')], default='zero')
 
     def __str__(self):
         return f"Kjøp på {self.car} av {self.user}"      
@@ -368,6 +368,10 @@ class Buy(models.Model):
 
     def step_two_garanti(self):
         self.garanti = 'yes'
+        self.save()
+ 
+    def step_three(self):
+        self.steps = 'three-half'
         self.save()
 
 

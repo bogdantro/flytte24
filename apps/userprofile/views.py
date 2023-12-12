@@ -389,12 +389,41 @@ def kommende_visninger(request):
 @login_required
 def mine_kjøp(request):
     user = request.user
-    buy = Buy.objects.filter(user=user)
+    buy = Buy.objects.filter(user=user).order_by('-id')
+
+
+
+    if request.method == 'POST' and 'stepfour' in request.POST:
+        carowner = request.POST.get('carowner', '')
+        fullname = request.POST.get('fullname', '')
+        email = request.POST.get('email', '')
+        telefonnummer = request.POST.get('telefonnummer', '')
+        personalnumber = request.POST.get('personalnumber', '')
+
+        data = {
+            'carowner': carowner,
+            'fullname': fullname,
+            'email': email,
+            'telefonnummer': telefonnummer,
+            'personalnumber': personalnumber,
+        }   
+
+        # Replace 'YOUR_ZAPIER_WEBHOOK_URL' with your actual Zapier webhook URL
+        zapier_webhook_url = 'https://hooks.zapier.com/hooks/catch/13544280/3fjmye2/'
+
+        # Make a POST request to Zapier webhook
+        response = requests.post(zapier_webhook_url, json=data)
+
+        for purchase in buy:
+            if request.user == purchase.user:
+                purchase.step_three()
+
 
     context = {
         'buy':buy,
     }
     return render(request, 'core/account/buy.html', context)
+
 
 @login_required
 def step_one(request, buy_id):

@@ -79,7 +79,7 @@
                     <p style="margin-left: 10px;">Nei, jeg ønsker ikke forsikring</p>
                 </div>
                 
-                
+
                 <script>
                     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
                     
@@ -155,13 +155,50 @@
               <br>
               <h1>Omregistrering</h1>
               <br>
+              {% if purchase.steps == 'three' %}
               <div class="time">
-                  <p style="margin-bottom: 0;">Oppgjøret er nå mottatt, og bilen kan omregistreres.</p>
+                  <p style="margin-bottom: 0;">Bilmeglerne bekrefter at oppgjøret er mottatt eller utbetalingsbekreftelse fra bank er mottatt. <br> <br> Fyll inn informasjonen nedenfor og send bekreftelse til selger.</p>
                 </div>
                 <br>
                 <div class="time">
-                    <p style="margin-bottom: 0;">Her er link til omregistreringen:<a href="https://www.vegvesen.no/kjoretoy/kjop-og-salg/salgsmelding-og-omregistrering/godkjenn-salgsmelding/">vegvesen.no</a></p>
+                    <div class="inputs-labels">
+                        <label for="forsikring">Din informasjon</label>
+                        <input type="text" placeholder="Fulltnavn" name="carowner" value="{{purchase.car.user.username}}" style="display: none;">
+                        <br>
+                        <input type="text" placeholder="Fulltnavn" name="fullname">
+                        <br>
+                        <br>
+                        <input type="email" placeholder="Epost" name="email">
+                        <br>
+                        <br>
+                        <input type="number" placeholder="Telefonnummer" name="telefonnummer">
+                        <br>
+                        <br>
+                        <input type="number" placeholder="Fødsels og personnummer" name="personalnumber">
+                        <br>
+                        <br>
+                    </div>
+                    <!-- <p style="margin-bottom: 0;">Her er link til omregistreringen:<a href="https://www.vegvesen.no/kjoretoy/kjop-og-salg/salgsmelding-og-omregistrering/godkjenn-salgsmelding/">vegvesen.no</a></p> -->
                 </div>
+                <div class="form-actions">
+                    <button type="submit" name="stepfour">Send til eier</button>
+                </div>
+                {% endif %}
+
+
+              {% if purchase.steps == 'three-half' %}
+              <div class="time">
+                  <p style="margin-bottom: 0;">Gratulerer! Nå kan du gå til omregistrerings siden
+                    <br>
+                    <br>
+                    Denne steget blir fullført når kjøpet har blitt fullført
+                </p>
+                </div>
+                <div class="form-actions">
+                    <button type="button" onclick="window.location.href='https://www.vegvesen.no/kjoretoy/kjop-og-salg/salgsmelding-og-omregistrering/godkjenn-salgsmelding/'">Gå til omregistrerings siden</button>
+                </div>
+                {% endif %}
+
             </form>
             {% endfor %}
 
@@ -332,6 +369,47 @@
                 <button onclick="stepFour()">Fullfør</button>
             </div>
         </div>
+        {% endif %}
+
+        {% if buy.steps == 'three-half' %}
+        
+        <div class="step conf">
+            <div class="left">
+                <i class="fa-solid fa-lock"></i>
+                <h1>Forsikring</h1>
+            </div>
+            <div class="right">
+                <i class="fa-solid fa-check check"></i>
+            </div>
+        </div>
+        <div class="step conf">
+            <div class="left">
+                <i class="fa-solid fa-car"></i>
+                <h1>Garanti</h1>
+            </div>
+            <div class="right">
+                <i class="fa-solid fa-check check"></i>
+            </div>
+        </div>
+        <div class="step conf">
+            <div class="left">
+                <i class="fa-solid fa-hand-holding-dollar"></i>
+                <h1>Oppgjøret</h1>
+            </div>
+            <div class="right">
+                <i class="fa-solid fa-check check"></i>
+            </div>
+        </div>
+        <div class="step">
+            <div class="left">
+                <i class="fa-solid fa-id-card"></i>
+                <h1>Omregistrering</h1>
+            </div>
+            <div class="right">
+                <button onclick="stepFour()">Fullfør</button>
+            </div>
+        </div>
+        <div class="alert alert-success" style="max-width: 420px; margin-inline: auto; margin-top: 25px;">Gratulerer! Nå kan du gå til omregistrerings siden. Trykk på fullfør engangtil.</div>
         {% endif %}
 
         

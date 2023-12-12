@@ -115,6 +115,7 @@ def car_detail(request, slug, id):
             'username': user_of_car.username,
             # Add more fields as needed
         }
+
         bid_amount = int(request.POST.get('bid_amount', ''))
         expiry_date = request.POST.get('expiry_date', '')
 
@@ -142,11 +143,28 @@ def car_detail(request, slug, id):
 
     if request.method == 'POST' and 'buy' in request.POST:
         user = request.user
-
+        user_of_car = car.user
+        user_data = {
+            'id': user_of_car.id,
+            'username': user_of_car.username,
+            # Add more fields as needed
+        }
         car.sold = True
         car.save()
 
         buy = Buy.objects.create(user=user, car=car)
+
+        data = {
+            'carowner': user_data,
+            'car': car.to_dict(),
+        }   
+
+        # Replace 'YOUR_ZAPIER_WEBHOOK_URL' with your actual Zapier webhook URL
+        zapier_webhook_url = 'https://hooks.zapier.com/hooks/catch/13544280/3fjsana/'
+
+        # Make a POST request to Zapier webhook
+        response = requests.post(zapier_webhook_url, json=data)
+
         return redirect('/min-bruker/mine-kjøp/')
 
     update_bid_statuses(car)  # Update bid statuses before rendering the view

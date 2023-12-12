@@ -270,7 +270,7 @@ class CarPostAdmin(admin.ModelAdmin):
 
 
 class BudAdmin(admin.ModelAdmin):
-    list_display = ['id', 'admin_photo', 'car', 'user', 'bid_amount', 'expiry_date', 'status']
+    list_display = ['admin_photo', 'car', 'user', 'bid_amount', 'expiry_date', 'status']
 
     def admin_photo(self, obj):
         return mark_safe('<img src="{}" width="100" />'.format(obj.car.image1.url))
@@ -283,7 +283,7 @@ admin.site.register(Bud, BudAdmin)
 
 
 class TestDriveAdmin(admin.ModelAdmin):
-    list_display = ['id', 'admin_photo', 'car', 'email', 'date1_Y_m_d', 'time1', 'date2_Y_m_d', 'time2']
+    list_display = ['admin_photo', 'car', 'email', 'date1_Y_m_d', 'time1', 'date2_Y_m_d', 'time2']
 
     def admin_photo(self, obj):
         return mark_safe('<img src="{}" width="100" />'.format(obj.car.image1.url))
@@ -296,7 +296,7 @@ admin.site.register(TestDrive, TestDriveAdmin)
 
 
 class BuyAdmin(admin.ModelAdmin):
-    list_display = ['id', 'admin_photo','user', 'car',  'steps']
+    list_display = ['admin_photo','user', 'car',  'steps']
 
     def admin_photo(self, obj):
         return mark_safe('<img src="{}" width="100" />'.format(obj.car.image1.url))
@@ -309,7 +309,7 @@ admin.site.register(Buy, BuyAdmin)
 
 
 class EgenerkelingAdmin(admin.ModelAdmin):
-    list_display = ['id', 'admin_photo','user', 'car']
+    list_display = ['admin_photo','user', 'car']
 
     def admin_photo(self, obj):
         return mark_safe('<img src="{}" width="100" />'.format(obj.car.image1.url))

@@ -18,7 +18,3 @@ class CarSitemap(Sitemap):
 
     def items(self):
         return Car.objects.all()
-
-    def get_absolute_url(self, obj):
-        # Assuming you have a 'blog_post' URL pattern in your urls.py
-        return reverse('blog_post', args=[obj.slug, str(obj.id)])

@@ -1,7 +1,6 @@
 {% extends 'core/base.html' %}
 {% load static %}
 
-{% block content %}
 {% block head %}
 <title>Book time</title>
 <meta name="description" content="Bilmeglerne har spesialisert seg på salg av bil. Vi har utviklet denne tjenesten for å gjøre deg trygg på at bilsalget foregår i henhold til gjeldende lover og forskrifter">
@@ -11,6 +10,7 @@
 <meta property="og:url" content="{{ request.get_full_path }}">
 <meta property="og:description" content="Bilmeglerne har spesialisert seg på salg av bil. Vi har utviklet denne tjenesten for å gjøre deg trygg på at bilsalget foregår i henhold til gjeldende lover og forskrifter">
 {% endblock %}
+{% block content %}
 
 <!-- Add these in the <head> section of your template -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

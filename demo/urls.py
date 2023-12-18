@@ -10,11 +10,21 @@ from django.conf.urls.static import static
 from django.contrib.auth import views
 from apps.userprofile.views import *
 from apps.store.views import *
+from apps.core.sitemaps import *
+from django.contrib.sitemaps.views import sitemap
 
 from django.contrib import admin
 
+sitemaps = {
+    'static': StaticViewsSitemap,
+    'car': CarSitemap,
+}
+
+
 urlpatterns = [
     path('bilmeglerne/admin/login/', admin.site.urls),
+
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}),
 
     path('', home, name='home'),
     path('søke-resultater/', home_page_search, name='home_page_search'),

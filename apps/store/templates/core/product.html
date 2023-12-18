@@ -2,8 +2,6 @@
 {% load static %}
 {% load custom_filters %}
 
-{% block content %}
-
 {% block head %}
 <title>Bil {{car.name}}</title>
 <meta name="description" content="{{car.name}}, {{car.description|safe}}, Bilmeglerne har spesialisert seg på salg av bil. Vi har utviklet denne tjenesten for å gjøre deg trygg på at bilsalget foregår i henhold til gjeldende lover og forskrifter">
@@ -13,6 +11,8 @@
 <meta property="og:url" content="{{ request.get_full_path }}">
 <meta property="og:description" content="{{car.name}}, {{car.description|safe}}, Bilmeglerne har spesialisert seg på salg av bil. Vi har utviklet denne tjenesten for å gjøre deg trygg på at bilsalget foregår i henhold til gjeldende lover og forskrifter">
 {% endblock %}
+{% block content %}
+
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>

@@ -194,7 +194,7 @@ $txt: #183b56;
                 text-decoration: none;
                 transition: .3s;
                 border-bottom: 2px solid transparent;
-                &:last-child{
+                &.maincta{
                     transform: translateY(2px);
                     background: linear-gradient(to bottom right, $primBtn, #ffb649);
                     color: white;
@@ -281,7 +281,7 @@ $txt: #183b56;
                 text-decoration: none;
                 transition: .3s;
                 border-bottom: 2px solid transparent;
-                &:last-child{
+                &.maincta{
                     transform: translateY(2px);
                     background: linear-gradient(to bottom right, $primBtn, #ffb649);
                     color: white;

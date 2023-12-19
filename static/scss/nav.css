@@ -177,7 +177,7 @@
     transition: 0.3s;
     border-bottom: 2px solid transparent;
   }
-  #desNav .menu a:last-child {
+  #desNav .menu a.maincta {
     transform: translateY(2px);
     background: linear-gradient(to bottom right, #f0a432, #ffb649);
     color: white;
@@ -189,7 +189,7 @@
     height: max-content !important;
     margin-bottom: 0;
   }
-  #desNav .menu a:last-child:hover {
+  #desNav .menu a.maincta:hover {
     transform: scale(1.05) translateY(2px);
   }
   #desNav .menu a:hover {
@@ -259,7 +259,7 @@
     transition: 0.3s;
     border-bottom: 2px solid transparent;
   }
-  #desNav .menu a:last-child {
+  #desNav .menu a.maincta {
     transform: translateY(2px);
     background: linear-gradient(to bottom right, #f0a432, #ffb649);
     color: white;
@@ -271,7 +271,7 @@
     height: max-content !important;
     margin-bottom: 0;
   }
-  #desNav .menu a:last-child:hover {
+  #desNav .menu a.maincta:hover {
     transform: scale(1.05) translateY(2px);
   }
   #desNav .menu a:hover {

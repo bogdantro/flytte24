@@ -33,12 +33,17 @@ class TestDriveInline(admin.TabularInline):
 
 class CarPostAdmin(admin.ModelAdmin):
     inlines = [BidInline, BuyInline, TestDriveInline]
-    list_display = ['admin_photo', 'name', 'reg_nr', 'car_brand', 'price', 'sold', 'skjul_annonsen']
+    list_display = ['admin_photo', 'name', 'days_until_expiry', 'reg_nr', 'car_brand', 'price', 'sold', 'skjul_annonsen']
     list_editable = ('sold', 'skjul_annonsen')
     search_fields = ('id', 'name', 'car_brand', 'car_spesifikasjoner', 'km', 'reg_nr')
     list_filter = [
         "car_brand",
     ]
+
+    def days_until_expiry(self, obj):
+        today = timezone.now().date()
+        return (obj.expiry_date - today).days
+    days_until_expiry.short_description = 'Dager igjen'
 
     formfield_overrides = {
         models.TextField: {'widget': CKEditorWidget()},

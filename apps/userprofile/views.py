@@ -75,15 +75,27 @@ def mine_bud(request):
 @login_required
 def mine_annonser(request):
     user = request.user
-    cars_with_bids = Car.objects.filter(user=user).annotate(
-        highest_bid=Max('bud__bid_amount'),
-        highest_bid_instance=Subquery(
-            Bud.objects.filter(car=OuterRef('pk')).order_by('-bid_amount', '-expiry_date')[:1].values('status')
-        ),
-        highest_bid_expiry=Subquery(
-            Bud.objects.filter(car=OuterRef('pk')).order_by('-bid_amount', '-expiry_date').values('expiry_date')[:1]
-        ),
-    )
+
+    if user.is_superuser:
+        cars_with_bids = Car.objects.annotate(
+            highest_bid=Max('bud__bid_amount'),
+            highest_bid_instance=Subquery(
+                Bud.objects.filter(car=OuterRef('pk')).order_by('-bid_amount', '-expiry_date')[:1].values('status')
+            ),
+            highest_bid_expiry=Subquery(
+                Bud.objects.filter(car=OuterRef('pk')).order_by('-bid_amount', '-expiry_date').values('expiry_date')[:1]
+            ),
+        )
+    else:
+        cars_with_bids = Car.objects.filter(user=user).annotate(
+            highest_bid=Max('bud__bid_amount'),
+            highest_bid_instance=Subquery(
+                Bud.objects.filter(car=OuterRef('pk')).order_by('-bid_amount', '-expiry_date')[:1].values('status')
+            ),
+            highest_bid_expiry=Subquery(
+                Bud.objects.filter(car=OuterRef('pk')).order_by('-bid_amount', '-expiry_date').values('expiry_date')[:1]
+            ),
+        )
 
     for car in cars_with_bids:
         if car.highest_bid_expiry:

@@ -55,6 +55,9 @@
             {% if 0 > car.days_until_expiry %}
               <div class="status" id="status" style="background: #ff8686;">Uaktiv</div>
               <div class="time-left">0 dager igjen</div>
+              {% else %}
+              <div class="status" id="status" style="background: #7eff7e;">Aktiv</div>
+              <div class="time-left">car.days_until_expiry dager igjen</div>
             {% endif %}
           {% endif %}
         </div>

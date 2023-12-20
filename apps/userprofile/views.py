@@ -102,6 +102,9 @@ def mine_annonser(request):
             remaining_days = (car.highest_bid_expiry - timezone.now().date()).days
             car.remaining_days = max(remaining_days, 0)  # Ensure days left is not negative
 
+            # Order cars by remaining days in ascending order
+    cars_with_bids = sorted(cars_with_bids, key=lambda car: (car.days_until_expiry, car.sold))
+
     context = {
         'cars_with_bids': cars_with_bids,
     }

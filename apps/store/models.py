@@ -24,6 +24,13 @@ class Car(models.Model):
         ("Pickup", "Pickup"),
     ]
 
+    SELLER = [
+        ("Cecilie Gromsrud", "Cecilie Gromsrud"),
+        ("Fredrik S. von der Lippe", "Fredrik S. von der Lippe"),
+        ("Øystein Helgheim", "Øystein Helgheim"),
+        ("Frederik F. Mørk", "Frederik F. Mørk"),
+    ]
+
     GIRKASSE = [
         ("Automat", "Automat"),
         ("Manuell ", "Manuell"),
@@ -39,6 +46,9 @@ class Car(models.Model):
     user = models.ForeignKey(User, related_name='cars', on_delete=models.CASCADE, blank=True, null=True)
     sold = models.BooleanField(default=False, blank=True)
     skjul_annonsen = models.BooleanField(default=False, blank=True)
+    
+    seller = models.CharField(max_length=300, choices=SELLER, blank=True, null=True)
+
     
     # Main
     name = models.CharField(max_length=300)
@@ -263,7 +273,8 @@ class Car(models.Model):
             'reg_nr': self.reg_nr,
             'car_spesifikasjoner': self.car_spesifikasjoner,
         }
-
+    
+    @property
     def days_until_expiry(self):
         today = timezone.now().date()
         return (self.expiry_date - today).days

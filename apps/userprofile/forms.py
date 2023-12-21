@@ -6,9 +6,6 @@ from .models import Userprofile
 from apps.core.models import Profile
 from apps.store.models import *
 
-from captcha.fields import ReCaptchaField
-from captcha.widgets import ReCaptchaV2Checkbox
-
 
 class UserprofileForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):

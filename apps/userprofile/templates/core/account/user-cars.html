@@ -64,7 +64,11 @@
 
         <div class="name"><span style="font-weight: 600;">{{ car.name }}</span> {{ car.car_spesifikasjoner }}</div>
 
-        {% if not car.sold %}
+        {% if car.sold %}
+          <hr>
+          <a href="{% url 'mine_annonser_egenerklering' car.id %}" class="interactive-btn">Bekreft kjøpet</a>
+          <hr>
+        {% else %}
           <hr>
           <a href="{% url 'mine_annonser_egenerklering' car.id %}" class="interactive-btn">Egenerklæring</a>
         {% endif %}

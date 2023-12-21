@@ -8,7 +8,7 @@ from apps.core.views import *
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views
-from apps.userprofile.views import *
+from apps.userprofile.views import * 
 from apps.store.views import *
 from apps.core.sitemaps import *
 from django.contrib.sitemaps.views import sitemap
@@ -84,6 +84,7 @@ urlpatterns = [
 
     path('passord-reset/', pass_reset, name='pass_reset'),
     path('passord-change/', password_change, name='password_change'),
+    path('reset/<uidb64>/<token>', passwordResetConfirm, name='password_reset_confirm'),
 
 
 

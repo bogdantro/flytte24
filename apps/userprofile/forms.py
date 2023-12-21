@@ -3,9 +3,11 @@ from django.contrib.auth.forms import *
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from .models import Userprofile
-
 from apps.core.models import Profile
 from apps.store.models import *
+
+from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV2Checkbox
 
 
 class UserprofileForm(forms.ModelForm):
@@ -40,9 +42,10 @@ class SignUpForm(UserCreationForm):
 
 
 class PasswordResetForm(PasswordResetForm):
-     def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(PasswordResetForm, self).__init__(*args, **kwargs)
 
+    # captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
 
 class SetPasswordForm(SetPasswordForm):
     class Meta:

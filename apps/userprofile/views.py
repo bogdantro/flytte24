@@ -20,7 +20,9 @@ from django.contrib.auth import get_user_model
 from django.db.models import Max
 from django.db.models import Subquery, OuterRef
 from apps.core.models import *
-
+from django.urls import reverse_lazy
+from django.contrib.auth.views import PasswordResetView
+from django.contrib.messages.views import SuccessMessageMixin
 
 
 @login_required
@@ -532,25 +534,28 @@ def password_change(request):
     return render(request, 'core/password_reset_confirm.html', {'form': form})
 
 
+
+
 def pass_reset(request):
     if request.method == 'POST':
         form = PasswordResetForm(request.POST)
         if form.is_valid():
             user_email = form.cleaned_data['email']
-            associated_user = User.objects.filter(Q(email=user_email)).first()
+            associated_user = User.objects.filter(Q(username=user_email)).first()
             if associated_user:
-                subject = "Forespørsel om tilbakestilling av passord"
-                message = render_to_string("core/template_reset_password.html", {
+                uid = urlsafe_base64_encode(force_bytes(associated_user.pk))
+                token = account_activation_token.make_token(associated_user)
+                html = render_to_string("core/template_reset_password.html", {
+                    'uid': uid,
+                    'token': token,
+                    'user_email': user_email,
+                    'protocol': 'https' if request.is_secure() else 'http',
                     'domain': get_current_site(request).domain,
-                    'uid': urlsafe_base64_encode(force_bytes(associated_user.pk)),
-                    'token': account_activation_token.make_token(associated_user),
-                    "protocol": 'https' if request.is_secure() else 'http'
                 })
 
                 data = {
                         'user_email': user_email,
-                        'subject': subject,
-                        'message': message,
+                        'html': html,
                     }   
 
 
@@ -566,6 +571,29 @@ def pass_reset(request):
     return render(
         request=request,
         template_name='core/passord-reset.html',
-        context={'form':form}
+        context={
+            'form':form,
+            }
     )
 
+
+
+
+def passwordResetConfirm(request, uidb64, token):
+    User = get_user_model()
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except:
+        user = None
+
+    if user is not None and account_activation_token.check_token(user, token):
+        if request.method == 'POST':
+            form = SetPasswordForm(user, request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('/')
+           
+        form = SetPasswordForm(user)
+        return render(request, 'core/password_reset_confirm.html', {'form': form})
+    

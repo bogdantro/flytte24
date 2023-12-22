@@ -67,6 +67,7 @@
 }
 .page #carouselExampleIndicators .carousel-item img {
   height: 265px;
+  max-height: 328px !important;
   -o-object-fit: cover;
      object-fit: cover;
   -webkit-user-select: none;
@@ -1012,7 +1013,7 @@
     font-size: 24px;
     color: #1F1F1F;
     font-weight: 500;
-    max-width: 550px;
+    max-width: 580px;
   }
   .page .car .info .price {
     color: #1F1F1F;
@@ -2101,7 +2102,7 @@
     font-size: 26px;
     color: #1F1F1F;
     font-weight: 500;
-    max-width: 550px;
+    max-width: 600px;
   }
   .page .car .info .price {
     color: #1F1F1F;

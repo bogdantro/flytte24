@@ -67,6 +67,7 @@ $txt: #183b56;
           }
           img{
             height: 265px;
+            max-height: 328px !important;
             object-fit: cover;
             user-select: none;
             margin-left: 0;
@@ -998,7 +999,7 @@ $txt: #183b56;
                     font-size: 24px;
                     color: $black;
                     font-weight: 500;
-                    max-width: 550px;
+                    max-width: 580px;
                 }
                 .price{
                     color: $black;
@@ -2072,7 +2073,7 @@ $txt: #183b56;
                     font-size: 26px;
                     color: $black;
                     font-weight: 500;
-                    max-width: 550px;
+                    max-width: 600px;
                 }
                 .price{
                     color: $black;

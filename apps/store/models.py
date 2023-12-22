@@ -295,6 +295,17 @@ class Car(models.Model):
     
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
+        if self.sold:
+            # If sold and no SoldCar instance exists, create one
+            sold_car, created = SoldCar.objects.get_or_create(car=self)
+            if created:
+                sold_car.date_sold = self.expiry_date
+                sold_car.selling_price = self.price
+                sold_car.save()
+        else:
+            # If not sold, delete any existing SoldCar instance
+            SoldCar.objects.filter(car=self).delete()
+        
         return super(Car, self).save(*args, **kwargs)
         
     
@@ -311,7 +322,11 @@ class Car(models.Model):
         return '%s%s' % (settings.ALLOWED_HOSTS, self.image.url) if self.image else ''    
       
 
+class SoldCar(models.Model):
+    car = models.OneToOneField(Car, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f"{self.car.name}" 
 
 
 class Bud(models.Model):

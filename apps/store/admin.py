@@ -328,3 +328,15 @@ admin.site.register(Egenerkeling, EgenerkelingAdmin)
 
 
 admin.site.register(Car,CarPostAdmin)
+
+
+class SoldCarAdmin(admin.ModelAdmin):
+    list_display = ['admin_photo', 'car']
+
+    def admin_photo(self, obj):
+        return mark_safe('<img src="{}" width="100" />'.format(obj.car.image1.url))
+
+    admin_photo.short_description = 'Image'
+    admin_photo.allow_tags = True
+
+admin.site.register(SoldCar, SoldCarAdmin)

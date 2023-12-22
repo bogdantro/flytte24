@@ -446,11 +446,11 @@ class Egenerkeling(models.Model):
     bruksmerker_bilde20 = models.ImageField(blank=True, null=True, upload_to='static/images/other/cars/')
     bruksmerker_text = models.TextField(blank=True, null=True)
     # Tools
-    file_tools = models.FileField(max_length=200, blank=True, null=True)
+    file_tools = models.FileField(max_length=200, blank=True, null=True , upload_to='static/images/other/cars/')
     manual_tools = models.TextField(max_length=1000, blank=True, null=True)
     # Service
-    verksted_history = models.FileField(max_length=200, blank=True, null=True)
-    service_history = models.FileField(max_length=200, blank=True, null=True)
+    verksted_history = models.FileField(max_length=200, blank=True, null=True , upload_to='static/images/other/cars/')
+    service_history = models.FileField(max_length=200, blank=True, null=True , upload_to='static/images/other/cars/') 
     next_service = models.CharField(max_length=100, blank=True, null=True)
     # Garanti
     left_garantier = models.CharField(max_length=900, blank=True, null=True)

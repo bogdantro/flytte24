@@ -50,6 +50,10 @@ class CarPostAdmin(admin.ModelAdmin):
         models.TextField: {'widget': CKEditorWidget()},
     }
 
+    def get_queryset(self, request):
+        # Only show unsold cars in the Car admin
+        return super().get_queryset(request).filter(sold=False)
+
     fieldsets = (
       ('Hoved informasjon', {
           'fields': ('sold', 'skjul_annonsen', 'seller', 'user', 'name', 'car_spesifikasjoner', 'car_brand', 'slug', 'price','fritak_for_reg_pris','reg_pris','expiry_date','description')
@@ -331,12 +335,16 @@ admin.site.register(Car,CarPostAdmin)
 
 
 class SoldCarAdmin(admin.ModelAdmin):
-    list_display = ['admin_photo', 'car']
+    list_display = ['admin_photo', 'car', 'created_at']
 
     def admin_photo(self, obj):
         return mark_safe('<img src="{}" width="100" />'.format(obj.car.image1.url))
 
     admin_photo.short_description = 'Image'
     admin_photo.allow_tags = True
+
+    def get_queryset(self, request):
+        # Only show sold cars in the SoldCar admin
+        return super().get_queryset(request).exclude(car__sold=False)
 
 admin.site.register(SoldCar, SoldCarAdmin)

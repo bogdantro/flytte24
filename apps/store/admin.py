@@ -43,8 +43,11 @@ class CarPostAdmin(admin.ModelAdmin):
 
     def days_until_expiry(self, obj):
         today = timezone.now().date()
-        return (obj.expiry_date - today).days
+        days_left = (obj.expiry_date - today).days
+        return max(days_left, 0)
+
     days_until_expiry.short_description = 'Dager igjen'
+    
 
     formfield_overrides = {
         models.TextField: {'widget': CKEditorWidget()},

@@ -4,7 +4,7 @@ from django.conf import settings
 from django.utils.text import slugify
 from django.contrib.auth.models import User
 from django.utils.safestring import mark_safe
-
+from datetime import timedelta
 
 
 
@@ -55,7 +55,7 @@ class Car(models.Model):
     slug = models.SlugField(max_length=150)
     description = models.TextField(max_length=1000000000000000, blank=True, null=True)
     # Viktig
-    expiry_date = models.DateField()
+    expiry_date = models.DateField(blank=True, null=True)
     # Price
     reg_pris = models.CharField(max_length=300, blank=True, null=True)
     fritak_for_reg_pris = models.BooleanField(default=False)
@@ -295,6 +295,10 @@ class Car(models.Model):
     
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
+
+        if not self.expiry_date:
+            self.expiry_date = timezone.now().date() + timedelta(days=60)
+
         if self.sold:
             # If sold and no SoldCar instance exists, create one
             sold_car, created = SoldCar.objects.get_or_create(car=self)
@@ -325,7 +329,7 @@ class Car(models.Model):
 class SoldCar(models.Model):
     car = models.OneToOneField(Car, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
-    
+
     def __str__(self):
         return f"{self.car.name}" 
 

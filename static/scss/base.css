@@ -57,7 +57,7 @@
   border: 1px solid transparent;
   border-radius: 6px;
   outline: none;
-  background: linear-gradient(to bottom right, #59c937, #70ec4a);
+  background: #59c937;
   color: white;
   font-weight: 500;
   font-size: 17px;
@@ -71,6 +71,72 @@
   background: white;
   margin-right: 0;
   margin-top: 15px;
+}
+
+.ved {
+  width: 100%;
+  height: auto;
+  padding-block: 50px;
+  padding-top: 20px;
+  position: relative;
+}
+.ved .content {
+  padding-inline: 20px;
+  position: relative;
+}
+.ved .content .text {
+  text-align: left;
+  margin-top: 28px;
+}
+.ved .content .text h1 {
+  color: #1F1F1F;
+  font-size: 27px;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+.transport {
+  width: 100%;
+  height: auto;
+  padding-block: 50px;
+  padding-top: 20px;
+  position: relative;
+}
+.transport .content {
+  padding-inline: 20px;
+  position: relative;
+}
+.transport .content .text {
+  text-align: left;
+  margin-top: 28px;
+}
+.transport .content .text h1 {
+  color: #1F1F1F;
+  font-size: 27px;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+.riving {
+  width: 100%;
+  height: auto;
+  padding-block: 50px;
+  padding-top: 20px;
+  position: relative;
+}
+.riving .content {
+  padding-inline: 20px;
+  position: relative;
+}
+.riving .content .text {
+  text-align: left;
+  margin-top: 28px;
+}
+.riving .content .text h1 {
+  color: #1F1F1F;
+  font-size: 27px;
+  font-weight: 600;
+  margin-bottom: 30px;
 }
 
 .faq {
@@ -198,7 +264,7 @@
     border: 1px solid transparent;
     border-radius: 6px;
     outline: none;
-    background: linear-gradient(to bottom right, #59c937, #70ec4a);
+    background: #59c937;
     color: white;
     font-weight: 500;
     font-size: 17px;
@@ -336,7 +402,7 @@
     border: 1px solid transparent;
     border-radius: 6px;
     outline: none;
-    background: linear-gradient(to bottom right, #59c937, #70ec4a);
+    background: #59c937;
     color: white;
     font-weight: 500;
     font-size: 17px;

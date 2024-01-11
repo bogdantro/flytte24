@@ -58,7 +58,7 @@ $txt: #183b56;
           border: 1px solid transparent;
           border-radius: 6px;
           outline: none;
-          background: linear-gradient(to bottom right, $primBtn, #70ec4a);
+          background: $primBtn;
           color: white;
           font-weight: 500;
           font-size: 17px;
@@ -75,6 +75,72 @@ $txt: #183b56;
         }
       }
     }
+}
+
+.ved{
+  width: 100%;
+  height: auto;
+  padding-block: 50px;
+  padding-top: 20px;
+  position: relative;
+  .content{
+    padding-inline: 20px;
+    position: relative;
+    .text{
+      text-align: left;
+      margin-top: 28px;
+      h1{
+        color: $black;
+        font-size: 27px;
+        font-weight: 600;
+        margin-bottom: 30px;
+      }
+    }
+  }
+}
+
+.transport{
+  width: 100%;
+  height: auto;
+  padding-block: 50px;
+  padding-top: 20px;
+  position: relative;
+  .content{
+    padding-inline: 20px;
+    position: relative;
+    .text{
+      text-align: left;
+      margin-top: 28px;
+      h1{
+        color: $black;
+        font-size: 27px;
+        font-weight: 600;
+        margin-bottom: 30px;
+      }
+    }
+  }
+}
+
+.riving{
+  width: 100%;
+  height: auto;
+  padding-block: 50px;
+  padding-top: 20px;
+  position: relative;
+  .content{
+    padding-inline: 20px;
+    position: relative;
+    .text{
+      text-align: left;
+      margin-top: 28px;
+      h1{
+        color: $black;
+        font-size: 27px;
+        font-weight: 600;
+        margin-bottom: 30px;
+      }
+    }
+  }
 }
 
 .faq{
@@ -203,7 +269,7 @@ $txt: #183b56;
           border: 1px solid transparent;
           border-radius: 6px;
           outline: none;
-          background: linear-gradient(to bottom right, $primBtn, #70ec4a);
+          background: $primBtn;
           color: white;
           font-weight: 500;
           font-size: 17px;
@@ -221,6 +287,11 @@ $txt: #183b56;
       }
     }
   }
+
+
+
+
+
 
   .faq{
     width: 100%;
@@ -342,7 +413,7 @@ $txt: #183b56;
           border: 1px solid transparent;
           border-radius: 6px;
           outline: none;
-          background: linear-gradient(to bottom right, $primBtn, #70ec4a);
+          background: $primBtn;
           color: white;
           font-weight: 500;
           font-size: 17px;

@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block head %}
-<title>Bilmeglerne - Enklere og tryggere bilsalg</title>
+<title>Tittel</title>
 <meta name="description" content="Bilmeglerne har spesialisert seg på salg av bil. Vi har utviklet denne tjenesten for å gjøre deg trygg på at bilsalget foregår i henhold til gjeldende lover og forskrifter">
 <meta name="author" content="Bilmeglerne">
 <meta name="keywords" content="Bilmeglerne, Selge bil, Kjøpe bil, Biler til salg, Kjøp ny bil, Kjøp en bil, Bil, Biler, Bilene">
@@ -25,381 +25,21 @@
 
 <div class="cover">
     <div class="content">
-        <!-- <img class="cover-image" src="{% static '/images/covers/cover-1.png' %}" alt="quote-marks"> -->
-        <div id="onlyOnMob">
-            <img class="cover-image" src="{% static '/images/covers/cover-2.png' %}" alt="quote-marks">
-            <div class="text">
-                <h1 class="cover-h1">Enklere og tryggere bilsalg</h1>
-                <p class="cover-p">Bilsalg trenger ikke være så komplisert. Vi gjør all jobben for deg!</p>
-                <div class="cover-actions">
-                    <button onclick="window.location.href='/kjøp-bil/'">Kjøp bil</button>
-                    <button onclick="window.location.href='/selg-bilen/'" class="secondary">Selg bil</button>
-                 </div>   
-            </div>
-        </div>
-        <div id="onlyOnDes">
-            <div class="text">
-                <h1 class="cover-h1">Enklere og tryggere bilsalg</h1>
-                <p class="cover-p">Bilsalg trenger ikke være så komplisert. Vi gjør all jobben for deg!</p>
-                <div class="cover-actions">
-                    <button onclick="window.location.href='/kjøp-bil/'">Kjøp bil</button>
-                    <button onclick="window.location.href='/selg-bilen/'" class="secondary">Selg bil</button>
-                 </div>   
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="sell-with-us">
-    <div class="content">
         <div class="text">
-            <h1>Så enkelt kan du selge med oss</h1>
-        </div>
-        <video class="video" controls autoplay>
-            <source src="{% static '/images/video.mp4' %}" type="video/mp4">
-          Your browser does not support the video tag.
-          </video>
-    </div>
-</div>
-
-
-<div class="verdivurdering">
-    <div class="content">
-        <div class="text">
-            <h1>Få en verdivurdering</h1> <br> <h2>Vi gir deg en gratis verdivurdering!</h2>
-            <div id="onlyOnDes">
-                <div class="check">
-                    <i class="fa-solid fa-check"></i>
-                    <p>Raskt svar</p>
-                </div>
-                <div class="check">
-                    <i class="fa-solid fa-check"></i>
-                    <p>Realistisk estimat</p>
-                </div>
-                <div class="check">
-                    <i class="fa-solid fa-check"></i>
-                    <p>Enkelt å sende inn</p>
-                </div>
-            </div>
-        </div>
-        <form id="verdivurdering" action="" method="POST">
-            {% csrf_token %}
-            {{form.errors}}
-            <br>
-            <div class="inputs-labels">
-                <div class="step-one">
-                    <div class="reg-nr">
-                        <img src="{% static 'images/other/skilt-no.svg' %}" alt="">
-                        <input required type="text" name="reg_nr" id="reg_nr" placeholder="AB12345" maxlength="7" >
-                    </div>
-                    <br>
-                    <div class="km">
-                        <p>km</p>
-                        <input required type="text" id="km" name="km" placeholder="130000" name="" id="">
-                    </div>
-                </div>
-                <div id="stepTwo" style="margin-top: 37px;">
-                    <label for="navn">Navn</label>
-                    <br>
-                    <input type="text" name="name" id="name" required  oninput="this.setCustomValidity('')" value="{{request.user.get_full_name}}">
-                    <br>
-                    <br>
-                    <label for="email">Epost</label>
-                    <br>
-                    <input type="email" name="email" id="email"  required oninput="this.setCustomValidity('')" value="{{request.user.email}}">
-                    <br>
-                    <br>
-                    <label for="telefon">Telefonnummer</label>
-                    <br>
-                    <input type="number" name="telefon" id="telefon"  required oninput="this.setCustomValidity('')">
-                    <br>
-                    <div class="checkbox">
-                      <input required type="checkbox" name="vilkaar" id="vilkaar">
-                      <p>Jeg godtar <a href="">vilkårene og betingelsene</a></p>
-                    </div>
-                </div>
-    
-              </div>
-            <div class="form-actions">
-              <button class="primary" type="submit" name="verdivurdering" value="verdivurdering">Sjekk verdi</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<div class="proccess">
-    <div class="content">
-        <div class="text">
-            <h1>Selg bilen din med fire enkle steg</h1>
-        </div>
-        <div class="flex">
-            <div class="proccess-card" id="processCard1">
-                <div class="number">1</div>
-                <div class="icon">
-                    <i class="fa-solid fa-business-time"></i>
-                </div>
-                <div class="proccess-text">
-                <h1>Velg tidspunkt</h1>
-                <p>Book det tidspunktet som passer best</p>
-                </div>
-            </div>
-
-            <span></span>
-
-            <div class="proccess-card" id="processCard2">
-                <div class="number">2</div>
-                <div class="icon">
-                    <i class="fa-solid fa-hands-holding-diamond"></i>
-                </div>
-                <div class="proccess-text">
-                <h1>Levering</h1>
-                <p>Lever bilen til nærmeste lokasjon</p>
-                </div>
-            </div>
-
-            <span></span>
-
-            <div class="proccess-card" id="processCard3">
-                <div class="number">3</div>
-                <div class="icon">
-                    <i class="fa-solid fa-backward"></i>
-                </div>
-                <div class="proccess-text">
-                <h1>Henting</h1>
-                <p>Hent bilen samme dag før klokken 16:00</p>
-                </div>
-            </div>
-
-            <span></span>
-
-            <div class="proccess-card" id="processCard3">
-                <div class="number">4</div>
-                <div class="icon">
-                    <i class="fa-solid fa-car"></i>
-                </div>
-                <div class="proccess-text">
-                <h1>Vi finner kjøper</h1>
-                <p>Vent til vi har en kjøper</p>
-                </div>
-            </div>
+            <!-- <h1 class="cover-h1">Din lokale ved produsent</h1> -->
+            <h1 class="cover-h1">Bærekraftig Vedproduksjon, Transport og Rivingsløsninger</h1>
+            <p class="cover-p">
+                Vi tilbyr bærekraftige løsninger innen vedproduksjon, transport og rivingsarbeid. Vi tror på å balansere effektivitet med omsorg for miljøet.
+            </p>
+            <div class="cover-actions">
+                <button onclick="window.location.href='/'">Tjenester</button>
+                <button onclick="window.location.href='/'" class="secondary">Om oss</button>
+                </div>   
         </div>
     </div>
 </div>
 
-<div class="book-now">
-    <div class="content">
-        <h1>Selg bilen nå!</h1>
-        <p>Vi gjør det veldig enkelt å selge bilen din</p>
-        <button onclick="window.location.href='/selg-bilen/book-time/'">Book time</button>
-    </div>
-</div>
 
-<div class="services">
-    <div class="content">
-        <div class="text">
-            <h1>Hva gjør vi for deg?</h1>
-            <div id="onlyOnDes">
-                <div class="check">
-                    <i class="fa-solid fa-check"></i>
-                    <p>Trygt og enkelt salg</p>
-                </div>
-                <div class="check">
-                    <i class="fa-solid fa-check"></i>
-                    <p>Kompleks kunde portal</p>
-                </div>
-                <div class="check">
-                    <i class="fa-solid fa-check"></i>
-                    <p>Enkelt å selge bilen din</p>
-                </div>
-                <div class="check">
-                    <i class="fa-solid fa-check"></i>
-                    <p>Trygt oppgjør</p>
-                </div>
-            </div>
-        </div>
-        <div class="flex">
-            <div class="service">
-                <div class="left">
-                    <i class="fa-solid fa-bath"></i>
-                </div>
-                <div class="right">
-                    <h1>Profesjonell bilvask</h1>
-                    <p>Vi vasker bilen grundig for deg</p>
-                </div>
-            </div>
-            <div class="service">
-                <div class="left">
-                    <i class="fa-solid fa-camera"></i>
-                </div>
-                <div class="right">
-                    <h1>Studio fotografering</h1>
-                    <p>Bilder av høy kvalitet</p>
-                </div>
-            </div>
-            <div class="service">
-                <div class="left">
-                    <i class="fa-solid fa-car"></i>
-                </div>
-                <div class="right">
-                    <h1>Kosmetisk kontroll</h1>
-                    <p>Kontroll av bilens kosmetiske tilstand før salg</p>
-                </div>
-            </div>
-            <div class="service">
-                <div class="left">
-                    <i class="fa-solid fa-file-signature"></i>
-                </div>
-                <div class="right">
-                    <h1>Megling, kontrakter og oppgjør</h1>
-                    <p>Vi gjør det enkelt å kjøpe og selge bil</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="price">
-    <div class="content">
-        <div class="text">
-            <h1>Fast lav pris</h1>
-            <p>Ikke tap mer enn nødvendig på din bruktbil. Vi tar en fast lav pris</p>
-        </div>
-        <button onclick="window.location.href='/priser/'">Se prisliste</button>
-    </div>
-</div>
-
-<div class="location">
-    <div class="content">
-        <div class="text">
-            <h1>Du finner oss her</h1>
-        </div>
-        
-        <!-- <div id="map" style="width: 100%; max-width: 900px; height: 380px; margin-top: 20px; margin-inline: auto; border-radius: 4px;"></div> -->
-        <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d2414840.658834463!2d12.164805127253624!3d60.19665495736909!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sno!4v1697144425259!5m2!1sen!2sno" 
-         style="border:0; width: 100%; height: 450px; max-width: 900px; border-radius: 4px; margin-inline: auto; position: relative; left: 50%; transform: translateX(-50%) translateY(12px);" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> -->
-
-         </style>
-         <iframe allowfullscreen="false" loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="border:0; width: 100%; height: 480px; max-width: 900px; border-radius: 4px; margin-inline: auto; position: relative; left: 50%; transform: translateX(-50%) translateY(12px);" src="https://www.google.com/maps/d/u/0/embed?mid=1gPuo42rmzmvr0EQUDNokcMkQ8FIDvIA&output=embed" width="640" height="480"></iframe>
-
-    </div>
-</div>
-
-<div class="reviews">
-    <div class="content">
-        <div class="text">
-            <h1>Hva kundene har å si</h1>
-        </div>
-        <div class="flex">
-            <div class="review">
-                <div class="left">
-                    <div class="icon" style="background: rgba(7, 150, 7, 0.644);">S</div>
-                    <div class="name">Shahrokh</div>
-                    <div class="stars">
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-                </div>
-                <div class="right">
-                    Kjempe fornøyd med hele salgsprosessen av min bil. Bilen ble solgt på to dager og til den prisen jeg håpet på.
-                    Bilmeglerne er folk som kan jobben sin. Jeg kan trygt anbefale dem 👌👍
-                </div>
-                <div class="source">Google<br>Reviews</div>
-            </div>
-            <div class="review">
-                <div class="left">
-                    <div class="icon" style="background: rgba(228, 231, 28, 0.644);">G</div>
-                    <div class="name">Gitle</div>
-                    <div class="stars">
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-                </div>
-                <div class="right">
-                    Veldig ryddig. Profesjonelle i alle faser av handelen. Ryddig og strøken gjennomføring av handel.
-                    Er absolutt å anbefale.                
-                </div>
-                <div class="source">Google<br>Reviews</div>
-            </div>
-            <div class="review">
-                <div class="left">
-                    <div class="icon" style="background: rgba(69, 7, 150, 0.644);">V</div>
-                    <div class="name">Vegard</div>
-                    <div class="stars">
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-                </div>
-                <div class="right">
-                    Enkelt og greit og veldig bra service og oppfølging. Anbefales                
-                </div>
-                <div class="source">Google<br>Reviews</div>
-            </div>
-
-
-            <div class="review">
-                <div class="left">
-                    <div class="icon" style="background: rgba(12, 38, 185, 0.767);">P</div>
-                    <div class="name">Peter</div>
-                    <div class="stars">
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-                </div>
-                <div class="right">
-                    Enkelt, effektivt og pålitelig salg av bil etter at den først var forsøkt solgt privat. Øystein tok seg av hele prosessen, og formidlet bilsalget veldig bra. Kan gjerne jobbe litt med å forbedre foto av bilen, men det er pirk! Alt i alt en flott prosess fra A-Å, og en tjeneste jeg kan anbefale på det sterkeste!
-                    Peter Skogvang                
-                </div>
-                <div class="source">Google<br>Reviews</div>
-            </div>
-            <div class="review">
-                <div class="left">
-                    <div class="icon" style="background: rgba(160, 185, 49, 0.644);">C</div>
-                    <div class="name">Christian</div>
-                    <div class="stars">
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-                </div>
-                <div class="right">
-                    Trygt og effektivt. Disse folka kjenner markedet og det biltekniske godt. Salget gikk fort og pengene var på konto som avtalt. Fikk også mer for bilen enn jeg hadde sett for meg. Kommer til å bruke Bilmeglerne igjen!                
-                </div>
-                    <div class="source">Google<br>Reviews</div>
-                </div>
-            <div class="review">
-                <div class="left">
-                    <div class="icon" style="background: rgba(150, 52, 7, 0.644);">O</div>
-                    <div class="name">Osman</div>
-                    <div class="stars">
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-                </div>
-                <div class="right">
-                    Veldig god service og oppfølging. Hadde kontakt med gjennom Øystein Helgheim. Salget gikk gjennom, og alle parter kan si seg fornøyde. Takk for alt!               
-                </div>
-                <div class="source">Google<br>Reviews</div>
-            </div>
-        </div>
-    </div>
-</div>
 
 <div class="faq">
     <div class="content">
@@ -408,40 +48,23 @@
         </div>
 
         <div class="ask" id="ask1" style="border-top: 1px solid lightgray;" onclick="faqFunc1()">
-            <p>Hvor mye får jeg for bilen min?</p>
+            <p>Spørsmål</p>
             <svg xmlns="http://www.w3.org/2000/svg" class="plus" id="faqPlus1" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
             <svg xmlns="http://www.w3.org/2000/svg" class="minus" style="transform: translateY(-7px);" id="faqMinus1" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M32 416c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H32z"/></svg>
         </div>
         <div class="answer" id="answer1"onclick="faqFunc1()">
-            <p>Bilmeglerne skaffer deg markedspris minus honorar for salget og omregistreringsavgiften. </p>
+            <p>Svar</p>
         </div>
 
         <div class="ask" id="ask2" onclick="faqFunc2()">
-            <p>Hvor lang tid bruker dere på salget?</p>
+            <p>Spørsmål</p>
             <svg xmlns="http://www.w3.org/2000/svg" class="plus"  id="faqPlus2" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
             <svg xmlns="http://www.w3.org/2000/svg" class="minus" style="transform: translateY(-7px);" id="faqMinus2" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M32 416c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H32z"/></svg>
         </div>
         <div class="answer" id="answer2"onclick="faqFunc2()">
-            <p>Vi skaffer deg en kjøper innen 60 dager. Men det er opp til deg om du ønsker å akseptere salgssummen.</p>
+            <p>Svar</p>
         </div>
 
-        <div class="ask" id="ask3" onclick="faqFunc3()">
-            <p>Kan jeg bruke bilen eller må den stå hos dere?</p>
-            <svg xmlns="http://www.w3.org/2000/svg" class="plus"  id="faqPlus3" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
-            <svg xmlns="http://www.w3.org/2000/svg" class="minus" style="transform: translateY(-7px);" id="faqMinus3" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M32 416c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H32z"/></svg>
-        </div>
-        <div class="answer" id="answer3"onclick="faqFunc3()">
-            <p>Du kan bruke bilen helt frem til vi har en kjøper.</p>
-        </div>
-
-        <div class="ask" id="ask4" onclick="faqFunc4()">
-            <p>Hva må jeg gjøre før innleveringen?</p>
-            <svg xmlns="http://www.w3.org/2000/svg" class="plus"  id="faqPlus4" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
-            <svg xmlns="http://www.w3.org/2000/svg" class="minus" style="transform: translateY(-7px);" id="faqMinus4" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M32 416c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H32z"/></svg>
-        </div>
-        <div class="answer" id="answer4"onclick="faqFunc4()">
-            <p>Bilen må tømmes for personlige eiendeler slik at vi enkelt kan rengjøre bilen innvendig.</p>
-        </div>
 
     </div>
 </div>

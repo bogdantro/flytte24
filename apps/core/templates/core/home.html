@@ -70,56 +70,6 @@
 </div>
 
 
-<script type="text/javascript">
 
-    function searchIconSubmit(){
-       document.getElementById("searchForm").submit();
-    }
- 
- 
-    mapboxgl.accessToken = '{{mapbox_access_token}}';
-     const map = new mapboxgl.Map({
-       container: 'map', // Specify the container ID
-       style: 'mapbox://styles/bogdantro/cld3lse3v000301lidywd9qfs',
-       center: [10.776038, 59.912196], // Specify the starting position
-       zoom: 5, // Specify the starting zoom
-     });
-   
-     map.on('load', () => {
- map.addSource('places', {
-    // This GeoJSON contains features that include an "icon"
-    // property. The value of the "icon" property corresponds
-    // to an image in the Mapbox Streets style's sprite.
-    'type': 'geojson',
-    'data': {
-       'type': 'FeatureCollection',
-       'features': [
-          '{% for locations in locations %}',
-    {
-    'geometry': {
-       'type': 'Point',
-       'coordinates': ['{{locations.cords1}}', '{{locations.cords2}}']
-    },
-    },
-    '{% endfor %}',
-    ]
-    }
-    });
- // Add a layer showing the places.
- map.addLayer({
- 'id': 'places',
- 'type': 'symbol',
- 'source': 'places',
- 'layout': {
- "icon-image": "marker-editor",
- 'icon-allow-overlap': true,
- 'icon-size': 0.9,
- }
- });
-  
-
- });
- 
-   </script>
 {% endblock %}
  

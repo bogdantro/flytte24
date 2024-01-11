@@ -16,7 +16,6 @@ from django.contrib import admin
 
 sitemaps = {
     'static': StaticViewsSitemap,
-    'car': CarSitemap,
 }
 
 
@@ -26,15 +25,10 @@ urlpatterns = [
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}),
 
     path('', home, name='home'),
-    path('søke-resultater/', home_page_search, name='home_page_search'),
     path('selg-bilen/', sell, name='sell'),
     path('selg-bilen/book-time/', book_time, name='book_time'),
     path('selg-bilen/book-time/avbestill-time/', un_book, name='un_book'),
 
-    path('kjøp-bil/', buy_car, name='buy_car'),
-    path('bid-sucessnkldsf2398ryoiqwepyr3829yr3982/', bid_success, name='bid_success'),
-    path('bil/:<slug>:<id>/', car_detail, name='car_detail'),
-    path('bil/bruksmerker/:<slug>:<id>/', car_bruksmerker, name='car_bruksmerker'),
 
     path('kontakt-oss/', contact, name='contact'),
     path('verdivurdering/', verdivurdering, name='verdivurdering'),

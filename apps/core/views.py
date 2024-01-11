@@ -19,11 +19,9 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from .models import *
-from .forms import *
 from django.utils import timezone
 from datetime import timedelta
 from django.shortcuts import render, redirect
-from .forms import *
 from .models import *
 from datetime import datetime
 from django.http import HttpResponseForbidden
@@ -35,44 +33,8 @@ from apps.store.models import *
 def home(request):      
     mapbox_access_token = settings.MAP_BOX_ACCESS_TOKEN 
 
-    locations = Location.objects.all()
 
-    if request.method=='POST' and 'verdivurdering' in request.POST:
-        name = request.POST.get('name', )
-        email = request.POST.get('email', '')
-        telefon = request.POST.get('telefon', '')
-        vilkaar = request.POST.get('vilkaar', '')
-        reg_nr = request.POST.get('reg_nr', '')
-        km = request.POST.get('km', '')
-        if vilkaar == 'on':
-            vilkaar = True
-        else:
-            vilkaar = False
-
-        data = {
-            'name': name,
-            'email': email,
-            'telefon': telefon,
-            'vilkaar': vilkaar,
-            'reg_nr': reg_nr,
-            'km': km,
-        }   
-
-        verdivurdering = Verdivurdering.objects.create(name=name, telefon=telefon, email=email, vilkaar=vilkaar, reg_nr=reg_nr, km=km)
-
-        # Replace 'YOUR_ZAPIER_WEBHOOK_URL' with your actual Zapier webhook URL
-        zapier_webhook_url = 'https://hooks.zapier.com/hooks/catch/13544280/3z0bazi/'
-
-        # Make a POST request to Zapier webhook
-        response = requests.post(zapier_webhook_url, json=data)
-
-        return redirect('success')
-    
-    context = {
-        'locations': locations,
-        'mapbox_access_token': mapbox_access_token
-    }
-    return render(request, 'core/home.html', context)  
+    return render(request, 'core/home.html')  
 
 
 def sell(request):      

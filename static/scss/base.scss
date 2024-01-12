@@ -93,8 +93,27 @@ $txt: #183b56;
         color: $black;
         font-size: 27px;
         font-weight: 600;
-        margin-bottom: 30px;
+        margin-bottom: 15px;
       }
+      p{
+        color: $black;
+        font-size: 17px;
+      }
+    }
+    img{
+      width: 100%;
+      height: auto;
+    }
+    button{
+      margin-top: 35px;
+      background: $primBtn;
+      width: 100%;
+      max-width: 420px;
+      height: 44px;
+      border-radius: 4px;
+      outline: none;
+      border: none;
+      color: white;
     }
   }
 }
@@ -115,8 +134,64 @@ $txt: #183b56;
         color: $black;
         font-size: 27px;
         font-weight: 600;
-        margin-bottom: 30px;
+        margin-bottom: 15px;
       }
+      p{
+        color: $black;
+        font-size: 17px;
+      }
+    }
+    .flex{
+      margin-top: 33px;
+      .service{
+        width: 100%;
+        min-height: 150px;
+        padding: 20px;
+        position: relative;
+        background: rgb(241, 241, 241);
+        border: 1px solid $white;
+        border-radius: 4px;
+        display: flex;
+        margin-bottom: 35px;
+        &:last-child{
+          margin-bottom: 0;
+        }
+        .left{
+          width: 10%;
+          display: flex;
+          justify-content: center;
+          i{
+            color: $primBtn;
+            font-size: 26px;
+            transform: translateY(-2px) translateX(-2px);
+          }
+        }
+        .right{
+          width: 90%;
+          margin-left: 25px;
+          h1{
+            color: $black;
+            font-size: 19px;
+            font-weight: 500;
+            margin-bottom: 6px;
+          }
+          p{
+            font-size: 16px;
+            color: $black;
+          }
+        }
+      }
+    }
+    button{
+      margin-top: 35px;
+      background: $primBtn;
+      width: 100%;
+      max-width: 420px;
+      height: 44px;
+      border-radius: 4px;
+      outline: none;
+      border: none;
+      color: white;
     }
   }
 }
@@ -137,8 +212,27 @@ $txt: #183b56;
         color: $black;
         font-size: 27px;
         font-weight: 600;
-        margin-bottom: 30px;
+        margin-bottom: 15px;
       }
+      p{
+        color: $black;
+        font-size: 17px;
+      }
+    }
+    img{
+      width: 100%;
+      height: auto;
+    }
+    button{
+      margin-top: 35px;
+      background: $primBtn;
+      width: 100%;
+      max-width: 420px;
+      height: 44px;
+      border-radius: 4px;
+      outline: none;
+      border: none;
+      color: white;
     }
   }
 }

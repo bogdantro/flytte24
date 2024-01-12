@@ -92,7 +92,26 @@
   color: #1F1F1F;
   font-size: 27px;
   font-weight: 600;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
+}
+.ved .content .text p {
+  color: #1F1F1F;
+  font-size: 17px;
+}
+.ved .content img {
+  width: 100%;
+  height: auto;
+}
+.ved .content button {
+  margin-top: 35px;
+  background: #59c937;
+  width: 100%;
+  max-width: 420px;
+  height: 44px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  color: white;
 }
 
 .transport {
@@ -114,7 +133,63 @@
   color: #1F1F1F;
   font-size: 27px;
   font-weight: 600;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
+}
+.transport .content .text p {
+  color: #1F1F1F;
+  font-size: 17px;
+}
+.transport .content .flex {
+  margin-top: 33px;
+}
+.transport .content .flex .service {
+  width: 100%;
+  min-height: 150px;
+  padding: 20px;
+  position: relative;
+  background: rgb(241, 241, 241);
+  border: 1px solid rgb(246, 246, 246);
+  border-radius: 4px;
+  display: flex;
+  margin-bottom: 35px;
+}
+.transport .content .flex .service:last-child {
+  margin-bottom: 0;
+}
+.transport .content .flex .service .left {
+  width: 10%;
+  display: flex;
+  justify-content: center;
+}
+.transport .content .flex .service .left i {
+  color: #59c937;
+  font-size: 26px;
+  transform: translateY(-2px) translateX(-2px);
+}
+.transport .content .flex .service .right {
+  width: 90%;
+  margin-left: 25px;
+}
+.transport .content .flex .service .right h1 {
+  color: #1F1F1F;
+  font-size: 19px;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+.transport .content .flex .service .right p {
+  font-size: 16px;
+  color: #1F1F1F;
+}
+.transport .content button {
+  margin-top: 35px;
+  background: #59c937;
+  width: 100%;
+  max-width: 420px;
+  height: 44px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  color: white;
 }
 
 .riving {
@@ -136,7 +211,26 @@
   color: #1F1F1F;
   font-size: 27px;
   font-weight: 600;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
+}
+.riving .content .text p {
+  color: #1F1F1F;
+  font-size: 17px;
+}
+.riving .content img {
+  width: 100%;
+  height: auto;
+}
+.riving .content button {
+  margin-top: 35px;
+  background: #59c937;
+  width: 100%;
+  max-width: 420px;
+  height: 44px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  color: white;
 }
 
 .faq {

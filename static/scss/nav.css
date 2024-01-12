@@ -98,7 +98,7 @@
   position: relative;
 }
 #mobileNav .sidebar a:hover {
-  background: rgba(255, 226, 97, 0.0941176471);
+  background: rgba(100, 255, 97, 0.0941176471);
 }
 #mobileNav .sidebar a i {
   float: right;

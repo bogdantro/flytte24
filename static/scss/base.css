@@ -2,14 +2,12 @@
   width: 100%;
   min-height: -moz-max-content;
   min-height: max-content;
-  margin-bottom: 20px;
   position: relative;
   padding-bottom: 5px;
-  background: linear-gradient(to bottom right, rgba(165, 231, 163, 0.185), transparent);
 }
 .cover .content {
   padding-inline: 20px;
-  padding-top: 70px;
+  padding-top: 75px;
   padding-bottom: 40px;
   height: -moz-max-content;
   height: max-content;
@@ -22,15 +20,17 @@
   display: none;
 }
 .cover .content .cover-image {
-  filter: brightness(100%);
+  margin-top: 38px;
+  filter: brightness(95%);
   display: block;
-  width: 305px;
-  height: auto;
+  width: 100%;
+  height: 350px;
+  -o-object-fit: cover;
+     object-fit: cover;
   position: relative;
   left: 50%;
   transform: translateX(-50%);
-  margin: 0px;
-  margin-left: -4px;
+  border-radius: 10px;
 }
 .cover .content .text {
   text-align: left;
@@ -55,9 +55,9 @@
 }
 .cover .content .cover-actions button {
   border: 1px solid transparent;
-  border-radius: 6px;
+  border-radius: 25px;
   outline: none;
-  background: #59c937;
+  background: #383838;
   color: white;
   font-weight: 500;
   font-size: 17px;
@@ -66,171 +66,151 @@
   height: 47px;
 }
 .cover .content .cover-actions button.secondary {
-  border-color: #59c937;
-  color: #59c937;
+  border-color: #383838;
+  color: #383838;
   background: white;
   margin-right: 0;
   margin-top: 15px;
 }
 
-.ved {
+.welcome {
   width: 100%;
   height: auto;
   padding-block: 50px;
   padding-top: 20px;
   position: relative;
 }
-.ved .content {
+.welcome .content {
   padding-inline: 20px;
   position: relative;
 }
-.ved .content .text {
+.welcome .content .text {
   text-align: left;
   margin-top: 28px;
 }
-.ved .content .text h1 {
+.welcome .content .text h1 {
   color: #1F1F1F;
   font-size: 27px;
   font-weight: 600;
   margin-bottom: 15px;
 }
-.ved .content .text p {
+.welcome .content .text p {
   color: #1F1F1F;
   font-size: 17px;
 }
-.ved .content img {
+.welcome .content img {
   width: 100%;
   height: auto;
+  border-radius: 10px;
 }
-.ved .content button {
-  margin-top: 35px;
-  background: #59c937;
+.welcome .content button {
+  margin-top: 28px;
+  background: #383838;
   width: 100%;
   max-width: 420px;
   height: 44px;
-  border-radius: 4px;
+  border-radius: 25px;
   outline: none;
   border: none;
   color: white;
 }
 
-.transport {
+.services {
   width: 100%;
   height: auto;
   padding-block: 50px;
   padding-top: 20px;
   position: relative;
 }
-.transport .content {
+.services .content {
   padding-inline: 20px;
   position: relative;
 }
-.transport .content .text {
+.services .content .text {
   text-align: left;
   margin-top: 28px;
 }
-.transport .content .text h1 {
+.services .content .text h1 {
   color: #1F1F1F;
   font-size: 27px;
   font-weight: 600;
   margin-bottom: 15px;
 }
-.transport .content .text p {
+.services .content .text p {
   color: #1F1F1F;
   font-size: 17px;
 }
-.transport .content .flex {
-  margin-top: 33px;
-}
-.transport .content .flex .service {
+.services .content img {
   width: 100%;
-  min-height: 150px;
-  padding: 20px;
-  position: relative;
-  background: rgb(241, 241, 241);
-  border: 1px solid rgb(246, 246, 246);
-  border-radius: 4px;
-  display: flex;
-  margin-bottom: 35px;
+  height: auto;
+  border-radius: 10px;
 }
-.transport .content .flex .service:last-child {
-  margin-bottom: 0;
-}
-.transport .content .flex .service .left {
-  width: 10%;
-  display: flex;
-  justify-content: center;
-}
-.transport .content .flex .service .left i {
-  color: #59c937;
-  font-size: 26px;
-  transform: translateY(-2px) translateX(-2px);
-}
-.transport .content .flex .service .right {
-  width: 90%;
-  margin-left: 25px;
-}
-.transport .content .flex .service .right h1 {
-  color: #1F1F1F;
-  font-size: 19px;
-  font-weight: 500;
-  margin-bottom: 6px;
-}
-.transport .content .flex .service .right p {
-  font-size: 16px;
-  color: #1F1F1F;
-}
-.transport .content button {
+.services .content button {
   margin-top: 35px;
-  background: #59c937;
+  background: #383838;
   width: 100%;
   max-width: 420px;
   height: 44px;
-  border-radius: 4px;
+  border-radius: 25px;
   outline: none;
   border: none;
   color: white;
 }
 
-.riving {
+.location {
   width: 100%;
   height: auto;
   padding-block: 50px;
   padding-top: 20px;
   position: relative;
 }
-.riving .content {
+.location .content {
   padding-inline: 20px;
   position: relative;
 }
-.riving .content .text {
+.location .content .text {
   text-align: left;
   margin-top: 28px;
 }
-.riving .content .text h1 {
+.location .content .text h1 {
   color: #1F1F1F;
   font-size: 27px;
   font-weight: 600;
   margin-bottom: 15px;
 }
-.riving .content .text p {
+.location .content .text p {
   color: #1F1F1F;
   font-size: 17px;
 }
-.riving .content img {
+.location .content .map {
+  width: 100%;
+  height: 340px;
+}
+
+.blog {
   width: 100%;
   height: auto;
+  padding-block: 50px;
+  padding-top: 20px;
+  position: relative;
 }
-.riving .content button {
-  margin-top: 35px;
-  background: #59c937;
-  width: 100%;
-  max-width: 420px;
-  height: 44px;
-  border-radius: 4px;
-  outline: none;
-  border: none;
-  color: white;
+.blog .content {
+  padding-inline: 20px;
+  position: relative;
+}
+.blog .content .text {
+  text-align: left;
+  margin-top: 28px;
+}
+.blog .content .text h1 {
+  color: #1F1F1F;
+  font-size: 27px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+.blog .content .text p {
+  color: #1F1F1F;
+  font-size: 17px;
 }
 
 .faq {
@@ -358,7 +338,7 @@
     border: 1px solid transparent;
     border-radius: 6px;
     outline: none;
-    background: #59c937;
+    background: #383838;
     color: white;
     font-weight: 500;
     font-size: 17px;
@@ -367,8 +347,8 @@
     height: 52px;
   }
   .cover .content .cover-actions button.secondary {
-    border-color: #59c937;
-    color: #59c937;
+    border-color: #383838;
+    color: #383838;
     background: white;
     margin-right: 0;
     margin-top: 15px;
@@ -496,7 +476,7 @@
     border: 1px solid transparent;
     border-radius: 6px;
     outline: none;
-    background: #59c937;
+    background: #383838;
     color: white;
     font-weight: 500;
     font-size: 17px;
@@ -505,8 +485,8 @@
     height: 54px;
   }
   .cover .content .cover-actions button.secondary {
-    border-color: #59c937;
-    color: #59c937;
+    border-color: #383838;
+    color: #383838;
     background: white;
     margin-right: 0;
     margin-top: 15px;

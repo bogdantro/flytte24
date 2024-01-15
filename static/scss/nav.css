@@ -37,13 +37,13 @@
   z-index: 1000;
 }
 #mobileNav .logo img {
-  width: 100px;
+  width: 82px;
   height: auto;
   transition: 0.3s;
-  transform: translateX(-29px);
+  transform: translateY(2px);
 }
 #mobileNav .logo img:hover {
-  transform: translateX(-29px) scale(0.93);
+  transform: scale(0.93);
 }
 #mobileNav .hamburger {
   padding: 5px;

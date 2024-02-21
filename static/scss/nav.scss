@@ -1,6 +1,6 @@
 $black: #1F1F1F;
 $white: rgb(246,246,246);
-$primBtn: #f0a432;
+$primBtn: #f6b00c;
 $txt: #183b56;
 
 #desNav{
@@ -20,6 +20,10 @@ $txt: #183b56;
     top: 0;
     z-index: 100;
     border-bottom: 1px solid transparent;
+
+    background: white;
+    border-bottom: 1px solid rgba(100,100,100,0.15);
+    transition: .2s;
     &.search{
         background: white;
         transition: 0;
@@ -41,13 +45,20 @@ $txt: #183b56;
         height: auto;
         z-index: 1000;
         img{
-        width: 82px;
+        width: 162px;
         height: auto;
         transition: .3s;
-        transform: translateY(2px);
+        transform: translateY(2px) translateX(-4px);
         &:hover{
             transform: scale(0.93);
         }
+        }
+    }
+    .search{
+        transform: translateX(32px);
+        i{
+            color: $black;
+            font-size: 24px;
         }
     }
     .hamburger{
@@ -65,13 +76,15 @@ $txt: #183b56;
             border-radius: 6px;
             display: block;
             transition: .2s;
-            margin-block: 6px;
+            margin-block: 7px;
             text-align: center;
             transform-origin: 25%; 
         }
         .upper-span{
         }
         .center-span{
+            width: 14px;
+            margin-inline: auto;
         }
         .lower-span{
         }
@@ -109,7 +122,7 @@ $txt: #183b56;
             text-decoration: none;
             position: relative;
             &:hover{
-                background: #64ff6118;
+                background: #fcff6118;
             }
             i{
                 float: right;

@@ -1,6 +1,6 @@
 $black: #1F1F1F;
 $white: rgb(246,246,246);
-$primBtn: #383838;
+$primBtn: #f6b00c;
 $txt: #183b56;
 
 
@@ -9,11 +9,19 @@ $txt: #183b56;
     min-height: max-content;
     position: relative;
     padding-bottom: 5px;
-    // background: linear-gradient(to bottom right, rgba(178, 178, 178, 0.185), transparent);
+    background: linear-gradient(to bottom right, #fff3d695, transparent);
+    .cover-image{
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      filter: brightness(41%);
+  }
     .content{
       padding-inline: 20px;
-      padding-top: 75px;
-      padding-bottom: 40px;
+      padding-top: 85px;
+      padding-bottom: 30px;
       height: max-content;
       position: relative;
       #onlyOnMob{
@@ -22,23 +30,12 @@ $txt: #183b56;
       #onlyOnDes{
         display: none;
       }
-      .cover-image{
-        margin-top: 38px;
-        filter: brightness(95%);
-        display: block;
-        width: 100%;
-        height: 350px;
-        object-fit: cover;
-        position: relative;
-        left: 50%;
-        transform: translateX(-50%);
-        border-radius: 10px;
-      }
+
       .text{
-        text-align: left;
+        text-align: center;
         margin-top: 28px;
         .cover-h1{
-          color: $black;
+          color: white;
           font-size: 33px;
           font-weight: 600;
           margin-bottom: 10px;
@@ -46,7 +43,7 @@ $txt: #183b56;
         .cover-p{
           font-size: 18px;
           margin-bottom: 0;
-          color: $black;
+          color: white;
           font-weight: 500;
         }
       }
@@ -56,7 +53,7 @@ $txt: #183b56;
         text-align: center;
         button{
           border: 1px solid transparent;
-          border-radius: 25px;
+          border-radius: 7px;
           outline: none;
           background: $primBtn;
           color: white;
@@ -78,17 +75,17 @@ $txt: #183b56;
 }
 
 
-.welcome{
+.houses{
   width: 100%;
   height: auto;
   padding-block: 50px;
-  padding-top: 20px;
+  padding-top: 40px;
   position: relative;
   .content{
     padding-inline: 20px;
     position: relative;
     .text{
-      text-align: left;
+      text-align: center;
       margin-top: 28px;
       h1{
         color: $black;
@@ -100,11 +97,6 @@ $txt: #183b56;
         color: $black;
         font-size: 17px;
       }
-    }
-    img{
-      width: 100%;
-      height: auto;
-      border-radius: 10px;
     }
     button{
       margin-top: 28px;
@@ -121,7 +113,7 @@ $txt: #183b56;
 }
 
 
-.services{
+.about{
   width: 100%;
   height: auto;
   padding-block: 50px;
@@ -131,7 +123,7 @@ $txt: #183b56;
     padding-inline: 20px;
     position: relative;
     .text{
-      text-align: left;
+      text-align: center;
       margin-top: 28px;
       h1{
         color: $black;
@@ -149,16 +141,58 @@ $txt: #183b56;
       height: auto;
       border-radius: 10px;
     }
-    button{
-      margin-top: 35px;
-      background: $primBtn;
-      width: 100%;
-      max-width: 420px;
-      height: 44px;
-      border-radius: 25px;
-      outline: none;
-      border: none;
-      color: white;
+  }
+}
+
+
+.rent-house{
+  width: 100%;
+  height: auto;
+  padding-block: 50px;
+  padding-top: 20px;
+  position: relative;
+  .content{
+    padding-inline: 20px;
+    position: relative;
+    .text{
+      text-align: center;
+      margin-top: 28px;
+      h1{
+        color: $black;
+        font-size: 27px;
+        font-weight: 600;
+        margin-bottom: 15px;
+      }
+      p{
+        color: $black;
+        font-size: 17px;
+      }
+    }
+  }
+}
+
+.proccess{
+  width: 100%;
+  height: auto;
+  padding-block: 50px;
+  padding-top: 20px;
+  position: relative;
+  .content{
+    padding-inline: 20px;
+    position: relative;
+    .text{
+      text-align: center;
+      margin-top: 28px;
+      h1{
+        color: $black;
+        font-size: 27px;
+        font-weight: 600;
+        margin-bottom: 15px;
+      }
+      p{
+        color: $black;
+        font-size: 17px;
+      }
     }
   }
 }
@@ -195,31 +229,7 @@ $txt: #183b56;
 }
 
 
-.blog{
-  width: 100%;
-  height: auto;
-  padding-block: 50px;
-  padding-top: 20px;
-  position: relative;
-  .content{
-    padding-inline: 20px;
-    position: relative;
-    .text{
-      text-align: left;
-      margin-top: 28px;
-      h1{
-        color: $black;
-        font-size: 27px;
-        font-weight: 600;
-        margin-bottom: 15px;
-      }
-      p{
-        color: $black;
-        font-size: 17px;
-      }
-    }
-  }
-}
+
 
 
 .faq{
@@ -232,7 +242,7 @@ $txt: #183b56;
     padding-inline: 20px;
     position: relative;
     .text{
-      text-align: left;
+      text-align: center;
       margin-top: 28px;
       h1{
         color: $black;

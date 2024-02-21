@@ -14,6 +14,9 @@
   top: 0;
   z-index: 100;
   border-bottom: 1px solid transparent;
+  background: white;
+  border-bottom: 1px solid rgba(100, 100, 100, 0.15);
+  transition: 0.2s;
 }
 #mobileNav.search {
   background: white;
@@ -37,13 +40,20 @@
   z-index: 1000;
 }
 #mobileNav .logo img {
-  width: 82px;
+  width: 162px;
   height: auto;
   transition: 0.3s;
-  transform: translateY(2px);
+  transform: translateY(2px) translateX(-4px);
 }
 #mobileNav .logo img:hover {
   transform: scale(0.93);
+}
+#mobileNav .search {
+  transform: translateX(32px);
+}
+#mobileNav .search i {
+  color: #1F1F1F;
+  font-size: 24px;
 }
 #mobileNav .hamburger {
   padding: 5px;
@@ -61,9 +71,13 @@
   border-radius: 6px;
   display: block;
   transition: 0.2s;
-  margin-block: 6px;
+  margin-block: 7px;
   text-align: center;
   transform-origin: 25%;
+}
+#mobileNav .hamburger .center-span {
+  width: 14px;
+  margin-inline: auto;
 }
 #mobileNav .hamburger.click .upper-span {
   transform: rotate(45deg);
@@ -98,7 +112,7 @@
   position: relative;
 }
 #mobileNav .sidebar a:hover {
-  background: rgba(100, 255, 97, 0.0941176471);
+  background: rgba(252, 255, 97, 0.0941176471);
 }
 #mobileNav .sidebar a i {
   float: right;
@@ -179,7 +193,7 @@
   }
   #desNav .menu a.maincta {
     transform: translateY(2px);
-    background: linear-gradient(to bottom right, #f0a432, #ffb649);
+    background: linear-gradient(to bottom right, #f6b00c, #ffb649);
     color: white;
     border-radius: 5px;
     margin-left: 6px;
@@ -193,7 +207,7 @@
     transform: scale(1.05) translateY(2px);
   }
   #desNav .menu a:hover {
-    border-bottom: 2px solid #f0a432;
+    border-bottom: 2px solid #f6b00c;
   }
 }
 @media only screen and (min-device-width: 1290px) {
@@ -261,7 +275,7 @@
   }
   #desNav .menu a.maincta {
     transform: translateY(2px);
-    background: linear-gradient(to bottom right, #f0a432, #ffb649);
+    background: linear-gradient(to bottom right, #f6b00c, #ffb649);
     color: white;
     border-radius: 5px;
     margin-left: 6px;
@@ -275,6 +289,6 @@
     transform: scale(1.05) translateY(2px);
   }
   #desNav .menu a:hover {
-    border-bottom: 2px solid #f0a432;
+    border-bottom: 2px solid #f6b00c;
   }
 }/*# sourceMappingURL=nav.css.map */

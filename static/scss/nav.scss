@@ -112,6 +112,8 @@ $txt: #183b56;
         pointer-events: none;
         display: block;
         transition: .2s;
+        overflow-y: scroll !important;
+        padding-bottom: 60px;
         a{
             padding: 23px 20px;
             color: $txt;

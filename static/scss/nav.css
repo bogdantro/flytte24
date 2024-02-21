@@ -100,6 +100,8 @@
   pointer-events: none;
   display: block;
   transition: 0.2s;
+  overflow-y: scroll !important;
+  padding-bottom: 60px;
 }
 #mobileNav .sidebar a {
   padding: 23px 20px;

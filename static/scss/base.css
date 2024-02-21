@@ -29,7 +29,7 @@
   display: none;
 }
 .cover .content .text {
-  text-align: center;
+  text-align: left;
   margin-top: 28px;
 }
 .cover .content .text .cover-h1 {
@@ -81,7 +81,7 @@
   position: relative;
 }
 .houses .content .text {
-  text-align: center;
+  text-align: left;
   margin-top: 28px;
 }
 .houses .content .text h1 {
@@ -93,6 +93,83 @@
 .houses .content .text p {
   color: #1F1F1F;
   font-size: 17px;
+}
+.houses .content .houses-cards {
+  margin-top: 20px;
+  display: flex;
+  overflow-x: scroll;
+  padding-bottom: 30px;
+  position: relative;
+}
+.houses .content .houses-cards::-webkit-scrollbar {
+  height: 3px;
+  display: none;
+}
+.houses .content .houses-cards::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: rgba(130, 130, 130, 0.2);
+}
+.houses .content .houses-cards .house {
+  min-width: 205px;
+  max-width: 205px;
+  height: -moz-min-content;
+  height: min-content;
+  margin: 0 25px;
+  padding: 0;
+  position: relative;
+  transition: 0.2s;
+  cursor: pointer;
+}
+.houses .content .houses-cards .house .house-image {
+  width: 100%;
+  height: auto;
+  -o-object-fit: cover;
+     object-fit: cover;
+  filter: brightness(90%);
+  border-radius: 4px;
+}
+.houses .content .houses-cards .house .reviews {
+  display: flex;
+  margin-block: 3px;
+}
+.houses .content .houses-cards .house .reviews p {
+  margin-bottom: 0;
+  color: #FFBC55;
+  font-size: 12px;
+  margin-top: 1px;
+}
+.houses .content .houses-cards .house .reviews p i {
+  transform: translateY(-0.9px);
+  margin-right: 3px;
+  font-size: 11px;
+}
+.houses .content .houses-cards .house .reviews span {
+  color: rgb(170, 170, 170);
+  font-size: 11px;
+  transform: translateX(4px) translateY(2px);
+}
+.houses .content .houses-cards .house .name {
+  font-size: 17px;
+  color: #183b56;
+  margin-bottom: 1px;
+  font-weight: 500;
+  margin-top: 10px;
+}
+.houses .content .houses-cards .house .adress {
+  font-size: 12px;
+  color: #183b56;
+  opacity: 0.85;
+  font-weight: 500;
+}
+.houses .content .houses-cards .house:first-child {
+  margin-left: 0;
+}
+.houses .content .houses-cards .house:hover .name {
+  text-decoration: underline;
+}
+.houses .content .houses-cards .house:hover .house-image {
+  transition: 0.2s;
+  filter: brightness(85%);
 }
 .houses .content button {
   margin-top: 28px;
@@ -118,7 +195,7 @@
   position: relative;
 }
 .about .content .text {
-  text-align: center;
+  text-align: left;
   margin-top: 28px;
 }
 .about .content .text h1 {
@@ -149,7 +226,7 @@
   position: relative;
 }
 .rent-house .content .text {
-  text-align: center;
+  text-align: left;
   margin-top: 28px;
 }
 .rent-house .content .text h1 {
@@ -175,7 +252,7 @@
   position: relative;
 }
 .proccess .content .text {
-  text-align: center;
+  text-align: left;
   margin-top: 28px;
 }
 .proccess .content .text h1 {
@@ -187,6 +264,39 @@
 .proccess .content .text p {
   color: #1F1F1F;
   font-size: 17px;
+}
+.proccess .content .cards {
+  position: relative;
+  width: 100%;
+  margin-top: 20px;
+}
+.proccess .content .cards .card {
+  padding: 14px 12px;
+  margin-top: 0;
+  margin-bottom: 35px !important;
+  background: rgba(219, 229, 160, 0.238);
+  border-radius: 7px;
+  text-align: center;
+  width: 100%;
+  max-width: 410px;
+}
+.proccess .content .cards .card h1 {
+  color: #183b56;
+  font-size: 22px;
+}
+.proccess .content .cards .card .number {
+  font-size: 17px;
+  color: #183b56;
+  opacity: 0.8;
+  background: rgba(214, 241, 60, 0.571);
+  max-width: -moz-max-content;
+  max-width: max-content;
+  height: -moz-max-content;
+  height: max-content;
+  padding: 6px 14px;
+  border-radius: 100%;
+  margin-left: auto;
+  margin-bottom: 15px;
 }
 
 .location {
@@ -231,7 +341,7 @@
   position: relative;
 }
 .faq .content .text {
-  text-align: center;
+  text-align: left;
   margin-top: 28px;
 }
 .faq .content .text h1 {

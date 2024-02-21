@@ -19,9 +19,18 @@
     <div class="logo" onclick="window.location.href='/'">
         <img src="{% static '/images/logo/logo.png' %}" alt="">
     </div>
-    <div class="search">
+
+    <div id="mobNavSearchIcon" onclick="search()" >
         <i class="fa-regular fa-magnifying-glass"></i>
     </div>
+    <div class="mobnavbar-search" id="mobSidebarSearch" >
+        <div class="overlay"></div>
+        <form id="mobNavSearchForm"  method="GET">
+            {% csrf_token %}
+            <input name="q" type="text" id="mobNavSearchInput" placeholder="Hva leter du etter?"><i onclick="searchIconSubmit()" class="fa-solid fa-magnifying-glass"></i>
+        </form>
+    </div>
+
     <div class="hamburger" id="hamburger" onclick="menu()">
         <span class="upper-span"></span>
         <span class="center-span"></span>

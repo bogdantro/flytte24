@@ -48,12 +48,73 @@
 #mobileNav .logo img:hover {
   transform: scale(0.93);
 }
-#mobileNav .search {
+#mobileNav #mobNavSearchIcon {
   transform: translateX(32px);
 }
-#mobileNav .search i {
+#mobileNav #mobNavSearchIcon i {
   color: #1F1F1F;
   font-size: 24px;
+}
+#mobileNav .mobnavbar-search {
+  position: absolute;
+  top: 44px;
+  left: 0;
+  width: 100%;
+  padding-inline: 15px;
+  padding-bottom: 15px;
+  padding-top: 29px;
+  text-align: center;
+  z-index: 10000;
+  background: white;
+  opacity: 0;
+  pointer-events: none;
+}
+#mobileNav .mobnavbar-search.active {
+  opacity: 1;
+  pointer-events: visible;
+}
+#mobileNav .mobnavbar-search .overlay {
+  position: absolute;
+  top: 95px;
+  left: 0;
+  width: 100%;
+  height: 140vh;
+  background: rgba(20, 20, 20, 0.4);
+}
+#mobileNav .mobnavbar-search form {
+  border: 1px solid rgba(20, 20, 20, 0.1);
+  border-radius: 4px;
+  display: flex;
+}
+#mobileNav .mobnavbar-search i {
+  position: absolute;
+  right: 39px;
+  top: 47px;
+  padding: 8px;
+  margin: -8px;
+  border-radius: 100%;
+  background: rgba(155, 155, 155, 0.22);
+  font-size: 15px;
+  color: rgba(24, 59, 86, 0.662745098);
+}
+#mobileNav .mobnavbar-search input {
+  width: 85%;
+  height: 50px;
+  border: none;
+  outline: none;
+  padding: 7px;
+  background: white;
+  color: #183b56;
+  border-radius: 4px;
+  font-size: 15px;
+}
+#mobileNav .mobnavbar-search input::-moz-placeholder {
+  color: #183b56;
+  opacity: 0.8;
+}
+#mobileNav .mobnavbar-search input::placeholder {
+  color: #183b56;
+  opacity: 0.8;
 }
 #mobileNav .hamburger {
   padding: 5px;

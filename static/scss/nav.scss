@@ -54,11 +54,68 @@ $txt: #183b56;
         }
         }
     }
-    .search{
+    #mobNavSearchIcon{
         transform: translateX(32px);
         i{
             color: $black;
             font-size: 24px;
+        }
+    }
+    .mobnavbar-search{
+        position: absolute;
+        top: 44px;
+        left: 0;
+        width: 100%;
+        padding-inline: 15px;
+        padding-bottom: 15px;
+        padding-top: 29px;
+        text-align: center;
+        z-index: 10000;
+        background: white;
+        opacity: 0;
+        pointer-events: none;
+        &.active{
+            opacity: 1;
+            pointer-events: visible;
+        }
+        .overlay{
+            position: absolute;
+            top: calc(60px + 35px);
+            left: 0;
+            width: 100%;
+            height: 140vh;
+            background: rgba(20, 20, 20, 0.40);
+        }
+        form{
+            border: 1px solid rgba(20,20,20,0.1);
+            border-radius: 4px;
+            display: flex;
+        }
+            i{
+                position: absolute;
+                right: 39px;
+                top: 47px;
+                padding: 8px;
+                margin: -8px;
+                border-radius: 100%;
+                background: rgba(155, 155, 155, 0.22);
+                font-size: 15px;
+                color: #183b56a9;
+            }
+        input{
+          width: 85%;
+          height: 50px;
+          border: none;
+          outline: none;
+          padding: 7px;
+          background: white;
+          color: $txt;
+          border-radius: 4px;
+          font-size: 15px;
+          &::placeholder{
+            color: $txt;
+            opacity: 0.8;
+          }
         }
     }
     .hamburger{

@@ -32,7 +32,7 @@ $txt: #183b56;
       }
 
       .text{
-        text-align: center;
+        text-align: left;
         margin-top: 28px;
         .cover-h1{
           color: white;
@@ -85,7 +85,7 @@ $txt: #183b56;
     padding-inline: 20px;
     position: relative;
     .text{
-      text-align: center;
+      text-align: left;
       margin-top: 28px;
       h1{
         color: $black;
@@ -96,6 +96,83 @@ $txt: #183b56;
       p{
         color: $black;
         font-size: 17px;
+      }
+    }
+    .houses-cards{
+      margin-top: 20px;
+      display: flex;
+      overflow-x: scroll;
+      padding-bottom: 30px;
+      position: relative;
+      &::-webkit-scrollbar{
+          height: 3px;
+          display: none;
+      }
+      &::-webkit-scrollbar-thumb{
+          border-radius: 10px;
+          background-color: rgba(130, 130, 130, 0.2);
+      }
+      .house{
+        min-width: 205px;
+        max-width: 205px;
+        height: min-content;
+        margin: 0 25px;
+        padding: 0;
+        position: relative;
+        transition: .2s;
+        cursor: pointer;
+        .house-image{
+          width: 100%;
+          height: auto;
+          object-fit: cover;
+          filter: brightness(90%);
+          border-radius: 4px
+        }
+        .reviews{
+          display: flex;
+          margin-block: 3px;
+          p{
+            margin-bottom: 0;
+            color: #FFBC55;
+            font-size: 12px;
+            margin-top: 1px;
+            i{
+              transform: translateY(-0.9px);
+              margin-right: 3px;
+              font-size: 11px;
+            }
+          }
+          span{
+            color: rgb(170, 170, 170);
+            font-size: 11px;
+            transform: translateX(4px) translateY(2px);
+          }
+        }
+        .name{
+          font-size: 17px;
+          color: $txt;
+          margin-bottom: 1px;
+          font-weight: 500;
+          margin-top: 10px;
+        }
+        .adress{
+          font-size: 12px;
+          color: $txt;
+          opacity: 0.85;
+          font-weight: 500;
+        }
+        &:first-child{
+          margin-left: 0;
+        }
+        &:hover{
+          .name{
+            text-decoration: underline;
+          }
+          .house-image{
+            transition: .2s;
+            filter: brightness(85%);
+          }
+        }
       }
     }
     button{
@@ -123,7 +200,7 @@ $txt: #183b56;
     padding-inline: 20px;
     position: relative;
     .text{
-      text-align: center;
+      text-align: left;
       margin-top: 28px;
       h1{
         color: $black;
@@ -155,7 +232,7 @@ $txt: #183b56;
     padding-inline: 20px;
     position: relative;
     .text{
-      text-align: center;
+      text-align: left;
       margin-top: 28px;
       h1{
         color: $black;
@@ -181,7 +258,7 @@ $txt: #183b56;
     padding-inline: 20px;
     position: relative;
     .text{
-      text-align: center;
+      text-align: left;
       margin-top: 28px;
       h1{
         color: $black;
@@ -194,6 +271,37 @@ $txt: #183b56;
         font-size: 17px;
       }
     }
+    .cards{
+      position: relative;
+      width: 100%;
+      margin-top: 20px;
+      .card{
+          padding: 14px 12px;
+          margin-top: 0;
+          margin-bottom: 35px !important;
+          background: rgba(219, 229, 160, 0.238);
+          border-radius: 7px; 
+          text-align: center;
+          width: 100%;
+          max-width: 410px;
+          h1{
+              color: $txt;
+              font-size: 22px;
+          }   
+          .number{
+              font-size: 17px;
+              color: $txt;
+              opacity: 0.8;
+              background: rgba(214, 241, 60, 0.571);
+              max-width: max-content;
+              height: max-content;
+              padding: 6px 14px;
+              border-radius: 100%;
+              margin-left: auto;
+              margin-bottom: 15px;
+          }
+      }
+  }
   }
 }
 
@@ -242,7 +350,7 @@ $txt: #183b56;
     padding-inline: 20px;
     position: relative;
     .text{
-      text-align: center;
+      text-align: left;
       margin-top: 28px;
       h1{
         color: $black;

@@ -4,16 +4,7 @@
   min-height: max-content;
   position: relative;
   padding-bottom: 5px;
-  background: linear-gradient(to bottom right, rgba(255, 249, 234, 0.5843137255), transparent);
-}
-.cover .cover-image {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  filter: brightness(38%);
-  display: none;
+  background: linear-gradient(to bottom right, rgba(255, 244, 217, 0.5843137255), rgba(255, 249, 232, 0.5843137255), transparent);
 }
 .cover .content {
   padding-inline: 20px;
@@ -28,6 +19,18 @@
 }
 .cover .content #onlyOnDes {
   display: none;
+}
+.cover .content .cover-image {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  width: 100%;
+  height: 100%;
+  filter: brightness(89%);
+  border-radius: 50px;
+  border-bottom-right-radius: 5px;
+  margin-top: 35px;
 }
 .cover .content .text {
   text-align: left;
@@ -60,7 +63,7 @@
   font-size: 17px;
   width: 100%;
   display: block;
-  height: 47px;
+  height: 43px;
   margin-top: 15px;
 }
 .cover .content .cover-actions button.secondary {

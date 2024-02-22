@@ -183,6 +183,11 @@ $txt: #183b56;
             &:hover{
                 background: #fcff6118;
             }
+            &.no-hover{
+                &:hover{
+                    background: transparent;
+                }
+            }
             i{
                 float: right;
                 padding-right: 3px;

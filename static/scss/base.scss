@@ -9,16 +9,9 @@ $txt: #183b56;
     min-height: max-content;
     position: relative;
     padding-bottom: 5px;
-    background: linear-gradient(to bottom right, #fff9ea95, transparent);
-    .cover-image{
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      filter: brightness(38%);
-      display: none;
-  }
+    background: linear-gradient(to bottom right, #fff4d995, #fff9e895, transparent);
+    // background: linear-gradient(to bottom right, #edb519, #fec21b);
+
     .content{
       padding-inline: 20px;
       padding-top: 85px;
@@ -31,7 +24,18 @@ $txt: #183b56;
       #onlyOnDes{
         display: none;
       }
-
+      .cover-image{
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 0;
+        width: 100%;
+        height: 100%;
+        filter: brightness(89%);
+        border-radius: 50px;
+        border-bottom-right-radius: 5px;
+        margin-top: 35px;
+    }
       .text{
         text-align: left;
         margin-top: 28px;
@@ -62,7 +66,7 @@ $txt: #183b56;
           font-size: 17px;
           width: 100%;
           display: block;
-          height: 47px;
+          height: 43px;
           margin-top: 15px;
           &.secondary{
             border-color: $primBtn;

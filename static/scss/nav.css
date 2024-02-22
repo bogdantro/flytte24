@@ -177,6 +177,9 @@
 #mobileNav .sidebar a:hover {
   background: rgba(252, 255, 97, 0.0941176471);
 }
+#mobileNav .sidebar a.no-hover:hover {
+  background: transparent;
+}
 #mobileNav .sidebar a i {
   float: right;
   padding-right: 3px;

@@ -54,7 +54,7 @@
   border: 1px solid transparent;
   border-radius: 7px;
   outline: none;
-  background: #f8bc19;
+  background: #edb519;
   color: white;
   font-weight: 500;
   font-size: 17px;
@@ -64,8 +64,8 @@
   margin-top: 15px;
 }
 .cover .content .cover-actions button.secondary {
-  border-color: #f8bc19;
-  color: #f8bc19;
+  border-color: #edb519;
+  color: #edb519;
   background: white;
   margin-right: 0;
 }
@@ -174,7 +174,7 @@
 }
 .houses .content button {
   margin-top: 28px;
-  background: #f8bc19;
+  background: #edb519;
   width: 100%;
   max-width: 420px;
   height: 44px;
@@ -221,7 +221,7 @@
   padding-block: 50px;
   padding-top: 20px;
   position: relative;
-  background: #f8bc19;
+  background: #edb519;
 }
 .rent-house .content {
   padding-inline: 20px;
@@ -265,11 +265,11 @@
   outline: none;
 }
 .rent-house .content form button {
-  background: #f8bc19;
+  background: #edb519;
   width: 100%;
   height: 45px;
   color: white;
-  border: 1px solid #f8bc19;
+  border: 1px solid #edb519;
   outline: none;
   border-radius: 7px;
   margin-top: 20px;
@@ -489,7 +489,7 @@
     border: 1px solid transparent;
     border-radius: 6px;
     outline: none;
-    background: #f8bc19;
+    background: #edb519;
     color: white;
     font-weight: 500;
     font-size: 17px;
@@ -498,8 +498,8 @@
     height: 52px;
   }
   .cover .content .cover-actions button.secondary {
-    border-color: #f8bc19;
-    color: #f8bc19;
+    border-color: #edb519;
+    color: #edb519;
     background: white;
     margin-right: 0;
     margin-top: 15px;
@@ -627,7 +627,7 @@
     border: 1px solid transparent;
     border-radius: 6px;
     outline: none;
-    background: #f8bc19;
+    background: #edb519;
     color: white;
     font-weight: 500;
     font-size: 17px;
@@ -636,8 +636,8 @@
     height: 54px;
   }
   .cover .content .cover-actions button.secondary {
-    border-color: #f8bc19;
-    color: #f8bc19;
+    border-color: #edb519;
+    color: #edb519;
     background: white;
     margin-right: 0;
     margin-top: 15px;

@@ -1,6 +1,6 @@
 $black: #1F1F1F;
 $white: rgb(246,246,246);
-$primBtn: #f6b00c;
+$primBtn: #f8bc19;
 $txt: #183b56;
 
 
@@ -9,7 +9,7 @@ $txt: #183b56;
     min-height: max-content;
     position: relative;
     padding-bottom: 5px;
-    background: linear-gradient(to bottom right, #fff3d695, transparent);
+    background: linear-gradient(to bottom right, #fff9ea95, transparent);
     .cover-image{
       position: absolute;
       left: 0;
@@ -17,10 +17,11 @@ $txt: #183b56;
       width: 100%;
       height: 100%;
       filter: brightness(38%);
+      display: none;
   }
     .content{
       padding-inline: 20px;
-      padding-top: 95px;
+      padding-top: 85px;
       padding-bottom: 45px;
       height: max-content;
       position: relative;
@@ -35,7 +36,7 @@ $txt: #183b56;
         text-align: left;
         margin-top: 28px;
         .cover-h1{
-          color: white;
+          color: $black;
           font-size: 32px;
           font-weight: 600;
           margin-bottom: 10px;
@@ -43,7 +44,7 @@ $txt: #183b56;
         .cover-p{
           font-size: 18px;
           margin-bottom: 0;
-          color: white;
+          color: $black;
           font-weight: 500;
         }
       }
@@ -62,12 +63,12 @@ $txt: #183b56;
           width: 100%;
           display: block;
           height: 47px;
+          margin-top: 15px;
           &.secondary{
             border-color: $primBtn;
             color: $primBtn;
             background: white;
             margin-right: 0;
-            margin-top: 15px;
           }
         }
       }
@@ -228,14 +229,15 @@ $txt: #183b56;
   padding-block: 50px;
   padding-top: 20px;
   position: relative;
+  background: $primBtn;
   .content{
     padding-inline: 20px;
     position: relative;
     .text{
-      text-align: left;
+      text-align: center;
       margin-top: 28px;
       h1{
-        color: $black;
+        color: white;
         font-size: 27px;
         font-weight: 600;
         margin-bottom: 15px;
@@ -245,8 +247,42 @@ $txt: #183b56;
         font-size: 17px;
       }
     }
+    form{
+      width: 100%;
+      height: auto;
+      padding: 22px;
+      background: white;
+      border-radius: 8px;
+      margin-top: 20px;
+      label{
+        color: $black;
+        font-weight: 500;
+        font-size: 17px;
+      }
+      input{
+        width: 100%;
+        height: 45px;
+        color: $black;
+        font-size: 17px;
+        padding: 4px 10px;
+        border: 1px solid lightgray;
+        border-radius: 4px;
+        outline: none;
+      }
+      button{
+        background: $primBtn;
+        width: 100%;
+        height: 45px;
+        color: white;
+        border: 1px solid $primBtn;
+        outline: none;
+        border-radius: 7px;
+        margin-top: 20px;
+      }
+    }
   }
 }
+
 
 .proccess{
   width: 100%;
@@ -279,7 +315,7 @@ $txt: #183b56;
           padding: 14px 12px;
           margin-top: 0;
           margin-bottom: 35px !important;
-          background: rgba(219, 229, 160, 0.238);
+          background: #f8bd192e;
           border-radius: 7px; 
           text-align: center;
           width: 100%;
@@ -292,7 +328,7 @@ $txt: #183b56;
               font-size: 17px;
               color: $txt;
               opacity: 0.8;
-              background: rgba(214, 241, 60, 0.571);
+              background: #f8bd196e;
               max-width: max-content;
               height: max-content;
               padding: 6px 14px;

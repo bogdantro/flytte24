@@ -4,7 +4,7 @@
   min-height: max-content;
   position: relative;
   padding-bottom: 5px;
-  background: linear-gradient(to bottom right, rgba(255, 244, 217, 0.5843137255), rgba(255, 249, 232, 0.5843137255), transparent);
+  background: linear-gradient(to bottom right, rgba(165, 231, 163, 0.185), transparent);
 }
 .cover .content {
   padding-inline: 20px;
@@ -31,7 +31,7 @@
   border-radius: 50px;
   border-bottom-right-radius: 5px;
   border-top-left-radius: 5px;
-  margin-top: 35px;
+  margin-top: 45px;
 }
 .cover .content .text {
   text-align: left;
@@ -58,7 +58,7 @@
   border: 1px solid transparent;
   border-radius: 7px;
   outline: none;
-  background: #edb519;
+  background: #69d34e;
   color: white;
   font-weight: 500;
   font-size: 17px;
@@ -68,117 +68,40 @@
   margin-top: 15px;
 }
 .cover .content .cover-actions button.secondary {
-  border-color: #edb519;
-  color: #edb519;
+  border-color: #69d34e;
+  color: #69d34e;
   background: white;
   margin-right: 0;
 }
 
-.houses {
+.about-us {
   width: 100%;
   height: auto;
   padding-block: 50px;
   padding-top: 40px;
   position: relative;
 }
-.houses .content {
+.about-us .content {
   padding-inline: 20px;
   position: relative;
 }
-.houses .content .text {
+.about-us .content .text {
   text-align: left;
   margin-top: 28px;
 }
-.houses .content .text h1 {
+.about-us .content .text h1 {
   color: #1F1F1F;
   font-size: 27px;
   font-weight: 600;
   margin-bottom: 15px;
 }
-.houses .content .text p {
+.about-us .content .text p {
   color: #1F1F1F;
   font-size: 17px;
 }
-.houses .content .houses-cards {
-  margin-top: 20px;
-  display: flex;
-  overflow-x: scroll;
-  padding-bottom: 30px;
-  position: relative;
-}
-.houses .content .houses-cards::-webkit-scrollbar {
-  height: 3px;
-  display: none;
-}
-.houses .content .houses-cards::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  background-color: rgba(130, 130, 130, 0.2);
-}
-.houses .content .houses-cards .house {
-  min-width: 205px;
-  max-width: 205px;
-  height: -moz-min-content;
-  height: min-content;
-  margin: 0 25px;
-  padding: 0;
-  position: relative;
-  transition: 0.2s;
-  cursor: pointer;
-}
-.houses .content .houses-cards .house .house-image {
-  width: 100%;
-  height: auto;
-  -o-object-fit: cover;
-     object-fit: cover;
-  filter: brightness(90%);
-  border-radius: 4px;
-}
-.houses .content .houses-cards .house .reviews {
-  display: flex;
-  margin-block: 3px;
-}
-.houses .content .houses-cards .house .reviews p {
-  margin-bottom: 0;
-  color: #FFBC55;
-  font-size: 12px;
-  margin-top: 1px;
-}
-.houses .content .houses-cards .house .reviews p i {
-  transform: translateY(-0.9px);
-  margin-right: 3px;
-  font-size: 11px;
-}
-.houses .content .houses-cards .house .reviews span {
-  color: rgb(170, 170, 170);
-  font-size: 11px;
-  transform: translateX(4px) translateY(2px);
-}
-.houses .content .houses-cards .house .name {
-  font-size: 17px;
-  color: #183b56;
-  margin-bottom: 1px;
-  font-weight: 500;
-  margin-top: 10px;
-}
-.houses .content .houses-cards .house .adress {
-  font-size: 12px;
-  color: #183b56;
-  opacity: 0.85;
-  font-weight: 500;
-}
-.houses .content .houses-cards .house:first-child {
-  margin-left: 0;
-}
-.houses .content .houses-cards .house:hover .name {
-  text-decoration: underline;
-}
-.houses .content .houses-cards .house:hover .house-image {
-  transition: 0.2s;
-  filter: brightness(85%);
-}
-.houses .content button {
+.about-us .content button {
   margin-top: 28px;
-  background: #edb519;
+  background: #69d34e;
   width: 100%;
   max-width: 420px;
   height: 44px;
@@ -188,184 +111,152 @@
   color: white;
 }
 
-.about {
+.whatweoffer {
   width: 100%;
   height: auto;
   padding-block: 50px;
-  padding-top: 20px;
+  padding-top: 40px;
   position: relative;
 }
-.about .content {
+.whatweoffer .content {
   padding-inline: 20px;
   position: relative;
 }
-.about .content .text {
+.whatweoffer .content .text {
   text-align: left;
   margin-top: 28px;
 }
-.about .content .text h1 {
+.whatweoffer .content .text h1 {
   color: #1F1F1F;
   font-size: 27px;
   font-weight: 600;
   margin-bottom: 15px;
 }
-.about .content .text p {
+.whatweoffer .content .text p {
   color: #1F1F1F;
   font-size: 17px;
 }
-.about .content img {
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
-}
-
-.rent-house {
-  width: 100%;
-  height: auto;
-  padding-block: 50px;
-  padding-top: 20px;
-  position: relative;
-  background: #edb519;
-}
-.rent-house .content {
-  padding-inline: 20px;
-  position: relative;
-}
-.rent-house .content .text {
-  text-align: center;
+.whatweoffer .content button {
   margin-top: 28px;
-}
-.rent-house .content .text h1 {
-  color: white;
-  font-size: 27px;
-  font-weight: 600;
-  margin-bottom: 15px;
-}
-.rent-house .content .text p {
-  color: #1F1F1F;
-  font-size: 17px;
-}
-.rent-house .content form {
+  background: #69d34e;
   width: 100%;
-  height: auto;
-  padding: 22px;
-  background: white;
-  border-radius: 8px;
-  margin-top: 20px;
-}
-.rent-house .content form label {
-  color: #1F1F1F;
-  font-weight: 500;
-  font-size: 17px;
-}
-.rent-house .content form input {
-  width: 100%;
-  height: 45px;
-  color: #1F1F1F;
-  font-size: 17px;
-  padding: 4px 10px;
-  border: 1px solid lightgray;
-  border-radius: 4px;
+  max-width: 420px;
+  height: 44px;
+  border-radius: 25px;
   outline: none;
-}
-.rent-house .content form button {
-  background: #edb519;
-  width: 100%;
-  height: 45px;
+  border: none;
   color: white;
-  border: 1px solid #edb519;
+}
+
+.systems {
+  width: 100%;
+  height: auto;
+  padding-block: 50px;
+  padding-top: 40px;
+  position: relative;
+}
+.systems .content {
+  padding-inline: 20px;
+  position: relative;
+}
+.systems .content .text {
+  text-align: left;
+  margin-top: 28px;
+}
+.systems .content .text h1 {
+  color: #1F1F1F;
+  font-size: 27px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+.systems .content .text p {
+  color: #1F1F1F;
+  font-size: 17px;
+}
+.systems .content button {
+  margin-top: 28px;
+  background: #69d34e;
+  width: 100%;
+  max-width: 420px;
+  height: 44px;
+  border-radius: 25px;
   outline: none;
-  border-radius: 7px;
-  margin-top: 20px;
+  border: none;
+  color: white;
 }
 
-.proccess {
+.pricing {
   width: 100%;
   height: auto;
   padding-block: 50px;
-  padding-top: 20px;
+  padding-top: 40px;
   position: relative;
 }
-.proccess .content {
+.pricing .content {
   padding-inline: 20px;
   position: relative;
 }
-.proccess .content .text {
+.pricing .content .text {
   text-align: left;
   margin-top: 28px;
 }
-.proccess .content .text h1 {
+.pricing .content .text h1 {
   color: #1F1F1F;
   font-size: 27px;
   font-weight: 600;
   margin-bottom: 15px;
 }
-.proccess .content .text p {
+.pricing .content .text p {
   color: #1F1F1F;
   font-size: 17px;
 }
-.proccess .content .cards {
-  position: relative;
+.pricing .content button {
+  margin-top: 28px;
+  background: #69d34e;
   width: 100%;
-  margin-top: 20px;
-}
-.proccess .content .cards .card {
-  padding: 14px 12px;
-  margin-top: 0;
-  margin-bottom: 35px !important;
-  background: rgba(248, 189, 25, 0.1803921569);
-  border-radius: 7px;
-  text-align: center;
-  width: 100%;
-  max-width: 410px;
-}
-.proccess .content .cards .card h1 {
-  color: #183b56;
-  font-size: 22px;
-}
-.proccess .content .cards .card .number {
-  font-size: 17px;
-  color: #183b56;
-  opacity: 0.8;
-  background: rgba(248, 189, 25, 0.431372549);
-  max-width: -moz-max-content;
-  max-width: max-content;
-  height: -moz-max-content;
-  height: max-content;
-  padding: 6px 14px;
-  border-radius: 100%;
-  margin-left: auto;
-  margin-bottom: 15px;
+  max-width: 420px;
+  height: 44px;
+  border-radius: 25px;
+  outline: none;
+  border: none;
+  color: white;
 }
 
-.location {
+.get-started {
   width: 100%;
   height: auto;
   padding-block: 50px;
-  padding-top: 20px;
+  padding-top: 40px;
   position: relative;
 }
-.location .content {
+.get-started .content {
   padding-inline: 20px;
   position: relative;
 }
-.location .content .text {
+.get-started .content .text {
   text-align: left;
   margin-top: 28px;
 }
-.location .content .text h1 {
+.get-started .content .text h1 {
   color: #1F1F1F;
   font-size: 27px;
   font-weight: 600;
   margin-bottom: 15px;
 }
-.location .content .text p {
+.get-started .content .text p {
   color: #1F1F1F;
   font-size: 17px;
 }
-.location .content .map {
+.get-started .content button {
+  margin-top: 28px;
+  background: #69d34e;
   width: 100%;
-  height: 340px;
+  max-width: 420px;
+  height: 44px;
+  border-radius: 25px;
+  outline: none;
+  border: none;
+  color: white;
 }
 
 .faq {
@@ -467,13 +358,13 @@
   }
   .cover .content .text {
     text-align: left;
-    margin-top: 55px;
+    margin-top: 28px;
     position: relative;
     z-index: 10;
   }
   .cover .content .text .cover-h1 {
     color: #1F1F1F;
-    font-size: 42px;
+    font-size: 45px;
     font-weight: 600;
     margin-bottom: 10px;
   }
@@ -484,6 +375,21 @@
     font-weight: 500;
     width: 400px;
   }
+  .cover .content .cover-image {
+    position: relative;
+    left: -20px;
+    transform: translateX(0);
+    top: 65px;
+    width: auto;
+    max-width: 98%;
+    height: auto;
+    max-height: 92%;
+    filter: brightness(89%);
+    border-radius: 50px;
+    border-bottom-right-radius: 5px;
+    border-top-left-radius: 5px;
+    margin-top: 0;
+  }
   .cover .content .cover-actions {
     margin-top: 24px;
     width: 100%;
@@ -493,7 +399,7 @@
     border: 1px solid transparent;
     border-radius: 6px;
     outline: none;
-    background: #edb519;
+    background: #69d34e;
     color: white;
     font-weight: 500;
     font-size: 17px;
@@ -502,11 +408,121 @@
     height: 52px;
   }
   .cover .content .cover-actions button.secondary {
-    border-color: #edb519;
-    color: #edb519;
+    border-color: #69d34e;
+    color: #69d34e;
     background: white;
     margin-right: 0;
     margin-top: 15px;
+  }
+  .about-us {
+    width: 100%;
+    height: auto;
+    padding-block: 70px;
+    padding-top: 50px;
+    position: relative;
+  }
+  .about-us .content {
+    padding-inline: 35px;
+    position: relative;
+  }
+  .about-us .content .text {
+    text-align: left;
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+  .about-us .content .text h1 {
+    color: #1F1F1F;
+    font-size: 34px;
+    font-weight: 600;
+    margin-bottom: 30px;
+  }
+  .whatweoffer {
+    width: 100%;
+    height: auto;
+    padding-block: 70px;
+    padding-top: 50px;
+    position: relative;
+  }
+  .whatweoffer .content {
+    padding-inline: 35px;
+    position: relative;
+  }
+  .whatweoffer .content .text {
+    text-align: left;
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+  .whatweoffer .content .text h1 {
+    color: #1F1F1F;
+    font-size: 34px;
+    font-weight: 600;
+    margin-bottom: 30px;
+  }
+  .systems {
+    width: 100%;
+    height: auto;
+    padding-block: 70px;
+    padding-top: 50px;
+    position: relative;
+  }
+  .systems .content {
+    padding-inline: 35px;
+    position: relative;
+  }
+  .systems .content .text {
+    text-align: left;
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+  .systems .content .text h1 {
+    color: #1F1F1F;
+    font-size: 34px;
+    font-weight: 600;
+    margin-bottom: 30px;
+  }
+  .pricing {
+    width: 100%;
+    height: auto;
+    padding-block: 70px;
+    padding-top: 50px;
+    position: relative;
+  }
+  .pricing .content {
+    padding-inline: 35px;
+    position: relative;
+  }
+  .pricing .content .text {
+    text-align: left;
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+  .pricing .content .text h1 {
+    color: #1F1F1F;
+    font-size: 34px;
+    font-weight: 600;
+    margin-bottom: 30px;
+  }
+  .get-started {
+    width: 100%;
+    height: auto;
+    padding-block: 70px;
+    padding-top: 50px;
+    position: relative;
+  }
+  .get-started .content {
+    padding-inline: 35px;
+    position: relative;
+  }
+  .get-started .content .text {
+    text-align: left;
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+  .get-started .content .text h1 {
+    color: #1F1F1F;
+    font-size: 34px;
+    font-weight: 600;
+    margin-bottom: 30px;
   }
   .faq {
     width: 100%;
@@ -631,7 +647,7 @@
     border: 1px solid transparent;
     border-radius: 6px;
     outline: none;
-    background: #edb519;
+    background: #69d34e;
     color: white;
     font-weight: 500;
     font-size: 17px;
@@ -640,8 +656,8 @@
     height: 54px;
   }
   .cover .content .cover-actions button.secondary {
-    border-color: #edb519;
-    color: #edb519;
+    border-color: #69d34e;
+    color: #69d34e;
     background: white;
     margin-right: 0;
     margin-top: 15px;

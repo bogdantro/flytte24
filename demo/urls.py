@@ -20,7 +20,7 @@ sitemaps = {
 
 
 urlpatterns = [
-    path('bilmeglerne/admin/login/', admin.site.urls),
+    path('admin/', admin.site.urls),
 
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}),
 
@@ -28,6 +28,12 @@ urlpatterns = [
     path('selg-bilen/', sell, name='sell'),
     path('selg-bilen/book-time/', book_time, name='book_time'),
     path('selg-bilen/book-time/avbestill-time/', un_book, name='un_book'),
+
+
+    path('create-checkout-session/', create_checkout_session, name='create_checkout_session'),
+    path('webhook/', stripe_webhook, name='stripe_webhook'),
+    path('success/', success, name='success'),
+    path('cancel/', cancel, name='cancel'),
 
 
     path('kontakt-oss/', contact, name='contact'),

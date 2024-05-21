@@ -31,15 +31,12 @@ function search(){
 }  
 
 
-
-
-
-/////////// MOBILE JAVASCRIPT
-// MENU
 function menu(){
   const sidebar = document.getElementById('sidebar');
   const navbar = document.getElementById('mobileNav');
   const hamburger = document.getElementById('hamburger');
+
+  const search = document.getElementById('mobNavSearchIcon');
 
   const dropdown = document.getElementById('sidebarServDrop');
 
@@ -49,12 +46,21 @@ function menu(){
     navbar.classList.add('menu')  
     hamburger.classList.add('click')  
     sidebar.classList.add('active')
-    body.style.overflowY = 'hidden';
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
     dropdown.classList.remove('active')
+
+    search.style.pointerEvents = 'none';
   } else{
     navbar.classList.remove('menu') 
     hamburger.classList.remove('click')  
     sidebar.classList.remove('active')
+
+    search.style.pointerEvents = 'visible';
+
+    document.body.style.overflow = "scroll";
+    document.documentElement.style.overflow = "scroll";
+
   }  
-};
+}
 

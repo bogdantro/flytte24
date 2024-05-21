@@ -1,6 +1,6 @@
 $black: #1F1F1F;
 $white: rgb(246,246,246);
-$primBtn: #edb519;
+$primBtn: #69d34e;
 $txt: #183b56;
 
 
@@ -9,7 +9,7 @@ $txt: #183b56;
     min-height: max-content;
     position: relative;
     padding-bottom: 5px;
-    background: linear-gradient(to bottom right, #fff4d995, #fff9e895, transparent);
+    background: linear-gradient(to bottom right, rgba(165, 231, 163, 0.185), transparent);
     // background: linear-gradient(to bottom right, #edb519, #fec21b);
 
     .content{
@@ -35,7 +35,7 @@ $txt: #183b56;
         border-radius: 50px;
         border-bottom-right-radius: 5px;
         border-top-left-radius: 5px;
-        margin-top: 35px;
+        margin-top: 45px;
     }
       .text{
         text-align: left;
@@ -81,7 +81,7 @@ $txt: #183b56;
 }
 
 
-.houses{
+.about-us{
   width: 100%;
   height: auto;
   padding-block: 50px;
@@ -104,81 +104,41 @@ $txt: #183b56;
         font-size: 17px;
       }
     }
-    .houses-cards{
-      margin-top: 20px;
-      display: flex;
-      overflow-x: scroll;
-      padding-bottom: 30px;
-      position: relative;
-      &::-webkit-scrollbar{
-          height: 3px;
-          display: none;
+    button{
+      margin-top: 28px;
+      background: $primBtn;
+      width: 100%;
+      max-width: 420px;
+      height: 44px;
+      border-radius: 25px;
+      outline: none;
+      border: none;
+      color: white;
+    }
+  }
+}
+
+.whatweoffer{
+  width: 100%;
+  height: auto;
+  padding-block: 50px;
+  padding-top: 40px;
+  position: relative;
+  .content{
+    padding-inline: 20px;
+    position: relative;
+    .text{
+      text-align: left;
+      margin-top: 28px;
+      h1{
+        color: $black;
+        font-size: 27px;
+        font-weight: 600;
+        margin-bottom: 15px;
       }
-      &::-webkit-scrollbar-thumb{
-          border-radius: 10px;
-          background-color: rgba(130, 130, 130, 0.2);
-      }
-      .house{
-        min-width: 205px;
-        max-width: 205px;
-        height: min-content;
-        margin: 0 25px;
-        padding: 0;
-        position: relative;
-        transition: .2s;
-        cursor: pointer;
-        .house-image{
-          width: 100%;
-          height: auto;
-          object-fit: cover;
-          filter: brightness(90%);
-          border-radius: 4px
-        }
-        .reviews{
-          display: flex;
-          margin-block: 3px;
-          p{
-            margin-bottom: 0;
-            color: #FFBC55;
-            font-size: 12px;
-            margin-top: 1px;
-            i{
-              transform: translateY(-0.9px);
-              margin-right: 3px;
-              font-size: 11px;
-            }
-          }
-          span{
-            color: rgb(170, 170, 170);
-            font-size: 11px;
-            transform: translateX(4px) translateY(2px);
-          }
-        }
-        .name{
-          font-size: 17px;
-          color: $txt;
-          margin-bottom: 1px;
-          font-weight: 500;
-          margin-top: 10px;
-        }
-        .adress{
-          font-size: 12px;
-          color: $txt;
-          opacity: 0.85;
-          font-weight: 500;
-        }
-        &:first-child{
-          margin-left: 0;
-        }
-        &:hover{
-          .name{
-            text-decoration: underline;
-          }
-          .house-image{
-            transition: .2s;
-            filter: brightness(85%);
-          }
-        }
+      p{
+        color: $black;
+        font-size: 17px;
       }
     }
     button{
@@ -195,12 +155,11 @@ $txt: #183b56;
   }
 }
 
-
-.about{
+.systems{
   width: 100%;
   height: auto;
   padding-block: 50px;
-  padding-top: 20px;
+  padding-top: 40px;
   position: relative;
   .content{
     padding-inline: 20px;
@@ -219,81 +178,25 @@ $txt: #183b56;
         font-size: 17px;
       }
     }
-    img{
-      width: 100%;
-      height: auto;
-      border-radius: 10px;
-    }
-  }
-}
-
-
-.rent-house{
-  width: 100%;
-  height: auto;
-  padding-block: 50px;
-  padding-top: 20px;
-  position: relative;
-  background: $primBtn;
-  .content{
-    padding-inline: 20px;
-    position: relative;
-    .text{
-      text-align: center;
+    button{
       margin-top: 28px;
-      h1{
-        color: white;
-        font-size: 27px;
-        font-weight: 600;
-        margin-bottom: 15px;
-      }
-      p{
-        color: $black;
-        font-size: 17px;
-      }
-    }
-    form{
+      background: $primBtn;
       width: 100%;
-      height: auto;
-      padding: 22px;
-      background: white;
-      border-radius: 8px;
-      margin-top: 20px;
-      label{
-        color: $black;
-        font-weight: 500;
-        font-size: 17px;
-      }
-      input{
-        width: 100%;
-        height: 45px;
-        color: $black;
-        font-size: 17px;
-        padding: 4px 10px;
-        border: 1px solid lightgray;
-        border-radius: 4px;
-        outline: none;
-      }
-      button{
-        background: $primBtn;
-        width: 100%;
-        height: 45px;
-        color: white;
-        border: 1px solid $primBtn;
-        outline: none;
-        border-radius: 7px;
-        margin-top: 20px;
-      }
+      max-width: 420px;
+      height: 44px;
+      border-radius: 25px;
+      outline: none;
+      border: none;
+      color: white;
     }
   }
 }
 
-
-.proccess{
+.pricing{
   width: 100%;
   height: auto;
   padding-block: 50px;
-  padding-top: 20px;
+  padding-top: 40px;
   position: relative;
   .content{
     padding-inline: 20px;
@@ -312,46 +215,25 @@ $txt: #183b56;
         font-size: 17px;
       }
     }
-    .cards{
-      position: relative;
+    button{
+      margin-top: 28px;
+      background: $primBtn;
       width: 100%;
-      margin-top: 20px;
-      .card{
-          padding: 14px 12px;
-          margin-top: 0;
-          margin-bottom: 35px !important;
-          background: #f8bd192e;
-          border-radius: 7px; 
-          text-align: center;
-          width: 100%;
-          max-width: 410px;
-          h1{
-              color: $txt;
-              font-size: 22px;
-          }   
-          .number{
-              font-size: 17px;
-              color: $txt;
-              opacity: 0.8;
-              background: #f8bd196e;
-              max-width: max-content;
-              height: max-content;
-              padding: 6px 14px;
-              border-radius: 100%;
-              margin-left: auto;
-              margin-bottom: 15px;
-          }
-      }
-  }
+      max-width: 420px;
+      height: 44px;
+      border-radius: 25px;
+      outline: none;
+      border: none;
+      color: white;
+    }
   }
 }
 
-
-.location{
+.get-started{
   width: 100%;
   height: auto;
   padding-block: 50px;
-  padding-top: 20px;
+  padding-top: 40px;
   position: relative;
   .content{
     padding-inline: 20px;
@@ -370,15 +252,19 @@ $txt: #183b56;
         font-size: 17px;
       }
     }
-    .map{
+    button{
+      margin-top: 28px;
+      background: $primBtn;
       width: 100%;
-      height: 340px;
+      max-width: 420px;
+      height: 44px;
+      border-radius: 25px;
+      outline: none;
+      border: none;
+      color: white;
     }
   }
 }
-
-
-
 
 
 .faq{
@@ -482,12 +368,12 @@ $txt: #183b56;
 
       .text{
         text-align: left;
-        margin-top: 55px;
+        margin-top: 28px;
         position: relative;
         z-index: 10;
         .cover-h1{
           color: $black;
-          font-size: 42px;
+          font-size: 45px;
           font-weight: 600;
           margin-bottom: 10px;
         }
@@ -499,6 +385,21 @@ $txt: #183b56;
           width: 400px;
         }
       }
+      .cover-image{
+        position: relative;
+        left: -20px;
+        transform: translateX(0);
+        top: 65px;
+        width: auto;
+        max-width: 98%;
+        height: auto;
+        max-height: 92%;
+        filter: brightness(89%);
+        border-radius: 50px;
+        border-bottom-right-radius: 5px;
+        border-top-left-radius: 5px;
+        margin-top: 0;
+    }
       .cover-actions{
         margin-top: 24px;
         width: 100%;
@@ -527,6 +428,125 @@ $txt: #183b56;
   }
 
 
+  .about-us{
+    width: 100%;
+    height: auto;
+    padding-block: 70px;
+    padding-top: 50px;
+    position: relative;
+    .content{
+      padding-inline: 35px;
+      position: relative;
+      .text{
+        text-align: left;
+        margin-top: 0;
+        margin-bottom: 20px;
+        h1{
+          color: $black;
+          font-size: 34px;
+          font-weight: 600;
+          margin-bottom: 30px;
+        }
+      }
+
+    }
+  }
+
+  .whatweoffer{
+    width: 100%;
+    height: auto;
+    padding-block: 70px;
+    padding-top: 50px;
+    position: relative;
+    .content{
+      padding-inline: 35px;
+      position: relative;
+      .text{
+        text-align: left;
+        margin-top: 0;
+        margin-bottom: 20px;
+        h1{
+          color: $black;
+          font-size: 34px;
+          font-weight: 600;
+          margin-bottom: 30px;
+        }
+      }
+
+    }
+  }
+
+  .systems{
+    width: 100%;
+    height: auto;
+    padding-block: 70px;
+    padding-top: 50px;
+    position: relative;
+    .content{
+      padding-inline: 35px;
+      position: relative;
+      .text{
+        text-align: left;
+        margin-top: 0;
+        margin-bottom: 20px;
+        h1{
+          color: $black;
+          font-size: 34px;
+          font-weight: 600;
+          margin-bottom: 30px;
+        }
+      }
+
+    }
+  }
+
+  .pricing{
+    width: 100%;
+    height: auto;
+    padding-block: 70px;
+    padding-top: 50px;
+    position: relative;
+    .content{
+      padding-inline: 35px;
+      position: relative;
+      .text{
+        text-align: left;
+        margin-top: 0;
+        margin-bottom: 20px;
+        h1{
+          color: $black;
+          font-size: 34px;
+          font-weight: 600;
+          margin-bottom: 30px;
+        }
+      }
+
+    }
+  }
+
+  .get-started{
+    width: 100%;
+    height: auto;
+    padding-block: 70px;
+    padding-top: 50px;
+    position: relative;
+    .content{
+      padding-inline: 35px;
+      position: relative;
+      .text{
+        text-align: left;
+        margin-top: 0;
+        margin-bottom: 20px;
+        h1{
+          color: $black;
+          font-size: 34px;
+          font-weight: 600;
+          margin-bottom: 30px;
+        }
+      }
+
+    }
+  }
 
 
 

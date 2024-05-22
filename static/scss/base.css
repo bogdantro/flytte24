@@ -720,34 +720,34 @@
     border: none;
     color: white;
   }
-  .about-us .whatweoffer {
+  .whatweoffer {
     width: 100%;
     height: auto;
     padding-block: 50px;
     padding-top: 40px;
     position: relative;
   }
-  .about-us .whatweoffer .content {
+  .whatweoffer .content {
     padding-inline: 20px;
     position: relative;
     max-width: 1290px;
     margin-inline: auto;
   }
-  .about-us .whatweoffer .content .text {
+  .whatweoffer .content .text {
     text-align: left;
     margin-top: 28px;
   }
-  .about-us .whatweoffer .content .text h1 {
+  .whatweoffer .content .text h1 {
     color: #1F1F1F;
     font-size: 34px;
     font-weight: 600;
     margin-bottom: 15px;
   }
-  .about-us .whatweoffer .content .text p {
+  .whatweoffer .content .text p {
     color: #1F1F1F;
     font-size: 20px;
   }
-  .about-us .whatweoffer .content button {
+  .whatweoffer .content button {
     margin-top: 28px;
     background: #69d34e;
     width: 100%;
@@ -758,34 +758,34 @@
     border: none;
     color: white;
   }
-  .about-us .systems {
+  .systems {
     width: 100%;
     height: auto;
     padding-block: 50px;
     padding-top: 40px;
     position: relative;
   }
-  .about-us .systems .content {
+  .systems .content {
     padding-inline: 20px;
     position: relative;
     max-width: 1290px;
     margin-inline: auto;
   }
-  .about-us .systems .content .text {
+  .systems .content .text {
     text-align: left;
     margin-top: 28px;
   }
-  .about-us .systems .content .text h1 {
+  .systems .content .text h1 {
     color: #1F1F1F;
     font-size: 34px;
     font-weight: 600;
     margin-bottom: 15px;
   }
-  .about-us .systems .content .text p {
+  .systems .content .text p {
     color: #1F1F1F;
     font-size: 20px;
   }
-  .about-us .systems .content button {
+  .systems .content button {
     margin-top: 28px;
     background: #69d34e;
     width: 100%;
@@ -796,32 +796,32 @@
     border: none;
     color: white;
   }
-  .about-us .pricing {
+  .pricing {
     width: 100%;
     height: auto;
     padding-block: 50px;
     padding-top: 40px;
     position: relative;
   }
-  .about-us .pricing .content {
+  .pricing .content {
     padding-inline: 20px;
     position: relative;
   }
-  .about-us .pricing .content .text {
+  .pricing .content .text {
     text-align: left;
     margin-top: 28px;
   }
-  .about-us .pricing .content .text h1 {
+  .pricing .content .text h1 {
     color: #1F1F1F;
     font-size: 34px;
     font-weight: 600;
     margin-bottom: 15px;
   }
-  .about-us .pricing .content .text p {
+  .pricing .content .text p {
     color: #1F1F1F;
     font-size: 20px;
   }
-  .about-us .pricing .content button {
+  .pricing .content button {
     margin-top: 28px;
     background: #69d34e;
     width: 100%;
@@ -832,34 +832,34 @@
     border: none;
     color: white;
   }
-  .about-us .get-started {
+  .get-started {
     width: 100%;
     height: auto;
     padding-block: 50px;
     padding-top: 40px;
     position: relative;
   }
-  .about-us .get-started .content {
+  .get-started .content {
     padding-inline: 20px;
     position: relative;
     max-width: 1290px;
     margin-inline: auto;
   }
-  .about-us .get-started .content .text {
+  .get-started .content .text {
     text-align: left;
     margin-top: 28px;
   }
-  .about-us .get-started .content .text h1 {
+  .get-started .content .text h1 {
     color: #1F1F1F;
     font-size: 34px;
     font-weight: 600;
     margin-bottom: 15px;
   }
-  .about-us .get-started .content .text p {
+  .get-started .content .text p {
     color: #1F1F1F;
     font-size: 20px;
   }
-  .about-us .get-started .content button {
+  .get-started .content button {
     margin-top: 28px;
     background: #69d34e;
     width: 100%;
@@ -870,29 +870,29 @@
     border: none;
     color: white;
   }
-  .about-us .faq {
+  .faq {
     width: 100%;
     height: auto;
     padding-block: 90px;
     padding-top: 70px;
     position: relative;
   }
-  .about-us .faq .content {
+  .faq .content {
     padding-inline: 20px;
     position: relative;
   }
-  .about-us .faq .content .text {
+  .faq .content .text {
     text-align: center;
     margin-top: 0;
     margin-bottom: 20px;
   }
-  .about-us .faq .content .text h1 {
+  .faq .content .text h1 {
     color: #1F1F1F;
     font-size: 34px;
     font-weight: 600;
     margin-bottom: 30px;
   }
-  .about-us .faq .content .ask {
+  .faq .content .ask {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -905,26 +905,26 @@
     cursor: pointer;
     padding-block: 30px;
   }
-  .about-us .faq .content .ask p {
+  .faq .content .ask p {
     color: #1F1F1F;
     font-weight: 500;
     margin-bottom: 0;
     font-size: 22px;
     padding-right: 65px;
   }
-  .about-us .faq .content .ask svg {
+  .faq .content .ask svg {
     color: #1F1F1F;
     font-size: 41px;
     padding: 8px;
     margin: -8px;
   }
-  .about-us .faq .content .ask .plus {
+  .faq .content .ask .plus {
     display: block;
   }
-  .about-us .faq .content .ask .minus {
+  .faq .content .ask .minus {
     display: none;
   }
-  .about-us .faq .content .answer {
+  .faq .content .answer {
     padding: 8px;
     transform: translateY(-15px);
     border-radius: 2px;
@@ -935,12 +935,12 @@
     width: 640px;
     margin-inline: auto;
   }
-  .about-us .faq .content .answer.active {
+  .faq .content .answer.active {
     pointer-events: visible;
     opacity: 1;
     height: 140px;
   }
-  .about-us .faq .content .answer p {
+  .faq .content .answer p {
     font-size: 16px;
     font-weight: 500;
     color: #1F1F1F;

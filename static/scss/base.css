@@ -608,7 +608,7 @@
     margin-bottom: 20px;
     position: relative;
     padding-bottom: 5px;
-    background: linear-gradient(to bottom right, rgba(165, 231, 163, 0.185), transparent);
+    background: linear-gradient(to bottom right, rgba(135, 255, 131, 0.12), transparent);
   }
   .cover .content {
     padding-inline: 35px;

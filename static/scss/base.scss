@@ -870,118 +870,119 @@ $txt: #183b56;
     }
   }
   
-  .get-started{
-    width: 100%;
-    height: auto;
-    padding-block: 50px;
-    padding-top: 40px;
+}
+.get-started{
+  width: 100%;
+  height: auto;
+  padding-block: 50px;
+  padding-top: 40px;
+  position: relative;
+  .content{
+    padding-inline: 35px;
     position: relative;
-    .content{
-      padding-inline: 35px;
+    max-width: 1290px;
+    margin-inline: auto;
+    .text{
+      text-align: left;
+      margin-top: 28px;
+      h1{
+        color: $black;
+        font-size: 34px;
+        font-weight: 600;
+        margin-bottom: 15px;
+      }
+      p{
+        color: $black;
+        font-size: 20px;
+      }
+    }
+    button{
+      margin-top: 28px;
+      background: $primBtn;
+      width: 100%;
+      max-width: 420px;
+      height: 44px;
+      border-radius: 25px;
+      outline: none;
+      border: none;
+      color: white;
+    }
+  }
+}
+
+
+.faq{
+  width: 100%;
+  height: auto;
+  padding-block: 90px;
+  padding-top: 70px;
+  position: relative;
+  .content{
+    padding-inline: 35px;
+    position: relative;
+    .text{
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 20px;
+      h1{
+        color: $black;
+        font-size: 34px;
+        font-weight: 600;
+        margin-bottom: 30px;
+      }
+    }
+    .ask{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid lightgray;
+      height: max-content;
       position: relative;
-      max-width: 1290px;
+      width: 640px;
       margin-inline: auto;
-      .text{
-        text-align: left;
-        margin-top: 28px;
-        h1{
-          color: $black;
-          font-size: 34px;
-          font-weight: 600;
-          margin-bottom: 15px;
-        }
-        p{
-          color: $black;
-          font-size: 20px;
-        }
+      cursor: pointer;
+      padding-block: 30px;
+      p{
+        color: $black;
+        font-weight: 500;
+        margin-bottom: 0;
+        font-size: 22px;
+        padding-right: 65px;
       }
-      button{
-        margin-top: 28px;
-        background: $primBtn;
-        width: 100%;
-        max-width: 420px;
-        height: 44px;
-        border-radius: 25px;
-        outline: none;
-        border: none;
-        color: white;
-      }
-    }
-  }
-
-
-  .faq{
-    width: 100%;
-    height: auto;
-    padding-block: 90px;
-    padding-top: 70px;
-    position: relative;
-    .content{
-      padding-inline: 35px;
-      position: relative;
-      .text{
-        text-align: center;
-        margin-top: 0;
-        margin-bottom: 20px;
-        h1{
-          color: $black;
-          font-size: 34px;
-          font-weight: 600;
-          margin-bottom: 30px;
-        }
-      }
-      .ask{
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        border-bottom: 1px solid lightgray;
-        height: max-content;
-        position: relative;
-        width: 640px;
-        margin-inline: auto;
-        cursor: pointer;
-        padding-block: 30px;
-        p{
-          color: $black;
-          font-weight: 500;
-          margin-bottom: 0;
-          font-size: 22px;
-          padding-right: 65px;
-        }
-        svg{
-          color: $black;
-          font-size: 41px;
-          padding: 8px;
-          margin: -8px;
-        }
-        .plus{
-          display: block;
-        }
-        .minus{
-          display: none;
-        }
-      }
-      .answer{
+      svg{
+        color: $black;
+        font-size: 41px;
         padding: 8px;
-        transform: translateY(-15px);
-        border-radius: 2px;
-        height: 0;
-        transition: .2s;
-        pointer-events: none;
-        opacity: 0;
-        width: 640px;
-        margin-inline: auto;
-        &.active{
-          pointer-events: visible;
-          opacity: 1;
-          height: 140px;
-        }
-        p{
-          font-size: 16px;
-          font-weight: 500;
-          color: $black;
-        }
+        margin: -8px;
+      }
+      .plus{
+        display: block;
+      }
+      .minus{
+        display: none;
+      }
+    }
+    .answer{
+      padding: 8px;
+      transform: translateY(-15px);
+      border-radius: 2px;
+      height: 0;
+      transition: .2s;
+      pointer-events: none;
+      opacity: 0;
+      width: 640px;
+      margin-inline: auto;
+      &.active{
+        pointer-events: visible;
+        opacity: 1;
+        height: 140px;
+      }
+      p{
+        font-size: 16px;
+        font-weight: 500;
+        color: $black;
       }
     }
   }
+}
 }

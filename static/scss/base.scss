@@ -715,25 +715,22 @@ $txt: #183b56;
     .content{
       padding-inline: 45px;
       position: relative;
+      max-width: 1290px;
+      margin-inline: auto;
       .text{
         text-align: left;
         margin-top: 28px;
-        max-width: 1290px;
-        margin-inline: auto;
-        .text{
-          text-align: left;
-          margin-top: 28px;
-          h1{
-            color: $black;
-            font-size: 34px;
-            font-weight: 600;
-            margin-bottom: 15px;
-          }
-          p{
-            color: $black;
-            font-size: 20px;
-          }
+        h1{
+          color: $black;
+          font-size: 34px;
+          font-weight: 600;
+          margin-bottom: 15px;
         }
+        p{
+          color: $black;
+          font-size: 20px;
+        }
+      }
       button{
         margin-top: 28px;
         background: $primBtn;
@@ -837,25 +834,22 @@ $txt: #183b56;
     .content{
       padding-inline: 35px;
       position: relative;
+      max-width: 1290px;
+      margin-inline: auto;
       .text{
         text-align: left;
         margin-top: 28px;
-        max-width: 1290px;
-        margin-inline: auto;
-        .text{
-          text-align: left;
-          margin-top: 28px;
-          h1{
-            color: $black;
-            font-size: 34px;
-            font-weight: 600;
-            margin-bottom: 15px;
-          }
-          p{
-            color: $black;
-            font-size: 20px;
-          }
+        h1{
+          color: $black;
+          font-size: 34px;
+          font-weight: 600;
+          margin-bottom: 15px;
         }
+        p{
+          color: $black;
+          font-size: 20px;
+        }
+      }
       button{
         margin-top: 28px;
         background: $primBtn;
@@ -867,7 +861,6 @@ $txt: #183b56;
         border: none;
         color: white;
       }
-    }
   }
   
 }

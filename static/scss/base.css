@@ -806,28 +806,24 @@
   .pricing .content {
     padding-inline: 35px;
     position: relative;
+    max-width: 1290px;
+    margin-inline: auto;
   }
   .pricing .content .text {
     text-align: left;
     margin-top: 28px;
-    max-width: 1290px;
-    margin-inline: auto;
   }
-  .pricing .content .text .text {
-    text-align: left;
-    margin-top: 28px;
-  }
-  .pricing .content .text .text h1 {
+  .pricing .content .text h1 {
     color: #1F1F1F;
     font-size: 34px;
     font-weight: 600;
     margin-bottom: 15px;
   }
-  .pricing .content .text .text p {
+  .pricing .content .text p {
     color: #1F1F1F;
     font-size: 20px;
   }
-  .pricing .content .text button {
+  .pricing .content button {
     margin-top: 28px;
     background: #69d34e;
     width: 100%;

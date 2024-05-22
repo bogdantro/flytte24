@@ -678,29 +678,221 @@
     margin-right: 0;
     margin-top: 15px;
   }
-  .faq {
+  .about-us {
+    width: 100%;
+    height: auto;
+    padding-block: 50px;
+    padding-top: 40px;
+    position: relative;
+  }
+  .about-us .content {
+    padding-inline: 20px;
+    position: relative;
+  }
+  .about-us .content .text {
+    text-align: left;
+    margin-top: 28px;
+    max-width: 1290px;
+    margin-inline: auto;
+  }
+  .about-us .content .text .text {
+    text-align: left;
+    margin-top: 28px;
+  }
+  .about-us .content .text .text h1 {
+    color: #1F1F1F;
+    font-size: 34px;
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+  .about-us .content .text .text p {
+    color: #1F1F1F;
+    font-size: 20px;
+  }
+  .about-us .content .text button {
+    margin-top: 28px;
+    background: #69d34e;
+    width: 100%;
+    max-width: 420px;
+    height: 44px;
+    border-radius: 25px;
+    outline: none;
+    border: none;
+    color: white;
+  }
+  .about-us .whatweoffer {
+    width: 100%;
+    height: auto;
+    padding-block: 50px;
+    padding-top: 40px;
+    position: relative;
+  }
+  .about-us .whatweoffer .content {
+    padding-inline: 20px;
+    position: relative;
+    max-width: 1290px;
+    margin-inline: auto;
+  }
+  .about-us .whatweoffer .content .text {
+    text-align: left;
+    margin-top: 28px;
+  }
+  .about-us .whatweoffer .content .text h1 {
+    color: #1F1F1F;
+    font-size: 34px;
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+  .about-us .whatweoffer .content .text p {
+    color: #1F1F1F;
+    font-size: 20px;
+  }
+  .about-us .whatweoffer .content button {
+    margin-top: 28px;
+    background: #69d34e;
+    width: 100%;
+    max-width: 420px;
+    height: 44px;
+    border-radius: 25px;
+    outline: none;
+    border: none;
+    color: white;
+  }
+  .about-us .systems {
+    width: 100%;
+    height: auto;
+    padding-block: 50px;
+    padding-top: 40px;
+    position: relative;
+  }
+  .about-us .systems .content {
+    padding-inline: 20px;
+    position: relative;
+    max-width: 1290px;
+    margin-inline: auto;
+  }
+  .about-us .systems .content .text {
+    text-align: left;
+    margin-top: 28px;
+  }
+  .about-us .systems .content .text h1 {
+    color: #1F1F1F;
+    font-size: 34px;
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+  .about-us .systems .content .text p {
+    color: #1F1F1F;
+    font-size: 20px;
+  }
+  .about-us .systems .content button {
+    margin-top: 28px;
+    background: #69d34e;
+    width: 100%;
+    max-width: 420px;
+    height: 44px;
+    border-radius: 25px;
+    outline: none;
+    border: none;
+    color: white;
+  }
+  .about-us .pricing {
+    width: 100%;
+    height: auto;
+    padding-block: 50px;
+    padding-top: 40px;
+    position: relative;
+  }
+  .about-us .pricing .content {
+    padding-inline: 20px;
+    position: relative;
+  }
+  .about-us .pricing .content .text {
+    text-align: left;
+    margin-top: 28px;
+  }
+  .about-us .pricing .content .text h1 {
+    color: #1F1F1F;
+    font-size: 34px;
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+  .about-us .pricing .content .text p {
+    color: #1F1F1F;
+    font-size: 20px;
+  }
+  .about-us .pricing .content button {
+    margin-top: 28px;
+    background: #69d34e;
+    width: 100%;
+    max-width: 420px;
+    height: 44px;
+    border-radius: 25px;
+    outline: none;
+    border: none;
+    color: white;
+  }
+  .about-us .get-started {
+    width: 100%;
+    height: auto;
+    padding-block: 50px;
+    padding-top: 40px;
+    position: relative;
+  }
+  .about-us .get-started .content {
+    padding-inline: 20px;
+    position: relative;
+    max-width: 1290px;
+    margin-inline: auto;
+  }
+  .about-us .get-started .content .text {
+    text-align: left;
+    margin-top: 28px;
+  }
+  .about-us .get-started .content .text h1 {
+    color: #1F1F1F;
+    font-size: 34px;
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+  .about-us .get-started .content .text p {
+    color: #1F1F1F;
+    font-size: 20px;
+  }
+  .about-us .get-started .content button {
+    margin-top: 28px;
+    background: #69d34e;
+    width: 100%;
+    max-width: 420px;
+    height: 44px;
+    border-radius: 25px;
+    outline: none;
+    border: none;
+    color: white;
+  }
+  .about-us .faq {
     width: 100%;
     height: auto;
     padding-block: 90px;
     padding-top: 70px;
     position: relative;
   }
-  .faq .content {
+  .about-us .faq .content {
     padding-inline: 20px;
     position: relative;
   }
-  .faq .content .text {
+  .about-us .faq .content .text {
     text-align: center;
     margin-top: 0;
     margin-bottom: 20px;
   }
-  .faq .content .text h1 {
+  .about-us .faq .content .text h1 {
     color: #1F1F1F;
     font-size: 34px;
     font-weight: 600;
     margin-bottom: 30px;
   }
-  .faq .content .ask {
+  .about-us .faq .content .ask {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -713,26 +905,26 @@
     cursor: pointer;
     padding-block: 30px;
   }
-  .faq .content .ask p {
+  .about-us .faq .content .ask p {
     color: #1F1F1F;
     font-weight: 500;
     margin-bottom: 0;
     font-size: 22px;
     padding-right: 65px;
   }
-  .faq .content .ask svg {
+  .about-us .faq .content .ask svg {
     color: #1F1F1F;
     font-size: 41px;
     padding: 8px;
     margin: -8px;
   }
-  .faq .content .ask .plus {
+  .about-us .faq .content .ask .plus {
     display: block;
   }
-  .faq .content .ask .minus {
+  .about-us .faq .content .ask .minus {
     display: none;
   }
-  .faq .content .answer {
+  .about-us .faq .content .answer {
     padding: 8px;
     transform: translateY(-15px);
     border-radius: 2px;
@@ -743,12 +935,12 @@
     width: 640px;
     margin-inline: auto;
   }
-  .faq .content .answer.active {
+  .about-us .faq .content .answer.active {
     pointer-events: visible;
     opacity: 1;
     height: 140px;
   }
-  .faq .content .answer p {
+  .about-us .faq .content .answer p {
     font-size: 16px;
     font-weight: 500;
     color: #1F1F1F;

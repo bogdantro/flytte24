@@ -706,6 +706,204 @@ $txt: #183b56;
     }
   }
 
+
+  .about-us{
+    width: 100%;
+    height: auto;
+    padding-block: 50px;
+    padding-top: 40px;
+    position: relative;
+    .content{
+      padding-inline: 20px;
+      position: relative;
+      .text{
+        text-align: left;
+        margin-top: 28px;
+        max-width: 1290px;
+        margin-inline: auto;
+        .text{
+          text-align: left;
+          margin-top: 28px;
+          h1{
+            color: $black;
+            font-size: 34px;
+            font-weight: 600;
+            margin-bottom: 15px;
+          }
+          p{
+            color: $black;
+            font-size: 20px;
+          }
+        }
+      button{
+        margin-top: 28px;
+        background: $primBtn;
+        width: 100%;
+        max-width: 420px;
+        height: 44px;
+        border-radius: 25px;
+        outline: none;
+        border: none;
+        color: white;
+      }
+    }
+  }
+  
+  .whatweoffer{
+    width: 100%;
+    height: auto;
+    padding-block: 50px;
+    padding-top: 40px;
+    position: relative;
+    .content{
+      padding-inline: 20px;
+      position: relative;
+      max-width: 1290px;
+      margin-inline: auto;
+      .text{
+        text-align: left;
+        margin-top: 28px;
+        h1{
+          color: $black;
+          font-size: 34px;
+          font-weight: 600;
+          margin-bottom: 15px;
+        }
+        p{
+          color: $black;
+          font-size: 20px;
+        }
+      }
+      button{
+        margin-top: 28px;
+        background: $primBtn;
+        width: 100%;
+        max-width: 420px;
+        height: 44px;
+        border-radius: 25px;
+        outline: none;
+        border: none;
+        color: white;
+      }
+    }
+  }
+  
+  .systems{
+    width: 100%;
+    height: auto;
+    padding-block: 50px;
+    padding-top: 40px;
+    position: relative;
+    .content{
+      padding-inline: 20px;
+      position: relative;
+      max-width: 1290px;
+      margin-inline: auto;
+      .text{
+        text-align: left;
+        margin-top: 28px;
+        h1{
+          color: $black;
+          font-size: 34px;
+          font-weight: 600;
+          margin-bottom: 15px;
+        }
+        p{
+          color: $black;
+          font-size: 20px;
+        }
+      }
+      button{
+        margin-top: 28px;
+        background: $primBtn;
+        width: 100%;
+        max-width: 420px;
+        height: 44px;
+        border-radius: 25px;
+        outline: none;
+        border: none;
+        color: white;
+      }
+    }
+  }
+  
+  .pricing{
+    width: 100%;
+    height: auto;
+    padding-block: 50px;
+    padding-top: 40px;
+    position: relative;
+    .content{
+      padding-inline: 20px;
+      position: relative;
+      .text{
+        text-align: left;
+        margin-top: 28px;
+        h1{
+          color: $black;
+          font-size: 34px;
+          font-weight: 600;
+          margin-bottom: 15px;
+        }
+        p{
+          color: $black;
+          font-size: 20px;
+        }
+      }
+      button{
+        margin-top: 28px;
+        background: $primBtn;
+        width: 100%;
+        max-width: 420px;
+        height: 44px;
+        border-radius: 25px;
+        outline: none;
+        border: none;
+        color: white;
+      }
+    }
+  }
+  
+  .get-started{
+    width: 100%;
+    height: auto;
+    padding-block: 50px;
+    padding-top: 40px;
+    position: relative;
+    .content{
+      padding-inline: 20px;
+      position: relative;
+      max-width: 1290px;
+      margin-inline: auto;
+      .text{
+        text-align: left;
+        margin-top: 28px;
+        h1{
+          color: $black;
+          font-size: 34px;
+          font-weight: 600;
+          margin-bottom: 15px;
+        }
+        p{
+          color: $black;
+          font-size: 20px;
+        }
+      }
+      button{
+        margin-top: 28px;
+        background: $primBtn;
+        width: 100%;
+        max-width: 420px;
+        height: 44px;
+        border-radius: 25px;
+        outline: none;
+        border: none;
+        color: white;
+      }
+    }
+  }
+
+
   .faq{
     width: 100%;
     height: auto;
@@ -780,4 +978,5 @@ $txt: #183b56;
       }
     }
   }
+}
 }

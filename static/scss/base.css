@@ -686,30 +686,26 @@
     position: relative;
   }
   .about-us .content {
-    padding-inline: 45px;
+    padding-inline: 35px;
     position: relative;
+    max-width: 1290px;
+    margin-inline: auto;
   }
   .about-us .content .text {
     text-align: left;
     margin-top: 28px;
-    max-width: 1290px;
-    margin-inline: auto;
   }
-  .about-us .content .text .text {
-    text-align: left;
-    margin-top: 28px;
-  }
-  .about-us .content .text .text h1 {
+  .about-us .content .text h1 {
     color: #1F1F1F;
     font-size: 34px;
     font-weight: 600;
     margin-bottom: 15px;
   }
-  .about-us .content .text .text p {
+  .about-us .content .text p {
     color: #1F1F1F;
     font-size: 20px;
   }
-  .about-us .content .text button {
+  .about-us .content button {
     margin-top: 28px;
     background: #69d34e;
     width: 100%;

@@ -646,6 +646,7 @@ $txt: #183b56;
       display: flex;
       justify-content: space-between;
       margin-inline: auto;
+      max-width: 1290px;
       .text{
         text-align: left;
         margin-top: 28px;
@@ -663,6 +664,21 @@ $txt: #183b56;
           width: 440px;
         }
       }
+      .cover-image{
+        position: relative;
+        left: -20px;
+        transform: translateX(0);
+        top: 65px;
+        width: auto;
+        max-width: 100%;
+        height: auto;
+        max-height: 360px ;
+        filter: brightness(89%);
+        border-radius: 50px;
+        border-bottom-right-radius: 5px;
+        border-top-left-radius: 5px;
+        margin-top: 0;
+    }
       .cover-actions{
         margin-top: 24px;
         width: 100%;

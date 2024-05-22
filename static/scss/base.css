@@ -686,7 +686,7 @@
     position: relative;
   }
   .about-us .content {
-    padding-inline: 20px;
+    padding-inline: 45px;
     position: relative;
   }
   .about-us .content .text {
@@ -728,7 +728,7 @@
     position: relative;
   }
   .whatweoffer .content {
-    padding-inline: 20px;
+    padding-inline: 35px;
     position: relative;
     max-width: 1290px;
     margin-inline: auto;
@@ -766,7 +766,7 @@
     position: relative;
   }
   .systems .content {
-    padding-inline: 20px;
+    padding-inline: 35px;
     position: relative;
     max-width: 1290px;
     margin-inline: auto;
@@ -804,7 +804,7 @@
     position: relative;
   }
   .pricing .content {
-    padding-inline: 20px;
+    padding-inline: 35px;
     position: relative;
   }
   .pricing .content .text {
@@ -840,7 +840,7 @@
     position: relative;
   }
   .get-started .content {
-    padding-inline: 20px;
+    padding-inline: 35px;
     position: relative;
     max-width: 1290px;
     margin-inline: auto;
@@ -878,7 +878,7 @@
     position: relative;
   }
   .faq .content {
-    padding-inline: 20px;
+    padding-inline: 35px;
     position: relative;
   }
   .faq .content .text {

@@ -5,7 +5,7 @@
   padding-top: 15px;
   padding-bottom: 18px;
   position: relative;
-  background: linear-gradient(to bottom right, #64c94b, #73dd59);
+  background: #69d34e;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   padding-inline: 20px;
 }
@@ -90,6 +90,46 @@
 #footerMob .links a:first-child {
   margin-top: 0;
 }
+#footerMob .services p {
+  margin-bottom: 0;
+  color: white;
+}
+#footerMob .services .business-heading {
+  color: white;
+  font-size: 19px;
+  margin-bottom: 3px;
+  font-weight: 500;
+}
+#footerMob .services .info-heading {
+  color: white;
+  font-size: 19px;
+  margin-bottom: 3px;
+  font-weight: 500;
+}
+#footerMob .services button {
+  background: #69d34e;
+  border: 1px solid transparent;
+  width: auto;
+  height: auto;
+  padding: 7px 26px;
+  margin-top: 14px;
+  outline: none;
+  border-radius: 3px;
+  color: white;
+  font-size: 15px;
+}
+#footerMob .services a {
+  display: block;
+  color: white;
+  font-size: 17px;
+  width: -moz-max-content;
+  width: max-content;
+  padding-right: 5px;
+  margin-block: 8px;
+}
+#footerMob .services a:first-child {
+  margin-top: 0;
+}
 #footerMob .become-member {
   background: rgba(255, 255, 255, 0.22);
   border-radius: 12px;
@@ -140,7 +180,7 @@
 @media only screen and (min-device-width: 1140px) {
   #footerMob {
     padding-inline: 35px;
-    background: linear-gradient(to bottom right, #64c94b, #73dd59);
+    background: #69d34e;
     padding-top: 25px;
   }
   #footerMob .content {
@@ -182,6 +222,9 @@
   }
   #footerMob .flex .links {
     transform: translateX(50px);
+  }
+  #footerMob .flex .services {
+    transform: translateX(95px);
   }
   #footerMob .flex .contact-info {
     transform: translateX(0);

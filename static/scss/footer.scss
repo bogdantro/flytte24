@@ -1,16 +1,16 @@
 $black: #1F1F1F;
 $white: rgb(246,246,246);
-$primBtn: #f0a432;
+$primBtn: #69d34e;
 $txt: #183b56;
 
 #footerMob{
     margin-top: 0;
     width: 100%;
     height: 100%;
-    padding-top: 25px;
+    padding-top: 15px;
     padding-bottom: 18px;
     position: relative;
-    background: rgb(253,253,253);
+    background: linear-gradient(to bottom right, #64c94b, #73dd59);
     border-top: 1px solid rgba(0,0,0,0.1);
     padding-inline: 20px;
     .hours{
@@ -37,14 +37,14 @@ $txt: #183b56;
     }
     .contact-info{
         .info-heading{
-            color: $black;
+            color: white;
             font-size: 19px;
             margin-bottom: 3px;
             font-weight: 500;
         }
         a{
             display: block;
-            color: $black;
+            color: white;
             font-size: 17px;
             width: max-content;
             padding-right: 5px;
@@ -57,16 +57,16 @@ $txt: #183b56;
     .links{
         p{
             margin-bottom: 0;
-            color: $black;
+            color: white;
         }
         .business-heading{
-            color: $black;
+            color: white;
             font-size: 19px;
             margin-bottom: 3px;
             font-weight: 500;
         }
         .info-heading{
-            color: $black;
+            color: white;
             font-size: 19px;
             margin-bottom: 3px;
             font-weight: 500;
@@ -85,7 +85,7 @@ $txt: #183b56;
         }
         a{
             display: block;
-            color: $black;
+            color: white;
             font-size: 17px;
             width: max-content;
             padding-right: 5px;
@@ -95,6 +95,31 @@ $txt: #183b56;
             }
         }
     }
+    .become-member{
+        background: rgba(255, 255, 255, 0.22);
+        border-radius: 12px;
+        padding: 12px;
+        width: 350px;
+        margin-block: 20px;
+        margin-top: 28px;
+        p{
+            color: white;
+            margin-bottom: 0;
+            font-size: 15px;
+        }
+        button{
+            background: white;
+            border-radius: 7px;
+            border: 1px solid rgba(211, 211, 211, 0.275);
+            color: $primBtn;
+            width: 100%;
+            height: 43px;
+            padding: 2px;
+            text-align: center;
+            outline: none;
+            margin-top: 18px;
+        }
+    }
     .bottom{
         display: flex;
         width: 100%;
@@ -102,12 +127,12 @@ $txt: #183b56;
         justify-content: space-between;
         opacity: 0.85;
         .copyright{
-            color: $black;
+            color: white;
             font-size: 13px;
         }
         .social-icons{
             i{
-                color: $black;
+                color: white;
                 font-size: 20px;
                 margin-inline: 2px;
                 padding: 8px;
@@ -124,73 +149,10 @@ $txt: #183b56;
 @media only screen and (min-device-width: 1140px) {
     #footerMob{
         padding-inline: 35px;
-        .hours{
-            background: rgb(242, 242, 242);
-            width: 380px;
-            padding: 13px 8px;
-            height: max-content;
-            .info-heading{
-                color: $black;
-                font-size: 19px;
-                margin-bottom: 3px;
-                font-weight: 500;
-            }
-            a{
-                display: block;
-                color: $black;
-                font-size: 17px;
-                width: max-content;
-                padding-right: 5px;
-                margin-block: 8px;
-                &:first-child{
-                    margin-top: 0;
-                }
-            }
-        }
-        .flex{
-            display: flex;
-            hr{
-                display: none !important;
-            }
-            .links{
-                transform: translateX(80px);
-            }
-            .contact-info{
-                transform: translateX(40px);
-            }
-        }
-        .bottom{
-            display: flex;
-            width: 100%;
-            align-items: center;
-            justify-content: space-between;
-            opacity: 0.85;
-            .copyright{
-                color: $black;
-                font-size: 14px;
-            }
-            .social-icons{
-                i{
-                    color: $black;
-                    font-size: 24px;
-                    margin-inline: 2px;
-                    padding: 8px;
-                    transition: .2s;
-                    cursor: pointer;
-                    &:hover{
-                        color: $primBtn;
-                    }
-                }
-            }
-        }
-    }
-}
-
-@media only screen and (min-device-width: 1290px) {
-    #footerMob{
-        padding-inline: 35px;
-        padding-top: 30px;
+        background: linear-gradient(to bottom right, #64c94b, #73dd59);
+        padding-top: 25px;
         .content{
+            position: relative;
             max-width: 1290px;
             margin-inline: auto;
         }
@@ -200,14 +162,14 @@ $txt: #183b56;
             padding: 13px 8px;
             height: max-content;
             .info-heading{
-                color: $black;
+                color: white;
                 font-size: 19px;
                 margin-bottom: 3px;
                 font-weight: 500;
             }
             a{
                 display: block;
-                color: $black;
+                color: white;
                 font-size: 17px;
                 width: max-content;
                 padding-right: 5px;
@@ -219,14 +181,41 @@ $txt: #183b56;
         }
         .flex{
             display: flex;
+            text-align: left;
             hr{
                 display: none !important;
             }
             .links{
-                transform: translateX(80px);
+                transform: translateX(50px);
             }
             .contact-info{
-                transform: translateX(40px);
+                transform: translateX(0);
+            }
+            .become-member{
+                position: absolute;
+                right: 0;
+                background: rgba(255, 255, 255, 0.22);
+                border-radius: 12px;
+                padding: 22px;
+                width: 420px;
+                margin: 0 !important;
+                p{
+                    color: white;
+                    margin-bottom: 0;
+                    font-size: 17px;
+                }
+                button{
+                    background: white;
+                    border-radius: 7px;
+                    border: 1px solid rgba(211, 211, 211, 0.275);
+                    color: $primBtn;
+                    width: 100%;
+                    height: 43px;
+                    padding: 2px;
+                    text-align: center;
+                    outline: none;
+                    margin-top: 18px;
+                }
             }
         }
         .bottom{
@@ -234,24 +223,29 @@ $txt: #183b56;
             width: 100%;
             align-items: center;
             justify-content: space-between;
-            opacity: 0.85;
+            opacity: 0.95;
+            max-width: 1290px;
+            margin-inline: auto;
             .copyright{
-                color: $black;
+                color: white;
                 font-size: 14px;
             }
             .social-icons{
                 i{
-                    color: $black;
+                    color: white;
                     font-size: 24px;
                     margin-inline: 2px;
                     padding: 8px;
                     transition: .2s;
                     cursor: pointer;
+                    border-radius: 12px;
                     &:hover{
                         color: $primBtn;
+                        background: white;
                     }
                 }
             }
         }
     }
 }
+

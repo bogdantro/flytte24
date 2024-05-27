@@ -2,10 +2,10 @@
   margin-top: 0;
   width: 100%;
   height: 100%;
-  padding-top: 25px;
+  padding-top: 15px;
   padding-bottom: 18px;
   position: relative;
-  background: rgb(253, 253, 253);
+  background: linear-gradient(to bottom right, #64c94b, #73dd59);
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   padding-inline: 20px;
 }
@@ -33,14 +33,14 @@
   margin-top: 0;
 }
 #footerMob .contact-info .info-heading {
-  color: #1F1F1F;
+  color: white;
   font-size: 19px;
   margin-bottom: 3px;
   font-weight: 500;
 }
 #footerMob .contact-info a {
   display: block;
-  color: #1F1F1F;
+  color: white;
   font-size: 17px;
   width: -moz-max-content;
   width: max-content;
@@ -52,22 +52,22 @@
 }
 #footerMob .links p {
   margin-bottom: 0;
-  color: #1F1F1F;
+  color: white;
 }
 #footerMob .links .business-heading {
-  color: #1F1F1F;
+  color: white;
   font-size: 19px;
   margin-bottom: 3px;
   font-weight: 500;
 }
 #footerMob .links .info-heading {
-  color: #1F1F1F;
+  color: white;
   font-size: 19px;
   margin-bottom: 3px;
   font-weight: 500;
 }
 #footerMob .links button {
-  background: #f0a432;
+  background: #69d34e;
   border: 1px solid transparent;
   width: auto;
   height: auto;
@@ -80,7 +80,7 @@
 }
 #footerMob .links a {
   display: block;
-  color: #1F1F1F;
+  color: white;
   font-size: 17px;
   width: -moz-max-content;
   width: max-content;
@@ -90,6 +90,31 @@
 #footerMob .links a:first-child {
   margin-top: 0;
 }
+#footerMob .become-member {
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 12px;
+  padding: 12px;
+  width: 350px;
+  margin-block: 20px;
+  margin-top: 28px;
+}
+#footerMob .become-member p {
+  color: white;
+  margin-bottom: 0;
+  font-size: 15px;
+}
+#footerMob .become-member button {
+  background: white;
+  border-radius: 7px;
+  border: 1px solid rgba(211, 211, 211, 0.275);
+  color: #69d34e;
+  width: 100%;
+  height: 43px;
+  padding: 2px;
+  text-align: center;
+  outline: none;
+  margin-top: 18px;
+}
 #footerMob .bottom {
   display: flex;
   width: 100%;
@@ -98,90 +123,28 @@
   opacity: 0.85;
 }
 #footerMob .bottom .copyright {
-  color: #1F1F1F;
+  color: white;
   font-size: 13px;
 }
 #footerMob .bottom .social-icons i {
-  color: #1F1F1F;
+  color: white;
   font-size: 20px;
   margin-inline: 2px;
   padding: 8px;
   transition: 0.2s;
 }
 #footerMob .bottom .social-icons i:hover {
-  color: #f0a432;
+  color: #69d34e;
 }
 
 @media only screen and (min-device-width: 1140px) {
   #footerMob {
     padding-inline: 35px;
-  }
-  #footerMob .hours {
-    background: rgb(242, 242, 242);
-    width: 380px;
-    padding: 13px 8px;
-    height: -moz-max-content;
-    height: max-content;
-  }
-  #footerMob .hours .info-heading {
-    color: #1F1F1F;
-    font-size: 19px;
-    margin-bottom: 3px;
-    font-weight: 500;
-  }
-  #footerMob .hours a {
-    display: block;
-    color: #1F1F1F;
-    font-size: 17px;
-    width: -moz-max-content;
-    width: max-content;
-    padding-right: 5px;
-    margin-block: 8px;
-  }
-  #footerMob .hours a:first-child {
-    margin-top: 0;
-  }
-  #footerMob .flex {
-    display: flex;
-  }
-  #footerMob .flex hr {
-    display: none !important;
-  }
-  #footerMob .flex .links {
-    transform: translateX(80px);
-  }
-  #footerMob .flex .contact-info {
-    transform: translateX(40px);
-  }
-  #footerMob .bottom {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: space-between;
-    opacity: 0.85;
-  }
-  #footerMob .bottom .copyright {
-    color: #1F1F1F;
-    font-size: 14px;
-  }
-  #footerMob .bottom .social-icons i {
-    color: #1F1F1F;
-    font-size: 24px;
-    margin-inline: 2px;
-    padding: 8px;
-    transition: 0.2s;
-    cursor: pointer;
-  }
-  #footerMob .bottom .social-icons i:hover {
-    color: #f0a432;
-  }
-}
-@media only screen and (min-device-width: 1290px) {
-  #footerMob {
-    padding-inline: 35px;
-    padding-top: 30px;
+    background: linear-gradient(to bottom right, #64c94b, #73dd59);
+    padding-top: 25px;
   }
   #footerMob .content {
+    position: relative;
     max-width: 1290px;
     margin-inline: auto;
   }
@@ -193,14 +156,14 @@
     height: max-content;
   }
   #footerMob .hours .info-heading {
-    color: #1F1F1F;
+    color: white;
     font-size: 19px;
     margin-bottom: 3px;
     font-weight: 500;
   }
   #footerMob .hours a {
     display: block;
-    color: #1F1F1F;
+    color: white;
     font-size: 17px;
     width: -moz-max-content;
     width: max-content;
@@ -212,36 +175,67 @@
   }
   #footerMob .flex {
     display: flex;
+    text-align: left;
   }
   #footerMob .flex hr {
     display: none !important;
   }
   #footerMob .flex .links {
-    transform: translateX(80px);
+    transform: translateX(50px);
   }
   #footerMob .flex .contact-info {
-    transform: translateX(40px);
+    transform: translateX(0);
+  }
+  #footerMob .flex .become-member {
+    position: absolute;
+    right: 0;
+    background: rgba(255, 255, 255, 0.22);
+    border-radius: 12px;
+    padding: 22px;
+    width: 420px;
+    margin: 0 !important;
+  }
+  #footerMob .flex .become-member p {
+    color: white;
+    margin-bottom: 0;
+    font-size: 17px;
+  }
+  #footerMob .flex .become-member button {
+    background: white;
+    border-radius: 7px;
+    border: 1px solid rgba(211, 211, 211, 0.275);
+    color: #69d34e;
+    width: 100%;
+    height: 43px;
+    padding: 2px;
+    text-align: center;
+    outline: none;
+    margin-top: 18px;
   }
   #footerMob .bottom {
     display: flex;
     width: 100%;
     align-items: center;
     justify-content: space-between;
-    opacity: 0.85;
+    opacity: 0.95;
+    max-width: 1290px;
+    margin-inline: auto;
   }
   #footerMob .bottom .copyright {
-    color: #1F1F1F;
+    color: white;
     font-size: 14px;
   }
   #footerMob .bottom .social-icons i {
-    color: #1F1F1F;
+    color: white;
     font-size: 24px;
     margin-inline: 2px;
     padding: 8px;
     transition: 0.2s;
     cursor: pointer;
+    border-radius: 12px;
   }
   #footerMob .bottom .social-icons i:hover {
-    color: #f0a432;
+    color: #69d34e;
+    background: white;
   }
 }/*# sourceMappingURL=footer.css.map */

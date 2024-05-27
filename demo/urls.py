@@ -11,7 +11,7 @@ from django.contrib.auth import views
 from apps.store.views import *
 from apps.core.sitemaps import *
 from django.contrib.sitemaps.views import sitemap
-
+from apps.userprofile.views import *
 from django.contrib import admin
 
 sitemaps = {
@@ -25,9 +25,14 @@ urlpatterns = [
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}),
 
     path('', home, name='home'),
-    path('selg-bilen/', sell, name='sell'),
-    path('selg-bilen/book-time/', book_time, name='book_time'),
-    path('selg-bilen/book-time/avbestill-time/', un_book, name='un_book'),
+
+
+    path('login/', views.LoginView.as_view(template_name='core/login.html'), name='login'),
+    path('make-an-account/', signup, name='signup'),
+    path('logout/', views.LogoutView.as_view(), name='logout'),
+
+    path('myaccount/', myaccount, name='myaccount'),
+
 
 
     path('create-checkout-session/', create_checkout_session, name='create_checkout_session'),
@@ -36,25 +41,6 @@ urlpatterns = [
     path('cancel/', cancel, name='cancel'),
 
 
-    path('kontakt-oss/', contact, name='contact'),
-    path('verdivurdering/', verdivurdering, name='verdivurdering'),
-    
-    path('success/', success, name='success'),
-
-    path('tjenester/', services, name='services'),
-    path('tjenester/verksted/', verksted, name='verksted'),
-    path('tjenester/transport/', transport, name='transport'),
-    path('tjenester/forsikring/', forsikring, name='forsikring'),
-    path('tjenester/finansiering/', finansiering, name='finansiering'),
-    path('tjenester/garanti/', garanti, name='garanti'),
-    path('tjenester/avtale/', avtale, name='avtale'),
-
-    path('om-oss/', about, name='about'),
-
-    path('personvernerklaering/', personerk, name='personerk'),
-    path('salgvilkaar/', salgvilkaar, name='salgvilkaar'),
-    
-    path('priser/', price, name='price'),
 
 
 

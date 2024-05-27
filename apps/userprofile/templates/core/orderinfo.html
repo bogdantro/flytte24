@@ -1,0 +1,47 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static '/scss/userprofile/orderinfo.css' %}" type="text/css">
+<script rel="stylesheet" src="{% static '/js/orderinfo.js' %}" type="text/javascript"></script>
+<link rel="stylesheet" href="{% static '/scss/pages/page.css' %}" type="text/css">
+
+<div class="page order-info">
+    <div class="back-button" onclick="window.location.href='/min-bruker'">
+        <span></span><a class="modern-link-black">Tilbake</a>
+    </div>
+    <div class="order-full-info" id="orderFullInfo">
+        <div class="content">       
+            <div class="order-info">
+                <p class="small-paragraph">Bestillt: <strong>{{order.created_at | date:"d F Y"}}</strong></p>
+                {% if order.status_1 %}
+                <p class="small-paragraph">Status: <strong>Behandler</strong></p>
+                {% endif %}
+                <p class="small-paragraph">Bestilling ID: <strong>{{order.id}}</strong></p>
+                {% if order.paid %}
+                    <p class="small-paragraph">Betalt: <i class="fa-solid fa-check"></i></p>
+                {% else %}
+                    <p class="small-paragraph">Betalt: <i class="fa-solid fa-xmark"></i></p>
+                {% endif %}  
+                {% if order.hosting %}
+                    <p class="small-paragraph">Hosting: <i class="fa-solid fa-check"></i></p>
+                {% else %}
+                    <p class="small-paragraph">Hosting: <i class="fa-solid fa-xmark"></i></p>
+                {% endif %}   
+                {% if order.after_14_days %}
+                <p class="small-paragraph">Gratis endringer: <i class="fa-solid fa-check"></i></p>
+                {% else %}
+                <p class="small-paragraph">Gratis endringer: <i class="fa-solid fa-xmark"></i></p>
+                {% endif %} 
+                {% if order.is_finished %}
+                <p class="small-paragraph">Bestillingen er fullført</p>
+                <a href="/sporr-om-endringer" class="small-modern-link">Spørr om endringer<i style="transform: translateY(1.5px) translateX(10px);" class="fa-solid fa-angle-right"></i></a>
+                {% else %}
+                    <p class="small-paragraph">Bestillingen er ikke fullført</p>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

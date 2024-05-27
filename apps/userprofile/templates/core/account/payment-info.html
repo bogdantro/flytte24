@@ -1,0 +1,67 @@
+{% extends 'core/base.html' %}    
+{% load static %}    
+    
+
+{% block content %}
+{% block head %}
+<title>Betalings informasjon</title>
+<meta name="author" content="Innlandet Søk">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ request.get_full_path }}">
+{% endblock %}
+
+<link rel="stylesheet" href="{% static '/scss/userprofile/myaccount.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static '/scss/pages/page.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static '/scss/userprofile/account/payment.css' %}" type="text/css">
+
+<script rel="stylesheet" src="{% static '/js/myaccount.js' %}" type="text/javascript"></script>
+
+
+
+<div class="page">
+    <div class="cover">
+        <div class="content">
+            <div class="text">
+                <h1>Betalings informasjon</h1>
+                <div class="back" onclick="window.location.href='/min-bruker/'">
+                    <i class="fa-solid fa-angle-left arrow"></i>
+                    <h1>Tilbake</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        
+        <div class="resource" style="position: relative; left: 50%; transform: translateX(-50%);">
+            <div class="top">
+                <div class="price">
+                    {% if request.user.profile.medlemskap == 'Vanlig' %}
+                    kr 0,-
+                    {% endif %}
+                    {% if request.user.profile.medlemskap == 'Pro' %}
+                    kr 99,-
+                    {% endif %}
+                    {% if request.user.profile.medlemskap == 'Pro+' %}
+                    kr 159,-
+                    {% endif %}
+                </div>
+                {% if request.user.profile.medlemskap == 'Vanlig' %}
+                <p>(Du har Vanlig)</p>
+                {% endif %}
+                {% if request.user.profile.medlemskap == 'Pro' %}
+                <p>(Du har Pro)</p>
+                {% endif %}
+                {% if request.user.profile.medlemskap == 'Pro+' %}
+                <p>(Du har Pro+)</p>
+                {% endif %}
+                <hr>
+                <p>Blir fakturert hver 5.ende til:</p>
+                <p>Juridisk navn: <strong>{{request.user.profile.business_name}}</strong></p>
+                <p>ORG nr: <strong>{{request.user.profile.org_nr}}</strong></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

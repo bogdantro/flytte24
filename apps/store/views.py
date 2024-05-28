@@ -40,6 +40,7 @@ from .models import Membership
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
+@login_required
 def create_checkout_session(request):
     user = request.user
     session = stripe.checkout.Session.create(
@@ -53,10 +54,6 @@ def create_checkout_session(request):
         cancel_url=request.build_absolute_uri('/cancel/'),
         customer_email=user.email,
     )
-    if not customer_email:
-        customer_email = 'ingen-epost@gmail.com'
-
-        
     return redirect(session.url, code=303)
 
 

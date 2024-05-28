@@ -34,6 +34,7 @@ urlpatterns = [
     path('myaccount/', myaccount, name='myaccount'),
 
 
+    path('become-a-member/', beome_member, name='beome_member'),
 
     path('create-checkout-session/', create_checkout_session, name='create_checkout_session'),
     path('webhook/', stripe_webhook, name='stripe_webhook'),

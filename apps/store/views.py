@@ -100,3 +100,7 @@ def stripe_webhook(request):
         membership.save()
 
     return HttpResponse(status=200)
+
+
+def beome_member(request):
+    return render(request, 'core/become-member.html')

@@ -1,0 +1,37 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block head %}
+<!-- <title>Bilmeglerne - Om oss</title>
+<meta name="description" content="Bilmeglerne har spesialisert seg på salg av bil. Vi har utviklet denne tjenesten for å gjøre deg trygg på at bilsalget foregår i henhold til gjeldende lover og forskrifter">
+<meta name="author" content="Bilmeglerne">
+<meta name="keywords" content="Bilmeglerne, Selge bil, Kjøpe bil, Biler til salg, Kjøp ny bil, Kjøp en bil, Bil, Biler, Bilene">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ request.get_full_path }}">
+<meta property="og:description" content="Bilmeglerne har spesialisert seg på salg av bil. Vi har utviklet denne tjenesten for å gjøre deg trygg på at bilsalget foregår i henhold til gjeldende lover og forskrifter"> -->
+{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static '/scss/pages/member.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static '/scss/pages/page.css' %}" type="text/css">
+<script src="{% static '/js/member.js' %}"></script>
+
+<div class="page" style="padding-inline: 0;">
+    <div class="cover">
+        <div class="content">
+            <div class="text">
+                <h1 class="cover-h1">We are happy to see you joining us</h1>
+                <p class="cover-p" style="max-width: max-content;">Subscribe to our membership today to gain access to systems and services designed to make your life easier!</p>
+            </div>  
+            <img src="{% static '/images/covers/member.png' %}" alt="" class="cover-image" style="top: -49px; max-width: 100%; max-height: 100%;">
+        </div>
+    </div>
+
+    <form action="{% url 'create_checkout_session' %}" method="POST">
+        {% csrf_token %}
+        <button type="submit">Subscribe</button>
+    </form>
+</div>
+
+{% endblock %}

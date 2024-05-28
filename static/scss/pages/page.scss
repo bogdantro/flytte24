@@ -1,6 +1,6 @@
 $black: #1F1F1F;
 $white: rgb(246,246,246);
-$primBtn: #f0a432;
+$primBtn: #69d34e;
 $txt: #183b56;
 
 .cover{
@@ -35,4 +35,85 @@ $txt: #183b56;
     }
 }
 
+
+@media only screen and (min-device-width: 1140px) {
+  .cover{
+    width: 100%;
+    min-height: 650px;
+    margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 5px;
+    background: linear-gradient(to bottom right, rgba(135, 255, 131, 0.12), transparent);
+    .content{
+      padding-inline: 35px;
+      padding-top: 120px;
+      padding-bottom: 90px;
+      height: 560px;
+      display: flex;
+      justify-content: space-between;
+      overflow: hidden !important;
+      position: relative;
+
+      .text{
+        text-align: left;
+        margin-top: 28px;
+        position: relative;
+        z-index: 10;
+        .cover-h1{
+          color: $black;
+          font-size: 45px;
+          font-weight: 600;
+          margin-bottom: 10px;
+          max-width: 550px;
+        }
+        .cover-p{
+          font-size: 20px;
+          margin-bottom: 0;
+          color: $black;
+          font-weight: 500;
+          width: 400px;
+        }
+      }
+      .cover-image{
+        position: relative;
+        left: -20px;
+        transform: translateX(0);
+        top: 65px;
+        width: auto;
+        max-width: 98%;
+        height: auto;
+        max-height: 92%;
+        filter: brightness(89%);
+        border-radius: 50px;
+        border-bottom-right-radius: 5px;
+        border-top-left-radius: 5px;
+        margin-top: 0;
+    }
+      .cover-actions{
+        margin-top: 24px;
+        width: 100%;
+        text-align: center;
+        button{
+          border: 1px solid transparent;
+          border-radius: 6px;
+          outline: none;
+          background: $primBtn;
+          color: white;
+          font-weight: 500;
+          font-size: 17px;
+          width: 415px;
+          display: block;
+          height: 52px;
+          &.secondary{
+            border-color: $primBtn;
+            color: $primBtn;
+            background: white;
+            margin-right: 0;
+            margin-top: 15px;
+          }
+        }
+      }
+    }
+  }
+}
 

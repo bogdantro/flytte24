@@ -2,13 +2,13 @@
 {% load static %}
 
 {% block head %}
-<title>Bilmeglerne - Kontakt oss</title>
+<!-- <title>Bilmeglerne - Kontakt oss</title>
 <meta name="description" content="Bilmeglerne har spesialisert seg på salg av bil. Vi har utviklet denne tjenesten for å gjøre deg trygg på at bilsalget foregår i henhold til gjeldende lover og forskrifter">
 <meta name="author" content="Bilmeglerne">
 <meta name="keywords" content="Bilmeglerne, Selge bil, Kjøpe bil, Biler til salg, Kjøp ny bil, Kjøp en bil, Bil, Biler, Bilene">
 <meta property="og:type" content="website">
 <meta property="og:url" content="{{ request.get_full_path }}">
-<meta property="og:description" content="Bilmeglerne har spesialisert seg på salg av bil. Vi har utviklet denne tjenesten for å gjøre deg trygg på at bilsalget foregår i henhold til gjeldende lover og forskrifter">
+<meta property="og:description" content="Bilmeglerne har spesialisert seg på salg av bil. Vi har utviklet denne tjenesten for å gjøre deg trygg på at bilsalget foregår i henhold til gjeldende lover og forskrifter"> -->
 {% endblock %}
 
 {% block content %}
@@ -17,40 +17,56 @@
 <link rel="stylesheet" href="{% static '/scss/pages/contact.css' %}" type="text/css">
 <link rel="stylesheet" href="{% static '/scss/pages/page.css' %}" type="text/css">
 
-<div class="page">
-    <div class="cover">
-        <div class="content" style="padding-bottom: 15px;">
-            <div class="text">
-                <h1 class="cover-h1">Kontakt oss</h1>
-                <p class="cover-p">Vi ser frem til å høre fra deg</p>
-            </div>  
-        </div>
-    </div>
-    <div class="cards">
 
-      <div class="card">
-        <i class="fa-regular fa-envelopes"></i>
-        <h1>Send epost</h1>
-        <hr>
-        <div class="value" onclick="window.location.href='mailto:Kontakt@bilmeglerne.no'">kontakt@bilmeglerne.no</div>
-      </div>
-
-      <div class="card">
-        <i class="fa-regular fa-phone"></i>      
-        <h1>Ring oss</h1>
-        <hr>
-        <div class="value" onclick="window.location.href='telto:+4740179859'">401 79 859</div>
-      </div>
-
-      <div class="card">
-        <i class="fa-brands fa-facebook-messenger"></i>
-        <h1>Chatt med oss</h1>
-        <hr>
-        <div class="value">Start chat</div>
-      </div>
-    </div>
+  <div class="contact-page">
+    <div class="form">
+        <h1 class="heading">Contact our support team for help</h1>
+        <p class="or-login"><a href="">For IT support send email to kontakt@webiser.no</a></p>
+        <form id="contactForm" method="post" autocomplete="off">      
+            {% csrf_token %}
+            <!-- USER SIGNUP FORM INPUTS -->
+            <div class="inputs-labels">
+                {% if form.errors %}
+                    {% for field in form %}
+                        {% for error in field.errors %} 
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                {% endif %}
+                <!-- NAME -->
+                <label for="username">Email</label>
+                <br>
+                <input type="email" id="username" name="username" required >
+                <br>
+                <br>
+                <!-- FIRST NAME -->
+                <label for="first_name" class="form-tag-first_name tag">Full name</label>
+                <br>
+                <input type="text" id="first_name" name="first_name" required >
+                <br>
+                <br>
+                <!-- LAST NAME -->
+                <label for="last_name" class="form-tag-last_name tag">Message</label>
+                <br>
+                <br>
+                <textarea name="" id=""></textarea>
+           
+            </div> 
+            <div class="form-actions">
+                <button type='submit'>Create account</button>
+            </div>
     
+        </form>
+    </div>
 </div>
+
+<div class="image">
+    <img src="{% static '/images/covers/contact.jpg' %}" alt="">
+</div>
+
+    
 
 
 

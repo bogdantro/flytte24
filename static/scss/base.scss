@@ -659,6 +659,8 @@ $txt: #183b56;
           transform: translateX(0);
         }
         &.scroll{
+          transform: translateX(-90px);
+          opacity: 0;
         }
         .cover-h1 {
           color: white;
@@ -701,15 +703,23 @@ $txt: #183b56;
  
       img{
         position: absolute;
-        right: 0;
-        top: 150px;
+        right: 100px;
+        top: 221px;
         border-radius: 12px;
         opacity: 0;
         transform: translateX(90px);
         transition: 2s;
+        max-width: 348px;
+        max-height: 357px;
+        min-width: 348px;
+        min-height: 357px;
         &.active{
           opacity: 1;
           transform: translateX(0);
+        }
+        &.scroll{
+          transform: translateX(90px);
+          opacity: 0;
         }
       }
       .border{
@@ -725,6 +735,10 @@ $txt: #183b56;
         &.active{
           opacity: 1;
           transform: translateX(0);
+        }
+        &.scroll{
+          transform: translateX(90px);
+          opacity: 0;
         }
       }
       .images{

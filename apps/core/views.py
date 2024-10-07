@@ -31,6 +31,8 @@ from django.contrib.auth.models import User
 from apps.store.models import *
 
 def home(request):      
-
-
     return render(request, 'core/home.html')  
+
+
+def contact(request):      
+    return render(request, 'pages/contact/contact.html')  

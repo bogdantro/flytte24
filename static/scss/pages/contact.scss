@@ -1,6 +1,6 @@
 $black: #1F1F1F;
 $white: rgb(246,246,246);
-$primBtn: #f0a432;
+$primBtn: #39c1b1;
 $txt: #183b56;
 
 .page{
@@ -60,73 +60,165 @@ $txt: #183b56;
 
 
 @media only screen and (min-device-width: 1140px) {
-    .page{
-        padding-inline: 80px;
-        padding-bottom: 140px;
-        padding-top: 50px;
-        .cover{
-            background: transparent;
-            max-width: 100%;
-            .content{
-                padding-inline: 0;
-                .text{
-                    text-align: center;
-                    h1{
-                        color: $black;
-                        font-size: 34px;
-                        font-weight: 600;
-                        margin-bottom: -10px;
-                        max-width: 400px;
-                        margin: auto;
-                      }
-                      p{
-                        margin: auto;
-                        max-width: 320px;
-                        color: $black;
-                        font-size: 20px;
-                        font-weight: 500;
-                        margin-top: 18px;
-                      }
-               
+    html, body {
+        background: unset;
+    }
+    #desNav{
+        display: flex;
+        width: 100%;
+        height: 95px;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        background: transparent ;
+        padding-inline: 35px;
+        z-index: 1000000;
+        transition: .2s;
+        border-bottom: 2px solid rgb(227, 227, 227) ;
+        background: white; 
+  
+        .content{
+            width: 100%;
+            display: flex;
+            width: 100%;
+            max-width: 1290px;
+            height: 95px;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: transparent !important;
+            padding-inline: 35px;    
+        }
+
+        &.sticky{
+            border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+        }
+        .logo{
+            color: $black;
+            img{               
+                cursor: pointer;
+                width: 120px;
+                height: auto;
+                transition: .2s;
+                transform: translateX(-42px);
+                &:hover{
+                    transform: scale(1.1) translateX(-35px);
                 }
             }
         }
-        .cards{
-            width: 100%;
-            position: relative;
-            margin-top: 10px;
+        .menu{
             display: flex;
             justify-content: center;
-            .card{
-                text-align: center;
-                padding: 17px;
-                border-radius: 14px;
-                box-shadow: 0 3px 5px rgba(0,0,0,0.05);
-                border: none;
-                margin-bottom: 0;
-                margin-right: 20px;
-                min-width: 330px;
-                max-width: 330px;
-                i{
+            align-items: center;
+            a{
+                color: $black;
+                font-size: 18px;
+                font-weight: 400;
+                margin-inline: 2px;
+                padding: 10px;
+                cursor: pointer;
+                text-decoration: none;
+                transition: .3s;
+                border-bottom: 0 solid transparent;
+                border-radius: 4px;
+                &.cta{
+                    transform: translateY(0);
+                    background: transparent;
                     color: $black;
-                    font-size: 32px;
-                    margin-bottom: 15px;
-                }
-                h1{
-                    font-size: 26px;
-                    color: $black;
-                }
-                .value{
-                    padding: 14px 22px;
-                    font-size: 17px;
-                    color: $black;
-                    box-shadow: 0 1px 5px rgba(0,0,0,0.1);
                     border-radius: 25px;
-                    width: max-content;
-                    margin: auto;
+                    margin-left: 6px;
+                    border: 2px solid rgb(128, 128, 128);
+                    height: max-content !important;
+                    margin-bottom: 0; 
+                    &:hover{
+                        background: rgba(203, 203, 203, 0.45);
+                    }
+                }
+                &:hover{
+                    background: rgba(211, 211, 211, 0.35);
                 }
             }
-        }   
+        }
     }
-    
+     .contact-page{
+        display: flex;
+        justify-content: space-between;
+        overflow-y: visible;
+        width: 100%;
+        height: 130vh;
+        position: relative;
+        max-width: 1290px;
+        margin-inline: auto;
+        .form{
+            width: 50%;
+            height: 100vh;
+            padding-inline: 35px;
+            padding-top: 170px;
+            background: white;
+            .heading{
+                color: $black;
+                font-size: 46px;
+            }
+            .inputs-labels{
+                label{
+                    font-size: 20px;
+                    font-weight: 500;
+                    color: $black;
+                }
+                input{
+                    height: 42px;
+                    width: 300px;
+                    padding: 5px;
+                    color: $black;
+                    font-size: 18px;
+                    outline: none;
+                    border: 1px solid rgb(128, 128, 128);
+                    border-radius: 4px;
+                }
+                textarea{
+                    min-height: 92px;
+                    height: 92px;
+                    max-height: 120px;
+                    width: 300px;
+                    padding: 5px;
+                    color: $black;
+                    font-size: 18px;
+                    outline: none;
+                    border: 1px solid rgb(128, 128, 128);
+                    border-radius: 4px;
+                }
+            }
+            .form-actions{
+                margin-top: 28px;
+                button{
+                    border-radius: 25px;
+                    width: 300px;
+                    height: 45px;
+                    background: transparent;
+                    outline: none;
+                    border: 2px solid rgb(128, 128, 128);
+                    color: $black;
+                    font-size: 17px;
+                }
+            }
+        }
+    }
+    .image{
+        width: 50%;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        right: 0;
+        img{
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+        }
+    }
 }

@@ -24,7 +24,8 @@ urlpatterns = [
 
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}),
 
-    path('', home, name='home'),
+    path('', home, name='home'), 
+    path('contact-us/', contact, name='contact'), 
 
 
     path('login/', views.LoginView.as_view(template_name='core/login.html'), name='login'),

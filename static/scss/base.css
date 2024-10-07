@@ -369,6 +369,10 @@
     opacity: 1;
     transform: translateX(0);
   }
+  .cover .content .text.scroll {
+    transform: translateX(-90px);
+    opacity: 0;
+  }
   .cover .content .text .cover-h1 {
     color: white;
     font-size: 46px;
@@ -411,16 +415,24 @@
   }
   .cover .content img {
     position: absolute;
-    right: 0;
-    top: 150px;
+    right: 100px;
+    top: 221px;
     border-radius: 12px;
     opacity: 0;
     transform: translateX(90px);
     transition: 2s;
+    max-width: 348px;
+    max-height: 357px;
+    min-width: 348px;
+    min-height: 357px;
   }
   .cover .content img.active {
     opacity: 1;
     transform: translateX(0);
+  }
+  .cover .content img.scroll {
+    transform: translateX(90px);
+    opacity: 0;
   }
   .cover .content .border {
     position: absolute;
@@ -436,6 +448,10 @@
   .cover .content .border.active {
     opacity: 1;
     transform: translateX(0);
+  }
+  .cover .content .border.scroll {
+    transform: translateX(90px);
+    opacity: 0;
   }
   .cover .content .images {
     position: absolute;

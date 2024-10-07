@@ -56,18 +56,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
 document.addEventListener("scroll", function() {
   const scrollIndicator = document.querySelector(".scroll-indicator");
-  const images = document.querySelectorAll(".coverimg");
   const txt = document.getElementById("coverText");
+  const img = document.getElementById("imageForBorder");
+  const border = document.getElementById("borderForImage");
   
   // If the page is scrolled down more than 50px, add the active class
   if (window.scrollY > 50) {
     scrollIndicator.classList.add("active");
-    images.forEach(img => img.classList.add("active"));
-    txt.classList.add("scroll");
+    // txt.classList.add("scroll");
+    // img.classList.add("scroll");
+    // border.classList.add("scroll");
   } else {
     scrollIndicator.classList.remove("active");
-    images.forEach(img => img.classList.remove("active"));
-    txt.classList.remove("scroll");
+    // txt.classList.remove("scroll");
+    // img.classList.remove("scroll");
+    // border.classList.remove("scroll");
   }
 });
 

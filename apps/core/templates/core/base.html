@@ -72,13 +72,12 @@
 </head>
 
 <body ontouchstart="" >
-    <div id="onPageLoad"></div>
+    <div id="onPageLoad" style="background: white !important;  z-index: 1000000000000000000 !important; position: fixed; top: 0; left: 0;"></div>
     {% include 'core/nav.html' %}
 
 
     {% block content %}
     {% endblock %}
 
-    {% include 'core/footer.html' %}
 </body>
 </html>

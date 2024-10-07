@@ -11,43 +11,48 @@
 <script rel="stylesheet" src="{% static '/js/login.js' %}" type="text/javascript"></script>
 
 
-<div class="login page-for-form">
+<div class="login-page">
 
-    <!-- USER LOGIN -->
-    <h1 class="heading">Logg inn</h1>
-    <p class="or-signup"><a href="/lag-bruker/">Eller lag bruker</a></p>
-    <form id="loginForm" method="post">
-        {% csrf_token %}
-        {% if message %}
-        <div class="alert alert-success">
-            {{message}}
-        </div>
-        {% endif %}
-        <!-- USER LOGIN FORM INPUTS -->
-        <div class="inputs-labels">
-            {% if form.errors %}
-                <div class="alert alert-danger">
-                    <strong>Epost eller passord er feil</strong>
-                </div>
-            {% endif %}
-            <!-- NAME -->
-            <label for="username">Epost</label>
-            <br>
-            <input type="email" id="username" name="username" required oninvalid="this.setCustomValidity('Kan ikke være tom')" oninput="this.setCustomValidity('')">
-            <br>
-            <br>
-            <!-- PASSWORD -->
-            <label for="password">Passord</label>
-            <br>
-            <input type="password" id="password" name="password" required oninvalid="this.setCustomValidity('Kan ikke være tom')" oninput="this.setCustomValidity('')">
-            <br>
-        </div> 
-        <div class="form-actions">
-            <button type='submit'>Logg inn</button>
-        </div>
-    </form>
+   <div class="form">
+
+       <h1 class="heading">Login</h1>
+       <p class="or-signup"><a href="/signup/">Or make an account</a></p>
+       <form id="loginForm" method="post">
+           {% csrf_token %}
+           {% if message %}
+           <div class="alert alert-success">
+               {{message}}
+           </div>
+           {% endif %}
+           <!-- USER LOGIN FORM INPUTS -->
+           <div class="inputs-labels">
+               {% if form.errors %}
+                   <div class="alert alert-danger">
+                       <strong>{{errors}}</strong>
+                   </div>
+               {% endif %}
+               <!-- NAME -->
+               <label for="username">Email</label>
+               <br>
+               <input type="email" id="username" name="username" required oninvalid="this.setCustomValidity('Kan ikke være tom')" oninput="this.setCustomValidity('')">
+               <br>
+               <br>
+               <!-- PASSWORD -->
+               <label for="password">Password</label>
+               <br>
+               <input type="password" id="password" name="password" required oninvalid="this.setCustomValidity('Kan ikke være tom')" oninput="this.setCustomValidity('')">
+               <br>
+           </div> 
+           <div class="form-actions">
+               <button type='submit'>Login</button>
+           </div>
+       </form>
+   </div>
+   
 </div>
-<div class="black-overlay" id="blackOverlay"></div>
+<div class="image">
+     <img src="{% static '/images/covers/login.jpg' %}" alt="">
+</div>
 
 {% endblock %}
             

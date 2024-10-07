@@ -10,61 +10,68 @@
 <link rel="stylesheet" href="{% static '/scss/userprofile/signup.css' %}" type="text/css">
 
 
-<div class="signup page-for-form">
-    <h1 class="heading">Lag bruker</h1>
-    <p class="or-login"><a href="/logg-inn/">Eller logg inn</a></p>
-    <form id="signUpForm" method="post" autocomplete="off">      
-        {% csrf_token %}
-        <!-- USER SIGNUP FORM INPUTS -->
-        <div class="inputs-labels">
-            {% if form.errors %}
-                {% for field in form %}
-                    {% for error in field.errors %} 
-                        <div class="alert alert-danger">
-                            <strong>{{ error|escape }}</strong>
-                        </div>
+<div class="signup-page">
+    <div class="form">
+        <h1 class="heading">Create an account</h1>
+        <p class="or-login"><a href="/login/">Already have an account? Login here</a></p>
+        <form id="signUpForm" method="post" autocomplete="off">      
+            {% csrf_token %}
+            <!-- USER SIGNUP FORM INPUTS -->
+            <div class="inputs-labels">
+                {% if form.errors %}
+                    {% for field in form %}
+                        {% for error in field.errors %} 
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                        {% endfor %}
                     {% endfor %}
-                {% endfor %}
-            {% endif %}
-            <!-- NAME -->
-            <label for="username">Epost</label>
-            <br>
-            <input type="email" id="username" name="username" required >
-            <br>
-            <br>
-            <!-- FIRST NAME -->
-            <label for="first_name" class="form-tag-first_name tag">Fornavn</label>
-            <br>
-            <input type="text" id="first_name" name="first_name" required >
-            <br>
-            <br>
-            <!-- LAST NAME -->
-            <label for="last_name" class="form-tag-last_name tag">Etternavn</label>
-            <br>
-            <input type="text" id="last_name" name="last_name" required >
-            <br>
-            <br>
-        
-            <label style="display: none;"></label>
-            <input id="ValueEmail" required style="display: none;">
-   
-            <!-- PASSWORD -->
-            <label for="password1" class="form-tag-password1 tag">Passord</label>
-            <br>
-            <input type="password" autocomplete="new-password" id="password1" name="password1" required >
-            <br>
-            <br>
-            <!-- REPEAT PASSWORD -->
-            <label for="password2" class="form-tag-password2 tag">Gjenta passord</label>
-            <br>
-            <input type="password" id="password2" name="password2" required >
-        </div> 
-        <div class="form-actions">
-            <button type='submit'>Lag bruker</button>
-        </div>
-
-    </form>
+                {% endif %}
+                <!-- NAME -->
+                <label for="username">Email</label>
+                <br>
+                <input type="email" id="username" name="username" required >
+                <br>
+                <br>
+                <!-- FIRST NAME -->
+                <label for="first_name" class="form-tag-first_name tag">First name</label>
+                <br>
+                <input type="text" id="first_name" name="first_name" required >
+                <br>
+                <br>
+                <!-- LAST NAME -->
+                <label for="last_name" class="form-tag-last_name tag">Last name</label>
+                <br>
+                <input type="text" id="last_name" name="last_name" required >
+                <br>
+                <br>
+            
+                <label style="display: none;"></label>
+                <input id="ValueEmail" required style="display: none;">
+       
+                <!-- PASSWORD -->
+                <label for="password1" class="form-tag-password1 tag">Password</label>
+                <br>
+                <input type="password" autocomplete="new-password" id="password1" name="password1" required >
+                <br>
+                <br>
+                <!-- REPEAT PASSWORD -->
+                <label for="password2" class="form-tag-password2 tag">Retype passord</label>
+                <br>
+                <input type="password" id="password2" name="password2" required >
+            </div> 
+            <div class="form-actions">
+                <button type='submit'>Create account</button>
+            </div>
+    
+        </form>
+    </div>
 </div>
+
+<div class="image">
+    <img src="{% static '/images/covers/signup.jpg' %}" alt="">
+</div>
+
 
 
 <script>

@@ -1,6 +1,6 @@
 $black: #1F1F1F;
 $white: rgb(246,246,246);
-$primBtn: #69d34e;
+$primBtn: #39c1b1;
 $txt: #183b56;
 
 
@@ -155,24 +155,42 @@ $txt: #183b56;
     #desNav{
         display: flex;
         width: 100%;
-        height: 85px;
+        height: 95px;
         justify-content: space-between;
         align-items: center;
         position: fixed;
         top: 0;
         left: 50%;
         transform: translateX(-50%);
-        background: transparent !important;
+        background: transparent ;
         padding-inline: 35px;
-        z-index: 100;
+        z-index: 1000000;
         transition: .2s;
-        border-bottom: 1px solid rgba(100,100,100,0.15);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+
+        background: linear-gradient(270deg, #39c1b1, #52ead9, #1aa393, #60aca3, #07c4ae, #39c19d); 
+        background-size: 1200% 1200%; /* To make sure the gradient can move smoothly */  
+        /* Animation */
+        animation: gradient-animation 15s ease infinite;
+      
+        /* Gradient animation keyframes */
+        @keyframes gradient-animation {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }    
         .content{
             width: 100%;
             display: flex;
             width: 100%;
             max-width: 1290px;
-            height: 85px;
+            height: 95px;
             justify-content: space-between;
             align-items: center;
             position: fixed;
@@ -184,10 +202,11 @@ $txt: #183b56;
         }
 
         &.sticky{
-            background: white !important;
-            border-bottom: 1px solid rgba(100,100,100,0.15);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+
         }
         .logo{
+            color: white;
             img{               
                 cursor: pointer;
                 width: 120px;
@@ -201,8 +220,10 @@ $txt: #183b56;
         }
         .menu{
             display: flex;
+            justify-content: center;
+            align-items: center;
             a{
-                color: $black;
+                color: white;
                 font-size: 18px;
                 font-weight: 400;
                 margin-inline: 2px;
@@ -210,16 +231,15 @@ $txt: #183b56;
                 cursor: pointer;
                 text-decoration: none;
                 transition: .3s;
-                border-bottom: 2px solid transparent;
+                border-bottom: 0 solid transparent;
                 border-radius: 4px;
                 &.cta{
-                    transform: translateY(2px);
-                    background: $primBtn;
+                    transform: translateY(0);
+                    background: transparent;
                     color: white;
-                    border-radius: 4px;
+                    border-radius: 25px;
                     margin-left: 6px;
-                    padding: 7px 14px !important;
-                    border: none;
+                    border: 2px solid white;
                     height: max-content !important;
                     margin-bottom: 0; 
                     &:hover{

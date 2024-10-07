@@ -2,7 +2,7 @@
 
 $black: #1F1F1F;
 $white: rgb(246,246,246);
-$primBtn: #69d34e;
+$primBtn: #39c1b1;
 $txt: #183b56;
 
 
@@ -18,7 +18,24 @@ $txt: #183b56;
     overflow-x: hidden;
     scroll-behavior: smooth;
     margin: auto;
-    background:  rgb(248,248,248);
+    background: linear-gradient(270deg, #39c1b1, #52ead9, #1aa393, #60aca3, #07c4ae, #39c19d); 
+    background-size: 1200% 1200%; /* To make sure the gradient can move smoothly */  
+    /* Animation */
+    animation: gradient-animation 15s ease infinite;
+  
+    /* Gradient animation keyframes */
+    @keyframes gradient-animation {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }    
+
   }
 
   .page{
@@ -67,12 +84,12 @@ $txt: #183b56;
     background-color: white;
     opacity: 0;
     pointer-events: none;
-    z-index: 9999; /* Ensure it's on top of other elements */
+    z-index: 100000000; /* Ensure it's on top of other elements */
     transition: opacity 0.5s ease; /* You can adjust the transition duration */
     &.hide{
-      background: none;
+      background: red;
       pointer-events: none;
-      opacity: 0;
+      opacity: 1;
     }
 }
 

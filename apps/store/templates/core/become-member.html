@@ -14,24 +14,38 @@
 {% block content %}
 
 <link rel="stylesheet" href="{% static '/scss/pages/member.css' %}" type="text/css">
-<link rel="stylesheet" href="{% static '/scss/pages/page.css' %}" type="text/css">
 <script src="{% static '/js/member.js' %}"></script>
 
 <div class="page" style="padding-inline: 0;">
     <div class="cover">
         <div class="content">
-            <div class="text">
-                <h1 class="cover-h1">We are happy to see you joining us</h1>
-                <p class="cover-p" style="max-width: max-content;">Subscribe to our membership today to gain access to systems and services designed to make your life easier!</p>
-            </div>  
-            <img src="{% static '/images/covers/member.png' %}" alt="" class="cover-image" style="top: -49px; max-width: 100%; max-height: 100%;">
+            <div class="text" id="coverText">
+                {% if request.user.is_authenticated %}
+                <h1 class="cover-h1" id="dynamic-texttwo"></h1>
+                {% else %}
+                <h1 class="cover-h1" style="max-width: 600px;" >You must login in order to become a member</h1>
+                {% endif %}
+                <p class="cover-p">
+                  Get acess to systems that will make your life easier. Become a member today to gain acess!
+                </p>
+                {% if request.user.is_authenticated %}
+                <form action="{% url 'create_checkout_session' %}" method="POST">
+                    {% csrf_token %}
+                    <button class="animated-btn"  type="submit">  <span>Subscribe</span></button>
+                </form>
+                {% else %}
+                <form>
+                    <button  class="animated-btn"  type="button"  onclick="window.location.href='/login?next=/become-a-member/'">  <span>Login into account</span></button>
+                </form>
+                {% endif %}
+
+            </div>
+            <div class="border" id="borderForImage"></div>
+            <img src="{% static '/images/covers/member.jpg' %}" alt="" id="imageForBorder">
+    
         </div>
     </div>
-
-    <form action="{% url 'create_checkout_session' %}" method="POST">
-        {% csrf_token %}
-        <button type="submit">Subscribe</button>
-    </form>
+    
 </div>
 
 {% endblock %}

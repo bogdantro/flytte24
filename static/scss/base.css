@@ -344,6 +344,7 @@
     padding-bottom: 5px;
     overflow: hidden;
     background: transparent;
+    border-bottom: 1px solid #DEE2E6;
   }
   .cover .content {
     padding-inline: 35px;

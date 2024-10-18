@@ -34,9 +34,9 @@ from django.utils import translation
 
 def home(request):
     # Get the language from the URL parameters first
-    lang_code = request.LANGUAGE_CODE  # Get the active language code
-    translation.activate(lang_code)  # Activate the language for the session
-    return render(request, 'core/home.html', {'language': lang_code})
+    # lang_code = request.LANGUAGE_CODE  # Get the active language code
+    # translation.activate(lang_code)  # Activate the language for the session
+    return render(request, 'core/home.html')
 
 def set_language(request, language):
     # Set the language in a cookie

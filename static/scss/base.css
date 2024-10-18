@@ -58,7 +58,7 @@
   border: 1px solid transparent;
   border-radius: 7px;
   outline: none;
-  background: #39c1b1;
+  background: #0A97A1;
   color: white;
   font-weight: 500;
   font-size: 17px;
@@ -68,8 +68,8 @@
   margin-top: 15px;
 }
 .cover .content .cover-actions button.secondary {
-  border-color: #39c1b1;
-  color: #39c1b1;
+  border-color: #0A97A1;
+  color: #0A97A1;
   background: white;
   margin-right: 0;
 }
@@ -101,7 +101,7 @@
 }
 .about-us .content button {
   margin-top: 28px;
-  background: #39c1b1;
+  background: #0A97A1;
   width: 100%;
   max-width: 420px;
   height: 44px;
@@ -138,7 +138,7 @@
 }
 .whatweoffer .content button {
   margin-top: 28px;
-  background: #39c1b1;
+  background: #0A97A1;
   width: 100%;
   max-width: 420px;
   height: 44px;
@@ -175,7 +175,7 @@
 }
 .systems .content button {
   margin-top: 28px;
-  background: #39c1b1;
+  background: #0A97A1;
   width: 100%;
   max-width: 420px;
   height: 44px;
@@ -212,7 +212,7 @@
 }
 .pricing .content button {
   margin-top: 28px;
-  background: #39c1b1;
+  background: #0A97A1;
   width: 100%;
   max-width: 420px;
   height: 44px;
@@ -249,7 +249,7 @@
 }
 .get-started .content button {
   margin-top: 28px;
-  background: #39c1b1;
+  background: #0A97A1;
   width: 100%;
   max-width: 420px;
   height: 44px;
@@ -342,16 +342,30 @@
     margin-bottom: 20px;
     position: relative;
     padding-bottom: 5px;
-    overflow: hidden;
     background: transparent;
-    border-bottom: 1px solid #DEE2E6;
+  }
+  .cover #overlay {
+    position: absolute;
+    right: 10px;
+    top: 160px;
+    height: 100vh;
+    width: 100%;
+    background: #27b4a3;
+    z-index: 1000;
+    transition: 7s;
+    pointer-events: none;
+    display: none;
+  }
+  .cover #overlay.active {
+    width: 100%;
+    right: 20000px;
   }
   .cover .content {
     padding-inline: 35px;
-    padding-top: 160px;
+    padding-top: 115px;
     padding-bottom: 350px;
-    height: -moz-max-content;
-    height: max-content;
+    height: 100vh;
+    max-height: 770px;
     position: relative;
     margin-inline: auto;
     max-width: 1290px;
@@ -359,16 +373,24 @@
     /* Arrow bounce animation */
   }
   .cover .content .text {
-    text-align: left;
+    text-align: center;
     margin-top: 28px;
     margin-inline: auto;
     transition: 2s;
-    opacity: 0;
-    transform: translateX(-90px);
+    opacity: 1;
+    transform: translateX(0);
   }
   .cover .content .text.active {
     opacity: 1;
     transform: translateX(0);
+  }
+  .cover .content .text.active .img .border {
+    left: -90px;
+    opacity: 1;
+  }
+  .cover .content .text.active .img .bordertwo {
+    right: -160px;
+    opacity: 1;
   }
   .cover .content .text.scroll {
     transform: translateX(-90px);
@@ -376,14 +398,11 @@
   }
   .cover .content .text .cover-h1 {
     color: white;
-    font-size: 46px;
+    font-size: 53px;
     font-weight: 600;
     margin-bottom: 10px;
     overflow: hidden; /* Hide the extra text when typing */
     width: 100%; /* Ensure the width of the container remains consistent */
-    max-width: 1000px; /* Set a max width depending on your text length */
-    min-width: 100px;
-    min-height: 60px;
   }
   .cover .content .text .cover-h1.typing {
     animation: typing 2s steps(30, end) forwards; /* Simulates typing */
@@ -408,106 +427,100 @@
     }
   }
   .cover .content .text .cover-p {
-    font-size: 23px;
+    font-size: 24px;
     margin-bottom: 0;
     color: white;
     font-weight: 500;
-    width: 440px;
+    width: 520px;
+    margin-inline: auto;
   }
-  .cover .content img {
+  .cover .content .text .img {
+    position: relative;
+    width: -moz-max-content;
+    width: max-content;
+    height: -moz-max-content;
+    height: max-content;
+    margin-inline: auto;
+    margin-top: 35px;
+  }
+  .cover .content .text .img .border {
+    width: 510px;
+    height: 340px;
     position: absolute;
-    right: 100px;
-    top: 221px;
-    border-radius: 12px;
+    left: 0;
     opacity: 0;
-    transform: translateX(90px);
-    transition: 2s;
-    max-width: 348px;
-    max-height: 357px;
-    min-width: 348px;
-    min-height: 357px;
+    transition: 0.4s;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.605) !important;
+    border-radius: 4px;
+    z-index: 10;
+    top: 50px;
   }
-  .cover .content img.active {
-    opacity: 1;
-    transform: translateX(0);
-  }
-  .cover .content img.scroll {
-    transform: translateX(90px);
-    opacity: 0;
-  }
-  .cover .content .border {
+  .cover .content .text .img .bordertwo {
+    width: 510px;
+    height: 340px;
     position: absolute;
     right: 0;
-    top: 200px;
-    width: 348px;
-    height: 357px;
-    border-radius: 12px;
     opacity: 0;
-    transform: translateX(90px);
-    transition: 2s;
+    transition: 0.4s;
+    top: -20px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.605);
+    border-radius: 4px;
+    z-index: 10;
   }
-  .cover .content .border.active {
-    opacity: 1;
-    transform: translateX(0);
-  }
-  .cover .content .border.scroll {
-    transform: translateX(90px);
-    opacity: 0;
-  }
-  .cover .content .images {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    top: 0;
-    left: 0;
-  }
-  .cover .content .images .coverimg {
-    width: 250px;
-    height: auto;
+  .cover .content .text .img img {
     -o-object-fit: cover;
        object-fit: cover;
-    opacity: 0.6;
-    transform: translateY(0);
-    transition: 1s;
+    width: 510px;
+    height: auto;
+    margin-inline: auto;
+    border-radius: 4px;
+    z-index: 100;
+    position: relative;
+    display: block;
   }
-  .cover .content .images .coverimg.active {
-    transform: translateY(150px);
-    opacity: 0;
+  .cover .content .images {
+    position: relative;
+    width: 100%;
+    height: 100%;
   }
-  .cover .content .images .coverimg.imgone {
+  .cover .content .images img, .cover .content .images video {
+    border-radius: 6px;
+    -o-object-fit: cover;
+       object-fit: cover;
+    height: auto;
+  }
+  .cover .content .images .image1 {
+    width: 200px;
     position: absolute;
-    left: -100px;
-    top: -30px;
+    right: -20px;
   }
-  .cover .content .images .coverimg.imgtwo {
+  .cover .content .images .image2 {
+    width: 890px;
     position: absolute;
-    left: 0;
-    bottom: 20px;
+    left: 50%;
+    transform: translateX(calc(-50% - 60px));
+    top: 30%;
+    z-index: 1;
+    filter: brightness(70%);
   }
-  .cover .content .images .coverimg.imgthree {
+  .cover .content .images .image3 {
+    width: 660px;
     position: absolute;
-    top: -30px;
-    right: 650px;
+    left: 60%;
+    transform: translateX(-50%) translateY(70px);
+    top: 100%;
+    z-index: 15;
   }
-  .cover .content .images .coverimg.imgfour {
+  .cover .content .images .image4 {
+    width: 600px;
     position: absolute;
-    right: 550px;
-    bottom: 20px;
-  }
-  .cover .content .images .coverimg.imgfive {
-    position: absolute;
-    top: -30px;
-    right: 150px;
-  }
-  .cover .content .images .coverimg.imgsix {
-    position: absolute;
-    right: 50px;
-    bottom: 20px;
-  }
-  .cover .content .images .coverimg.imgseven {
-    position: absolute;
-    right: -270px;
-    top: -30px;
+    left: 70px;
+    top: 100%;
+    transform: translateY(105px);
+    z-index: 10;
+    filter: brightness(90%);
   }
   .cover .content .scroll-indicator {
     text-align: center;
@@ -603,7 +616,7 @@
     border-radius: 6px;
     outline: none;
     background: white;
-    color: #39c1b1;
+    color: #0A97A1;
     font-weight: 500;
     font-size: 17px;
     width: 425px;
@@ -611,275 +624,86 @@
     height: 54px;
   }
   .cover .content .cover-actions button.secondary {
-    border-color: #39c1b1;
-    color: #39c1b1;
+    border-color: #0A97A1;
+    color: #0A97A1;
     background: white;
     margin-right: 0;
     margin-top: 15px;
   }
-  .about-us {
+  .width {
     width: 100%;
-    height: auto;
-    padding-block: 50px;
-    padding-top: 40px;
-    position: relative;
-  }
-  .about-us .content {
-    padding-inline: 35px;
-    position: relative;
+    height: 50px;
     max-width: 1290px;
     margin-inline: auto;
-  }
-  .about-us .content .text {
-    text-align: left;
-    margin-top: 28px;
-  }
-  .about-us .content .text h1 {
-    color: #1F1F1F;
-    font-size: 34px;
-    font-weight: 600;
-    margin-bottom: 15px;
-  }
-  .about-us .content .text p {
-    color: #1F1F1F;
-    font-size: 20px;
-  }
-  .about-us .content button {
-    margin-top: 28px;
-    background: #39c1b1;
-    width: 100%;
-    max-width: 420px;
-    height: 44px;
-    border-radius: 25px;
-    outline: none;
-    border: none;
-    color: white;
-  }
-  .whatweoffer {
-    width: 100%;
-    height: auto;
-    padding-block: 50px;
-    padding-top: 40px;
     position: relative;
+    opacity: 0.9;
   }
-  .whatweoffer .content {
-    padding-inline: 35px;
-    position: relative;
-    max-width: 1290px;
-    margin-inline: auto;
-  }
-  .whatweoffer .content .text {
-    text-align: left;
-    margin-top: 28px;
-  }
-  .whatweoffer .content .text h1 {
-    color: #1F1F1F;
-    font-size: 34px;
-    font-weight: 600;
-    margin-bottom: 15px;
-  }
-  .whatweoffer .content .text p {
-    color: #1F1F1F;
-    font-size: 20px;
-  }
-  .whatweoffer .content button {
-    margin-top: 28px;
-    background: #39c1b1;
-    width: 100%;
-    max-width: 420px;
-    height: 44px;
-    border-radius: 25px;
-    outline: none;
-    border: none;
-    color: white;
-  }
-  .systems {
-    width: 100%;
-    height: auto;
-    padding-block: 50px;
-    padding-top: 40px;
-    position: relative;
-  }
-  .systems .content {
-    padding-inline: 35px;
-    position: relative;
-    max-width: 1290px;
-    margin-inline: auto;
-  }
-  .systems .content .text {
-    text-align: left;
-    margin-top: 28px;
-  }
-  .systems .content .text h1 {
-    color: #1F1F1F;
-    font-size: 34px;
-    font-weight: 600;
-    margin-bottom: 15px;
-  }
-  .systems .content .text p {
-    color: #1F1F1F;
-    font-size: 20px;
-  }
-  .systems .content button {
-    margin-top: 28px;
-    background: #39c1b1;
-    width: 100%;
-    max-width: 420px;
-    height: 44px;
-    border-radius: 25px;
-    outline: none;
-    border: none;
-    color: white;
-  }
-  .pricing {
-    width: 100%;
-    height: auto;
-    padding-block: 50px;
-    padding-top: 40px;
-    position: relative;
-  }
-  .pricing .content {
-    padding-inline: 35px;
-    position: relative;
-    max-width: 1290px;
-    margin-inline: auto;
-  }
-  .pricing .content .text {
-    text-align: left;
-    margin-top: 28px;
-  }
-  .pricing .content .text h1 {
-    color: #1F1F1F;
-    font-size: 34px;
-    font-weight: 600;
-    margin-bottom: 15px;
-  }
-  .pricing .content .text p {
-    color: #1F1F1F;
-    font-size: 20px;
-  }
-  .pricing .content button {
-    margin-top: 28px;
-    background: #39c1b1;
-    width: 100%;
-    max-width: 420px;
-    height: 44px;
-    border-radius: 25px;
-    outline: none;
-    border: none;
-    color: white;
-  }
-  .get-started {
-    width: 100%;
-    height: auto;
-    padding-block: 50px;
-    padding-top: 40px;
-    position: relative;
-  }
-  .get-started .content {
-    padding-inline: 35px;
-    position: relative;
-    max-width: 1290px;
-    margin-inline: auto;
-  }
-  .get-started .content .text {
-    text-align: left;
-    margin-top: 28px;
-  }
-  .get-started .content .text h1 {
-    color: #1F1F1F;
-    font-size: 34px;
-    font-weight: 600;
-    margin-bottom: 15px;
-  }
-  .get-started .content .text p {
-    color: #1F1F1F;
-    font-size: 20px;
-  }
-  .get-started .content button {
-    margin-top: 28px;
-    background: #39c1b1;
-    width: 100%;
-    max-width: 420px;
-    height: 44px;
-    border-radius: 25px;
-    outline: none;
-    border: none;
-    color: white;
-  }
-  .faq {
-    width: 100%;
-    height: auto;
-    padding-block: 90px;
-    padding-top: 70px;
-    position: relative;
-  }
-  .faq .content {
-    padding-inline: 35px;
-    position: relative;
-  }
-  .faq .content .text {
-    text-align: center;
-    margin-top: 0;
-    margin-bottom: 20px;
-  }
-  .faq .content .text h1 {
-    color: #1F1F1F;
-    font-size: 34px;
-    font-weight: 600;
-    margin-bottom: 30px;
-  }
-  .faq .content .ask {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid lightgray;
-    height: -moz-max-content;
-    height: max-content;
-    position: relative;
-    width: 640px;
-    margin-inline: auto;
-    cursor: pointer;
-    padding-block: 30px;
-  }
-  .faq .content .ask p {
-    color: #1F1F1F;
-    font-weight: 500;
-    margin-bottom: 0;
-    font-size: 22px;
-    padding-right: 65px;
-  }
-  .faq .content .ask svg {
-    color: #1F1F1F;
-    font-size: 41px;
-    padding: 8px;
-    margin: -8px;
-  }
-  .faq .content .ask .plus {
-    display: block;
-  }
-  .faq .content .ask .minus {
-    display: none;
-  }
-  .faq .content .answer {
-    padding: 8px;
-    transform: translateY(-15px);
+  .width .leftinfo {
+    height: 40vh;
+    width: 2px;
+    background: white;
     border-radius: 2px;
-    height: 0;
-    transition: 0.2s;
-    pointer-events: none;
-    opacity: 0;
-    width: 640px;
+    position: fixed;
+    left: calc(50% - 645px); /* Centers + 50px offset */
+    bottom: 0;
+  }
+  .width .leftinfo p {
+    position: absolute;
+    top: -30px;
+    left: -10px;
+    transform: rotate(-90deg);
+    transform-origin: top left;
+    width: -moz-max-content;
+    width: max-content;
+    color: white;
+  }
+  .quote {
+    padding-top: 85px;
+    position: relative;
+    width: 100%;
+    height: auto;
+  }
+  .quote .content {
+    padding-inline: 50px;
+    max-width: 1290px;
     margin-inline: auto;
   }
-  .faq .content .answer.active {
-    pointer-events: visible;
-    opacity: 1;
-    height: 140px;
+  .quote .content .text {
+    text-align: center;
   }
-  .faq .content .answer p {
-    font-size: 16px;
+  .quote .content .text h2 {
+    font-size: 40px;
+    color: white;
     font-weight: 500;
-    color: #1F1F1F;
+  }
+  .service {
+    padding-top: 115px;
+    position: relative;
+    width: 100%;
+    height: auto;
+  }
+  .service .content {
+    padding-inline: 50px;
+    max-width: 1290px;
+    margin-inline: auto;
+    display: flex;
+    justify-content: space-between;
+  }
+  .service .content .text {
+    text-align: left;
+  }
+  .service .content .text h2 {
+    font-size: 37px;
+    color: white;
+    font-weight: 500;
+  }
+  .service .content .text p {
+    color: white;
+    font-size: 22px;
+  }
+  .service .content img {
+    width: 350px;
+    height: auto;
+    border-radius: 12px;
   }
 }/*# sourceMappingURL=base.css.map */

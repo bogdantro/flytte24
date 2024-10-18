@@ -2,239 +2,58 @@
 {% load static %}
 
 {% block head %}
-<title>Bilmeglerne - Om oss</title>
+<!-- <title>Bilmeglerne - Om oss</title>
 <meta name="description" content="Bilmeglerne har spesialisert seg på salg av bil. Vi har utviklet denne tjenesten for å gjøre deg trygg på at bilsalget foregår i henhold til gjeldende lover og forskrifter">
 <meta name="author" content="Bilmeglerne">
 <meta name="keywords" content="Bilmeglerne, Selge bil, Kjøpe bil, Biler til salg, Kjøp ny bil, Kjøp en bil, Bil, Biler, Bilene">
 <meta property="og:type" content="website">
 <meta property="og:url" content="{{ request.get_full_path }}">
-<meta property="og:description" content="Bilmeglerne har spesialisert seg på salg av bil. Vi har utviklet denne tjenesten for å gjøre deg trygg på at bilsalget foregår i henhold til gjeldende lover og forskrifter">
+<meta property="og:description" content="Bilmeglerne har spesialisert seg på salg av bil. Vi har utviklet denne tjenesten for å gjøre deg trygg på at bilsalget foregår i henhold til gjeldende lover og forskrifter"> -->
 {% endblock %}
 
 {% block content %}
 
 <link rel="stylesheet" href="{% static '/scss/pages/about.css' %}" type="text/css">
-<link rel="stylesheet" href="{% static '/scss/pages/page.css' %}" type="text/css">
 <script src="{% static '/js/about.js' %}"></script>
 
-<div class="page" style="padding-inline: 0;">
-    <div class="cover">
-        <div class="content">
-            <div class="text">
-                <h1 class="cover-h1">Om oss</h1>
-                <p class="cover-p" style="max-width: max-content;">Bilmeglerne har spesialisert seg på salg av bil. Vi har utviklet denne tjenesten for å gjøre deg trygg på at bilsalget foregår i henhold til gjeldende lover og forskrifter</p>
-            </div>  
-            <button onclick="window.location.href='/'">Book time</button>
+<div class="cover">
+    <div class="content">
+        <div class="text" id="coverText">
+            <h1 class="cover-h1" id="dynamic-textabt"></h1>
+            <p class="cover-p">
+                Om oss tekst går her. litt usikker på hva jeg ellers skal skrive :)
+            </p>
         </div>
-    </div>
+        <div class="border" id="borderForImage"></div>
+        <img src="{% static '/images/covers/cover.jpg' %}" alt="" id="imageForBorder">
 
-    <div class="about-us">
-        <div class="first-div">
-            <div class="text">
-                <h1>Kvalitet og trygghet for deg som kunde</h1>
-                <p>
-                    Bilmeglerne har spesialisert seg på salg av bil. Vi vet at det lønner seg å selge bil igjennom oss om du ikke har erfaring fra salg av kjøretøy. Vi prissetter bilene til riktig verdi. Det vil si at vi får mer for bilen enn du ville gjort. 
-                    <br>
-                    <br>
-                    Det vi ønsker er at kundene skal tjene på å bruke oss ved at vi får mer for bilen enn hva du ville gjort selv, men også fordi de vil spare mye tid. Våre profesjonelle bilselgere har vært i bransjen lenge som sikrer kvalitet og trygghet for deg som kunde
-                </p>
+        <div class="images">
+            <!-- <img src="{% static '/images/covers/dots.png' %}" alt=""  class="coverimg imgone">
+            <img src="{% static '/images/covers/dots.png' %}" alt="" class="coverimg imgtwo">
+            <img src="{% static '/images/covers/dots.png' %}" alt=""  class="coverimg imgthree">
+            <img src="{% static '/images/covers/dots.png' %}" alt=""  class="coverimg imgfour">
+            <img src="{% static '/images/covers/dots.png' %}" alt=""  class="coverimg imgfive">
+            <img src="{% static '/images/covers/dots.png' %}" alt=""  class="coverimg imgsix">
+            <img src="{% static '/images/covers/dots.png' %}" alt=""  class="coverimg imgseven">
+        </div> -->
+        <div class="scroll-indicator">
+            <div class="mouse">
+                <div class="mouse-wheel"></div>
             </div>
-        </div>
-        <br>
-        <div class="verdivurdering">
-            <div class="content">
-                <div class="text">
-                    <h1>Få en verdivurdering</h1> <br> <h2>Vi gir deg en gratis verdivurdering!</h2>
-                    <div id="onlyOnDes">
-                        <div class="check">
-                            <i class="fa-solid fa-check"></i>
-                            <p>Raskt svar</p>
-                        </div>
-                        <div class="check">
-                            <i class="fa-solid fa-check"></i>
-                            <p>Realistisk estimat</p>
-                        </div>
-                        <div class="check">
-                            <i class="fa-solid fa-check"></i>
-                            <p>Enkelt å sende inn</p>
-                        </div>
-                    </div>
-                </div>
-                <form id="verdivurdering" action="" method="POST">
-                    {% csrf_token %}
-                    {{form.errors}}
-                    <br>
-                    <div class="inputs-labels">
-                        <div class="step-one">
-                            <div class="reg-nr">
-                                <img src="{% static 'images/other/skilt-no.svg' %}" alt="">
-                                <input required type="text" name="reg_nr" id="reg_nr" placeholder="AB12345" maxlength="7" >
-                            </div>
-                            <br>
-                            <div class="km">
-                                <p>km</p>
-                                <input required type="text" id="km" name="km" placeholder="130000" name="" id="">
-                            </div>
-                        </div>
-                        <div id="stepTwo" style="margin-top: 37px;">
-                            <label for="navn">Navn</label>
-                            <br>
-                            <input type="text" name="name" id="name" required  oninput="this.setCustomValidity('')" value="{{request.user.get_full_name}}">
-                            <br>
-                            <br>
-                            <label for="email">Epost</label>
-                            <br>
-                            <input type="email" name="email" id="email"  required oninput="this.setCustomValidity('')" value="{{request.user.email}}">
-                            <br>
-                            <br>
-                            <label for="telefon">Telefonnummer</label>
-                            <br>
-                            <input type="number" name="telefon" id="telefon"  required oninput="this.setCustomValidity('')">
-                            <br>
-                            <div class="checkbox">
-                              <input required type="checkbox" name="vilkaar" id="vilkaar">
-                              <p>Jeg godtar <a href="">vilkårene og betingelsene</a></p>
-                            </div>
-                        </div>
-            
-                      </div>
-                    <div class="form-actions">
-                      <button class="primary" type="submit" name="verdivurdering" value="verdivurdering">Sjekk verdi</button>
-                    </div>
-                </form>
+            <div class="scroll-text">Scroll Down</div>
+            <div class="arrow">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
-        </div>
-        <div class="vision">
-            <div class="text">
-                <h1>Vår visjon</h1>
-                <p>
-                    Vi tar en fast lav pris for å redusere risikoen, samt forenkle prosessen ved kjøp eller salg av bil. Vi trygger en bransje full av heftige salgsteknikker og mange useriøse aktører som bare søker maksimal profitt på forbrukernes, altså din bekostning. 
-                    <br>
-                    <br>
-                    Vi gjør kjøp eller salg av bruktbil tryggere og enklere. 
-                    Bilmeglerne er et selskap med forbrukerens interesse som første prioritet. Sammen med våre samarbeidspartnere gjør vi bruktbilhandel tryggere.
-                </p>
             </div>
-        </div>
-        <div class="faq" id="faq">
-            <div class="content">
-                <div class="text">
-                    <h1>Ofte stilte spørsmål</h1>
-                </div>
-        
-                <div class="ask" id="ask1" style="border-top: 1px solid lightgray;" onclick="faqFunc1()">
-                    <p>Hvor mye får jeg for bilen min?</p>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="plus" id="faqPlus1" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="minus" style="transform: translateY(-7px);" id="faqMinus1" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M32 416c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H32z"/></svg>
-                </div>
-                <div class="answer" id="answer1"onclick="faqFunc1()">
-                    <p>Bilmeglerne skaffer deg markedspris minus honorar for salget og omregistreringsavgiften.</p>
-                </div>
-        
-                <div class="ask" id="ask2" onclick="faqFunc2()">
-                    <p>Hvor lang tid bruker dere på salget?</p>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="plus"  id="faqPlus2" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="minus" style="transform: translateY(-7px);" id="faqMinus2" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M32 416c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H32z"/></svg>
-                </div>
-                <div class="answer" id="answer2"onclick="faqFunc2()">
-                    <p>Vi skaffer deg en kjøper innen 60 dager. Men det er opp til deg om du ønsker å akseptere salgssummen.
-                    </p>
-                </div>
-        
-                <div class="ask" id="ask3" onclick="faqFunc3()">
-                    <p>Kan jeg bruke bilen eller må den stå hos dere?</p>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="plus"  id="faqPlus3" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="minus" style="transform: translateY(-7px);" id="faqMinus3" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M32 416c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H32z"/></svg>
-                </div>
-                <div class="answer" id="answer3"onclick="faqFunc3()">
-                    <p>Du kan bruke bilen helt frem til vi har en kjøper.</p>
-                </div>
-        
-                <div class="ask" id="ask4" onclick="faqFunc4()">
-                    <p>Hva må jeg gjøre før innleveringen?</p>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="plus"  id="faqPlus4" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="minus" style="transform: translateY(-7px);" id="faqMinus4" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M32 416c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H32z"/></svg>
-                </div>
-                <div class="answer" id="answer4"onclick="faqFunc4()">
-                    <p>Bilen må tømmes for personlige eiendeler slik at vi enkelt kan rengjøre bilen innvendig.</p>
-                </div>
-        
-                <div class="ask" id="ask5" onclick="faqFunc5()">
-                    <p>Hvor lang tid tar klargjøringen?</p>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="plus"  id="faqPlus5" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="minus" style="transform: translateY(-7px);" id="faqMinus5" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M32 416c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H32z"/></svg>
-                </div>
-                <div class="answer" id="answer5"onclick="faqFunc5()">
-                    <p>Klargjøringen tar 2 timer, men noen ganger er bilen klar tidligere. </p>
-                </div>
-        
-                <div class="ask" id="ask6" onclick="faqFunc6()">
-                    <p>Hvor mye koster det om bilen ikke blir solgt?</p>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="plus"  id="faqPlus6" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="minus" style="transform: translateY(-7px);" id="faqMinus6" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M32 416c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H32z"/></svg>
-                </div>
-                <div class="answer" id="answer6"onclick="faqFunc6()">
-                    <p>Om bilen ikke blir solgt tar vi ikke betalt for salgsprosessen. Eneste kostnaden du har er klargjøringskostnaden på 1.990,- som inkluderer 60 dager på finn, fotografering og innvendig og utvendig vask.</p>
-                </div>
-        
-                <div class="ask" id="ask7" onclick="faqFunc7()">
-                    <p>Hvor lang tid tar det før jeg har pengene på kontoen?</p>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="plus"  id="faqPlus7" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="minus" style="transform: translateY(-7px);" id="faqMinus7" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M32 416c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H32z"/></svg>
-                </div>
-                <div class="answer" id="answer7"onclick="faqFunc7()">
-                    <p>Det tar vanligvis 1-3 dager før du har pengene på kontoen. Det kan ta noe lengre tid om kjøper finansierer kjøpet med billån. 
-                    </p>
-                </div>
-        
-                <div class="ask" id="ask8" onclick="faqFunc8()">
-                    <p>Hvorfor burde jeg velge dere?</p>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="plus"  id="faqPlus8" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="minus" style="transform: translateY(-7px);" id="faqMinus8" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M32 416c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H32z"/></svg>
-                </div>
-                <div class="answer" id="answer8"onclick="faqFunc8()">
-                    <p>Vi tar en fast lav pris for at du skal sikre deg best mulig pris, vi mener alle andre aktører er en reserveløsning. 
-                    </p>
-                </div>
-        
-                <div class="ask" id="ask9" onclick="faqFunc9()">
-                    <p>Kan dere ta bilen i innbytte eller kjøpe den direkte fra meg?</p>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="plus"  id="faqPlus9" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="minus" style="transform: translateY(-7px);" id="faqMinus9" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M32 416c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H32z"/></svg>
-                </div>
-                <div class="answer" id="answer9"onclick="faqFunc9()">
-                    <p>Vi kan kjøpe bilen direkte av deg eller ta bilen din i innbytte. Dette vil være en vesentlig lavere sum enn ved salg gjennom oss, vi er helt transparente på pris og gir deg alltid flere alternativer. 
-                    </p>
-                </div>
-        
-            </div>
-        </div>
+    </div>
     </div>
 </div>
 
 
-<style type="text/css">
-    button{
-              border: 1px solid transparent;
-              border-radius: 6px;
-              outline: none !important;
-              background: linear-gradient(to bottom right, #f0a432, #ffb649);
-              color: white;
-              font-weight: 500;
-              font-size: 17px;
-              width: 220px;
-              display: block;
-              height: 43px;
-              margin-top: 23px;
-            }
-              button:hover{
-                filter: brightness(89%);
-            }
-                button:focus{
-                filter: brightness(89%);
-                transform: scale(0.95) ;
-                }
-</style>
+
+
 {% endblock %}
 
 

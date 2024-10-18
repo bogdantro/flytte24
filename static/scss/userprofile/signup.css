@@ -69,17 +69,17 @@
   }
   #desNav .menu a.cta {
     transform: translateY(0);
-    background: transparent;
-    color: #1F1F1F;
+    background: #39c1b1;
+    color: white;
     border-radius: 25px;
     margin-left: 6px;
-    border: 2px solid rgb(128, 128, 128);
+    border: 2px solid transparent;
     height: -moz-max-content !important;
     height: max-content !important;
     margin-bottom: 0;
   }
   #desNav .menu a.cta:hover {
-    background: rgba(203, 203, 203, 0.45);
+    background: #31b1a2;
   }
   #desNav .menu a:hover {
     background: rgba(211, 211, 211, 0.35);
@@ -126,10 +126,10 @@
     border-radius: 25px;
     width: 300px;
     height: 45px;
-    background: transparent;
+    background: #39c1b1;
     outline: none;
-    border: 2px solid rgb(128, 128, 128);
-    color: #1F1F1F;
+    border: 2px solid transparent;
+    color: white;
     font-size: 17px;
   }
   .image {

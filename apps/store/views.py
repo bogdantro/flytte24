@@ -31,7 +31,7 @@ from django.db.models import Q
 from django.db.models import IntegerField
 from django.db.models.functions import Replace, Cast
 from django.http import HttpResponse
-
+from django.utils import translation
 # views.py
 
 from django.conf import settings
@@ -144,4 +144,11 @@ def stripe_webhook(request):
     return HttpResponse(status=200)
 
 def beome_member(request):
+     # Get the language from the cookie, if available
+    language = request.COOKIES.get('language')
+    if language:
+        translation.activate(language)
+        request.LANGUAGE_CODE = language
+    else:
+        translation.activate('en')  # Default language if none is set
     return render(request, 'core/become-member.html')

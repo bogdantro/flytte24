@@ -321,825 +321,286 @@
 }
 
 @media only screen and (min-device-width: 1140px) {
-  .page .cover {
+  .cover {
     width: 100%;
-    min-height: -moz-max-content;
-    min-height: max-content;
+    height: 100vh;
+    max-height: 770px;
+    margin-bottom: 20px;
     position: relative;
     padding-bottom: 5px;
-    background: linear-gradient(to bottom right, rgba(255, 240, 180, 0.185), transparent);
+    overflow: hidden;
+    background: transparent;
+    border-bottom: 1px solid #DEE2E6;
   }
-  .page .cover .content {
+  .cover .content {
     padding-inline: 35px;
-    padding-top: 80px;
-    padding-bottom: 40px;
+    padding-top: 160px;
+    padding-bottom: 350px;
     height: -moz-max-content;
     height: max-content;
     position: relative;
+    margin-inline: auto;
+    max-width: 1290px;
+    /* Scroll wheel animation */
+    /* Arrow bounce animation */
   }
-  .page .cover .content .text {
+  .cover .content .text {
     text-align: left;
     margin-top: 28px;
+    margin-inline: auto;
+    transition: 2s;
+    opacity: 0;
+    transform: translateX(-90px);
   }
-  .page .cover .content .text .cover-h1 {
-    color: #1F1F1F;
-    font-size: 38px;
+  .cover .content .text.active {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .cover .content .text.scroll {
+    transform: translateX(-90px);
+    opacity: 0;
+  }
+  .cover .content .text .cover-h1 {
+    color: white;
+    font-size: 46px;
     font-weight: 600;
     margin-bottom: 10px;
-    max-width: 500px;
+    overflow: hidden; /* Hide the extra text when typing */
+    width: 100%; /* Ensure the width of the container remains consistent */
+    max-width: 1000px; /* Set a max width depending on your text length */
+    min-width: 100px;
+    min-height: 60px;
   }
-  .page .cover .content .text .cover-p {
-    max-width: 600px !important;
-    font-size: 20px;
+  .cover .content .text .cover-h1.typing {
+    animation: typing 2s steps(30, end) forwards; /* Simulates typing */
+  }
+  .cover .content .text .cover-h1.untyping {
+    animation: untyping 2s steps(30, end) forwards; /* Simulates deleting */
+  }
+  @keyframes typing {
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
+  }
+  @keyframes untyping {
+    from {
+      width: 100%;
+    }
+    to {
+      width: 0;
+    }
+  }
+  .cover .content .text .cover-p {
+    font-size: 23px;
     margin-bottom: 0;
-    color: #1F1F1F;
+    color: white;
     font-weight: 500;
+    width: 440px;
   }
-  .page .cover .content .cover-actions {
+  .cover .content img {
+    position: absolute;
+    right: 100px;
+    top: 221px;
+    border-radius: 12px;
+    opacity: 0;
+    transform: translateX(90px);
+    transition: 2s;
+    max-width: 348px;
+    max-height: 357px;
+    min-width: 348px;
+    min-height: 357px;
+  }
+  .cover .content img.active {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .cover .content img.scroll {
+    transform: translateX(90px);
+    opacity: 0;
+  }
+  .cover .content .border {
+    position: absolute;
+    right: 0;
+    top: 200px;
+    width: 348px;
+    height: 357px;
+    border-radius: 12px;
+    opacity: 0;
+    transform: translateX(90px);
+    transition: 2s;
+  }
+  .cover .content .border.active {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .cover .content .border.scroll {
+    transform: translateX(90px);
+    opacity: 0;
+  }
+  .cover .content .images {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+  }
+  .cover .content .images .coverimg {
+    width: 250px;
+    height: auto;
+    -o-object-fit: cover;
+       object-fit: cover;
+    opacity: 0.6;
+    transform: translateY(0);
+    transition: 1s;
+  }
+  .cover .content .images .coverimg.active {
+    transform: translateY(150px);
+    opacity: 0;
+  }
+  .cover .content .images .coverimg.imgone {
+    position: absolute;
+    left: -100px;
+    top: -30px;
+  }
+  .cover .content .images .coverimg.imgtwo {
+    position: absolute;
+    left: 0;
+    bottom: 20px;
+  }
+  .cover .content .images .coverimg.imgthree {
+    position: absolute;
+    top: -30px;
+    right: 650px;
+  }
+  .cover .content .images .coverimg.imgfour {
+    position: absolute;
+    right: 550px;
+    bottom: 20px;
+  }
+  .cover .content .images .coverimg.imgfive {
+    position: absolute;
+    top: -30px;
+    right: 150px;
+  }
+  .cover .content .images .coverimg.imgsix {
+    position: absolute;
+    right: 50px;
+    bottom: 20px;
+  }
+  .cover .content .images .coverimg.imgseven {
+    position: absolute;
+    right: -270px;
+    top: -30px;
+  }
+  .cover .content .scroll-indicator {
+    text-align: center;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(0);
+    z-index: 100;
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+    transition: 0.8s;
+  }
+  .cover .content .scroll-indicator.active {
+    opacity: 0; /* Hide when user scrolls */
+    transform: translateY(-100px) translateX(-50%);
+  }
+  .cover .content .scroll-indicator .mouse {
+    width: 35px;
+    height: 55px;
+    border: 2px solid white;
+    border-radius: 25px;
+    position: relative;
+    margin: 0 auto;
+  }
+  .cover .content .scroll-indicator .mouse .mouse-wheel {
+    width: 5px;
+    height: 10px;
+    background-color: white;
+    border-radius: 2px;
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: scroll-wheel 1.5s infinite;
+  }
+  .cover .content .scroll-indicator .scroll-text {
+    color: white;
+    font-size: 14px;
+    margin-top: 10px;
+    opacity: 0.8;
+  }
+  .cover .content .scroll-indicator .arrow {
+    margin-top: 10px;
+  }
+  .cover .content .scroll-indicator .arrow span {
+    display: block;
+    width: 12px;
+    height: 12px;
+    border-right: 2px solid white;
+    border-bottom: 2px solid white;
+    transform: rotate(45deg);
+    margin: -3px auto;
+    animation: arrowBounce 1.5s infinite;
+    opacity: 0.6;
+  }
+  .cover .content .scroll-indicator .arrow span:nth-child(1) {
+    animation-delay: 0s;
+  }
+  .cover .content .scroll-indicator .arrow span:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  .cover .content .scroll-indicator .arrow span:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+  @keyframes scroll-wheel {
+    0% {
+      top: 10px;
+    }
+    50% {
+      top: 20px;
+    }
+    100% {
+      top: 10px;
+    }
+  }
+  @keyframes arrowBounce {
+    0%, 100% {
+      opacity: 0;
+      transform: translateY(0) rotate(45deg);
+    }
+    50% {
+      opacity: 1;
+      transform: translateY(10px) rotate(45deg);
+    }
+  }
+  .cover .content .cover-actions {
     margin-top: 24px;
     width: 100%;
     text-align: center;
   }
-  .page .cover .content .cover-actions button {
+  .cover .content .cover-actions button {
     border: 1px solid transparent;
     border-radius: 6px;
     outline: none;
-    background: linear-gradient(to bottom right, #f0a432, #ffb649);
-    color: white;
+    background: white;
+    color: #f0a432;
     font-weight: 500;
     font-size: 17px;
-    width: 230px;
+    width: 425px;
     display: block;
-    height: 47px;
+    height: 54px;
   }
-  .page .cover .content .cover-actions button.secondary {
+  .cover .content .cover-actions button.secondary {
     border-color: #f0a432;
     color: #f0a432;
     background: white;
     margin-right: 0;
     margin-top: 15px;
-  }
-  .about-us {
-    padding-block: 25px;
-    position: relative;
-  }
-  .about-us .first-div {
-    margin-top: 10px;
-    padding-inline: 35px;
-  }
-  .about-us .first-div .text h1 {
-    font-size: 30px;
-    color: #1F1F1F;
-    font-weight: 600;
-    margin-bottom: 15px;
-  }
-  .about-us .first-div .text p {
-    font-size: 17px;
-    color: #1F1F1F;
-    max-width: 500px;
-  }
-  .about-us .second-div {
-    padding-block: 65px;
-    padding-inline: 35px;
-  }
-  .about-us .second-div .text h1 {
-    font-size: 30px;
-    color: #1F1F1F;
-    font-weight: 600;
-    margin-bottom: 15px;
-  }
-  .about-us .second-div .persons {
-    margin-top: 35px;
-  }
-  .about-us .second-div .persons .person {
-    width: 100%;
-    max-width: 400px;
-    height: auto;
-    display: flex;
-    margin-bottom: 55px;
-  }
-  .about-us .second-div .persons .person:last-child {
-    margin-bottom: 0 !important;
-  }
-  .about-us .second-div .persons .person .left {
-    display: flex;
-    justify-content: center;
-    width: 20%;
-  }
-  .about-us .second-div .persons .person .left img {
-    width: 50px;
-    height: 50px;
-    border-radius: 100%;
-    -o-object-fit: cover;
-       object-fit: cover;
-  }
-  .about-us .second-div .persons .person .right {
-    width: 80%;
-    margin-left: 20px;
-  }
-  .about-us .second-div .persons .person .right h1 {
-    font-size: 20px;
-    font-weight: 500;
-    color: #1F1F1F;
-    margin-bottom: 6px;
-  }
-  .about-us .second-div .persons .person .right p {
-    margin-bottom: 0px;
-    font-size: 16px;
-    color: #1F1F1F;
-    opacity: 0.8;
-  }
-  .about-us .verdivurdering {
-    margin-top: 25px;
-    width: 100%;
-    height: auto;
-    position: relative;
-  }
-  .about-us .verdivurdering .content {
-    padding-inline: 80px;
-    padding-top: 65px;
-    padding-bottom: 120px;
-    position: relative;
-    background: #f0a432;
-    display: flex;
-    justify-content: space-between;
-    border-radius: 4px;
-  }
-  .about-us .verdivurdering .content .text {
-    text-align: left;
-    margin-top: 28px;
-  }
-  .about-us .verdivurdering .content .text h1 {
-    color: white;
-    font-size: 34px;
-    font-weight: 600;
-    margin-bottom: -10px;
-  }
-  .about-us .verdivurdering .content .text h2 {
-    color: white;
-    font-size: 27px;
-    font-weight: 500;
-  }
-  .about-us .verdivurdering .content .text #onlyOnDes {
-    display: block;
-    margin-top: 30px;
-  }
-  .about-us .verdivurdering .content .text #onlyOnDes .check {
-    display: flex;
-    margin-bottom: 25px;
-  }
-  .about-us .verdivurdering .content .text #onlyOnDes .check i {
-    color: #1efa1e;
-    background: #e0fae0;
-    border-radius: 100%;
-    padding: 10px;
-    font-size: 24px;
-  }
-  .about-us .verdivurdering .content .text #onlyOnDes .check p {
-    color: white;
-    font-weight: 500;
-    font-size: 19px;
-    margin-left: 15px;
-    transform: translateY(8px);
-  }
-  .about-us .verdivurdering .content form {
-    background: white;
-    border-radius: 12px;
-    padding-inline: 30px;
-    padding-block: 13px;
-    padding-bottom: 23px;
-    margin-top: 25px;
-    width: 380px;
-    margin-inline: auto;
-    transform: translateX(60px);
-  }
-  .about-us .verdivurdering .content form .inputs-labels .step-one input {
-    height: 54px;
-    border-radius: 12px;
-    text-align: center;
-    font-size: 23px;
-  }
-  .about-us .verdivurdering .content form .inputs-labels .step-one input:focus, .about-us .verdivurdering .content form .inputs-labels .step-one input:active {
-    border: 1px solid rgb(172, 172, 172);
-    cursor: text;
-    background: rgb(255, 255, 255);
-  }
-  .about-us .verdivurdering .content form .inputs-labels .step-one input::-moz-placeholder {
-    font-size: 23px;
-  }
-  .about-us .verdivurdering .content form .inputs-labels .step-one input::placeholder {
-    font-size: 23px;
-  }
-  .about-us .verdivurdering .content form .inputs-labels .step-one .reg-nr {
-    display: flex;
-    position: relative;
-  }
-  .about-us .verdivurdering .content form .inputs-labels .step-one .reg-nr input {
-    text-transform: uppercase;
-  }
-  .about-us .verdivurdering .content form .inputs-labels .step-one .reg-nr img {
-    position: absolute;
-    left: 0;
-    height: 54px;
-    width: auto;
-    border-bottom-left-radius: 12px;
-    border-top-left-radius: 12px;
-  }
-  .about-us .verdivurdering .content form .inputs-labels .step-one .km {
-    position: relative;
-    display: flex;
-  }
-  .about-us .verdivurdering .content form .inputs-labels .step-one .km p {
-    position: absolute;
-    right: 11px;
-    bottom: -5px;
-    color: #1F1F1F;
-    opacity: 0.95;
-    font-size: 16px;
-    font-weight: 500;
-  }
-  .about-us .verdivurdering .content form .inputs-labels label {
-    font-size: 16px;
-    color: #1F1F1F;
-    font-weight: 500;
-  }
-  .about-us .verdivurdering .content form .inputs-labels input {
-    width: 100%;
-    height: 45px;
-    border: 1px solid lightgray;
-    outline: none;
-    padding: 8px;
-    color: #1F1F1F;
-    font-size: 16px;
-    cursor: pointer;
-    background: rgba(255, 255, 255, 0.7);
-    border-radius: 7px;
-  }
-  .about-us .verdivurdering .content form .inputs-labels input:focus, .about-us .verdivurdering .content form .inputs-labels input:active {
-    border: 2px solid #f0a432;
-    cursor: text;
-    background: rgb(255, 255, 255);
-  }
-  .about-us .verdivurdering .content form .inputs-labels input::-moz-placeholder {
-    color: #1F1F1F;
-    opacity: 0.6;
-  }
-  .about-us .verdivurdering .content form .inputs-labels input::placeholder {
-    color: #1F1F1F;
-    opacity: 0.6;
-  }
-  .about-us .verdivurdering .content form .inputs-labels .checkbox {
-    display: flex;
-    align-items: center;
-    margin-top: 18px;
-    margin-bottom: 15px;
-  }
-  .about-us .verdivurdering .content form .inputs-labels .checkbox p {
-    margin-bottom: 0;
-    margin-left: 15px;
-    font-size: 14px;
-    color: #1F1F1F;
-  }
-  .about-us .verdivurdering .content form .inputs-labels .checkbox p a {
-    text-decoration: underline;
-  }
-  .about-us .verdivurdering .content form .inputs-labels .checkbox input {
-    width: 20px;
-    height: 20px;
-  }
-  .about-us .verdivurdering .content form .form-actions button {
-    border: 1px solid transparent;
-    border-radius: 6px;
-    outline: none;
-    background: linear-gradient(to bottom right, #f0a432, #ffb649);
-    color: white;
-    font-weight: 500;
-    font-size: 17px;
-    width: 100%;
-    display: block;
-    height: 46px;
-    margin-top: 32px;
-  }
-  .about-us .vision {
-    margin-top: 35px;
-    padding: 45px 35px;
-  }
-  .about-us .vision .text h1 {
-    font-size: 30px;
-    color: #1F1F1F;
-    font-weight: 600;
-    margin-bottom: 15px;
-  }
-  .about-us .vision .text p {
-    font-size: 17px;
-    color: #1F1F1F;
-    max-width: 500px;
-  }
-  .about-us .our-local {
-    padding: 55px 35px;
-  }
-  .about-us .our-local .text h1 {
-    font-size: 30px;
-    color: #1F1F1F;
-    font-weight: 600;
-    margin-bottom: 15px;
-  }
-  .about-us .our-local .text p {
-    font-size: 17px;
-    color: #1F1F1F;
-  }
-  .about-us .our-local .text .video {
-    margin-top: 25px;
-    width: 100%;
-    height: 150px;
-    background: lightgray;
-    max-width: 400px;
-  }
-  .about-us .faq {
-    width: 100%;
-    height: auto;
-    padding-block: 70px;
-    padding-top: 95px;
-    position: relative;
-  }
-  .about-us .faq .content {
-    padding-inline: 35px;
-    position: relative;
-  }
-  .about-us .faq .content .text {
-    text-align: left;
-    margin-top: 0;
-    margin-bottom: 20px;
-  }
-  .about-us .faq .content .text h1 {
-    color: #1F1F1F;
-    font-size: 30px;
-    font-weight: 600;
-    margin-bottom: 30px;
-  }
-  .about-us .faq .content .ask {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid lightgray;
-    height: -moz-max-content;
-    height: max-content;
-    position: relative;
-    width: 540px;
-    cursor: pointer;
-    padding-block: 25px;
-  }
-  .about-us .faq .content .ask p {
-    color: #1F1F1F;
-    font-weight: 500;
-    margin-bottom: 0;
-    font-size: 22px;
-    padding-right: 105px;
-  }
-  .about-us .faq .content .ask svg {
-    color: #1F1F1F;
-    font-size: 41px;
-    padding: 8px;
-    margin: -8px;
-  }
-  .about-us .faq .content .ask .plus {
-    display: block;
-  }
-  .about-us .faq .content .ask .minus {
-    display: none;
-  }
-  .about-us .faq .content .answer {
-    padding: 8px;
-    border-radius: 2px;
-    height: 0;
-    transition: 0.2s;
-    pointer-events: none;
-    opacity: 0;
-    width: 540px;
-    margin-top: 5px;
-  }
-  .about-us .faq .content .answer.active {
-    pointer-events: visible;
-    margin-top: 10px;
-    opacity: 1;
-    height: 140px;
-  }
-  .about-us .faq .content .answer p {
-    font-size: 17px;
-    font-weight: 500;
-    color: #1F1F1F;
-  }
-}
-@media only screen and (min-device-width: 1290px) {
-  .page .cover {
-    width: 100%;
-    min-height: -moz-max-content;
-    min-height: max-content;
-    position: relative;
-    padding-bottom: 5px;
-    background: linear-gradient(to bottom right, rgba(255, 240, 180, 0.185), transparent);
-  }
-  .page .cover .content {
-    padding-inline: 35px;
-    padding-top: 140px;
-    padding-bottom: 60px;
-    height: -moz-max-content;
-    height: max-content;
-    position: relative;
-    max-width: 1290px;
-    margin-inline: auto;
-  }
-  .page .cover .content .text {
-    text-align: left;
-    margin-top: 28px;
-  }
-  .page .cover .content .text .cover-h1 {
-    color: #1F1F1F;
-    font-size: 40px;
-    font-weight: 600;
-    margin-bottom: 10px;
-    max-width: 500px;
-  }
-  .page .cover .content .text .cover-p {
-    max-width: 320px;
-    font-size: 22px;
-    margin-bottom: 0;
-    color: #1F1F1F;
-    font-weight: 500;
-  }
-  .page .cover .content .cover-actions {
-    margin-top: 24px;
-    width: 100%;
-    text-align: center;
-  }
-  .page .cover .content .cover-actions button {
-    border: 1px solid transparent;
-    border-radius: 6px;
-    outline: none;
-    background: linear-gradient(to bottom right, #f0a432, #ffb649);
-    color: white;
-    font-weight: 500;
-    font-size: 17px;
-    width: 230px;
-    display: block;
-    height: 47px;
-  }
-  .page .cover .content .cover-actions button.secondary {
-    border-color: #f0a432;
-    color: #f0a432;
-    background: white;
-    margin-right: 0;
-    margin-top: 15px;
-  }
-  .about-us {
-    padding-block: 25px;
-    position: relative;
-    max-width: 1290px;
-    margin-inline: auto;
-    padding-bottom: 30px;
-  }
-  .about-us .first-div {
-    margin-top: 10px;
-    padding-inline: 35px;
-  }
-  .about-us .first-div .text h1 {
-    font-size: 30px;
-    color: #1F1F1F;
-    font-weight: 600;
-    margin-bottom: 15px;
-  }
-  .about-us .first-div .text p {
-    font-size: 17px;
-    color: #1F1F1F;
-    max-width: 500px;
-  }
-  .about-us .second-div {
-    padding-block: 65px;
-    padding-inline: 35px;
-  }
-  .about-us .second-div .text h1 {
-    font-size: 30px;
-    color: #1F1F1F;
-    font-weight: 600;
-    margin-bottom: 15px;
-  }
-  .about-us .second-div .persons {
-    margin-top: 35px;
-  }
-  .about-us .second-div .persons .person {
-    width: 100%;
-    max-width: 400px;
-    height: auto;
-    display: flex;
-    margin-bottom: 55px;
-  }
-  .about-us .second-div .persons .person:last-child {
-    margin-bottom: 0 !important;
-  }
-  .about-us .second-div .persons .person .left {
-    display: flex;
-    justify-content: center;
-    width: 20%;
-  }
-  .about-us .second-div .persons .person .left img {
-    width: 50px;
-    height: 50px;
-    border-radius: 100%;
-    -o-object-fit: cover;
-       object-fit: cover;
-  }
-  .about-us .second-div .persons .person .right {
-    width: 80%;
-    margin-left: 20px;
-  }
-  .about-us .second-div .persons .person .right h1 {
-    font-size: 20px;
-    font-weight: 500;
-    color: #1F1F1F;
-    margin-bottom: 6px;
-  }
-  .about-us .second-div .persons .person .right p {
-    margin-bottom: 0px;
-    font-size: 16px;
-    color: #1F1F1F;
-    opacity: 0.8;
-  }
-  .about-us .verdivurdering {
-    margin-top: 25px;
-    width: 100%;
-    height: auto;
-    position: relative;
-  }
-  .about-us .verdivurdering .content {
-    padding-inline: 80px;
-    padding-top: 65px;
-    padding-bottom: 120px;
-    position: relative;
-    background: #f0a432;
-    display: flex;
-    justify-content: space-between;
-  }
-  .about-us .verdivurdering .content .text {
-    text-align: left;
-    margin-top: 28px;
-  }
-  .about-us .verdivurdering .content .text h1 {
-    color: white;
-    font-size: 34px;
-    font-weight: 600;
-    margin-bottom: -10px;
-  }
-  .about-us .verdivurdering .content .text h2 {
-    color: white;
-    font-size: 27px;
-    font-weight: 500;
-  }
-  .about-us .verdivurdering .content .text #onlyOnDes {
-    display: block;
-    margin-top: 30px;
-  }
-  .about-us .verdivurdering .content .text #onlyOnDes .check {
-    display: flex;
-    margin-bottom: 25px;
-  }
-  .about-us .verdivurdering .content .text #onlyOnDes .check i {
-    color: #1efa1e;
-    background: #e0fae0;
-    border-radius: 100%;
-    padding: 10px;
-    font-size: 24px;
-  }
-  .about-us .verdivurdering .content .text #onlyOnDes .check p {
-    color: white;
-    font-weight: 500;
-    font-size: 19px;
-    margin-left: 15px;
-    transform: translateY(8px);
-  }
-  .about-us .verdivurdering .content form {
-    background: white;
-    border-radius: 12px;
-    padding-inline: 30px;
-    padding-block: 13px;
-    padding-bottom: 23px;
-    margin-top: 25px;
-    width: 380px;
-    margin-inline: auto;
-    transform: translateX(60px);
-  }
-  .about-us .verdivurdering .content form .inputs-labels .step-one input {
-    height: 54px;
-    border-radius: 12px;
-    text-align: center;
-    font-size: 23px;
-  }
-  .about-us .verdivurdering .content form .inputs-labels .step-one input:focus, .about-us .verdivurdering .content form .inputs-labels .step-one input:active {
-    border: 1px solid rgb(172, 172, 172);
-    cursor: text;
-    background: rgb(255, 255, 255);
-  }
-  .about-us .verdivurdering .content form .inputs-labels .step-one input::-moz-placeholder {
-    font-size: 23px;
-  }
-  .about-us .verdivurdering .content form .inputs-labels .step-one input::placeholder {
-    font-size: 23px;
-  }
-  .about-us .verdivurdering .content form .inputs-labels .step-one .reg-nr {
-    display: flex;
-    position: relative;
-  }
-  .about-us .verdivurdering .content form .inputs-labels .step-one .reg-nr input {
-    text-transform: uppercase;
-  }
-  .about-us .verdivurdering .content form .inputs-labels .step-one .reg-nr img {
-    position: absolute;
-    left: 0;
-    height: 54px;
-    width: auto;
-    border-bottom-left-radius: 12px;
-    border-top-left-radius: 12px;
-  }
-  .about-us .verdivurdering .content form .inputs-labels .step-one .km {
-    position: relative;
-    display: flex;
-  }
-  .about-us .verdivurdering .content form .inputs-labels .step-one .km p {
-    position: absolute;
-    right: 11px;
-    bottom: -5px;
-    color: #1F1F1F;
-    opacity: 0.95;
-    font-size: 16px;
-    font-weight: 500;
-  }
-  .about-us .verdivurdering .content form .inputs-labels label {
-    font-size: 16px;
-    color: #1F1F1F;
-    font-weight: 500;
-  }
-  .about-us .verdivurdering .content form .inputs-labels input {
-    width: 100%;
-    height: 45px;
-    border: 1px solid lightgray;
-    outline: none;
-    padding: 8px;
-    color: #1F1F1F;
-    font-size: 16px;
-    cursor: pointer;
-    background: rgba(255, 255, 255, 0.7);
-    border-radius: 7px;
-  }
-  .about-us .verdivurdering .content form .inputs-labels input:focus, .about-us .verdivurdering .content form .inputs-labels input:active {
-    border: 2px solid #f0a432;
-    cursor: text;
-    background: rgb(255, 255, 255);
-  }
-  .about-us .verdivurdering .content form .inputs-labels input::-moz-placeholder {
-    color: #1F1F1F;
-    opacity: 0.6;
-  }
-  .about-us .verdivurdering .content form .inputs-labels input::placeholder {
-    color: #1F1F1F;
-    opacity: 0.6;
-  }
-  .about-us .verdivurdering .content form .inputs-labels .checkbox {
-    display: flex;
-    align-items: center;
-    margin-top: 18px;
-    margin-bottom: 15px;
-  }
-  .about-us .verdivurdering .content form .inputs-labels .checkbox p {
-    margin-bottom: 0;
-    margin-left: 15px;
-    font-size: 14px;
-    color: #1F1F1F;
-  }
-  .about-us .verdivurdering .content form .inputs-labels .checkbox p a {
-    text-decoration: underline;
-  }
-  .about-us .verdivurdering .content form .inputs-labels .checkbox input {
-    width: 20px;
-    height: 20px;
-  }
-  .about-us .verdivurdering .content form .form-actions button {
-    border: 1px solid transparent;
-    border-radius: 6px;
-    outline: none;
-    background: linear-gradient(to bottom right, #f0a432, #ffb649);
-    color: white;
-    font-weight: 500;
-    font-size: 17px;
-    width: 100%;
-    display: block;
-    height: 46px;
-    margin-top: 32px;
-  }
-  .about-us .vision {
-    margin-top: 35px;
-    padding: 45px 35px;
-  }
-  .about-us .vision .text h1 {
-    font-size: 30px;
-    color: #1F1F1F;
-    font-weight: 600;
-    margin-bottom: 15px;
-  }
-  .about-us .vision .text p {
-    font-size: 17px;
-    color: #1F1F1F;
-    max-width: 500px;
-  }
-  .about-us .our-local {
-    padding: 55px 35px;
-  }
-  .about-us .our-local .text h1 {
-    font-size: 30px;
-    color: #1F1F1F;
-    font-weight: 600;
-    margin-bottom: 15px;
-  }
-  .about-us .our-local .text p {
-    font-size: 17px;
-    color: #1F1F1F;
-  }
-  .about-us .our-local .text .video {
-    margin-top: 25px;
-    width: 100%;
-    height: 150px;
-    background: lightgray;
-    max-width: 400px;
-  }
-  .about-us .faq {
-    width: 100%;
-    height: auto;
-    padding-block: 70px;
-    padding-top: 95px;
-    position: relative;
-  }
-  .about-us .faq .content {
-    padding-inline: 35px;
-    position: relative;
-  }
-  .about-us .faq .content .text {
-    text-align: left;
-    margin-top: 0;
-    margin-bottom: 20px;
-  }
-  .about-us .faq .content .text h1 {
-    color: #1F1F1F;
-    font-size: 30px;
-    font-weight: 600;
-    margin-bottom: 30px;
-  }
-  .about-us .faq .content .ask {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid lightgray;
-    height: -moz-max-content;
-    height: max-content;
-    position: relative;
-    width: 640px;
-    cursor: pointer;
-    padding-block: 30px;
-  }
-  .about-us .faq .content .ask p {
-    color: #1F1F1F;
-    font-weight: 500;
-    margin-bottom: 0;
-    font-size: 22px;
-    padding-right: 65px;
-  }
-  .about-us .faq .content .ask svg {
-    color: #1F1F1F;
-    font-size: 41px;
-    padding: 8px;
-    margin: -8px;
-  }
-  .about-us .faq .content .ask .plus {
-    display: block;
-  }
-  .about-us .faq .content .ask .minus {
-    display: none;
-  }
-  .about-us .faq .content .answer {
-    padding: 8px;
-    transform: translateY(-15px);
-    border-radius: 2px;
-    height: 0;
-    transition: 0.2s;
-    pointer-events: none;
-    opacity: 0;
-    width: 640px;
-  }
-  .about-us .faq .content .answer.active {
-    pointer-events: visible;
-    opacity: 1;
-    height: 140px;
-  }
-  .about-us .faq .content .answer p {
-    font-size: 17px;
-    font-weight: 500;
-    color: #1F1F1F;
   }
 }/*# sourceMappingURL=about.css.map */

@@ -1,388 +1,97 @@
 {% extends 'core/base.html' %}
 {% load static %}
 
-{% block content %}
 {% block head %}
-<title>Min bruker</title>
-<meta name="author" content="Innlandet Søk">
+<title>Min konto | Flytte24</title>
+<link rel="stylesheet" href="{% static '/scss/userprofile/myaccount.css' %}">
 {% endblock %}
 
-<link rel="stylesheet" href="{% static '/scss/userprofile/myaccount.css' %}" type="text/css">
-<script rel="stylesheet" src="{% static '/js/myaccount.js' %}" type="text/javascript"></script>
+{% block content %}
+<div class="account-dashboard">
 
+  <!-- === WELCOME CARD === -->
+  <div class="welcome-card">
+    <h2>Velkommen til Flytte24.no 👋</h2>
+    <p>Vi gjennomgår opplysningene dine. Dette tar vanligvis 1–2 virkedager. Etter godkjenning kan du begynne å motta kundehenvendelser direkte.</p>
+  </div>
 
+  <div class="dashboard-grid">
+    <!-- === LEFT MAIN SECTION === -->
+    <div class="main-section">
 
-<div class="page">
-    <div class="cover">
-        <div class="content">
-            <div class="top">
-                <div class="left">
-                    
-                    <img src="{{request.user.profile.profile_image.url}}" draggable="false">
-
-                    <p>Velkommen</p>
-                    {% if request.user.profile.business_name %}
-                    <h1>{{ request.user.profile.business_name }}</h1>
-                    {% else %}
-                    <h1>{{ request.user.get_full_name }}</h1>
-                    {% endif %}
-                </div>
-                <div class="right" onclick="window.location.href='/min-bruker/personalia/'">
-                    <i class="fa-regular fa-pen"></i>
-                </div>
-            </div>
-            {% if request.user.profile.medlemskap == 'Bruker' %}
-            <div class="bottom"></div>
-            {% endif %}
-            {% if request.user.profile.medlemskap == 'Vanlig' %}
-            <div class="bottom">
-                <div class="card">
-                    <div class="card-row-one">
-                        <h1 class="card-name">Vanlig</h1>
-                        <p class="card-price">0kr/mnd</p>
-                    </div>
-
-                    <hr style="margin-block: 15px;">
-
-                    <div class="card-row-two">
-                        <!-- card BENEFITS -->
-                        <div class="flex">
-                        <!-- card BENEFITS ICON -->
-                        <div class="icon">
-                            <i class="fa-solid fa-check"></i>
-                        </div>
-                        <p>Publiser bedriften deres</p>
-                        </div>
-                        <!-- card BENEFITS -->
-                        <div class="flex">
-                        <!-- card BENEFITS ICON -->
-                        <div class="icon">
-                            <i class="fa-solid fa-check"></i>
-                        </div>
-                        <p>Bli del av kampanjer</p>
-                        </div>
-                        <div class="flex">
-                        <!-- card BENEFITS ICON -->
-                        <div class="icon">
-                            <i class="fa-solid fa-check"></i>
-                        </div>
-                        <p>Tilgang til bedriftsressurser</p>
-                        </div>
-                        <div class="flex">
-                        <!-- card BENEFITS ICON -->
-                        <div class="icon">
-                            <i class="fa-solid fa-check"></i>
-                        </div>
-                        <p>Maks 2 bilder</p>
-                        </div>
-                        <!-- card BENEFITS -->
-                        <div class="flex">
-                        <!-- card BENEFITS ICON -->
-                        <div class="icon">
-                            <i class="fa-solid fa-check"></i>
-                        </div>
-                        <p>Bedriftsbruker</p>
-                        </div>
-                    </div> 
-                </div>
-            </div>
-            {% endif %}
-            {% if request.user.profile.medlemskap == 'Pro' %}
-            <div class="bottom">
-                <div class="card">
-                    <div class="card-row-one">
-                        <h1 class="card-name">Profesjonell</h1>
-                        <p class="card-price">99kr/mnd</p>
-                    </div>
-
-                    <hr style="margin-block: 15px;">
-
-                    <div class="card-row-two">
-                        <!-- card BENEFITS -->
-                        <div class="flex">
-                        <!-- card BENEFITS ICON -->
-                        <div class="icon">
-                            <i class="fa-solid fa-check"></i>
-                        </div>
-                        <p>Publiser bedriften deres</p>
-                        </div>
-                        <!-- card BENEFITS -->
-                        <div class="flex">
-                        <!-- card BENEFITS ICON -->
-                        <div class="icon">
-                            <i class="fa-solid fa-check"></i>
-                        </div>
-                        <p>Bli del av kampanjer</p>
-                        </div>
-                        <div class="flex">
-                            <!-- card BENEFITS ICON -->
-                            <div class="icon">
-                                <i class="fa-solid fa-check"></i>
-                            </div>
-                            <p>Tilgang til bedriftsressurser</p>
-                            </div>
-                            <div class="flex">
-                                <!-- card BENEFITS ICON -->
-                                <div class="icon">
-                                    <i class="fa-solid fa-check"></i>
-                                </div>
-                                <p>Maks 6 bilder</p>
-                                </div>
-                        <!-- card BENEFITS -->
-                        <div class="flex">
-                        <!-- card BENEFITS ICON -->
-                        <div class="icon">
-                            <i class="fa-solid fa-check"></i>
-                        </div>
-                        <p>Bedriftsbruker</p>
-                        </div>
-                        <!-- card BENEFITS -->
-                        <div class="flex">
-                        <!-- card BENEFITS ICON -->
-                        <div class="icon">
-                            <i class="fa-solid fa-check"></i>
-                        </div>
-                        <p>Tilpasset månedlig analysering</p>
-                        </div>
-                        <!-- card BENEFITS -->
-                        <div class="flex">
-                        <!-- card BENEFITS ICON -->
-                        <div class="icon">
-                            <i class="fa-solid fa-check"></i>
-                        </div>
-                        <p>20% mer publisitet</p>
-                        </div>
-                        <!-- card BENEFITS -->
-                        <div class="flex">
-                        <!-- card BENEFITS ICON -->
-                        <div class="icon">
-                            <i class="fa-solid fa-check"></i>
-                        </div>
-                        <p>Bedrifts fordeler</p>
-                        </div>
-                        <!-- card BENEFITS -->
-                        <div class="flex">
-                        <!-- card BENEFITS ICON -->
-                        <div class="icon">
-                            <i class="fa-solid fa-check"></i>
-                        </div>
-                        <p>SEO-optimalisering</p>
-                        </div>
-                    </div> 
-                </div>
-            </div>
-            {% endif %}
-            {% if request.user.profile.medlemskap == 'Pro+' %}
-            <div class="bottom">
-                <div class="card">
-                    <div class="card-row-one">
-                        <h1 class="card-name">Profesjonell +</h1>
-                        <p class="card-price">159kr/mnd</p>
-                    </div>
-
-                    <hr style="margin-block: 15px;">
-
-                    <div class="card-row-two">
-                        <!-- card BENEFITS -->
-                        <div class="flex">
-                        <!-- card BENEFITS ICON -->
-                        <div class="icon">
-                            <i class="fa-solid fa-check"></i>
-                        </div>
-                        <p>Publiser bedriften deres</p>
-                        </div>
-                        <!-- card BENEFITS -->
-                        <div class="flex">
-                        <!-- card BENEFITS ICON -->
-                        <div class="icon">
-                            <i class="fa-solid fa-check"></i>
-                        </div>
-                        <p>Bli del av kampanjer</p>
-                        </div>
-                        <div class="flex">
-                            <!-- card BENEFITS ICON -->
-                            <div class="icon">
-                                <i class="fa-solid fa-check"></i>
-                            </div>
-                            <p>Tilgang til bedriftsressurser</p>
-                            </div>
-                            <div class="flex">
-                                <!-- card BENEFITS ICON -->
-                                <div class="icon">
-                                    <i class="fa-solid fa-check"></i>
-                                </div>
-                                <p>Maks 6 bilder</p>
-                                </div>
-                        <!-- card BENEFITS -->
-                        <div class="flex">
-                        <!-- card BENEFITS ICON -->
-                        <div class="icon">
-                            <i class="fa-solid fa-check"></i>
-                        </div>
-                        <p>Bedriftsbruker</p>
-                        </div>
-                        <!-- card BENEFITS -->
-                        <div class="flex">
-                        <!-- card BENEFITS ICON -->
-                        <div class="icon">
-                            <i class="fa-solid fa-check"></i>
-                        </div>
-                        <p>Tilpasset ukentlig analysering</p>
-                        </div>
-                        <!-- card BENEFITS -->
-                        <div class="flex">
-                        <!-- card BENEFITS ICON -->
-                        <div class="icon">
-                            <i class="fa-solid fa-check"></i>
-                        </div>
-                        <p>45% mer publisitet</p>
-                        </div>
-                        <!-- card BENEFITS -->
-                        <div class="flex">
-                        <!-- card BENEFITS ICON -->
-                        <div class="icon">
-                            <i class="fa-solid fa-check"></i>
-                        </div>
-                        <p>Bedrifts fordeler</p>
-                        </div>
-                        <!-- card BENEFITS -->
-                        <div class="flex">
-                        <!-- card BENEFITS ICON -->
-                        <div class="icon">
-                            <i class="fa-solid fa-check"></i>
-                        </div>
-                        <p>SEO-optimalisering</p>
-                        </div>
-                        <!-- card BENEFITS -->
-                        <div class="flex">
-                        <!-- card BENEFITS ICON -->
-                        <div class="icon">
-                            <i class="fa-solid fa-check"></i>
-                        </div>
-                        <p>Prioritert samarbeid</p>
-                        </div>
-                    </div> 
-                </div>
-            </div>
-            {% endif %}
-        </div>
-    </div>
-
-
-    <div class="myaccount">
-
-        {% if request.user.profile.medlemskap ==  'Bruker' %}
-
-        <div class="link"  onclick="window.location.href='/min-bruker/varslinger/'">
-            <div class="left">
-                <i class="fa-regular fa-bell"></i>
-                <h1>Varslinger</h1>
-            </div>
-            <i class="fa-solid fa-angle-right arrow"></i>
-        </div>
-        
-        <div class="link" onclick="window.location.href='/min-bruker/personalia/'">
-            <div class="left">
-                <i class="fa-regular fa-user"></i>
-                <h1>Personalia</h1>
-            </div>
-            <i class="fa-solid fa-angle-right arrow"></i>
-        </div>
-
-        <div class="link" onclick="window.location.href='min-bruker/mine-vurderinger/'">
-            <div class="left">
-                <i class="fa-light fa-star-sharp"></i>
-                <h1>Mine vurderinger</h1>
-            </div>
-            <i class="fa-solid fa-angle-right arrow"></i>
-        </div>
-
-        <div class="link"  onclick="window.location.href='min-bruker/hjelp/'">
-            <div class="left">
-                <i class="fa-regular fa-square-question"></i>
-                <h1>Trenger du hjelp?</h1>
-            </div>
-            <i class="fa-solid fa-angle-right arrow"></i>
-        </div>
-
-        {% else %}
-        <div class="link"  onclick="window.location.href='/min-bruker/varslinger/'">
-            <div class="left">
-                <i class="fa-regular fa-bell"></i>
-                <h1>Varslinger</h1>
-            </div>
-            <i class="fa-solid fa-angle-right arrow"></i>
-        </div>
-        
-        <div class="link" onclick="window.location.href='/min-bruker/personalia/'">
-            <div class="left">
-                <i class="fa-regular fa-user"></i>
-                <h1>Personalia</h1>
-            </div>
-            <i class="fa-solid fa-angle-right arrow"></i>
-        </div>
-        
-        <div class="link"  onclick="window.location.href='/min-bruker/mine-vurderinger/'">
-            <div class="left">
-                <i class="fa-light fa-star-sharp"></i>
-                <h1>Mine vurderinger</h1>
-            </div>
-            <i class="fa-solid fa-angle-right arrow"></i>
-        </div>
-
-        <div class="link"  onclick="window.location.href='/min-bruker/hjelp/'">
-            <div class="left">
-                <i class="fa-regular fa-square-question"></i>
-                <h1>Trenger du hjelp?</h1>
-            </div>
-            <i class="fa-solid fa-angle-right arrow"></i>
-        </div>
-
-        <div class="link" onclick="window.location.href='/min-bruker/betaling-info/'">
-            <div class="left">
-                <i class="fa-regular fa-credit-card"></i>
-                <h1>Betalings informasjon</h1>
-            </div>
-            <i class="fa-solid fa-angle-right arrow"></i>
-        </div>
-
-        <div class="link" onclick="window.location.href='/min-bruker/bedrift-ressurser/'">
-            <div class="left">
-                <i class="fa-regular fa-briefcase"></i>
-                <h1>Bedrift-ressurser</h1>
-            </div>
-            <i class="fa-solid fa-angle-right arrow"></i>
-        </div>
-
-        <div class="link" onclick="window.location.href='/min-bruker/min-bedrift/'">
-            <div class="left">
-                <i class="fa-light fa-building"></i>
-                <h1>Min bedrift</h1>
-            </div>
-            <i class="fa-solid fa-angle-right arrow"></i>
-        </div>
-
-        <div class="link" onclick="window.location.href='/min-bruker/endre-medlemskap/'">
-            <div class="left">
-                <i class="fa-light fa-arrows-rotate"></i>
-                <h1>Endre medlemskap</h1>
-            </div>
-            <i class="fa-solid fa-angle-right arrow"></i>
-        </div>
-        {% endif %}
-
-        <form method="post" action="{% url 'logout' %}" onclick="submit()">
-            {% csrf_token %}
-            <div class="link logout">
-                <div class="left">
-                    <i class="fa-regular fa-arrow-right-from-bracket"></i>
-                    <h1>Logg ut</h1>
-                </div>
-                <i class="fa-solid fa-angle-right arrow"></i>
-            </div>
-        </form>
+{% if jobs %}
+  <div class="recent-leads">
+    <h3>Nye forespørsler i dine områder</h3>
+    <table class="leads-table">
+      <tbody>
+        {% for job in jobs %}
+          <tr>
+            <td>{{ job.inquiry.first_name }} {{ job.inquiry.last_name }}</td>
+            <td>{{ job.inquiry.move_type }}</td>
+            <td>{{ job.inquiry.from_city }}</td>
+            <td>{{ job.inquiry.move_help }}</td>
+            <td class="right">{{ job.inquiry.created_at|date:"d.m.Y" }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <p>Ingen forespørsler i dine byer enda.</p>
+{% endif %}
 
     </div>
+
+    <!-- === RIGHT SIDEBAR === -->
+    <aside class="sidebar">
+
+      <div class="account-box">
+        <h4>Konto</h4>
+        <p><strong>{{ business.company_name}}</strong></p>
+        <p><small>{{ user.username }}</small></p>
+        <hr>
+        <p><strong>Status:</strong> Bedriften din er aktiv</p>
+
+{% if cities_list %}
+  <hr>
+  <p><strong>Målområder:</strong></p>
+  <div class="city-tags">
+    {% for city in cities_list %}
+      <span class="city-badge">{{ city }}</span>
+    {% endfor %}
+  </div>
+{% else %}
+  <p><strong>Målområder:</strong> Ikke valgt enda</p>
+{% endif %}
+
+{% if move_type_list %}
+  <hr>
+  <p><strong>Tjenestetyper:</strong></p>
+  <div class="move-tags">
+    {% for move in move_type_list %}
+      <span class="move-badge">{{ move }}</span>
+    {% endfor %}
+  </div>
+{% else %}
+  <p><strong>Tjenestetyper:</strong> Ikke valgt enda</p>
+{% endif %}
+
+
+      </div>
+
+      <div class="help-box">
+        <h4>Hjelp</h4>
+        <p><a href="#">Help-desk</a></p>
+        <hr>
+        <div class="manager">
+          <img src="{% static '/img/account_manager.jpg' %}" alt="Kundekontakt">
+          <div>
+            <p><strong>Maxine Lukas</strong><br><small>Account Manager</small></p>
+            <button class="contact-btn">Kontakt</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
 </div>
-
 {% endblock %}

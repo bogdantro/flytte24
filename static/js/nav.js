@@ -13,50 +13,33 @@ window.addEventListener("scroll", function(){
 
 
 
-function search(){
-  const search = document.getElementById('mobSidebarSearch');
-  const hamburger = document.getElementById('hamburger');
 
-  if (window.getComputedStyle(search,null).getPropertyValue("opacity") == '0'){
-    search.classList.add('active');
-    hamburger.style.pointerEvents = 'none';
-    document.body.style.overflow = "hidden";
-    document.documentElement.style.overflow = "hidden";
-  }else{
-    search.classList.remove('active');
-    hamburger.style.pointerEvents = 'visible';
-    document.body.style.overflow = "scroll";
-    document.documentElement.style.overflow = "scroll";
-  }
-}  
 
 
 function menu(){
   const sidebar = document.getElementById('sidebar');
   const navbar = document.getElementById('mobileNav');
-  const hamburger = document.getElementById('hamburger');
+  const hamburger = document.getElementById('lines');
+  const menuText = document.getElementById('menuText');
 
-  const search = document.getElementById('mobNavSearchIcon');
-
-  const dropdown = document.getElementById('sidebarServDrop');
 
   const body = document.getElementsByTagName('body')[0];
 
-  if (window.getComputedStyle(sidebar,null).getPropertyValue("opacity") == '0'){
+  if (window.getComputedStyle(sidebar,null).getPropertyValue("opacity") == '0.5'){
     navbar.classList.add('menu')  
     hamburger.classList.add('click')  
     sidebar.classList.add('active')
     document.body.style.overflow = "hidden";
     document.documentElement.style.overflow = "hidden";
-    dropdown.classList.remove('active')
 
-    search.style.pointerEvents = 'none';
+    menuText.innerHTML = 'Lukk';
+
   } else{
     navbar.classList.remove('menu') 
     hamburger.classList.remove('click')  
     sidebar.classList.remove('active')
 
-    search.style.pointerEvents = 'visible';
+    menuText.innerHTML = 'Meny';
 
     document.body.style.overflow = "scroll";
     document.documentElement.style.overflow = "scroll";

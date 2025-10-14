@@ -1,6 +1,5 @@
 {% extends 'core/base.html' %}    
 {% load static %}    
-    
 
 {% block content %}
 {% block head %}
@@ -10,85 +9,58 @@
 <link rel="stylesheet" href="{% static '/scss/userprofile/signup.css' %}" type="text/css">
 
 
-<div class="signup-page">
-    <div class="form">
-        <h1 class="heading">Create an account</h1>
-        <p class="or-login"><a href="/login/">Already have an account? Login here</a></p>
-        <form id="signUpForm" method="post" autocomplete="off">      
-            {% csrf_token %}
-            <!-- USER SIGNUP FORM INPUTS -->
-            <div class="inputs-labels">
-                {% if form.errors %}
-                    {% for field in form %}
-                        {% for error in field.errors %} 
-                            <div class="alert alert-danger">
-                                <strong>{{ error|escape }}</strong>
-                            </div>
-                        {% endfor %}
-                    {% endfor %}
-                {% endif %}
-                <!-- NAME -->
-                <label for="username">Email</label>
-                <br>
-                <input type="email" id="username" name="username" required >
-                <br>
-                <br>
-                <!-- FIRST NAME -->
-                <label for="first_name" class="form-tag-first_name tag">First name</label>
-                <br>
-                <input type="text" id="first_name" name="first_name" required >
-                <br>
-                <br>
-                <!-- LAST NAME -->
-                <label for="last_name" class="form-tag-last_name tag">Last name</label>
-                <br>
-                <input type="text" id="last_name" name="last_name" required >
-                <br>
-                <br>
-            
-                <label style="display: none;"></label>
-                <input id="ValueEmail" required style="display: none;">
-       
-                <!-- PASSWORD -->
-                <label for="password1" class="form-tag-password1 tag">Password</label>
-                <br>
-                <input type="password" autocomplete="new-password" id="password1" name="password1" required >
-                <br>
-                <br>
-                <!-- REPEAT PASSWORD -->
-                <label for="password2" class="form-tag-password2 tag">Retype passord</label>
-                <br>
-                <input type="password" id="password2" name="password2" required >
-            </div> 
-            <div class="form-actions">
-                <button type='submit'>Create account</button>
-            </div>
-    
-        </form>
-    </div>
+<div class="signup-wrapper">
+  <div class="signup-form">
+    <h1>Opprett din konto</h1>
+
+    <form id="signUpForm" method="post" autocomplete="off">
+      {% csrf_token %}
+      {% if form.errors %}
+        {% for field in form %}
+          {% for error in field.errors %}
+            <div class="alert">{{ error|escape }}</div>
+          {% endfor %}
+        {% endfor %}
+      {% endif %}
+
+      <label>E-post (brukes som innlogging)</label>
+      <input type="email" id="username" name="username" required>
+
+      <label>Passord</label>
+      <input type="password" id="password1" name="password1" required>
+      <div class="password-info">
+        <p>Ditt passord må inneholde:</p>
+        <ul>
+          <li>Minst én stor bokstav</li>
+          <li>Minst én liten bokstav</li>
+          <li>Minst ett tall</li>
+          <li>Minst 12 tegn</li>
+        </ul>
+      </div>
+
+      <label>Gjenta passord</label>
+      <input type="password" id="password2" name="password2" required>
+
+      <div class="form-actions">
+        <button type="submit">Opprett konto</button>
+      </div>
+    </form>
+  </div>
 </div>
-
-<div class="image">
-    <img src="{% static '/images/covers/signup.jpg' %}" alt="">
-</div>
-
-
 
 <script>
-    function valueForEmail(){
-        let value = document.getElementById('username').value;
-        document.getElementById('ValueEmail').value = value;
-        // or use innerHTML if 'ValueEmail' is a container element that supports HTML content
-        // document.getElementById('ValueEmail').innerHTML = value;
-    }
-
-    // Execute valueForEmail initially to set the initial value
-    valueForEmail();
-
-    // Set up a periodic update using setInterval
-    setInterval(() => {
-        valueForEmail();
-    }, 15);
+document.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+  const email = params.get("email");
+  if (email) {
+    const input = document.getElementById("username");
+    input.value = email;
+    input.readOnly = true;
+    input.style.background = "#f8f8f8";
+    input.style.opacity = "0.7";
+    input.style.cursor = "not-allowed";
+  }
+});
 </script>
 
 {% endblock %}

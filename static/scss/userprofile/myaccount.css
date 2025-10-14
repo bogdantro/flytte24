@@ -1,0 +1,142 @@
+.account-dashboard {
+  padding: 40px 8%;
+  margin-top: 85px;
+  background: #f8fafb;
+}
+
+.welcome-card {
+  background: #e8f2fb;
+  border: 1px solid #d4e6f7;
+  border-radius: 8px;
+  padding: 20px 25px;
+  margin-bottom: 30px;
+}
+.welcome-card h2 {
+  margin-bottom: 5px;
+  color: #004d86;
+}
+.welcome-card p {
+  color: #333;
+  font-size: 15px;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 2.3fr 1fr;
+  gap: 30px;
+}
+
+.main-section .preview-box, .main-section .recent-leads {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px 25px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  margin-bottom: 25px;
+}
+.main-section h3 {
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+.main-section ul {
+  list-style: disc;
+  margin-left: 20px;
+  color: #555;
+}
+.main-section .lead-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f5f8fa;
+  border: 1px dashed #c5d9e8;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-top: 10px;
+}
+.main-section .lead-card .status {
+  background: #eaf7ee;
+  color: #13c265;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 13px;
+}
+.main-section .lead-card .date {
+  color: #555;
+  font-size: 13px;
+  margin-left: 10px;
+}
+.main-section .leads-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.main-section .leads-table tr {
+  border-bottom: 1px solid #eee;
+}
+.main-section .leads-table td {
+  padding: 10px 0;
+  font-size: 15px;
+  color: #222;
+}
+.main-section .leads-table .right {
+  text-align: right;
+  color: #777;
+}
+.main-section .show-more {
+  margin-top: 10px;
+  background: #13c265;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.sidebar .account-box, .sidebar .help-box {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+.sidebar .account-box h4, .sidebar .help-box h4 {
+  font-size: 17px;
+  margin-bottom: 10px;
+  color: #222;
+}
+.sidebar hr {
+  border: none;
+  border-top: 1px solid #eee;
+  margin: 10px 0;
+}
+.sidebar .manager {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.sidebar .manager img {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.sidebar .manager .contact-btn {
+  margin-top: 6px;
+  background: #13c265;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 6px 14px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+@media (max-width: 900px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}/*# sourceMappingURL=myaccount.css.map */

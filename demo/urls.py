@@ -13,6 +13,8 @@ from apps.core.sitemaps import *
 from django.contrib.sitemaps.views import sitemap
 from apps.userprofile.views import *
 from django.contrib import admin
+from django.conf.urls.i18n import i18n_patterns
+
 
 sitemaps = {
     'static': StaticViewsSitemap,
@@ -25,27 +27,27 @@ urlpatterns = [
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}),
 
     path('', home, name='home'), 
+
+    path('flytteforesporsel/', flytteforesporsel, name='flytteforesporsel'),
+    path('send-flytteforesporsel/', send_flytteforesporsel, name='send_flytteforesporsel'),
+
     path('contact-us/', contact, name='contact'), 
+    path('about-us/', about, name='about'), 
+    path('for-bedrifter/', for_business, name='for_business'), 
+    path('for-bedrifter/bli-partner/', for_business_partner, name='for_business_partner'), 
+    
 
-
-    path('login/', views.LoginView.as_view(template_name='core/login.html'), name='login'),
-    path('signup/', signup, name='signup'),
+    path('for-bedrifter/bruker/logg-inn/', views.LoginView.as_view(template_name='core/login.html'), name='login'),
+    path('reg/fullfor/lag-bruker/', signup, name='signup'),
     path('logout/', views.LogoutView.as_view(), name='logout'),
 
-    path('myaccount/', myaccount, name='myaccount'),
+    path('for-bedrifter/min-bruker/', myaccount, name='myaccount'),
 
 
-    path('become-a-member/', beome_member, name='beome_member'),
-
-    path('create-checkout-session/', create_checkout_session, name='create_checkout_session'),
-    path('webhook/', stripe_webhook, name='stripe_webhook'),
-    path('success/', success, name='success'),
-    path('cancel/', cancel, name='cancel'),
-
-
-
-
-
+    # API
+    path('api/check-user/', check_user_exists, name='check_user_exists'),
 
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+

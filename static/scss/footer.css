@@ -1,90 +1,39 @@
 #footerMob {
-  margin-top: 0;
+  margin-top: 50px;
   width: 100%;
   height: 100%;
   padding-top: 15px;
   padding-bottom: 18px;
   position: relative;
-  background: #69d34e;
+  background: #2142a6;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   padding-inline: 20px;
 }
-#footerMob .hours {
-  background: rgb(242, 242, 242);
-  width: 100%;
-  padding: 13px 8px;
+#footerMob .contact-info img {
+  width: 130px;
+  height: auto;
+  margin-bottom: 10px;
 }
-#footerMob .hours .info-heading {
-  color: #1F1F1F;
-  font-size: 19px;
-  margin-bottom: 3px;
-  font-weight: 500;
-}
-#footerMob .hours a {
-  display: block;
-  color: #1F1F1F;
-  font-size: 17px;
-  width: -moz-max-content;
-  width: max-content;
-  padding-right: 5px;
-  margin-block: 8px;
-}
-#footerMob .hours a:first-child {
-  margin-top: 0;
-}
-#footerMob .contact-info .info-heading {
+#footerMob .contact-info p {
+  margin-bottom: 0;
   color: white;
-  font-size: 19px;
-  margin-bottom: 3px;
-  font-weight: 500;
-}
-#footerMob .contact-info a {
-  display: block;
-  color: white;
-  font-size: 17px;
-  width: -moz-max-content;
-  width: max-content;
-  padding-right: 5px;
-  margin-block: 8px;
-}
-#footerMob .contact-info a:first-child {
-  margin-top: 0;
+  font-size: 18px;
+  opacity: 0.8;
 }
 #footerMob .links p {
   margin-bottom: 0;
   color: white;
 }
-#footerMob .links .business-heading {
-  color: white;
-  font-size: 19px;
-  margin-bottom: 3px;
-  font-weight: 500;
-}
 #footerMob .links .info-heading {
   color: white;
-  font-size: 19px;
+  font-size: 17px;
   margin-bottom: 3px;
   font-weight: 500;
 }
-#footerMob .links button {
-  background: #69d34e;
-  border: 1px solid transparent;
-  width: auto;
-  height: auto;
-  padding: 7px 26px;
-  margin-top: 14px;
-  outline: none;
-  border-radius: 3px;
-  color: white;
-  font-size: 15px;
-}
 #footerMob .links a {
-  display: block;
   color: white;
-  font-size: 17px;
-  width: -moz-max-content;
-  width: max-content;
-  padding-right: 5px;
+  display: block;
+  font-size: 16px;
   margin-block: 8px;
 }
 #footerMob .links a:first-child {
@@ -96,18 +45,18 @@
 }
 #footerMob .services .business-heading {
   color: white;
-  font-size: 19px;
+  font-size: 17px;
   margin-bottom: 3px;
   font-weight: 500;
 }
 #footerMob .services .info-heading {
   color: white;
-  font-size: 19px;
+  font-size: 17px;
   margin-bottom: 3px;
   font-weight: 500;
 }
 #footerMob .services button {
-  background: #69d34e;
+  background: #13c265;
   border: 1px solid transparent;
   width: auto;
   height: auto;
@@ -121,7 +70,7 @@
 #footerMob .services a {
   display: block;
   color: white;
-  font-size: 17px;
+  font-size: 16px;
   width: -moz-max-content;
   width: max-content;
   padding-right: 5px;
@@ -130,155 +79,171 @@
 #footerMob .services a:first-child {
   margin-top: 0;
 }
-#footerMob .become-member {
-  background: rgba(255, 255, 255, 0.22);
-  border-radius: 12px;
-  padding: 12px;
-  width: 350px;
-  margin-block: 20px;
-  margin-top: 28px;
-}
-#footerMob .become-member p {
-  color: white;
-  margin-bottom: 0;
-  font-size: 15px;
-}
-#footerMob .become-member button {
-  background: white;
-  border-radius: 7px;
-  border: 1px solid rgba(211, 211, 211, 0.275);
-  color: #69d34e;
-  width: 100%;
-  height: 43px;
-  padding: 2px;
-  text-align: center;
-  outline: none;
-  margin-top: 18px;
-}
 #footerMob .bottom {
   display: flex;
   width: 100%;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  flex-direction: column;
   opacity: 0.85;
+  background: #1c2f8c;
+  padding-block: 20px;
+  text-align: center;
+  border-radius: 6px;
+  margin-top: 45px;
 }
 #footerMob .bottom .copyright {
   color: white;
+  font-size: 16px;
+}
+#footerMob .bottom .social-icons {
+  display: flex;
+  flex-direction: row;
+  gap: 25px;
+  margin-top: 25px;
+}
+#footerMob .bottom .social-icons a {
+  color: white;
   font-size: 13px;
 }
-#footerMob .bottom .social-icons i {
-  color: white;
-  font-size: 20px;
-  margin-inline: 2px;
-  padding: 8px;
-  transition: 0.2s;
-}
-#footerMob .bottom .social-icons i:hover {
-  color: #69d34e;
+
+#footerDes {
+  display: none;
 }
 
 @media only screen and (min-device-width: 1140px) {
   #footerMob {
-    padding-inline: 35px;
-    background: #69d34e;
-    padding-top: 25px;
+    display: none;
   }
-  #footerMob .content {
+  #footerDes {
+    display: block;
+    margin-top: 110px;
+    width: 100%;
+    height: 100%;
+    padding-block: 55px;
     position: relative;
-    max-width: 1290px;
+    background: #2142a6;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding-inline: 0;
+  }
+  #footerDes .content {
+    max-width: 1300px;
     margin-inline: auto;
+    padding-inline: 50px;
   }
-  #footerMob .hours {
-    background: rgb(242, 242, 242);
-    width: 380px;
-    padding: 13px 8px;
-    height: -moz-max-content;
-    height: max-content;
+  #footerDes .content .flex {
+    display: flex;
+    flex-direction: column;
+    gap: 55px;
   }
-  #footerMob .hours .info-heading {
+  #footerDes .content .footer-flex {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    gap: 70px;
+  }
+  #footerDes .contact-info img {
+    width: 130px;
+    height: auto;
+    margin-bottom: 10px;
+  }
+  #footerDes .contact-info p {
+    margin-bottom: 0;
     color: white;
-    font-size: 19px;
+    font-size: 18px;
+    opacity: 0.8;
+  }
+  #footerDes .links {
+    width: 25%;
+  }
+  #footerDes .links p {
+    margin-bottom: 0;
+    color: white;
+  }
+  #footerDes .links .info-heading {
+    color: white;
+    font-size: 17px;
     margin-bottom: 3px;
     font-weight: 500;
   }
-  #footerMob .hours a {
+  #footerDes .links a {
+    color: white;
     display: block;
+    font-size: 16px;
+    margin-block: 8px;
+  }
+  #footerDes .links a:first-child {
+    margin-top: 0;
+  }
+  #footerDes .services {
+    width: 25%;
+  }
+  #footerDes .services p {
+    margin-bottom: 0;
+    color: white;
+  }
+  #footerDes .services .business-heading {
     color: white;
     font-size: 17px;
+    margin-bottom: 3px;
+    font-weight: 500;
+  }
+  #footerDes .services .info-heading {
+    color: white;
+    font-size: 17px;
+    margin-bottom: 3px;
+    font-weight: 500;
+  }
+  #footerDes .services button {
+    background: #13c265;
+    border: 1px solid transparent;
+    width: auto;
+    height: auto;
+    padding: 7px 26px;
+    margin-top: 14px;
+    outline: none;
+    border-radius: 3px;
+    color: white;
+    font-size: 15px;
+  }
+  #footerDes .services a {
+    display: block;
+    color: white;
+    font-size: 16px;
     width: -moz-max-content;
     width: max-content;
     padding-right: 5px;
     margin-block: 8px;
   }
-  #footerMob .hours a:first-child {
+  #footerDes .services a:first-child {
     margin-top: 0;
   }
-  #footerMob .flex {
+  #footerDes .bottom {
     display: flex;
+    width: 100%;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
+    opacity: 0.85;
+    background: #1c2f8c;
+    padding: 50px;
     text-align: left;
+    border-radius: 6px;
+    margin-top: 55px;
   }
-  #footerMob .flex hr {
-    display: none !important;
-  }
-  #footerMob .flex .links {
-    transform: translateX(50px);
-  }
-  #footerMob .flex .services {
-    transform: translateX(95px);
-  }
-  #footerMob .flex .contact-info {
-    transform: translateX(0);
-  }
-  #footerMob .flex .become-member {
-    position: absolute;
-    right: 0;
-    background: rgba(255, 255, 255, 0.22);
-    border-radius: 12px;
-    padding: 22px;
-    width: 420px;
-    margin: 0 !important;
-  }
-  #footerMob .flex .become-member p {
+  #footerDes .bottom .copyright {
     color: white;
-    margin-bottom: 0;
-    font-size: 17px;
+    font-size: 16px;
   }
-  #footerMob .flex .become-member button {
-    background: white;
-    border-radius: 7px;
-    border: 1px solid rgba(211, 211, 211, 0.275);
-    color: #69d34e;
-    width: 100%;
-    height: 43px;
-    padding: 2px;
-    text-align: center;
-    outline: none;
-    margin-top: 18px;
-  }
-  #footerMob .bottom {
+  #footerDes .bottom .social-icons {
     display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: space-between;
-    opacity: 0.95;
-    max-width: 1290px;
-    margin-inline: auto;
+    flex-direction: row;
+    gap: 25px;
+    margin-top: 25px;
   }
-  #footerMob .bottom .copyright {
+  #footerDes .bottom .social-icons a {
     color: white;
-    font-size: 14px;
-  }
-  #footerMob .bottom .social-icons i {
-    color: white;
-    font-size: 24px;
-    margin-inline: 2px;
-    padding: 8px;
-    transition: 0.2s;
-    cursor: pointer;
-    border-radius: 12px;
-  }
-  #footerMob .bottom .social-icons i:hover {
-    color: #69d34e;
-    background: white;
+    font-size: 13px;
   }
 }/*# sourceMappingURL=footer.css.map */

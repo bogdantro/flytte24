@@ -4,7 +4,7 @@
 
 #mobileNav {
   width: 100%;
-  height: 68px;
+  height: 65px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -15,12 +15,7 @@
   z-index: 100;
   border-bottom: 1px solid transparent;
   background: white;
-  border-bottom: 1px solid rgba(100, 100, 100, 0.15);
   transition: 0.2s;
-}
-#mobileNav.search {
-  background: white;
-  transition: 0;
 }
 #mobileNav.sticky {
   background: white;
@@ -40,74 +35,73 @@
   z-index: 1000;
 }
 #mobileNav .logo img {
-  width: 162px;
+  width: 145px;
   height: auto;
   transition: 0.3s;
-  transform: translateY(2px) translateX(-4px);
 }
-#mobileNav .logo img:hover {
-  transform: scale(0.93);
+#mobileNav .menu {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
-#mobileNav .hamburger {
-  padding: 5px;
-  margin: -5px;
-  width: auto;
-  height: auto;
-  z-index: 1000;
-  text-align: center;
-  border-radius: 50%;
+#mobileNav .menu p {
+  color: #1F1F1F;
+  font-size: 15px;
+  margin-bottom: 0;
+  font-weight: 500;
 }
-#mobileNav .hamburger span {
+#mobileNav .menu .lines {
+  text-align: right;
+}
+#mobileNav .menu .lines span {
   height: 2px;
-  width: 26px;
+  width: 22px;
   background: #1F1F1F;
   border-radius: 6px;
   display: block;
   transition: 0.2s;
-  margin-block: 7px;
-  text-align: center;
+  margin-block: 4px;
+  text-align: right;
   transform-origin: 25%;
 }
-#mobileNav .hamburger .center-span {
+#mobileNav .menu .lines.click .upper-span {
+  width: 10px;
+}
+#mobileNav .menu .lines.click .center-span {
+  background: transparent;
+  transition: 0s;
+}
+#mobileNav .menu .lines.click .lower-span {
+  width: 10px;
+}
+#mobileNav .menu .center-span {
   width: 14px;
   margin-inline: auto;
-}
-#mobileNav .hamburger.click .upper-span {
-  transform: rotate(45deg);
-}
-#mobileNav .hamburger.click .center-span {
-  display: none;
-}
-#mobileNav .hamburger.click .lower-span {
-  transform: rotate(-45deg);
 }
 #mobileNav .sidebar {
   background: white;
   position: absolute;
-  top: 68px;
-  left: -100px;
+  top: 65px;
+  left: 0;
   width: 100%;
-  height: calc(100vh - 65px);
+  height: 0vh;
   z-index: 120;
-  opacity: 0;
+  opacity: 0.5;
   pointer-events: none;
   display: block;
+  padding-inline: 20px;
   transition: 0.2s;
   overflow-y: scroll !important;
-  padding-bottom: 100px;
 }
 #mobileNav .sidebar a {
-  padding: 23px 20px;
-  color: #183b56;
-  font-size: 18px;
+  padding: 17px 0;
+  color: #1F1F1F;
+  font-size: 17px;
   font-weight: 500;
   display: block;
   width: 100%;
   text-decoration: none;
   position: relative;
-}
-#mobileNav .sidebar a:hover {
-  background: rgba(167, 243, 148, 0.1725490196);
 }
 #mobileNav .sidebar a.no-hover:hover {
   background: transparent;
@@ -119,11 +113,69 @@
   font-size: 17px;
   transform: translateY(1px);
 }
+#mobileNav .sidebar .cta {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #e1fae9;
+  padding: 20px;
+  width: calc(100% - 40px);
+  height: auto;
+  padding: 30px 20px;
+  border-radius: 6px;
+}
+#mobileNav .sidebar .cta h2 {
+  font-size: 18px;
+  font-weight: 500;
+  color: #1F1F1F;
+  margin-bottom: 12px;
+}
+#mobileNav .sidebar .cta p {
+  font-size: 16px;
+  color: #1F1F1F;
+}
+#mobileNav .sidebar .cta form {
+  position: relative;
+  margin-top: 18px;
+}
+#mobileNav .sidebar .cta form input {
+  width: 100%;
+  height: 54px;
+  background: white;
+  border: 1px solid lightgray;
+  outline: none;
+  padding: 14px;
+  color: #1F1F1F;
+  border-radius: 4px;
+  font-size: 16px;
+  text-transform: uppercase;
+}
+#mobileNav .sidebar .cta form input::-moz-placeholder {
+  text-transform: none;
+}
+#mobileNav .sidebar .cta form input::placeholder {
+  text-transform: none;
+}
+#mobileNav .sidebar .cta form input:active, #mobileNav .sidebar .cta form input:focus {
+  border: 2px solid rgba(0, 0, 255, 0.521);
+}
+#mobileNav .sidebar .cta form button {
+  width: 100%;
+  height: 54px;
+  background: #13c265;
+  outline: none;
+  padding: 14px;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  margin-top: 15px;
+}
 #mobileNav .sidebar.active {
   opacity: 1;
   pointer-events: visible;
   transition: 0.4s;
-  left: 0;
+  height: calc(100dvh - 65px);
 }
 
 @media only screen and (min-device-width: 1140px) {
@@ -131,50 +183,37 @@
     display: none;
   }
   #desNav {
-    display: flex;
+    display: block;
     width: 100%;
     height: 75px;
-    justify-content: space-between;
-    align-items: center;
     position: fixed;
     top: 0;
-    left: 50%;
-    background: rgba(51, 164, 151, 0.862745098) !important;
-    padding-inline: 50px;
+    background: white;
     z-index: 1000000;
     transition: 0.2s;
-    max-width: 1000px;
-    transform: translateY(18px) translateX(-50%);
-    border-radius: 50px;
-    border: 1px solid rgba(255, 255, 255, 0.359);
+    border-bottom: 1px solid lightgray;
   }
-  #desNav .content {
+  #desNav .desnav-content {
+    padding-inline: 50px;
     width: 100%;
-    display: flex;
-    width: 100%;
-    max-width: auto;
     height: 75px;
-    justify-content: space-between;
+    max-width: 1300px;
+    margin-inline: auto;
+    display: flex;
     align-items: center;
-    position: fixed;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    background: transparent;
-    padding-inline: 35px;
+    justify-content: space-between;
   }
-  #desNav .logo {
-    color: white;
+  #desNav .left {
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+    align-items: center;
   }
   #desNav .logo img {
     cursor: pointer;
-    width: 120px;
+    width: 140px;
     height: auto;
     transition: 0.2s;
-    transform: translateX(-42px);
-  }
-  #desNav .logo img:hover {
-    transform: scale(1.1) translateX(-35px);
   }
   #desNav .menu {
     display: flex;
@@ -182,8 +221,8 @@
     align-items: center;
   }
   #desNav .menu a {
-    color: white;
-    font-size: 17px;
+    color: #1F1F1F;
+    font-size: 16px;
     font-weight: 400;
     margin-inline: 2px;
     padding: 10px;
@@ -193,83 +232,33 @@
     border-bottom: 0 solid transparent;
     border-radius: 4px;
   }
-  #desNav .menu a.cta {
-    transform: translateY(0);
-    background: transparent;
-    color: white;
-    border-radius: 25px;
-    margin-left: 6px;
-    border: 2px solid white;
-    height: -moz-max-content !important;
-    height: max-content !important;
-    margin-bottom: 0;
-  }
-  #desNav .menu a.cta:hover {
-    background: #31b1a2;
+  #desNav .menu a i {
+    margin-left: 5px;
+    font-size: 15px;
   }
   #desNav .menu a:hover {
     background: rgba(211, 211, 211, 0.35);
   }
-  #desNav .menu .language-dropdown {
-    position: relative;
-    display: inline-block;
-    margin-left: 20px;
+  #desNav .cta {
+    text-align: right;
   }
-  #desNav .menu .language-dropdown .dropdown-button {
-    background-color: transparent;
-    border: none;
-    color: white;
+  #desNav .cta a {
+    color: #1F1F1F;
     font-size: 16px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
+    font-weight: 400;
+    margin-inline: 2px;
     padding: 10px;
-  }
-  #desNav .menu .language-dropdown .dropdown-button i {
-    margin-left: 5px;
-  }
-  #desNav .menu .language-dropdown .dropdown-button img {
-    width: 25px;
-    height: 18px;
-    margin-right: 8px;
-    -o-object-fit: cover;
-       object-fit: cover;
-  }
-  #desNav .menu .language-dropdown .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: white;
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-    min-width: 160px;
-    z-index: 1;
-  }
-  #desNav .menu .language-dropdown .dropdown-content a {
-    font-size: 16px;
-    color: #1F1F1F;
-  }
-  #desNav .menu .language-dropdown .dropdown-content .lang-option {
-    color: #1F1F1F;
-    padding: 10px 16px;
+    cursor: pointer;
     text-decoration: none;
-    display: flex;
-    align-items: center;
+    transition: 0.3s;
+    border-bottom: 0 solid transparent;
+    border-radius: 4px;
   }
-  #desNav .menu .language-dropdown .dropdown-content .lang-option:hover {
-    background-color: #f1f1f1;
+  #desNav .cta a i {
+    margin-left: 5px;
+    font-size: 15px;
   }
-  #desNav .menu .language-dropdown .dropdown-content .lang-option .flag-icon {
-    width: 20px;
-    height: auto;
-    margin-right: 10px;
-  }
-  #desNav .menu .language-dropdown .dropdown-content .lang-option img {
-    width: 25px;
-    height: 18px;
-    margin-right: 10px;
-    -o-object-fit: cover;
-       object-fit: cover;
-  }
-  #desNav .menu .language-dropdown:hover .dropdown-content {
-    display: block;
+  #desNav .cta a:hover {
+    background: rgba(211, 211, 211, 0.35);
   }
 }/*# sourceMappingURL=nav.css.map */

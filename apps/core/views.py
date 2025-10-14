@@ -122,44 +122,54 @@ def for_business(request):
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
+
 @csrf_exempt
 def for_business_partner(request):
     if request.method == "POST":
-        move_type = request.POST.getlist("moveType")
-        cities = request.POST.getlist("city")
+        try:
+            move_type = request.POST.getlist("moveType") or []
+            cities = request.POST.getlist("city") or []
 
-        data = Bedrift_info.objects.create(
-            move_type=", ".join(move_type),
-            cities=", ".join(cities),
-            company_name=request.POST.get("companyName"),
-            company_number=request.POST.get("companyNumber"),
-            employees=request.POST.get("employees"),
-            email=request.POST.get("email"),
-            phone=request.POST.get("phone"),
-            website=request.POST.get("website"),
-            address=request.POST.get("address"),
-            postal_code=request.POST.get("postalCode"),
-            city=request.POST.get("companyCity"),
-            tiltaleform=request.POST.get("tiltaleform"),
-            first_name=request.POST.get("firstName"),
-            last_name=request.POST.get("lastName"),
-        )
+            if not move_type or not cities:
+                return JsonResponse({
+                    "success": False,
+                    "error": "Mangler flyttekategori eller lokasjon"
+                }, status=400)
 
-        if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+            company = Bedrift_info.objects.create(
+                move_type=", ".join(move_type),
+                cities=", ".join(cities),
+                company_name=request.POST.get("companyName") or "",
+                company_number=request.POST.get("companyNumber") or "",
+                employees=request.POST.get("employees") or "",
+                email=request.POST.get("email") or "",
+                phone=request.POST.get("phone") or "",
+                website=request.POST.get("website") or "",
+                address=request.POST.get("address") or "",
+                postal_code=request.POST.get("postalCode") or "",
+                city=request.POST.get("companyCity") or "",
+                tiltaleform=request.POST.get("tiltaleform") or "",
+                first_name=request.POST.get("firstName") or "",
+                last_name=request.POST.get("lastName") or "",
+            )
+
             return JsonResponse({
                 "success": True,
-                "redirect_url": f"/reg/fullfor/lag-bruker/?email={data.email}"
+                "redirect_url": f"/reg/fullfor/lag-bruker/?email={company.email}"
             })
 
-
-        # Normal form submit fallback
-        return redirect(f"/reg/fullfor/lag-bruker/?email={data.email}")
-    
-    if request.headers.get("X-Requested-With") == "XMLHttpRequest":
-        return JsonResponse({"success": False, "error": "Invalid request"})
-
+        except Exception as e:
+            import traceback
+            print("💥 SERVER-FEIL VED REGISTRERING 💥")
+            print(traceback.format_exc())
+            return JsonResponse({
+                "success": False,
+                "error": str(e)
+            }, status=500)
 
     return render(request, "pages/about/for-business-partner.html")
+
+
 
 def for_business(request):      
     return render(request, 'pages/about/for-business.html') 

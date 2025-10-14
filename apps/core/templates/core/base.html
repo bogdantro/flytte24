@@ -73,10 +73,21 @@
 
 <body ontouchstart="" >
     <div id="onPageLoad" style="background: white !important;  z-index: 1000000000000000000 !important; position: fixed; top: 0; left: 0;"></div>
-    {% include 'core/nav.html' %}
 
+      {% block header %}
+      <header>
+        {% include 'core/nav.html' %}
+      </header>
+    {% endblock %}
 
-    {% block content %}
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+
+    {% block footer %}
+      <footer>
+        {% include 'core/footer.html' %}
+      </footer>
     {% endblock %}
 
 </body>

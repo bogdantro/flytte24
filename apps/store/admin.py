@@ -6,4 +6,4 @@ from ckeditor.widgets import CKEditorWidget  # Import CKEditorWidget
 
 # Register your models here.
 
-admin.site.register(Membership)
+admin.site.register(Bedrift_info)

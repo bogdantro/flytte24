@@ -2,45 +2,62 @@
   width: 100%;
   height: -moz-max-content;
   height: max-content;
+  padding-bottom: 60px;
   position: relative;
+  background: linear-gradient(to bottom right, transparent, rgba(19, 194, 101, 0.0549019608), rgba(19, 194, 101, 0.0666666667), rgba(19, 194, 101, 0.1647058824));
+}
+.cover #coverMobChecks {
+  display: block;
+}
+.cover #coverDesChecks {
+  display: none;
 }
 .cover .content {
   width: 100%;
   height: auto;
   position: relative;
-}
-.cover .content .cover-image {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 520px;
-  -o-object-fit: cover;
-     object-fit: cover;
-  filter: brightness(75%);
+  padding-top: 120px;
+  padding-inline: 20px;
 }
 .cover .content .text {
   position: relative;
-  padding-inline: 20px;
-  padding-top: 250px;
+}
+.cover .content .text .headingp {
+  color: #13c265;
+  font-size: 14px;
+  padding: 5px 18px;
+  border-radius: 25px;
+  background: rgba(19, 194, 101, 0.0901960784);
+  width: -moz-max-content;
+  width: max-content;
+  font-weight: 500;
+  margin-bottom: 15px;
 }
 .cover .content .text h1 {
-  color: white;
+  color: #1F1F1F;
   font-size: 38px;
-  font-weight: 500;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+.cover .content .text h1 span {
+  color: #13c265;
 }
 .cover .content .text p {
-  color: white;
-  font-size: 16px;
+  color: #1F1F1F;
+  font-size: 17px;
 }
-.cover .content .text form {
+.cover .content .text p span {
+  font-weight: 500;
+}
+.cover .content form {
   position: relative;
-  margin-top: 18px;
+  margin-top: 45px;
   padding: 16px;
   background: #e1fae9;
   border-radius: 6px;
+  animation: bgPulse 1s infinite;
 }
-.cover .content .text form input {
+.cover .content form input {
   width: 100%;
   height: 62px;
   background: white;
@@ -52,16 +69,16 @@
   font-size: 16px;
   text-transform: uppercase;
 }
-.cover .content .text form input::-moz-placeholder {
+.cover .content form input::-moz-placeholder {
   text-transform: none;
 }
-.cover .content .text form input::placeholder {
+.cover .content form input::placeholder {
   text-transform: none;
 }
-.cover .content .text form input:active, .cover .content .text form input:focus {
+.cover .content form input:active, .cover .content form input:focus {
   border: 2px solid rgba(0, 0, 255, 0.521);
 }
-.cover .content .text form button {
+.cover .content form button {
   width: 100%;
   height: 57px;
   background: #13c265;
@@ -72,20 +89,199 @@
   border-radius: 4px;
   margin-top: 10px;
 }
-.cover .content .text .checks {
+.cover .content .checks {
   display: flex;
   flex-direction: column;
   margin-top: 25px;
 }
-.cover .content .text .checks p {
+.cover .content .checks p {
   color: #1F1F1F;
-  font-size: 18px;
+  font-size: 16px;
   opacity: 0.8;
   margin-bottom: 12px;
 }
-.cover .content .text .checks p i {
-  color: blue;
+.cover .content .checks p i {
+  color: #2a66f5;
   margin-right: 15px;
+}
+
+@keyframes bgPulse {
+  0% {
+    background-color: #dbffe7;
+  }
+  50% {
+    background-color: #c5ffd8; /* slightly brighter/lighter */
+  }
+  100% {
+    background-color: #dbffe7;
+  }
+}
+.reasons {
+  position: relative;
+  width: 100%;
+  height: auto;
+  padding-top: 40px;
+  border-bottom: 1px solid lightgray;
+  padding-bottom: 40px;
+}
+.reasons .content {
+  padding-inline: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 70px;
+  row-gap: 40px;
+  flex-wrap: wrap;
+}
+.reasons .content .icon {
+  text-align: center;
+  width: calc(50% - 35px);
+  min-width: calc(50% - 35px);
+}
+.reasons .content .icon i {
+  color: #13c265;
+  background: rgba(210, 255, 225, 0.5137254902);
+  padding: 18px;
+  border-radius: 10px;
+  font-size: 36px;
+}
+.reasons .content .icon h4 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-top: 15px;
+}
+.reasons .content .icon p {
+  color: #1F1F1F;
+  font-size: 16px;
+}
+
+.locations {
+  position: relative;
+  width: 100%;
+  height: auto;
+  padding-top: 50px;
+}
+.locations .content {
+  padding-inline: 20px;
+}
+.locations .content .text h2 {
+  font-size: 28px;
+  color: #1F1F1F;
+  font-weight: 600;
+}
+.locations .content .text h2 span {
+  color: #13c265;
+}
+.locations .content .text p {
+  color: #1F1F1F;
+  font-size: 16px;
+}
+.locations .content .text p span {
+  background: #e1fae9;
+  padding-inline: 2px;
+}
+.locations .content .flex {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 25px;
+  overflow-x: scroll;
+  width: 100%;
+  padding-bottom: 15px;
+}
+.locations .content .flex .city-row {
+  width: 100%;
+  height: auto;
+  margin-top: 20px;
+}
+.locations .content .flex .city-row.last {
+  margin-top: 50px;
+}
+.locations .content .flex .city-row h3 {
+  font-size: 24px;
+  color: #1F1F1F;
+}
+.locations .content .flex .city-row .city-flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 25px;
+}
+.locations .content .flex .city-row .city {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(211, 211, 211, 0.18);
+  border: 1px solid lightgray;
+  width: calc(50% - 10px);
+  min-width: calc(50% - 10px);
+  padding: 16px 6px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: 0.2s;
+  cursor: pointer;
+  text-align: center;
+}
+.locations .content .flex .city-row .city p {
+  text-align: center;
+  color: #1F1F1F;
+  margin-bottom: 0;
+  font-size: 14px;
+  border-radius: 6px;
+  transition: 0.2s;
+}
+.locations .content .flex .city-row .city:hover {
+  background: rgba(228, 255, 237, 0.5607843137);
+  border-color: #13c265;
+}
+.locations .content .flex .city-row .city:hover p {
+  color: #13c265;
+}
+.locations .content .flex .bottom-cta {
+  margin-top: 25px;
+  color: #13c265;
+  text-align: center;
+  font-size: 16px;
+  text-decoration-color: #13c265;
+  text-decoration: underline;
+}
+
+.conquer {
+  position: relative;
+  width: 100%;
+  height: auto;
+  margin-top: 60px;
+  padding-top: 60px;
+  padding-bottom: 60px;
+  border-top: 1px solid lightgray;
+  background: #f9fafb;
+}
+.conquer .content {
+  padding-inline: 20px;
+}
+.conquer .content .text .headingp {
+  color: #13c265;
+  font-size: 14px;
+  padding: 5px 18px;
+  border-radius: 25px;
+  background: rgba(19, 194, 101, 0.0901960784);
+  width: -moz-max-content;
+  width: max-content;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+.conquer .content .text h2 {
+  color: #1F1F1F;
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+.conquer .content .text h2 span {
+  color: #13c265;
+}
+.conquer .content .text p {
+  color: #1F1F1F;
+  font-size: 16px;
 }
 
 .how-it-works {
@@ -108,7 +304,7 @@
 .how-it-works .content .text h2 {
   color: #1F1F1F;
   font-weight: 500;
-  font-size: 26px;
+  font-size: 28px;
   margin-bottom: 10px;
 }
 .how-it-works .content .text p {
@@ -170,7 +366,7 @@
   padding-inline: 20px;
 }
 .reviews .content .text h2 {
-  font-size: 26px;
+  font-size: 28px;
   color: #1F1F1F;
 }
 .reviews .content .text p {
@@ -237,86 +433,6 @@
   border-radius: 4px;
 }
 
-.network {
-  position: relative;
-  width: 100%;
-  height: auto;
-  padding-top: 50px;
-}
-.network .content {
-  padding-inline: 20px;
-}
-.network .content .text h2 {
-  font-size: 26px;
-  color: #1F1F1F;
-}
-.network .content .text p {
-  color: #1F1F1F;
-  font-size: 16px;
-}
-.network .content .text p span {
-  background: #e1fae9;
-  padding-inline: 2px;
-}
-.network .content .flex {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin-top: 25px;
-  overflow-x: scroll;
-  width: 100%;
-  padding-bottom: 15px;
-}
-.network .content .flex .city-row {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  height: auto;
-  gap: 15px;
-}
-.network .content .flex .city-row .city {
-  border: 1px solid rgba(211, 211, 211, 0.652);
-  width: 240px;
-  min-width: 240px;
-  height: 60px;
-  border-radius: 2px;
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  align-items: center;
-}
-.network .content .flex .city-row .city img {
-  height: 60px;
-  width: 70px;
-  -o-object-fit: cover;
-     object-fit: cover;
-  filter: brightness(70%);
-}
-.network .content .flex .city-row .city a {
-  color: #1F1F1F;
-  margin-bottom: 0;
-  font-size: 16px;
-  font-weight: 500;
-}
-.network .content .flex .city-row .city a span {
-  font-weight: 400;
-  opacity: 0.7;
-  font-size: 14px;
-}
-.network .content .button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 200px;
-  height: 50px;
-  background: none;
-  border: 2px solid #2a66f5;
-  color: #2a66f5;
-  border-radius: 6px;
-  margin-top: 25px;
-}
-
 .why-us {
   position: relative;
   width: 100%;
@@ -332,7 +448,7 @@
   margin-bottom: 10px;
 }
 .why-us .content .text h2 {
-  font-size: 26px;
+  font-size: 28px;
   color: #1F1F1F;
 }
 .why-us .content .text p {
@@ -398,7 +514,7 @@
   margin-bottom: 10px;
 }
 .about-us .content .text h2 {
-  font-size: 26px;
+  font-size: 28px;
   color: #1F1F1F;
 }
 .about-us .content .text p {
@@ -512,61 +628,73 @@
     height: -moz-max-content;
     height: max-content;
     position: relative;
+    background: linear-gradient(to bottom right, transparent, rgba(19, 194, 101, 0.0352941176), rgba(19, 194, 101, 0.0352941176), rgba(19, 194, 101, 0.0823529412));
+  }
+  .cover #coverMobChecks {
+    display: none;
+  }
+  .cover #coverDesChecks {
+    display: block;
+  }
+  .cover .checks {
+    transform: translateX(5px);
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+  }
+  .cover .checks p {
+    color: #1F1F1F;
+    font-size: 18px;
+    opacity: 0.8;
+    margin-bottom: 12px;
+  }
+  .cover .checks p i {
+    color: blue;
+    margin-right: 15px;
   }
   .cover .content {
     width: 100%;
     height: auto;
     position: relative;
-    max-width: 1300px;
+    max-width: 1400px;
     margin-inline: auto;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     gap: 100px;
     padding-inline: 50px;
     padding-top: 150px;
-  }
-  .cover .content .cover-image {
-    position: relative;
-    width: 40%;
-    height: calc(100dvh - 210px);
-    -o-object-fit: cover;
-       object-fit: cover;
-    filter: brightness(88%);
-    order: 2;
-    border-radius: 6px;
-    margin-top: 0;
-    top: 0;
   }
   .cover .content .text {
     width: 60%;
     position: relative;
     padding-inline: 0;
     padding-top: 0;
-    order: 1;
-    margin-top: 9;
   }
   .cover .content .text h1 {
     color: #1F1F1F;
-    font-size: 48px;
+    font-size: 52px;
     font-weight: 500;
   }
   .cover .content .text p {
     color: #1F1F1F;
     font-size: 20px;
     opacity: 0.8;
+    max-width: 400px;
   }
-  .cover .content .text form {
+  .cover .content form {
     position: relative;
-    margin-top: 18px;
-    padding: 32px;
-    background: #e1fae9;
+    margin-top: 0;
+    padding: 24px;
+    background: #dbffe7;
     border-radius: 6px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 7px;
+    width: 400px;
+    animation: bgPulse 1s infinite;
   }
-  .cover .content .text form input {
+  .cover .content form input {
     width: 100%;
     height: 62px;
     background: white;
@@ -578,18 +706,18 @@
     font-size: 16px;
     text-transform: uppercase;
   }
-  .cover .content .text form input::-moz-placeholder {
+  .cover .content form input::-moz-placeholder {
     text-transform: none;
   }
-  .cover .content .text form input::placeholder {
+  .cover .content form input::placeholder {
     text-transform: none;
   }
-  .cover .content .text form input:active, .cover .content .text form input:focus {
+  .cover .content form input:active, .cover .content form input:focus {
     border: 2px solid rgba(0, 0, 255, 0.521);
   }
-  .cover .content .text form button {
+  .cover .content form button {
     border: 1px solid transparent;
-    width: 80%;
+    width: 100%;
     height: 62px;
     background: #13c265;
     outline: none;
@@ -598,21 +726,6 @@
     border: none;
     border-radius: 4px;
     margin-top: 0;
-  }
-  .cover .content .text .checks {
-    display: flex;
-    flex-direction: column;
-    margin-top: 30px;
-  }
-  .cover .content .text .checks p {
-    color: #1F1F1F;
-    font-size: 18px;
-    opacity: 0.8;
-    margin-bottom: 12px;
-  }
-  .cover .content .text .checks p i {
-    color: blue;
-    margin-right: 15px;
   }
   .how-it-works {
     position: relative;

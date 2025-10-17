@@ -101,12 +101,19 @@ $txt: #183b56;
         width: 100%;
         height: 0vh;
         z-index: 120;
-        opacity: 0.5;
+        opacity: 0;
         pointer-events: none;
         display: block;
         padding-inline: 20px;
         transition: .2s;
         overflow-y: scroll !important;
+        padding-bottom: 100px;
+        .sidebar-content{
+            max-height: 695px;
+            min-height: 695px;
+            width: 100%;
+            overflow-y: scroll;
+        }
         a{
             padding: 17px 0;
             color: $black;
@@ -132,13 +139,14 @@ $txt: #183b56;
             }
         }
         .cta{
-            position: absolute;
-            bottom: 20px;
+            margin-top: 25px;
+            position: relative;
+            bottom: 0;
             left: 50%;
             transform: translateX(-50%);
             background: #e1fae9;
             padding: 20px;
-            width: calc(100% - 40px);
+            width: 100%;
             height: auto;
             padding: 30px 20px;
             border-radius: 6px;
@@ -190,7 +198,8 @@ $txt: #183b56;
             opacity: 1;
             pointer-events: visible;
             transition: .4s;
-            height: calc(100dvh - 65px);
+            height: 100vh;
+            overflow-y: scroll !important;
         }
     } 
 
@@ -217,7 +226,7 @@ $txt: #183b56;
             padding-inline: 50px;
             width: 100%;
             height: 75px;
-            max-width: 1300px;
+            max-width: 1400px;
             margin-inline: auto;
             display: flex;
             align-items: center;

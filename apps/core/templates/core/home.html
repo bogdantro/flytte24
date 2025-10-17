@@ -25,34 +25,122 @@
 
 <section class="cover">
     <div class="content">
-        <img src="{% static 'images/covers/cover.jpg' %}" alt="" class="cover-image">
         <div class="text">
-            <h1>Flytt med et flyttebyrå i førsteklasse</h1>
-            <p>Sammenlign opptil 6 tilbud fra pålitelige flyttebyråer – og spar penger.</p>
-           <form id="homeMoveForm" onsubmit="redirectToMoveForm(event)">
-  <input type="text" id="postalInput" placeholder="Ditt postnummer" required>
-  <button type="submit">Få flere tilbud nå</button>
+            <p class="headingp">La flyttefirmaene konkurrere om deg</p>
+            <h1>Spar opp til <span>40%</span> på <span>flytting</span></h1>
+            <p>Motta <span>3 konkurransedyktige tilbud</span> på under 60 sekunder. Flyttebyråene slåss om å gi deg best pris.</p>
+            <div class="checks" id="coverMobChecks">
+    <p><i class="fa-light fa-circle-check"></i>Tar bare 60 sek for å motta tilbud</p>
+    <p><i class="fa-light fa-circle-check"></i>Spar opptill 40%</p>
+    <p><i class="fa-light fa-circle-check"></i>Ingen binding eller skjulte kostander</p>
+</div>
+        </div>
+
+        <div>
+            <form id="homeMoveForm" onsubmit="redirectToMoveForm(event)">
+<input type="number" inputmode="numeric"
+pattern="\d{4}"
+maxlength="4"id="postalInput" placeholder="Ditt postnummer" required>
+<button type="submit">Motta 3 tilbud nå</button>
 </form>
+          <div class="checks" id="coverDesChecks">
+    <p><i class="fa-light fa-circle-check"></i>Tar bare 60 sek for å motta tilbud</p>
+    <p><i class="fa-light fa-circle-check"></i>Spar opptill 40%</p>
+    <p><i class="fa-light fa-circle-check"></i>Ingen binding eller skjulte kostander</p>
+</div>
+        </div>
 
 
-            <div class="checks">
-                <p><i class="fa-regular fa-check"></i>Finn enkelt din ideelle flyttepartner</p>
-                <p><i class="fa-regular fa-check"></i>Få tilgang til verifiserte omtaler</p>
-                <p><i class="fa-regular fa-check"></i>Gjør flyttingen bekymringsfri!</p>
-            </div>
+    </div>
+</section>
+
+
+<section class="reasons">
+    <div class="content">
+        <div class="icon">
+            <i class="fa-light fa-user-group"></i>
+            <h4>10.000+</h4>
+            <p>Fornøyde kunder</p>
+        </div>
+        <div class="icon">
+            <i class="fa-light fa-chart-line-down"></i>
+            <h4>4.500 kr</h4>
+            <p>Gjennomsnittlig besparelse</p>
+        </div>
+        <div class="icon">
+           <i class="fa-light fa-clock"></i>
+            <h4>60 sek</h4>
+            <p>Til å motta tilbud</p>
+        </div>
+        <div class="icon">
+            <i class="fa-light fa-certificate"></i>
+            <h4>5/5</h4>
+            <p>Kundevurdering</p>
         </div>
     </div>
 </section>
 
-<script>
-function redirectToMoveForm(e) {
-  e.preventDefault();
-  const postal = document.getElementById("postalInput").value.trim();
-  if (!postal) return;
-  window.location.href = `/flytteforesporsel/?postal=${encodeURIComponent(postal)}`;
-}
-</script>
 
+<section class="locations">
+    <div class="content">
+        <div class="text">
+            <h2>Vi dekker <span>hele Norge</span> – særlig Oslo-området</h2>
+            <p>Flytter du i Oslo, Bergen, Trondheim eller en annen by? Vi har partnere overalt som gir deg konkurransedyktige prise</p>
+        </div>
+        <div class="flex">
+          <div class="city-row">
+  <h3>Flytting i Oslo – alle bydeler</h3>
+  <div class="city-flex">
+    <a class="city" href="/for-bedrifter/bli-partner/"><p>Oslo</p></a>
+    <a class="city" href="/for-bedrifter/bli-partner/"><p>Gamle Oslo</p></a>
+    <a class="city" href="/for-bedrifter/bli-partner/"><p>Grünerløkka</p></a>
+    <a class="city" href="/for-bedrifter/bli-partner/"><p>Sagene</p></a>
+    <a class="city" href="/for-bedrifter/bli-partner/"><p>St. Hanshaugen</p></a>
+    <a class="city" href="/for-bedrifter/bli-partner/"><p>Frogner</p></a>
+    <a class="city" href="/for-bedrifter/bli-partner/"><p>Ullern</p></a>
+    <a class="city" href="/for-bedrifter/bli-partner/"><p>Vestre Aker</p></a>
+    <a class="city" href="/for-bedrifter/bli-partner/"><p>Nordre Aker</p></a>
+    <a class="city" href="/for-bedrifter/bli-partner/"><p>Bjerke</p></a>
+    <a class="city" href="/for-bedrifter/bli-partner/"><p>Grorud</p></a>
+    <a class="city" href="/for-bedrifter/bli-partner/"><p>Stovner</p></a>
+    <a class="city" href="/for-bedrifter/bli-partner/"><p>Alna</p></a>
+    <a class="city" href="/for-bedrifter/bli-partner/"><p>Østensjø</p></a>
+    <a class="city" href="/for-bedrifter/bli-partner/"><p>Nordstrand</p></a>
+    <a class="city" href="/for-bedrifter/bli-partner/"><p>Søndre Nordstrand</p></a>
+  </div>
+</div>
+
+<div class="city-row last">
+  <h3>Flytting i andre norske byer</h3>
+  <div class="city-flex">
+    <a class="city" href="/for-bedrifter/bli-partner/"><p>Oslo</p></a>
+    <a class="city" href="/for-bedrifter/bli-partner/"><p>Bergen</p></a>
+    <a class="city" href="/for-bedrifter/bli-partner/"><p>Stavanger</p></a>
+    <a class="city" href="/for-bedrifter/bli-partner/"><p>Drammen</p></a>
+    <a class="city" href="/for-bedrifter/bli-partner/"><p>Trondheim</p></a>
+    <a class="city" href="/for-bedrifter/bli-partner/"><p>Kristiansand</p></a>
+  </div>
+</div>
+
+         <a href="/for-bedrifter/bli-partner/" class="bottom-cta">Finner du ikke ditt område? Klikk her →</a>
+        </div>
+    </div>
+</section>
+
+
+<section class="conquer">
+    <div class="content">
+        <div class="text">
+            <p class="headingp">Derfor velger folk oss</p>
+            <h2>Få flyttebyråene til å <span>kjempe</span> om å gi deg <span>best pris</span></h2>
+            <p>Tradisjonelt må du ringe rundt og be om tilbud. Med oss får flyttebyråene konkurrere om deg – som betyr lavere priser og bedre service.</p>
+        </div>
+    </div>
+</section>
+
+
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <section class="how-it-works">
     <div class="content">
         <div class="text">
@@ -241,5 +329,16 @@ function redirectToMoveForm(e) {
     </div>
 </section>
 
+
+
+
+<script>
+function redirectToMoveForm(e) {
+  e.preventDefault();
+  const postal = document.getElementById("postalInput").value.trim();
+  if (!postal) return;
+  window.location.href = `/flytteforesporsel/?postal=${encodeURIComponent(postal)}`;
+}
+</script>
 {% endblock %}
  

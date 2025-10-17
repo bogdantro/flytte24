@@ -25,7 +25,7 @@ function menu(){
 
   const body = document.getElementsByTagName('body')[0];
 
-  if (window.getComputedStyle(sidebar,null).getPropertyValue("opacity") == '0.5'){
+  if (window.getComputedStyle(sidebar,null).getPropertyValue("opacity") == '0'){
     navbar.classList.add('menu')  
     hamburger.classList.add('click')  
     sidebar.classList.add('active')

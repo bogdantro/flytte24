@@ -292,9 +292,154 @@ $h2fontdes: 30px;
         font-size: 16px;
       }
     }
+    .cards{
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 35px;
+      margin-top: 35px;
+      .card{
+        padding: 24px 20px;
+        background: white;
+        border: 1px solid rgba(211, 211, 211, 0.2);
+        border-radius: 14px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: .2s;
+        &:hover{
+          border-color: $primBtn;
+          background: #f6fffb;
+        }
+        i{
+          color: white;
+          background: $primBtn;
+          padding: 17px;
+          border-radius: 10px;
+          font-size: 28px;
+          width: max-content;
+        }
+        h4{
+          font-size: 24px;
+          color: $black;
+          margin-top: 18px;
+          margin-bottom: 18px;
+          font-weight: 600;
+        }
+        p{
+          margin-bottom: 0;
+          font-size: 16px;
+          color: $black;
+        }
+      }
+    }
+    .button{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: $primBtn;
+      border-radius: 6px;
+      width: 100%;
+      height: 56px;
+      color: white;
+      margin-top: 35px;
+    }
+    .underbtn-text{
+      margin-top: 25px;
+      opacity: 0.8;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      gap: 5px;
+      min-width: max-content;
+    }
   }
 }
 
+.reviews{
+  position: relative;
+  width: 100%;
+  height: auto;
+  padding-top: 50px;
+  .content{
+    padding-inline: 20px;
+    .text{
+      h2{
+        font-size: $h2fontmob;
+        color: $black;
+        font-weight: 600;
+        margin-bottom: 10px;
+        span{
+          color: $primBtn;
+        }
+      }
+      p{
+        color: $black;
+        font-size: 16px;
+        span{
+          background: #e1fae9;
+          padding-inline: 2px;
+        }
+      }
+    }
+    .flex{
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      margin-top: 25px;
+      .card{
+        width: 100%;
+        height: auto;
+        background: white;
+        border: 1px solid rgba(211, 211, 211, 0.652);
+        border-radius: 6px;
+        padding: 20px;
+        h2{
+          font-size: 18px;
+          color: $black;
+        }
+        p{
+          font-size: 16px;
+          color: $black;
+          opacity: 0.8;
+          display: -webkit-box;        // enables flexbox for webkit
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 4;       // number of lines you want
+          overflow: hidden;   
+        }
+        .business{
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+          margin-top: 35px;
+          .name{
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            img{
+              width: 40px;
+              height: auto;
+            }
+            p{
+              font-size: 14px;
+              color: $black;
+              font-weight: 500;
+              margin-bottom: 0;
+            }
+          }
+          .rating{
+            padding: 4px 10px;
+            background: $primBtn;
+            color: white;
+            font-size: 16px;
+            border-radius: 4px;
+          }
+        }
+      }
+    }
+  }
+}
 
   
 
@@ -381,84 +526,6 @@ $h2fontdes: 30px;
   }
 }
 
-.reviews{
-  position: relative;
-  width: 100%;
-  height: auto;
-  padding-top: 50px;
-  .content{
-    padding-inline: 20px;
-    .text{
-      h2{
-        font-size: $h2fontmob;
-        color: $black;
-      }
-      p{
-        color: $black;
-        font-size: 16px;
-        span{
-          background: #e1fae9;
-          padding-inline: 2px;
-        }
-      }
-    }
-    .flex{
-      display: flex;
-      flex-direction: column;
-      gap: 25px;
-      .card{
-        width: 100%;
-        height: auto;
-        background: white;
-        border: 1px solid rgba(211, 211, 211, 0.652);
-        border-radius: 6px;
-        padding: 20px;
-        h2{
-          font-size: 18px;
-          color: $black;
-        }
-        p{
-          font-size: 16px;
-          color: $black;
-          opacity: 0.8;
-          display: -webkit-box;        // enables flexbox for webkit
-          -webkit-box-orient: vertical;
-          -webkit-line-clamp: 4;       // number of lines you want
-          overflow: hidden;   
-        }
-        .business{
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          justify-content: space-between;
-          margin-top: 35px;
-          .name{
-            display: flex;
-            flex-direction: row;
-            gap: 10px;
-            img{
-              width: 40px;
-              height: auto;
-            }
-            p{
-              font-size: 14px;
-              color: $black;
-              font-weight: 500;
-              margin-bottom: 0;
-            }
-          }
-          .rating{
-            padding: 4px 10px;
-            background: $primBtn;
-            color: white;
-            font-size: 16px;
-            border-radius: 4px;
-          }
-        }
-      }
-    }
-  }
-}
 
 
 .why-us{

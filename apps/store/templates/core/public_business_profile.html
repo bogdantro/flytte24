@@ -1,0 +1,122 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block head %}
+<title>{{ business.company_name }} | Flytte24</title>
+<link rel="stylesheet" href="{% static 'scss/pages/business/business_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="public-profile">
+  <div class="container">
+    <section class="business-header">
+      <div class="cover-photo">
+        {% if public_info.images.first %}
+          <img src="{{ public_info.images.first.image.url }}" alt="{{ business.company_name }}">
+        {% else %}
+          <div class="cover-placeholder"></div>
+        {% endif %}
+      </div>
+
+      <div class="business-summary">
+        <div class="logo-wrapper">
+          {% if public_info.logo %}
+            <img src="{{ public_info.logo.url }}" alt="{{ business.company_name }}">
+          {% else %}
+            <div class="logo-placeholder">Ingen logo</div>
+          {% endif %}
+        </div>
+        <div class="business-info">
+          <h1>{{ business.company_name }}</h1>
+          <p class="location">{{ business.address }}, {{ business.city }}</p>
+          <div class="contact">
+            {% if business.email %}
+              <span>{{ business.email }}</span>
+            {% endif %}
+            {% if business.phone %}
+              <span>· {{ business.phone }}</span>
+            {% endif %}
+          </div>
+          <div class="rating-box">
+            <span class="rating-score">- / 10</span>
+            <a href="#reviews">Ingen vurderinger</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="about">
+      <h2>Om bedriften</h2>
+      {% if public_info.about_us %}
+        <p>{{ public_info.about_us|linebreaks }}</p>
+      {% else %}
+        <p>Det finnes ingen informasjon om bedriften ennå.</p>
+      {% endif %}
+    </section>
+
+    <section class="details-grid">
+      <div class="card">
+        <h3>Bedriftsfakta</h3>
+        <ul>
+          <li><strong>Type bedrift:</strong> {{ business.move_type|default:"Ukjent" }}</li>
+          <li><strong>Antall ansatte:</strong> {{ business.employees|default:"Ukjent" }}</li>
+          <li><strong>Org.nr:</strong> {{ business.company_number|default:"Ukjent" }}</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>Adresse</h3>
+        <p>{{ business.address }}<br>{{ business.postal_code }} {{ business.city }}</p>
+      </div>
+
+      {% if business.website %}
+      <div class="card">
+        <h3>Nettside</h3>
+        <a href="{{ business.website }}" target="_blank">{{ business.website }}</a>
+      </div>
+      {% endif %}
+    </section>
+
+    {% if public_info.images.all %}
+    <section class="gallery">
+      <h2>Prosjektbilder</h2>
+      <div class="gallery-grid">
+        {% for img in public_info.images.all %}
+          <img src="{{ img.image.url }}" alt="Prosjektbilde">
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    <section id="reviews" class="reviews">
+      <h2>Anmeldelser</h2>
+      {% if business.reviews.exists %}
+        {% for review in business.reviews.all %}
+          <div class="review-card">
+            <div class="stars">
+              {% for i in "12345" %}
+                {% if forloop.counter <= review.rating %}
+                  ⭐
+                {% endif %}
+              {% endfor %}
+            </div>
+            <p>{{ review.comment }}</p>
+            <span>– {{ review.name }}</span>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p>Ingen anmeldelser fra kunder ennå.</p>
+      {% endif %}
+    </section>
+
+    <section class="faq">
+      <h2>Ofte stilte spørsmål</h2>
+      {% if public_info.faq %}
+        <div class="faq-box">{{ public_info.faq|linebreaks }}</div>
+      {% else %}
+        <p>Bedriften har ikke svart på noen spørsmål ennå.</p>
+      {% endif %}
+    </section>
+  </div>
+</div>
+{% endblock %}

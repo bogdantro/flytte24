@@ -6,3 +6,5 @@ class FlytteforesporselForm(forms.ModelForm):
         model = Flytteforesporsel
         fields = '__all__'
         exclude = ['created_at']
+
+

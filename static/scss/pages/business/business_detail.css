@@ -1,0 +1,179 @@
+.public-profile {
+  background: #f7f7f9;
+  padding-top: 6rem;
+  padding-bottom: 4rem;
+  min-height: 100vh;
+}
+.public-profile .container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+.public-profile .business-header {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+}
+.public-profile .business-header .cover-photo {
+  height: 200px;
+  background: #ddd;
+}
+.public-profile .business-header .cover-photo img, .public-profile .business-header .cover-photo .cover-placeholder {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.public-profile .business-header .business-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  gap: 1.5rem;
+}
+.public-profile .business-header .business-summary .logo-wrapper {
+  width: 100px;
+  height: 100px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f0f0f0;
+}
+.public-profile .business-header .business-summary .logo-wrapper img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.public-profile .business-header .business-summary .logo-wrapper .logo-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #999;
+  font-size: 0.9rem;
+}
+.public-profile .business-header .business-summary .business-info {
+  flex: 1;
+}
+.public-profile .business-header .business-summary .business-info h1 {
+  font-size: 1.8rem;
+  margin: 0;
+}
+.public-profile .business-header .business-summary .business-info .location {
+  color: #666;
+  margin: 0.3rem 0;
+}
+.public-profile .business-header .business-summary .business-info .contact {
+  color: #666;
+  font-size: 0.95rem;
+}
+.public-profile .business-header .business-summary .business-info .rating-box {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+.public-profile .business-header .business-summary .business-info .rating-box .rating-score {
+  font-weight: 600;
+}
+.public-profile .business-header .business-summary .business-info .rating-box a {
+  margin-left: 0.4rem;
+  color: #2a66f5;
+  text-decoration: none;
+}
+.public-profile .about, .public-profile .gallery, .public-profile .reviews, .public-profile .faq {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1.5rem;
+}
+.public-profile .about h2, .public-profile .gallery h2, .public-profile .reviews h2, .public-profile .faq h2 {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+}
+.public-profile .about p, .public-profile .gallery p, .public-profile .reviews p, .public-profile .faq p {
+  color: #555;
+  line-height: 1.7;
+}
+.public-profile .details-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.public-profile .details-grid .card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+.public-profile .details-grid .card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+.public-profile .details-grid .card ul {
+  list-style: none;
+  padding: 0;
+}
+.public-profile .details-grid .card ul li {
+  margin-bottom: 0.4rem;
+}
+.public-profile .details-grid .card ul li strong {
+  color: #1b1b1b;
+}
+.public-profile .details-grid .card a {
+  color: #2a66f5;
+  text-decoration: none;
+}
+.public-profile .gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1rem;
+}
+.public-profile .gallery-grid img {
+  border-radius: 10px;
+  width: 100%;
+  height: 140px;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.public-profile .review-card {
+  background: #f7f7f9;
+  padding: 1rem;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+.public-profile .review-card .stars {
+  color: #13c265;
+}
+.public-profile .review-card p {
+  margin: 0.5rem 0;
+}
+.public-profile .review-card span {
+  color: #666;
+  font-size: 0.9rem;
+}
+.public-profile .faq-box {
+  background: #f7f7f9;
+  padding: 1rem;
+  border-radius: 12px;
+  white-space: pre-line;
+}
+
+/* Desktop */
+@media (min-width: 768px) {
+  .public-profile .details-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .public-profile .business-header .cover-photo {
+    height: 280px;
+  }
+  .public-profile .business-header .business-summary .logo-wrapper {
+    width: 120px;
+    height: 120px;
+  }
+  .public-profile .business-header .business-summary .business-info h1 {
+    font-size: 2rem;
+  }
+}/*# sourceMappingURL=business_detail.css.map */

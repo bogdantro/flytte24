@@ -30,6 +30,8 @@ class SignUpForm(UserCreationForm):
 
 
 
+
+
 class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = User
@@ -62,3 +64,24 @@ class SetPasswordForm(SetPasswordForm):
     class Meta:
         model = get_user_model()
         fields = ['new_password1', 'new_password2']    
+
+
+
+
+
+from django import forms
+from apps.store.models import PublicBusinessInformation, BusinessImage
+
+class PublicBusinessInformationForm(forms.ModelForm):
+    class Meta:
+        model = PublicBusinessInformation
+        fields = ["logo", "about_us", "faq"]
+        widgets = {
+            "about_us": forms.Textarea(attrs={"rows": 5, "placeholder": "Skriv litt om bedriften din..."}),
+            "faq": forms.Textarea(attrs={"rows": 5, "placeholder": "Legg til ofte stilte spørsmål..."}),
+        }
+
+class BusinessImageForm(forms.ModelForm):
+    class Meta:
+        model = BusinessImage
+        fields = ["image"]

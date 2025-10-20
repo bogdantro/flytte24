@@ -39,9 +39,15 @@ urlpatterns = [
 
     path('for-bedrifter/bruker/logg-inn/', views.LoginView.as_view(template_name='core/login.html'), name='login'),
     path('reg/fullfor/lag-bruker/', signup, name='signup'),
-    path('logout/', views.LogoutView.as_view(), name='logout'),
+    path('for-bedrifter/min-bruker/logg-ut/', views.LogoutView.as_view(), name='logout'),
 
     path('for-bedrifter/min-bruker/', myaccount, name='myaccount'),
+    path('for-bedrifter/min-bruker/bedriftsinformasjon/', edit_public_profile, name='edit_public_profile'),
+    path("for-bedrifter/foresporsel-database/", foresporsel_database, name="foresporsel_database"),
+
+    path('bedrift/<int:business_id>/', public_business_profile, name='public_business_profile'),
+
+
 
 
     # API

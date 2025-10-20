@@ -39,3 +39,16 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from .models import *
 
+
+
+from django.shortcuts import render, get_object_or_404
+from apps.store.models import Bedrift_info, PublicBusinessInformation
+
+def public_business_profile(request, business_id):
+    business = get_object_or_404(Bedrift_info, id=business_id)
+    public_info = getattr(business, "public_info", None)
+    
+    return render(request, "core/public_business_profile.html", {
+        "business": business,
+        "public_info": public_info,
+    })

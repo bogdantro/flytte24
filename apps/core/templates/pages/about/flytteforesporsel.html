@@ -160,13 +160,52 @@
 </section>
 
 
-<!-- ================= STEP 3B (PROPERTY DETAILS) ================= -->
-<section class="form-wrapper hidden " id="step3b">
+<!-- ================= STEP 3B (DATE & TIME) ================= -->
+<section class="form-wrapper hidden" id="step3b">
   <div class="form-container">
     <div class="step-indicator">
       <div class="step-text">
         <span>
           <button type="button" id="backToStep3a" class="back-btn">
+            <i class="fa-solid fa-arrow-left"></i>
+          </button> Steg 3 av 4
+        </span>
+        <p>Dato og tidspunkt</p>
+      </div>
+      <div class="progress-bar"><div class="progress" style="width:75%;"></div></div>
+    </div>
+
+    <h2 class="form-question">Når ønsker du flyttehjelp?</h2>
+
+    <form id="step3bForm">
+      <label>Velg dato</label>
+      <input type="date" id="move_date" required>
+
+      <label>Velg tidspunkt</label>
+      <select id="move_time" required>
+        <option value="">Velg tidspunkt</option>
+        <option value="Morgen (07:00–11:00)">Morgen (07:00–11:00)</option>
+        <option value="Formiddag (11:00–14:00)">Formiddag (11:00–14:00)</option>
+        <option value="Ettermiddag (14:00–18:00)">Ettermiddag (14:00–18:00)</option>
+        <option value="Kveld (18:00–21:00)">Kveld (18:00–21:00)</option>
+      </select>
+
+      <div class="form-nav">
+        <button type="submit" class="next-btn">Fortsett til kontaktinfo</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+
+
+<!-- ================= STEP 3C (PROPERTY DETAILS) ================= -->
+<section class="form-wrapper hidden" id="step3c">
+  <div class="form-container">
+    <div class="step-indicator">
+      <div class="step-text">
+        <span>
+          <button type="button" id="backToStep3b" class="back-btn">
             <i class="fa-solid fa-arrow-left"></i>
           </button> Steg 3 av 4
         </span>
@@ -177,35 +216,54 @@
 
     <h2 class="form-question">Fortell litt mer om flyttingen</h2>
 
-    <form id="step3bForm" class="property-form">
-
+    <form id="step3cForm" class="property-form">
+      <!-- === Nåværende bolig === -->
       <h3 class="section-title">Nåværende bolig</h3>
+
       <label>Type bolig du flytter fra</label>
       <div class="radio-group">
         <label class="radio-card"><input type="radio" name="from_type" value="Hus"> Hus</label>
         <label class="radio-card"><input type="radio" name="from_type" value="Leilighet"> Leilighet</label>
       </div>
 
-      <label>Antall rom</label>
-      <div class="room-buttons">
+      <label>Antall rom (fra)</label>
+      <div class="room-buttons" id="fromRoomButtons">
         <button type="button" class="room-btn">1</button>
         <button type="button" class="room-btn">2</button>
         <button type="button" class="room-btn">3</button>
         <button type="button" class="room-btn">4</button>
         <button type="button" class="room-btn">5+</button>
       </div>
+      <input type="hidden" id="from_rooms" value="">
 
       <label>Størrelse på bolig (m², estimat)</label>
-      <input type="number" id="size_estimate" placeholder="Eks: 85">
+      <input type="number" id="from_kvm" placeholder="Eks: 85" min="1">
 
-      <br>
-      <br>
+      <br><br>
+
+      <!-- === Ny bolig === -->
       <h3 class="section-title">Ny bolig</h3>
+
       <label>Type bolig du flytter til</label>
       <div class="radio-group">
         <label class="radio-card"><input type="radio" name="to_type" value="Hus"> Hus</label>
         <label class="radio-card"><input type="radio" name="to_type" value="Leilighet"> Leilighet</label>
       </div>
+
+      <label>Antall rom (til)</label>
+      <div class="room-buttons" id="toRoomButtons">
+        <button type="button" class="room-btn">1</button>
+        <button type="button" class="room-btn">2</button>
+        <button type="button" class="room-btn">3</button>
+        <button type="button" class="room-btn">4</button>
+        <button type="button" class="room-btn">5+</button>
+      </div>
+      <input type="hidden" id="to_rooms" value="">
+
+      <label>Størrelse på bolig (m², estimat)</label>
+      <input type="number" id="to_kvm" placeholder="Eks: 100" min="1">
+
+      <br><br>
 
       <label>Flere detaljer om flyttingen?</label>
       <div class="radio-group">
@@ -223,6 +281,7 @@
     </form>
   </div>
 </section>
+
 
 
 <!-- ================= STEP 4 ================= -->
@@ -357,9 +416,10 @@ async function fetchCityFromPostcode(postcode, targetCityInput) {
 
 // ==================== MULTI-STEP FUNKSJON ====================
 document.addEventListener("DOMContentLoaded", async () => {
-  const steps = ["step1", "step2a", "step2b", "step3a", "step3b", "step4"].map(
-    id => document.getElementById(id)
-  );
+ const steps = ["step1", "step2a", "step2b", "step3a", "step3b", "step3c", "step4"].map(
+  id => document.getElementById(id)
+);
+
 
   const showStep = id => {
     steps.forEach(s => s && s.classList.toggle("hidden", s.id !== id));
@@ -446,16 +506,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
   // ===== STEP 3A → STEP 3B =====
-  const toStep3b = document.getElementById("toStep3b");
-  if (toStep3b)
-    toStep3b.addEventListener("click", () => {
-      const checked = document.querySelector('input[name="move_help"]:checked');
-      if (!checked) {
-        document.getElementById('helpErrorText').style.display = 'block';
-        return;
-      }
-      showStep("step3b");
-    });
+// ===== STEP 3A → STEP 3B (DATE & TIME) =====
+const toStep3b = document.getElementById("toStep3b");
+if (toStep3b)
+  toStep3b.addEventListener("click", () => {
+    const checked = document.querySelector('input[name="move_help"]:checked');
+    if (!checked) {
+      document.getElementById("helpErrorText").style.display = "block";
+      return;
+    }
+    showStep("step3b"); // ✅ now correctly goes to the date/time step
+  });
+
+
+
 
   // ===== STEP 3B INTERAKSJON =====
   const infoYes = document.getElementById("infoYes");
@@ -481,10 +545,54 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
 
+
+// ===== STEP 3B (DATE & TIME) → STEP 3C (PROPERTY DETAILS) =====
+const step3bForm = document.getElementById("step3bForm");
+if (step3bForm)
+  step3bForm.addEventListener("submit", e => {
+    e.preventDefault();
+
+    const moveDate = document.getElementById("move_date").value;
+    const moveTime = document.getElementById("move_time").value;
+
+    if (!moveDate || !moveTime) {
+      alert("Vennligst velg både dato og tidspunkt før du fortsetter.");
+      return;
+    }
+
+    showStep("step3c"); // ✅ now continues correctly
+  });
+
+
+  // Handle room selection buttons
+function setupRoomButtons(containerId, hiddenInputId) {
+  const container = document.getElementById(containerId);
+  const hiddenInput = document.getElementById(hiddenInputId);
+
+  if (!container || !hiddenInput) return;
+
+  container.querySelectorAll(".room-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      // Remove active state from others
+      container.querySelectorAll(".room-btn").forEach((b) => b.classList.remove("active"));
+      // Set active class
+      btn.classList.add("active");
+      // Store value
+      hiddenInput.value = btn.textContent.trim();
+    });
+  });
+}
+
+// Initialize both sets
+setupRoomButtons("fromRoomButtons", "from_rooms");
+setupRoomButtons("toRoomButtons", "to_rooms");
+
+
+
   // ===== STEP 3B → STEP 4 =====
-  const step3bForm = document.getElementById("step3bForm");
-  if (step3bForm)
-    step3bForm.addEventListener("submit", e => {
+  const step3cForm = document.getElementById("step3cForm");
+  if (step3cForm)
+    step3cForm.addEventListener("submit", e => {
       e.preventDefault();
 
       const fromType = document.querySelector('input[name="from_type"]:checked');
@@ -499,14 +607,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
   // ===== TILBAKEKNAPPER =====
-  const backButtons = {
-    backToStep1: "step1",
-    backToStep2a: "step2a",
-    backToStep3a: "step3a",
-    backStep3b: "step3a",
-    backStep4: "step3b",
-    backToStep2b: "step2b"
-  };
+const backButtons = {
+  backToStep1: "step1",
+  backToStep2a: "step2a",
+  backToStep2b: "step2b",
+  backToStep3a: "step3a",
+  backToStep3b: "step3b", // ✅ correct ID for “Tilbake”-knappen in step3c
+  backStep4: "step3b"     // from step4 back to step3b
+};
 
   Object.keys(backButtons).forEach(id => {
     const btn = document.getElementById(id);
@@ -520,31 +628,34 @@ document.addEventListener("DOMContentLoaded", async () => {
       e.preventDefault();
 
       // Samle alle data fra hele skjemaet
-      const data = {
-        move_type: document.querySelector('input[name="move_type"]:checked')?.value || "",
+const data = {
+  move_type: document.querySelector('input[name="move_type"]:checked')?.value || "",
 
-        from_postcode: document.getElementById("from_postcode").value,
-        from_city: document.getElementById("from_city").value,
-        from_address: document.getElementById("from_address").value,
+  from_postcode: document.getElementById("from_postcode").value,
+  from_city: document.getElementById("from_city").value,
+  from_address: document.getElementById("from_address").value,
+  from_property_type: document.querySelector('input[name="from_type"]:checked')?.value || "",
+  from_rooms: document.getElementById("from_rooms").value,
+  from_kvm: document.getElementById("from_kvm").value,
 
-        to_postcode: document.getElementById("to_postcode").value,
-        to_city: document.getElementById("to_city").value,
-        to_address: document.getElementById("to_address").value,
+  to_postcode: document.getElementById("to_postcode").value,
+  to_city: document.getElementById("to_city").value,
+  to_address: document.getElementById("to_address").value,
+  to_property_type: document.querySelector('input[name="to_type"]:checked')?.value || "",
+  to_rooms: document.getElementById("to_rooms").value,
+  to_kvm: document.getElementById("to_kvm").value,
 
-        move_help: document.querySelector('input[name="move_help"]:checked')?.value || "",
-        from_property_type: document.querySelector('input[name="from_type"]:checked')?.value || "",
-        to_property_type: document.querySelector('input[name="to_type"]:checked')?.value || "",
-        from_rooms: document.querySelector('.room-btn.active')?.innerText || "",
-        to_rooms: "", 
-        additional_info: document.getElementById("additional_info")?.value || "",
+  move_date: document.getElementById("move_date").value,
+  move_time: document.getElementById("move_time").value,
+  move_help: document.querySelector('input[name="move_help"]:checked')?.value || "",
+  additional_info: document.getElementById("additional_info")?.value || "",
 
-        first_name: document.getElementById("first_name").value,
-        last_name: document.getElementById("last_name").value,
-        phone: document.getElementById("phone").value,
-        email: document.getElementById("email").value,
-        consent: document.getElementById("consent").checked ? "true" : "false",
-      };
-
+  first_name: document.getElementById("first_name").value,
+  last_name: document.getElementById("last_name").value,
+  phone: document.getElementById("phone").value,
+  email: document.getElementById("email").value,
+  consent: document.getElementById("consent").checked ? "true" : "false",
+};
       try {
         const res = await fetch("/send-flytteforesporsel/", {
           method: "POST",

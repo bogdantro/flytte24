@@ -1,0 +1,173 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block head %}
+<title>Rediger bedriftsprofil | Flytte24</title>
+<link rel="stylesheet" href="{% static '/scss/userprofile/account/edit.css' %}">
+{% endblock %}
+
+{% block header %}
+<header>
+  {% include 'core/accountNav.html' %}
+</header>
+{% endblock %}
+
+{% block content %}
+<style>
+  .business-info{
+    border-bottom: 2px solid #13c265;
+  }
+</style>
+
+
+<div class="profile-wrapper">
+  <div class="main-content">
+    
+    <div class="profile-card">
+      <div class="profile-header">
+        <div class="profile-info">
+          <div class="logo-section">
+            {% if public_info.logo %}
+              <img src="{{ public_info.logo.url }}" alt="Logo" class="company-logo">
+            {% else %}
+              <div class="logo-placeholder">Ingen logo</div>
+            {% endif %}
+            <form method="POST" enctype="multipart/form-data" class="upload-form">
+              {% csrf_token %}
+              {{ form.logo }}
+              <button type="submit" class="btn-primary small">Last opp</button>
+            </form>
+          </div>
+          <div>
+            <h1>{{ business.company_name }}</h1>
+            <p class="company-location">{{ business.city }}</p>
+          </div>
+        </div>
+
+        <div class="contact-card">
+          <h3>Kontaktinfo</h3>
+          <p><strong>E-post:</strong> {{ business.email }}</p>
+          <p><strong>Telefon:</strong> {{ business.phone }}</p>
+          <p><strong>Adresse:</strong> {{ business.address }}</p>
+
+          <!-- 👇 New Copy URL Button -->
+        <button 
+  class="btn-outline copy-url-btn" 
+  type="button"
+  onclick="copyProfileURL('{{ public_url }}')"
+>
+  📋 Kopier profil-URL
+</button>
+<p id="copy-status" class="copy-status">Lenke kopiert!</p>
+
+          <p id="copy-status" class="copy-status">Lenke kopiert!</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-header">
+        <h2>Om bedriften</h2>
+        <button class="edit-btn" onclick="toggleEdit('about')">✏️ Rediger</button>
+      </div>
+      <div id="about-display">
+        {% if public_info.about_us %}
+          <p>{{ public_info.about_us|linebreaks }}</p>
+        {% else %}
+          <p class="placeholder">Ingen beskrivelse lagt til ennå.</p>
+        {% endif %}
+      </div>
+      <form id="about-form" method="POST" enctype="multipart/form-data" style="display:none;">
+        {% csrf_token %}
+        {{ form.about_us }}
+        <button type="submit" class="btn-save">💾 Lagre</button>
+      </form>
+    </div>
+
+    <div class="section-card">
+      <div class="section-header">
+        <h2>Galleri (maks 6)</h2>
+      </div>
+      <div class="gallery-grid">
+        {% for img in public_info.images.all %}
+          <div class="image-item">
+            <img src="{{ img.image.url }}" alt="Galleri">
+          </div>
+        {% endfor %}
+        {% if public_info.images.count < 6 %}
+        <form method="POST" enctype="multipart/form-data" class="upload-form">
+          {% csrf_token %}
+          {{ image_form.image }}
+          <button type="submit" class="btn-primary small">Legg til bilde</button>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-header">
+        <h2>Ofte stilte spørsmål (FAQ)</h2>
+        <button class="edit-btn" onclick="toggleEdit('faq')">✏️ Rediger</button>
+      </div>
+      <div id="faq-display">
+        {% if public_info.faq %}
+          <p>{{ public_info.faq|linebreaks }}</p>
+        {% else %}
+          <p class="placeholder">Ingen spørsmål lagt til ennå.</p>
+        {% endif %}
+      </div>
+      <form id="faq-form" method="POST" enctype="multipart/form-data" style="display:none;">
+        {% csrf_token %}
+        {{ form.faq }}
+        <button type="submit" class="btn-save">💾 Lagre</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="tips-card">
+      <h3>💡 Tips for bedre profil</h3>
+      <ul>
+        <li>
+          <i class="fa-solid fa-star"></i>
+          <strong>Vis frem kundetilfredshet</strong><br>
+          Legg til bilder og anmeldelser for å vise kvaliteten på arbeidet ditt.
+        </li>
+        <li>
+          <i class="fa-solid fa-pen"></i>
+          <strong>Gjør “Om oss” personlig</strong><br>
+          Fortell kort om hvem dere er, erfaring og hvorfor kunder bør velge dere.
+        </li>
+        <li>
+          <i class="fa-solid fa-image"></i>
+          <strong>Bruk ekte bilder</strong><br>
+          Opplast egne prosjektbilder – det gir tillit og ser profesjonelt ut.
+        </li>
+      </ul>
+    </div>
+  </aside>
+</div>
+
+<script>
+function toggleEdit(section) {
+  const display = document.getElementById(`${section}-display`);
+  const form = document.getElementById(`${section}-form`);
+  display.style.display = display.style.display === "none" ? "block" : "none";
+  form.style.display = form.style.display === "none" ? "block" : "none";
+}
+
+function copyProfileURL(url) {
+  if (!url) return;
+  navigator.clipboard.writeText(url).then(() => {
+    const status = document.getElementById("copy-status");
+    status.style.opacity = "1";
+    setTimeout(() => {
+      status.style.opacity = "0";
+    }, 1500);
+  }).catch(() => {
+    alert('Kunne ikke kopiere lenken. Prøv manuelt.');
+  });
+}
+</script>
+{% endblock %}

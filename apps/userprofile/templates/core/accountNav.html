@@ -1,0 +1,102 @@
+{% load static %}
+
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script rel="stylesheet" src="{% static '/js/nav.js' %}" type="text/javascript"></script>
+<link rel="stylesheet" href="{% static '/scss/userprofile/nav.css' %}" type="text/css">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Alata&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+
+<div id="mobileNav" style=" border-bottom: 1px solid lightgray;">
+    <div class="logo" onclick="window.location.href='/for-bedrifter/'">
+        <img src="{% static 'images/logo/logo-business.png' %}" alt="">
+    </div>
+   
+    {% if request.user.authenticated %}
+    <a href="/for-bedrifter/min-bruker/" style="color: #1F1F1F; font-size: 16px;">Min bruker</a>
+    {% else %}
+    <a href="/for-bedrifter/bruker/logg-inn/" style="color: #1F1F1F; font-size: 16px;">Logg inn</a>
+    {% endif %}
+
+   
+</div>
+
+
+<div id="desNav">
+    <div class="desnav-content">
+        <div class="left">
+            <div class="logo" onclick="window.location.href='/for-bedrifter/min-bruker/'">
+                <img src="{% static 'images/logo/logo.png' %}" alt="">
+            </div>
+        </div>
+        <div class="menu">
+            <div class="links">
+               <a href="{% url 'public_business_profile' business.id %}" target="_blank">TEST PUBLIC BEDRIFT</a>
+                <a href="/for-bedrifter/min-bruker/" class="oversikt">Oversikt</a>
+                <a href="/for-bedrifter/foresporsel-database/" class="database">Forespørsler database</a>
+                <a href="/for-bedrifter/min-bruker/bedriftsinformasjon/" class="business-info">Bedrifts informasjon</a>
+                <div class="user-menu">
+  <a  class="user-menu-toggle">
+    Bruker
+    <i class="fa-regular fa-chevron-down"></i>
+  </a>
+
+  <div class="dropdown-menu">
+    <a >
+      <i class="fa-regular fa-id-card"></i> Profil detaljer
+    </a>
+    <a >
+      <i class="fa-regular fa-gear"></i> Bruker innstillinger
+    </a>
+   <form action="{% url 'logout' %}" method="POST" class="logout-form">
+  {% csrf_token %}
+  <button type="submit">
+    <i class="fa-regular fa-right-from-bracket"></i> Logg ut
+  </button>
+</form>
+
+  </div>
+</div>
+
+            </div>
+            <div class="user">
+            <div class="left">
+  {% if business.public_info.logo %}
+    <img src="{{ business.public_info.logo.url }}" alt="{{ business.company_name }}">
+  {% else %}
+    <img src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small_2x/default-avatar-icon-of-social-media-user-vector.jpg" alt="">
+  {% endif %}
+</div>
+
+                <div class="right">
+                    <p>{{ business.company_name}}</p>
+                    <span>Flyttebyrå</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+document.addEventListener('click', (e) => {
+  const menu = document.querySelector('.user-menu');
+  const toggle = menu.querySelector('.user-menu-toggle');
+  const dropdown = menu.querySelector('.dropdown-menu');
+
+  if (toggle.contains(e.target)) {
+    dropdown.classList.toggle('show');
+  } else if (!menu.contains(e.target)) {
+    dropdown.classList.remove('show');
+  }
+});
+</script>

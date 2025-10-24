@@ -66,6 +66,8 @@ from apps.store.models import Bedrift_info, JobDistribution
 
 
 
+import requests
+
 @csrf_exempt
 @require_POST
 def send_flytteforesporsel(request):
@@ -113,7 +115,6 @@ def send_flytteforesporsel(request):
         consent=data.get("consent") == "true",
         created_at=timezone.now(),
     )
-
 
     # 🔍 Match businesses by city + move type
     city = (data.get("from_city") or "").strip().lower()
@@ -165,9 +166,126 @@ def send_flytteforesporsel(request):
             business.total_leads_received = str(current_total + 1)
             business.save(update_fields=["total_leads_received"])
 
+    # 🌐 Define separate webhook URLs for businesses
+    webhook_url_1 = "https://hooks.zapier.com/hooks/catch/16531899/uri7mol/"
+    webhook_url_2 = "https://hooks.zapier.com/hooks/catch/16531899/urs5di1/"
+    webhook_url_3 = "https://hooks.zapier.com/hooks/catch/16531899/urs5mfe/"
+
+    webhook_urls = [webhook_url_1, webhook_url_2, webhook_url_3]
+
+    # 📨 Send individual payloads to each business
+    for idx, b in enumerate(selected):
+        payload = {
+            "inquiry": {
+                "id": inquiry.id,
+                "move_type": inquiry.move_type,
+                "from_city": inquiry.from_city,
+                "to_city": inquiry.to_city,
+                "move_date": inquiry.move_date.isoformat() if inquiry.move_date else None,
+                "move_time": inquiry.move_time,
+                "first_name": inquiry.first_name,
+                "last_name": inquiry.last_name,
+                "phone": inquiry.phone,
+                "email": inquiry.email,
+                "additional_info": inquiry.additional_info,
+            },
+            "business": {
+                "id": b.id,
+                "company_name": b.company_name,
+                "email": b.email,
+                "phone": b.phone,
+                "website": b.website,
+                "address": b.address,
+                "postal_code": b.postal_code,
+                "city": b.city,
+                "first_name": b.first_name,
+                "last_name": b.last_name,
+            },
+            "webhook_number": idx + 1,
+        }
+
+        try:
+            resp = requests.post(webhook_urls[idx], json=payload, timeout=8)
+            resp.raise_for_status()
+            print(f"✅ Sent webhook #{idx + 1} to {b.company_name}")
+        except requests.RequestException as e:
+            print(f"⚠️ Webhook #{idx + 1} failed for {b.company_name}: {e}")
+
+    # 📩 Send webhook to customer with full lead + all matched businesses
+    customer_webhook_url = "https://hooks.zapier.com/hooks/catch/16531899/urs5514/"  # bytt til riktig URL
+
+    customer_payload = {
+        "inquiry": {
+            "id": inquiry.id,
+            "move_type": inquiry.move_type,
+            "from_postcode": inquiry.from_postcode,
+            "from_city": inquiry.from_city,
+            "from_address": inquiry.from_address,
+            "from_property_type": inquiry.from_property_type,
+            "from_rooms": inquiry.from_rooms,
+            "from_kvm": inquiry.from_kvm,
+            "to_postcode": inquiry.to_postcode,
+            "to_city": inquiry.to_city,
+            "to_address": inquiry.to_address,
+            "to_property_type": inquiry.to_property_type,
+            "to_rooms": inquiry.to_rooms,
+            "to_kvm": inquiry.to_kvm,
+            "move_help": inquiry.move_help,
+            "move_date": inquiry.move_date.isoformat() if inquiry.move_date else None,
+            "move_time": inquiry.move_time,
+            "additional_info": inquiry.additional_info,
+            "first_name": inquiry.first_name,
+            "last_name": inquiry.last_name,
+            "phone": inquiry.phone,
+            "email": inquiry.email,
+        },
+        "matched_businesses": [
+            {
+                "id": b.id,
+                "company_name": b.company_name,
+                "email": b.email,
+                "phone": b.phone,
+                "website": b.website,
+                "address": b.address,
+                "postal_code": b.postal_code,
+                "city": b.city,
+                "first_name": b.first_name,
+                "last_name": b.last_name,
+            }
+            for b in selected
+        ]
+    }
+
+    try:
+        resp = requests.post(customer_webhook_url, json=customer_payload, timeout=8)
+        resp.raise_for_status()
+        print(f"✅ Sent webhook to customer at {customer_webhook_url}")
+    except requests.RequestException as e:
+        print(f"⚠️ Customer webhook failed: {e}")
+
     return JsonResponse({
         "success": True,
-        "redirect_url": "/takk-for-din-foresporsel/"
+        "redirect_url": f"/takk-for-din-foresporsel/{inquiry.id}/"
+    })
+
+from django.shortcuts import render, get_object_or_404
+
+from django.shortcuts import render, get_object_or_404
+
+def takk_for_foresporsel(request, inquiry_id=None):
+    """Viser takk-side med liste over bedrifter som mottok leaden"""
+    inquiry = get_object_or_404(Flytteforesporsel, id=inquiry_id)
+    job_dist = JobDistribution.objects.filter(inquiry=inquiry).first()
+
+    businesses = []
+    if job_dist:
+        for b in [job_dist.business_1, job_dist.business_2, job_dist.business_3]:
+            if b:
+                businesses.append(b)
+
+    return render(request, "core/takk_for_foresporsel.html", {
+        "inquiry": inquiry,
+        "businesses": businesses,
     })
 
 

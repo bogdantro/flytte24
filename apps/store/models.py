@@ -37,6 +37,9 @@ class Bedrift_info(models.Model):
 
     total_leads_received = models.CharField(max_length=90, blank=True, null=True)
 
+    # Selskaper mann skal prioritere ettersom andre har nådd grensa. Så går det etter listen. 1-10, hvor 10 er best
+    priority_score = models.CharField(max_length=90, blank=True, null=True)
+
     active = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(auto_now_add=True)

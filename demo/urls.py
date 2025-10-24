@@ -30,6 +30,7 @@ urlpatterns = [
 
     path('flytteforesporsel/', flytteforesporsel, name='flytteforesporsel'),
     path('send-flytteforesporsel/', send_flytteforesporsel, name='send_flytteforesporsel'),
+    path("takk-for-din-foresporsel/<int:inquiry_id>/", takk_for_foresporsel, name="takk_for_foresporsel"),
 
     path('contact-us/', contact, name='contact'), 
     path('about-us/', about, name='about'), 

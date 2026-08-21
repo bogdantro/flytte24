@@ -5,7 +5,7 @@ from django.urls import reverse
 
 from apps.leads.models import MoveLead
 from apps.pages.models import Page, PageSection
-from apps.store.models import Bedrift_info, PublicBusinessInformation
+from apps.store.models import Bedrift_info, BusinessImage, PublicBusinessInformation
 
 
 def _make_lead(**overrides):
@@ -373,3 +373,49 @@ class BusinessToggleActiveViewTests(TestCase):
         list_url = reverse("dashboard:business_list")
         response = self.client.post(url, {"next": list_url})
         self.assertRedirects(response, list_url)
+
+
+class BusinessImageViewTests(TestCase):
+    def setUp(self):
+        self.staff = User.objects.create_user("staff9", password="pw", is_staff=True)
+        self.business = Bedrift_info.objects.create(
+            company_name="Flytt AS", email="flytt@example.com", phone="12345678",
+            address="Gate 1", postal_code="0001", city="Oslo",
+            first_name="Ola", last_name="Nordmann",
+        )
+        self.public_info = PublicBusinessInformation.objects.create(business=self.business)
+
+    def test_add_requires_post(self):
+        self.client.force_login(self.staff)
+        response = self.client.get(reverse("dashboard:business_image_add", args=[self.business.pk]))
+        self.assertEqual(response.status_code, 405)
+
+    def test_add_saves_image_and_redirects(self):
+        self.client.force_login(self.staff)
+        upload = SimpleUploadedFile("test.gif", b"GIF87a", content_type="image/gif")
+        url = reverse("dashboard:business_image_add", args=[self.business.pk])
+        response = self.client.post(url, {"image": upload})
+        self.assertRedirects(response, reverse("dashboard:business_detail", args=[self.business.pk]))
+        self.assertEqual(self.public_info.images.count(), 1)
+
+    def test_add_silently_rejects_the_7th_image(self):
+        self.client.force_login(self.staff)
+        for i in range(6):
+            BusinessImage.objects.create(
+                public_info=self.public_info,
+                image=SimpleUploadedFile(f"test{i}.gif", b"GIF87a", content_type="image/gif"),
+            )
+        upload = SimpleUploadedFile("test7.gif", b"GIF87a", content_type="image/gif")
+        self.client.post(reverse("dashboard:business_image_add", args=[self.business.pk]), {"image": upload})
+        self.assertEqual(self.public_info.images.count(), 6)
+
+    def test_delete_removes_image(self):
+        self.client.force_login(self.staff)
+        image = BusinessImage.objects.create(
+            public_info=self.public_info,
+            image=SimpleUploadedFile("test.gif", b"GIF87a", content_type="image/gif"),
+        )
+        url = reverse("dashboard:business_image_delete", args=[self.business.pk, image.pk])
+        response = self.client.post(url)
+        self.assertRedirects(response, reverse("dashboard:business_detail", args=[self.business.pk]))
+        self.assertFalse(BusinessImage.objects.filter(pk=image.pk).exists())

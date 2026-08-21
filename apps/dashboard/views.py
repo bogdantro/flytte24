@@ -2,6 +2,7 @@ from functools import wraps
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import user_passes_test
+from django.core.exceptions import ValidationError
 from django.core.files.base import ContentFile
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
@@ -10,7 +11,7 @@ from django.views.decorators.http import require_POST
 from apps.dashboard.forms import BusinessCoreForm, BusinessPublicInfoForm, PageForm, PageSectionForm
 from apps.leads.models import MoveLead
 from apps.pages.models import Page, PageSection
-from apps.store.models import Bedrift_info, PublicBusinessInformation
+from apps.store.models import Bedrift_info, BusinessImage, PublicBusinessInformation
 
 
 def staff_required(view_func):
@@ -249,4 +250,30 @@ def business_toggle_active(request, pk):
     next_url = request.POST.get("next")
     if next_url:
         return redirect(next_url)
+    return redirect("dashboard:business_detail", pk=business.pk)
+
+
+@staff_required
+@require_POST
+def business_image_add(request, pk):
+    business = get_object_or_404(Bedrift_info, pk=pk)
+    public_info, _ = PublicBusinessInformation.objects.get_or_create(business=business)
+    image_file = request.FILES.get("image")
+    if image_file:
+        image = BusinessImage(public_info=public_info, image=image_file)
+        try:
+            image.full_clean()
+        except ValidationError:
+            pass  # over the 6-image cap — silently no-op, template already hides the upload form at 6
+        else:
+            image.save()
+    return redirect("dashboard:business_detail", pk=business.pk)
+
+
+@staff_required
+@require_POST
+def business_image_delete(request, pk, image_pk):
+    business = get_object_or_404(Bedrift_info, pk=pk)
+    image = get_object_or_404(BusinessImage, pk=image_pk, public_info__business=business)
+    image.delete()
     return redirect("dashboard:business_detail", pk=business.pk)

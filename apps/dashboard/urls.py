@@ -18,4 +18,6 @@ urlpatterns = [
     path("bedrifter/", views.business_list, name="business_list"),
     path("bedrifter/<int:pk>/", views.business_detail, name="business_detail"),
     path("bedrifter/<int:pk>/aktiver/", views.business_toggle_active, name="business_toggle_active"),
+    path("bedrifter/<int:pk>/bilde/legg-til/", views.business_image_add, name="business_image_add"),
+    path("bedrifter/<int:pk>/bilde/<int:image_pk>/slett/", views.business_image_delete, name="business_image_delete"),
 ]

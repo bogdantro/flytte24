@@ -1,4 +1,7 @@
+import uuid
+
 from django.db import models
+from django.utils import timezone
 
 
 class MoveLead(models.Model):
@@ -57,13 +60,15 @@ class MoveLead(models.Model):
         return f"{self.reference} — {self.navn}"
 
     def save(self, *args, **kwargs):
-        # reference needs self.pk, so it's assigned on first save and then
-        # persisted with a second save() call — cheap, and only runs once per lead.
-        is_new = self.pk is None
+        # Generated before the first (and only) save, using a random component
+        # instead of self.pk — a two-phase save (insert, then a second save
+        # setting reference from the new pk) is vulnerable to a lost-lead
+        # IntegrityError when two submissions' first inserts interleave, since
+        # both would briefly try to write the same reference="" value against
+        # this field's unique constraint.
+        if not self.reference:
+            self.reference = f"KOB-{timezone.now().year}-{uuid.uuid4().hex[:8].upper()}"
         super().save(*args, **kwargs)
-        if is_new and not self.reference:
-            self.reference = f"KOB-{self.created_at.year}-{self.pk}"
-            super().save(update_fields=["reference"])
 
 
 class LeadImage(models.Model):

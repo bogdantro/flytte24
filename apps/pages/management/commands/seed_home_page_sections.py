@@ -51,9 +51,9 @@ class Command(BaseCommand):
                 button_href="/flytteforesporsel/",
                 extra_json={
                     "steps": [
-                        {"title": "Fyll ut skjema", "body": "Svar på noen enkle spørsmål. Tar under to minutter."},
-                        {"title": "Vi kobler deg med de beste", "body": "Tre kvalitetssjekkede byråer kobles med din flytting."},
-                        {"title": "Velg tilbud", "body": "Sammenlign, velg ditt byrå, og avtal resten direkte med dem."},
+                        {"title": "Fyll ut skjema", "body": "Svar på noen enkle spørsmål. Tar under to minutter.", "image": "howitworks-1-skjema.png"},
+                        {"title": "Vi kobler deg med de beste", "body": "Tre kvalitetssjekkede byråer kobles med din flytting.", "image": "howitworks-2-match.png"},
+                        {"title": "Velg tilbud", "body": "Sammenlign, velg ditt byrå, og avtal resten direkte med dem.", "image": "howitworks-3-velg.png"},
                     ]
                 },
             ),

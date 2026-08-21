@@ -158,6 +158,13 @@ class PageListViewTests(TestCase):
         response = self.client.get(reverse("dashboard:page_list"))
         self.assertContains(response, "Ingen sider ennå")
 
+    def test_lists_a_page_with_working_urls(self):
+        page = Page.objects.create(title="Om oss", slug="om-oss", path="/om-oss/", template_key="about")
+        self.client.force_login(self.staff)
+        response = self.client.get(reverse("dashboard:page_list"))
+        self.assertContains(response, "Om oss")
+        self.assertContains(response, reverse("dashboard:page_edit", args=[page.pk]))
+
 
 class PageEditViewTests(TestCase):
     def setUp(self):
@@ -374,6 +381,12 @@ class BusinessToggleActiveViewTests(TestCase):
         response = self.client.post(url, {"next": list_url})
         self.assertRedirects(response, list_url)
 
+    def test_rejects_external_next_param(self):
+        self.client.force_login(self.staff)
+        url = reverse("dashboard:business_toggle_active", args=[self.business.pk])
+        response = self.client.post(url, {"next": "https://evil.example/"})
+        self.assertRedirects(response, reverse("dashboard:business_detail", args=[self.business.pk]))
+
 
 class BusinessImageViewTests(TestCase):
     def setUp(self):
@@ -466,6 +479,20 @@ class ReviewViewTests(TestCase):
         response = self.client.post(url)
         self.assertRedirects(response, reverse("dashboard:business_detail", args=[self.business.pk]))
         self.assertFalse(Review.objects.filter(pk=review.pk).exists())
+
+    def test_add_rejects_non_numeric_rating_without_crashing(self):
+        self.client.force_login(self.staff)
+        url = reverse("dashboard:review_add", args=[self.business.pk])
+        response = self.client.post(url, {"name": "Kari", "rating": "not-a-number", "comment": "Bra"})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(self.business.reviews.get().rating, 5)
+
+    def test_add_rejects_out_of_range_rating(self):
+        self.client.force_login(self.staff)
+        url = reverse("dashboard:review_add", args=[self.business.pk])
+        response = self.client.post(url, {"name": "Kari", "rating": "999", "comment": "Bra"})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(self.business.reviews.get().rating, 5)
 
     def test_cannot_delete_another_businesss_review(self):
         other_business = Bedrift_info.objects.create(

@@ -1,3 +1,6 @@
+from io import StringIO
+
+from django.core.management import call_command
 from django.test import TestCase
 
 from apps.pages.models import Page, PageSection
@@ -51,3 +54,8 @@ class HomePageRenderingTests(TestCase):
         response = self.client.get("/")
         self.assertContains(response, "Egendefinert spørsmål?")
         self.assertNotContains(response, "Hva koster det å bruke Kobly?")
+
+    def test_seeded_how_it_works_steps_still_show_illustrations(self):
+        call_command("seed_home_page_sections", stdout=StringIO())
+        response = self.client.get("/")
+        self.assertContains(response, "howitworks-1-skjema.png")

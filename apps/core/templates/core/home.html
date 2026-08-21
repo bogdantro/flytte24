@@ -86,6 +86,7 @@
         {% for step in sections.how_it_works.extra_json.steps %}
           <li class="step-card">
             <span class="step-card__number">{{ forloop.counter }}</span>
+            <div class="step-card__art"><img src="{% static 'images/home/'|add:step.image %}" alt=""></div>
             <h3 class="step-card__title">{{ step.title }}</h3>
             <p class="step-card__body">{{ step.body }}</p>
           </li>

@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError
 from django.core.files.base import ContentFile
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
 
 from apps.dashboard.forms import BusinessCoreForm, BusinessPublicInfoForm, PageForm, PageSectionForm
@@ -248,7 +249,9 @@ def business_toggle_active(request, pk):
     business.active = not business.active
     business.save(update_fields=["active"])
     next_url = request.POST.get("next")
-    if next_url:
+    if next_url and url_has_allowed_host_and_scheme(
+        next_url, allowed_hosts={request.get_host()}, require_https=request.is_secure()
+    ):
         return redirect(next_url)
     return redirect("dashboard:business_detail", pk=business.pk)
 
@@ -285,7 +288,12 @@ def review_add(request, pk):
     business = get_object_or_404(Bedrift_info, pk=pk)
     name = request.POST.get("name", "").strip()
     comment = request.POST.get("comment", "").strip()
-    rating = request.POST.get("rating", "5")
+    try:
+        rating = int(request.POST.get("rating", 5))
+    except (TypeError, ValueError):
+        rating = 5
+    if rating not in (1, 2, 3, 4, 5):
+        rating = 5
     if name and comment:
         Review.objects.create(business=business, name=name, comment=comment, rating=rating)
     return redirect("dashboard:business_detail", pk=business.pk)
@@ -298,7 +306,13 @@ def review_edit(request, pk, review_pk):
     review = get_object_or_404(Review, pk=review_pk, business=business)
     review.name = request.POST.get("name", review.name).strip()
     review.comment = request.POST.get("comment", review.comment).strip()
-    review.rating = request.POST.get("rating", review.rating)
+    try:
+        rating = int(request.POST.get("rating", review.rating))
+    except (TypeError, ValueError):
+        rating = review.rating
+    if rating not in (1, 2, 3, 4, 5):
+        rating = review.rating
+    review.rating = rating
     review.save(update_fields=["name", "comment", "rating"])
     return redirect("dashboard:business_detail", pk=business.pk)
 

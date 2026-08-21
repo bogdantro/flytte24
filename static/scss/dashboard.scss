@@ -181,62 +181,119 @@ a { color: inherit; text-decoration: none; }
 }
 
 // ---------------------------------------------------------------
-// .dashboard-topbar — present on every authenticated page
+// .dashboard-shell — sidebar + main content, present on every
+// authenticated page. Sidebar is fixed-width and full-height;
+// .dashboard-main takes the remaining space.
 // ---------------------------------------------------------------
-.dashboard-topbar {
+.dashboard-shell {
+  display: flex;
+  align-items: flex-start;
+  min-height: 100vh;
+}
+
+.dashboard-sidebar {
   position: sticky;
   top: 0;
-  z-index: 10;
-  background: rgba(244, 241, 234, 0.92);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid $color-line;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  width: 240px;
+  height: 100vh;
+  padding: 1.5rem 1rem;
+  background: $color-surface;
+  border-right: 1px solid $color-line;
 
-  &__inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 1rem 1.5rem;
-  }
-
-  &__logo { display: inline-flex; align-items: center; gap: 0.5rem; color: $color-ink; }
+  &__logo { display: inline-flex; align-items: center; gap: 0.5rem; color: $color-ink; padding: 0 0.5rem; }
   &__wordmark { font-size: 1.0625rem; font-weight: 700; }
   &__label {
-    margin-left: 0.5rem;
-    padding-left: 0.75rem;
-    border-left: 1px solid $color-line;
+    margin: 0.375rem 0 1.5rem;
+    padding: 0 0.5rem;
     font-size: 0.8125rem;
     color: $color-ink-muted;
   }
 
   &__nav {
     display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    margin-left: 2rem;
+    flex-direction: column;
+    gap: 0.25rem;
   }
 
   &__link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border-radius: 10px;
+    padding: 0.625rem 0.75rem;
     font-size: 0.875rem;
     font-weight: 500;
     color: $color-ink-muted;
-    transition: color 0.2s ease;
+    transition: background-color 0.2s ease, color 0.2s ease;
 
-    &:hover, &.is-active { color: $color-ink; }
+    &:hover { background: $color-surface-soft; color: $color-ink; }
+
+    &.is-active {
+      background: $color-brand;
+      color: $color-brand-ink;
+
+      .dashboard-sidebar__icon { color: $color-brand-ink; }
+    }
   }
 
-  &__right { display: flex; align-items: center; gap: 1rem; }
-  &__user { font-size: 0.8125rem; color: $color-ink-muted; }
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    color: $color-ink-muted;
+  }
+
+  &__footer {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid $color-line;
+  }
+
+  &__user {
+    display: block;
+    padding: 0 0.75rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.8125rem;
+    color: $color-ink-muted;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__logout {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    background: none;
+    padding: 0.625rem 0.75rem;
+    font-family: $font-sans;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: $color-ink-muted;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+
+    &:hover { background: $color-surface-soft; color: $color-ink; }
+  }
 }
 
 // ---------------------------------------------------------------
 // .dashboard-main — content wrapper shared by list/detail
 // ---------------------------------------------------------------
 .dashboard-main {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 1.5rem 4rem;
+  flex: 1;
+  min-width: 0;
+  max-width: 1100px;
+  padding: 2rem 2.5rem 4rem;
 }
 
 .dashboard-heading {

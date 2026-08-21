@@ -12,35 +12,50 @@
 </head>
 <body>
 
-<header class="dashboard-topbar">
-  <div class="dashboard-topbar__inner">
-    <a href="{% url 'dashboard:lead_list' %}" class="dashboard-topbar__logo">
+<div class="dashboard-shell">
+  <aside class="dashboard-sidebar">
+    <a href="{% url 'dashboard:lead_list' %}" class="dashboard-sidebar__logo">
       <svg width="20" height="20" viewBox="0 0 27 27" fill="none" aria-hidden="true">
         <circle cx="13.5" cy="13.5" r="11.625" stroke="currentColor" stroke-width="3.75" />
         <path d="M16.5 1.875C12.7075 5.23556 10.5 9.26144 10.5 13.5887C10.5 17.8401 12.6307 21.8006 16.3019 25.125" stroke="currentColor" stroke-width="3.75" />
       </svg>
-      <span class="dashboard-topbar__wordmark">Kobly</span>
-      <span class="dashboard-topbar__label">Dashbord</span>
+      <span class="dashboard-sidebar__wordmark">Kobly</span>
     </a>
-    <nav class="dashboard-topbar__nav">
-      <a href="{% url 'dashboard:lead_list' %}" class="dashboard-topbar__link">Leads</a>
-      <a href="{% url 'dashboard:page_list' %}" class="dashboard-topbar__link">Sider</a>
-      <a href="{% url 'dashboard:business_list' %}" class="dashboard-topbar__link">Bedrifter</a>
+    <span class="dashboard-sidebar__label">Dashbord</span>
+
+    <nav class="dashboard-sidebar__nav">
+      <a href="{% url 'dashboard:lead_list' %}" class="dashboard-sidebar__link {% if request.path == '/dashboard/' or '/dashboard/lead/' in request.path %}is-active{% endif %}">
+        <span class="dashboard-sidebar__icon" data-icon="inbox"></span>
+        Leads
+      </a>
+      <a href="{% url 'dashboard:page_list' %}" class="dashboard-sidebar__link {% if '/dashboard/sider/' in request.path %}is-active{% endif %}">
+        <span class="dashboard-sidebar__icon" data-icon="file-text"></span>
+        Sider
+      </a>
+      <a href="{% url 'dashboard:business_list' %}" class="dashboard-sidebar__link {% if '/dashboard/bedrifter/' in request.path %}is-active{% endif %}">
+        <span class="dashboard-sidebar__icon" data-icon="building"></span>
+        Bedrifter
+      </a>
     </nav>
-    <div class="dashboard-topbar__right">
-      <span class="dashboard-topbar__user">{{ request.user.get_username }}</span>
+
+    <div class="dashboard-sidebar__footer">
+      <span class="dashboard-sidebar__user">{{ request.user.get_username }}</span>
       <form method="post" action="{% url 'dashboard:logout' %}">
         {% csrf_token %}
-        <button type="submit" class="btn-outline">Logg ut</button>
+        <button type="submit" class="dashboard-sidebar__logout">
+          <span class="dashboard-sidebar__icon" data-icon="log-out"></span>
+          Logg ut
+        </button>
       </form>
     </div>
-  </div>
-</header>
+  </aside>
 
-<main class="dashboard-main">
-  {% block content %}{% endblock %}
-</main>
+  <main class="dashboard-main">
+    {% block content %}{% endblock %}
+  </main>
+</div>
 
+{% include "dashboard/_icon_sprite.html" %}
 <script src="{% static 'js/dashboard.js' %}"></script>
 </body>
 </html>

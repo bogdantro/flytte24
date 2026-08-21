@@ -1,3 +1,4 @@
+import io
 import json
 import tempfile
 
@@ -5,10 +6,20 @@ from django.core import mail
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, override_settings
 from django.urls import reverse
+from PIL import Image
 
 from apps.leads.emails import send_receipt_email
 from apps.leads.forms import WizardForm
 from apps.leads.models import LeadImage, MoveLead
+from apps.leads.views import MAX_PHOTO_SIZE_BYTES, _validate_photos
+
+
+def _make_valid_image_upload(name="photo.jpg"):
+    """Builds a real, tiny decodable JPEG wrapped in a SimpleUploadedFile — for tests that need a file that passes Pillow's Image.open().verify()."""
+    buffer = io.BytesIO()
+    Image.new("RGB", (1, 1)).save(buffer, "JPEG")
+    buffer.seek(0)
+    return SimpleUploadedFile(name, buffer.read(), content_type="image/jpeg")
 
 
 class WizardViewSmokeTest(TestCase):
@@ -55,7 +66,8 @@ class MoveLeadModelTest(TestCase):
     def test_reference_is_generated_on_save(self):
         lead = self._make_lead()
         self.assertTrue(lead.reference.startswith(f"KOB-{lead.created_at.year}-"))
-        self.assertTrue(lead.reference.endswith(str(lead.pk)))
+        suffix = lead.reference.split("-")[-1]
+        self.assertEqual(len(suffix), 8)
 
     def test_str_includes_reference_and_name(self):
         lead = self._make_lead()
@@ -169,10 +181,15 @@ class WizardPostViewTest(TestCase):
         lead = MoveLead.objects.get()
         self.assertEqual(lead.navn, "Ola Nordmann")
         self.assertEqual(lead.flytte_type, "privat")
+        # Proves the Task 5 (view) <-> Task 6 (email) seam: a real POST
+        # through the view actually triggers send_receipt_email, not just a
+        # direct call to send_receipt_email() in isolation.
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].to, ["ola@eksempel.no"])
 
     def test_valid_post_with_photos_creates_lead_images(self):
         payload = _valid_payload()
-        photo = SimpleUploadedFile("sofa.jpg", b"fake-bytes", content_type="image/jpeg")
+        photo = _make_valid_image_upload("sofa.jpg")
         response = self.client.post(reverse("leads:wizard"), {**payload, "bilder": [photo]})
         self.assertRedirects(response, reverse("leads:wizard_thank_you"))
         lead = MoveLead.objects.get()
@@ -184,9 +201,67 @@ class WizardPostViewTest(TestCase):
         self.assertEqual(MoveLead.objects.count(), 0)
         self.assertTrue(response.context["form"].errors)
 
+    def test_invalid_post_repopulates_step_2_3_and_coordinate_fields(self):
+        # An otherwise-valid payload with one intentionally-invalid field
+        # (navn too short) should still re-render every other submitted
+        # value — flytte_type/boligtype radios, the date, and the coord
+        # inputs — instead of silently dropping the user's other answers.
+        payload = _valid_payload(navn="O", flytte_type="bedrift", boligtype="enebolig", flyttedato="2026-10-05")
+        response = self.client.post(reverse("leads:wizard"), payload)
+        self.assertEqual(response.status_code, 200)
+        content = response.content.decode()
+        self.assertIn('name="flytte_type" value="bedrift" checked', content)
+        self.assertIn('name="boligtype" value="enebolig" checked', content)
+        self.assertIn('value="2026-10-05"', content)
+
+    def test_photo_that_is_not_a_real_image_is_rejected(self):
+        payload = _valid_payload()
+        fake_file = SimpleUploadedFile("sofa.jpg", b"fake-bytes", content_type="image/jpeg")
+        response = self.client.post(reverse("leads:wizard"), {**payload, "bilder": [fake_file]})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(MoveLead.objects.count(), 0)
+        self.assertIn("er ikke et gyldig bilde", "".join(response.context["photo_errors"]))
+
+    def test_photo_upload_valid_real_image_is_accepted(self):
+        payload = _valid_payload()
+        photo = _make_valid_image_upload("sofa.jpg")
+        response = self.client.post(reverse("leads:wizard"), {**payload, "bilder": [photo]})
+        self.assertRedirects(response, reverse("leads:wizard_thank_you"))
+        lead = MoveLead.objects.get()
+        self.assertEqual(lead.images.count(), 1)
+
     def test_thank_you_page_returns_200(self):
         response = self.client.get(reverse("leads:wizard_thank_you"))
         self.assertEqual(response.status_code, 200)
+
+
+class ValidatePhotosTest(TestCase):
+    """Unit tests on views._validate_photos — the server-side gate on request.FILES.getlist("bilder"), since accept="image/*" is client-side only."""
+
+    def test_oversized_file_is_rejected(self):
+        oversized = SimpleUploadedFile(
+            "big.jpg", b"x" * (MAX_PHOTO_SIZE_BYTES + 1), content_type="image/jpeg"
+        )
+        errors = _validate_photos([oversized])
+        self.assertEqual(len(errors), 1)
+        self.assertIn("for stort", errors[0])
+
+    def test_non_image_file_is_rejected(self):
+        fake_file = SimpleUploadedFile("sofa.jpg", b"fake-bytes", content_type="image/jpeg")
+        errors = _validate_photos([fake_file])
+        self.assertEqual(len(errors), 1)
+        self.assertIn("ikke et gyldig bilde", errors[0])
+
+    def test_real_valid_image_passes(self):
+        photo = _make_valid_image_upload("sofa.jpg")
+        errors = _validate_photos([photo])
+        self.assertEqual(errors, [])
+
+    def test_too_many_files_is_rejected(self):
+        photos = [_make_valid_image_upload(f"photo{i}.jpg") for i in range(21)]
+        errors = _validate_photos(photos)
+        self.assertEqual(len(errors), 1)
+        self.assertIn("maks 20 bilder", errors[0])
 
 
 class WizardTemplateRenderTest(TestCase):

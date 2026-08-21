@@ -629,7 +629,13 @@ textarea.field-input { resize: none; }
   &.is-active { display: flex; animation: wizard-fade-in 0.26s ease both; }
 }
 
-.step-art img { width: 100%; height: 100%; object-fit: cover; }
+// Absolutely positioned against .step-art's own (position: relative) box,
+// exactly like .map-panel__map below — width/height:100% in normal flow
+// still lets an <img>'s own intrinsic aspect ratio assert extra height in
+// some cases, which is what let the photo spill past the card's bottom
+// edge even with overflow:hidden set on the card. inset:0 has no such
+// escape hatch: it's always exactly the size of the containing box.
+.step-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 
 // --- .map-panel — Leaflet map + custom controls ---
 .map-panel {

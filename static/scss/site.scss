@@ -1,0 +1,145 @@
+// static/scss/site.scss
+//
+// Marketing-site-wide styles (everything except /wizard/, which is a
+// fullscreen takeover with its own stylesheet — see wizard.scss). Starts
+// with just the global header/nav; more sections get added here as the
+// rest of the marketing pages are built. Nested parent/child per section,
+// one comment banner per block — read this top to bottom like a document.
+// Compile after every edit with:
+//   sass static/scss/site.scss static/css/site.css --style=expanded
+//
+@use "kobly-tokens" as *;
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: $font-sans;
+  color: $color-ink;
+  background: $color-bg;
+  @extend %kobly-font-features;
+}
+
+a { color: inherit; }
+
+// =================================================================
+// .site-header — sticky top nav, present on every marketing page
+// =================================================================
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(244, 241, 234, 0.9); // $color-bg, slightly translucent
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid $color-line;
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem;
+  }
+
+  // --- Logo: ring icon + "Kobly" wordmark ---
+  &__logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: $color-ink;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+
+  &__wordmark {
+    font-size: 1.125rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  // --- Mobile "Meny" toggle — hidden on desktop, see breakpoint below ---
+  &__menu-toggle {
+    display: inline-flex;
+    border: none;
+    background: none;
+    padding: 0.5rem;
+    font-family: $font-sans;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: $color-ink;
+    cursor: pointer;
+  }
+
+  // --- Links + CTA (desktop: inline row; mobile: collapsible stack) ---
+  &__links {
+    display: none;
+    align-items: center;
+    gap: 2rem;
+
+    &.is-open {
+      display: flex;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      background: $color-surface;
+      border-bottom: 1px solid $color-line;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+    }
+  }
+
+  &__link {
+    padding: 1rem 1.5rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: $color-ink;
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover { color: rgba(26, 26, 26, 0.6); }
+  }
+
+  &__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0.75rem 1.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: $radius-pill;
+    background: $color-brand;
+    color: $color-brand-ink;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+
+    &:hover { background: rgba(34, 24, 20, 0.9); }
+  }
+}
+
+// Desktop: links show inline next to the logo, mobile toggle disappears.
+@media (min-width: 1024px) {
+  .site-header {
+    &__menu-toggle { display: none; }
+
+    &__links {
+      display: flex;
+      position: static;
+      flex-direction: row;
+      align-items: center;
+      gap: 2rem;
+      background: none;
+      border: none;
+      box-shadow: none;
+    }
+
+    &__link { padding: 0; }
+
+    &__cta { margin: 0; }
+  }
+}

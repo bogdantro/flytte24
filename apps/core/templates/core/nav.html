@@ -1,0 +1,31 @@
+<!-- apps/core/templates/core/nav.html -->
+{% comment %}
+Site header (spec §4.1) — present on every marketing page. Sticky top nav:
+logo on the left, links + CTA pill on the right, capped at 1500px wide.
+Mobile collapses the three text links behind a "Meny" toggle button that
+reveals them stacked underneath — a lighter version of the spec's
+fullscreen overlay menu, good enough until the rest of the marketing
+pages exist to justify the full treatment.
+{% endcomment %}
+<header class="site-header" data-site-header>
+  <div class="site-header__inner">
+    <a href="/" class="site-header__logo" aria-label="Kobly hjem">
+      <svg width="22" height="22" viewBox="0 0 27 27" fill="none" aria-hidden="true">
+        <circle cx="13.5" cy="13.5" r="11.625" stroke="currentColor" stroke-width="3.75" />
+        <path d="M16.5 1.875C12.7075 5.23556 10.5 9.26144 10.5 13.5887C10.5 17.8401 12.6307 21.8006 16.3019 25.125" stroke="currentColor" stroke-width="3.75" />
+      </svg>
+      <span class="site-header__wordmark">Kobly</span>
+    </a>
+
+    <button type="button" class="site-header__menu-toggle" data-site-header-toggle aria-expanded="false" aria-controls="site-header-links">
+      Meny
+    </button>
+
+    <div class="site-header__links" id="site-header-links" data-site-header-links>
+      <a href="/blogg/" class="site-header__link">Blogg</a>
+      <a href="/byraer/" class="site-header__link">Byråer</a>
+      <a href="/partner/" class="site-header__link">For flyttebyråer</a>
+      <a href="/flytteforesporsel/" class="site-header__cta">Få 3 tilbud gratis</a>
+    </div>
+  </div>
+</header>

@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from apps.core.views import *
 from django.conf.urls.static import *
 from django.conf import *
@@ -25,6 +25,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}),
+
+    path('wizard/', include('apps.leads.urls')),
 
     path('', home, name='home'), 
 

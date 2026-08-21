@@ -3,12 +3,14 @@ from functools import wraps
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import user_passes_test
 from django.core.files.base import ContentFile
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
 from apps.dashboard.forms import PageForm, PageSectionForm
 from apps.leads.models import MoveLead
 from apps.pages.models import Page, PageSection
+from apps.store.models import Bedrift_info
 
 
 def staff_required(view_func):
@@ -182,3 +184,29 @@ def page_delete(request, pk):
     page = get_object_or_404(Page, pk=pk)
     page.delete()
     return redirect("dashboard:page_list")
+
+
+@staff_required
+def business_list(request):
+    """Every registered business, filterable by active status and searchable by name/email/city."""
+    active_filter = request.GET.get("active", "")
+    query = request.GET.get("q", "").strip()
+
+    businesses = Bedrift_info.objects.all().order_by("-created_at")
+    if active_filter == "1":
+        businesses = businesses.filter(active=True)
+    elif active_filter == "0":
+        businesses = businesses.filter(active=False)
+    if query:
+        businesses = businesses.filter(
+            Q(company_name__icontains=query) | Q(email__icontains=query) | Q(city__icontains=query)
+        )
+
+    context = {
+        "businesses": businesses,
+        "active_filter": active_filter,
+        "query": query,
+        "total_count": Bedrift_info.objects.count(),
+        "active_count": Bedrift_info.objects.filter(active=True).count(),
+    }
+    return render(request, "dashboard/business_list.html", context)

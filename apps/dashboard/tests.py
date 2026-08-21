@@ -5,6 +5,7 @@ from django.urls import reverse
 
 from apps.leads.models import MoveLead
 from apps.pages.models import Page, PageSection
+from apps.store.models import Bedrift_info
 
 
 def _make_lead(**overrides):
@@ -261,3 +262,40 @@ class PageDeleteViewTests(TestCase):
         response = self.client.post(reverse("dashboard:page_delete", args=[self.page.pk]))
         self.assertRedirects(response, reverse("dashboard:page_list"))
         self.assertFalse(Page.objects.filter(pk=self.page.pk).exists())
+
+
+class BusinessListViewTests(TestCase):
+    def setUp(self):
+        self.staff = User.objects.create_user("staff6", password="pw", is_staff=True)
+        self.active_biz = Bedrift_info.objects.create(
+            company_name="Aktiv Flytt AS", email="aktiv@example.com", phone="12345678",
+            address="Gate 1", postal_code="0001", city="Oslo",
+            first_name="Ola", last_name="Nordmann", active=True,
+        )
+        self.inactive_biz = Bedrift_info.objects.create(
+            company_name="Inaktiv Flytt AS", email="inaktiv@example.com", phone="87654321",
+            address="Gate 2", postal_code="0002", city="Bergen",
+            first_name="Kari", last_name="Nordmann", active=False,
+        )
+
+    def test_requires_staff_login(self):
+        response = self.client.get(reverse("dashboard:business_list"))
+        self.assertEqual(response.status_code, 302)
+
+    def test_lists_all_by_default(self):
+        self.client.force_login(self.staff)
+        response = self.client.get(reverse("dashboard:business_list"))
+        self.assertContains(response, "Aktiv Flytt AS")
+        self.assertContains(response, "Inaktiv Flytt AS")
+
+    def test_filters_by_active(self):
+        self.client.force_login(self.staff)
+        response = self.client.get(reverse("dashboard:business_list"), {"active": "1"})
+        self.assertContains(response, "Aktiv Flytt AS")
+        self.assertNotContains(response, "Inaktiv Flytt AS")
+
+    def test_search_by_city(self):
+        self.client.force_login(self.staff)
+        response = self.client.get(reverse("dashboard:business_list"), {"q": "Bergen"})
+        self.assertContains(response, "Inaktiv Flytt AS")
+        self.assertNotContains(response, "Aktiv Flytt AS")

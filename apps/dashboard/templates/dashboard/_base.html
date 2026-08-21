@@ -25,6 +25,7 @@
     <nav class="dashboard-topbar__nav">
       <a href="{% url 'dashboard:lead_list' %}" class="dashboard-topbar__link">Leads</a>
       <a href="{% url 'dashboard:page_list' %}" class="dashboard-topbar__link">Sider</a>
+      <a href="{% url 'dashboard:business_list' %}" class="dashboard-topbar__link">Bedrifter</a>
     </nav>
     <div class="dashboard-topbar__right">
       <span class="dashboard-topbar__user">{{ request.user.get_username }}</span>

@@ -1,0 +1,71 @@
+<!-- apps/dashboard/templates/dashboard/business_list.html -->
+{% extends "dashboard/_base.html" %}
+
+{% block title %}Bedrifter{% endblock %}
+
+{% block content %}
+  <h1 class="dashboard-heading">Bedrifter</h1>
+
+  <div class="dashboard-stats">
+    <div class="dashboard-stat">
+      <span class="dashboard-stat__value">{{ total_count }}</span>
+      <span class="dashboard-stat__label">Totalt</span>
+    </div>
+    <div class="dashboard-stat">
+      <span class="dashboard-stat__value">{{ active_count }}</span>
+      <span class="dashboard-stat__label">Aktive</span>
+    </div>
+  </div>
+
+  <div class="dashboard-filters">
+    <a href="?" class="filter-pill {% if not active_filter %}is-active{% endif %}">Alle</a>
+    <a href="?active=1" class="filter-pill {% if active_filter == '1' %}is-active{% endif %}">Aktive</a>
+    <a href="?active=0" class="filter-pill {% if active_filter == '0' %}is-active{% endif %}">Inaktive</a>
+  </div>
+
+  <form method="get" style="margin-bottom: 1.5rem;">
+    {% if active_filter %}<input type="hidden" name="active" value="{{ active_filter }}">{% endif %}
+    <input type="text" name="q" value="{{ query }}" placeholder="Søk på navn, e-post eller by …" class="dashboard-form__group" style="width:100%; max-width:360px; border:1.5px solid rgba(26,26,26,0.1); border-radius:10px; background:#f7f5f1; padding:0.75rem 0.875rem; font-size:0.9375rem;">
+  </form>
+
+  {% if businesses %}
+    <table class="lead-table">
+      <thead>
+        <tr>
+          <th>Bedrift</th>
+          <th>By</th>
+          <th>Dekker</th>
+          <th>Type</th>
+          <th>Status</th>
+          <th>Leads mottatt</th>
+          <th>Prioritet</th>
+          <th>Opprettet</th>
+          <th>Handling</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for business in businesses %}
+          <tr onclick="window.location='{% url 'dashboard:business_detail' business.pk %}'">
+            <td>{{ business.company_name }}</td>
+            <td class="lead-table__muted">{{ business.city }}</td>
+            <td class="lead-table__muted">{{ business.cities|default:"—" }}</td>
+            <td class="lead-table__muted">{{ business.move_type|default:"—" }}</td>
+            <td><span class="status-badge status-badge--{% if business.active %}new{% else %}contacted{% endif %}">{% if business.active %}Aktiv{% else %}Inaktiv{% endif %}</span></td>
+            <td>{{ business.total_leads_received|default:"0" }}</td>
+            <td class="lead-table__muted">{{ business.priority_score|default:"—" }}</td>
+            <td class="lead-table__muted">{{ business.created_at|date:"d.m.Y" }}</td>
+            <td onclick="event.stopPropagation();">
+              <form method="post" action="{% url 'dashboard:business_toggle_active' business.pk %}">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                <button type="submit" class="btn-outline">{% if business.active %}Deaktiver{% else %}Aktiver{% endif %}</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="dashboard-empty">Ingen bedrifter {% if query or active_filter %}matcher søket{% else %}registrert ennå{% endif %}.</p>
+  {% endif %}
+{% endblock %}

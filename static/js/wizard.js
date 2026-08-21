@@ -68,7 +68,7 @@
         return (
           navn.length > 1 &&
           /^[\d\s+]{8,}$/.test(telefon) &&
-          /\S+@\S+\.\S+/.test(epost)
+          /^\S+@\S+\.\S+$/.test(epost)
         );
       }
       default:
@@ -155,6 +155,9 @@
     if (currentStep < TOTAL_STEPS) {
       goToStep(currentStep + 1);
     } else {
+      // Disable the button immediately so a second click/tap before the page
+      // navigates away can't submit the form twice (duplicate lead + email).
+      document.querySelector("[data-wizard-next]").disabled = true;
       document.querySelector(".wizard-card").submit();
     }
   }
@@ -264,6 +267,10 @@
       input.value = `${address.adressetekst}, ${address.postnummer} ${address.poststed}`;
       latInput.value = point ? point.lat : "";
       lonInput.value = point ? point.lon : "";
+      // Programmatic value assignment fires no native "input" event, but
+      // updateNavButton()/updateSummaryPanel() are only bound to that event —
+      // without this, selecting a suggestion can leave "Neste" stuck disabled.
+      input.dispatchEvent(new Event("input", { bubbles: true }));
       list.hidden = true;
       // Task 12's map reads these same hidden inputs to place/move its pin.
       KoblyWizard.onCoordChange && KoblyWizard.onCoordChange(key, point ? point.lat : null, point ? point.lon : null, input.value);
@@ -304,6 +311,10 @@
       input.value = address;
       latInput.value = lat;
       lonInput.value = lon;
+      // Same rationale as selectAddress() above — the map click/drag/geolocate/
+      // mobile-overlay-confirm paths all set .value programmatically, which
+      // fires no native "input" event on its own.
+      input.dispatchEvent(new Event("input", { bubbles: true }));
     };
   }
 
@@ -611,6 +622,19 @@
   // ---------------------------------------------------------------
   let selectedPhotos = [];
 
+  // Caches one object URL per File so repeated re-renders (e.g. on every
+  // keystroke, since updateSummaryPanel is bound to the "input" event) don't
+  // leak a fresh blob URL every time — revoked explicitly when a photo is removed.
+  const photoUrlCache = new WeakMap();
+
+  /** Returns a cached object URL for a File, creating one only the first time it's seen. */
+  function getPhotoUrl(file) {
+    if (!photoUrlCache.has(file)) {
+      photoUrlCache.set(file, URL.createObjectURL(file));
+    }
+    return photoUrlCache.get(file);
+  }
+
   /** Rebuilds the hidden file input's FileList from the current selectedPhotos array. */
   function syncPhotoInput() {
     const input = document.querySelector("[data-photo-input]");
@@ -626,11 +650,16 @@
     grid.querySelectorAll(".photo-thumb").forEach((el) => el.remove());
 
     selectedPhotos.forEach((file, index) => {
-      const url = URL.createObjectURL(file);
+      const url = getPhotoUrl(file);
       const thumb = document.createElement("div");
       thumb.className = "photo-thumb";
       thumb.innerHTML = `<img src="${url}" alt=""><button type="button" class="photo-thumb__remove" aria-label="Fjern bilde"><span data-icon="x"></span></button>`;
       thumb.querySelector(".photo-thumb__remove").addEventListener("click", () => {
+        const removedFile = selectedPhotos[index];
+        if (photoUrlCache.has(removedFile)) {
+          URL.revokeObjectURL(photoUrlCache.get(removedFile));
+          photoUrlCache.delete(removedFile);
+        }
         selectedPhotos.splice(index, 1);
         syncPhotoInput();
         renderPhotoGrid();
@@ -706,7 +735,7 @@
       selectedPhotos.forEach((file) => {
         const thumb = document.createElement("div");
         thumb.className = "photo-thumb";
-        thumb.innerHTML = `<img src="${URL.createObjectURL(file)}" alt="">`;
+        thumb.innerHTML = `<img src="${getPhotoUrl(file)}" alt="">`;
         grid.appendChild(thumb);
       });
       const wrapper = document.createElement("div");

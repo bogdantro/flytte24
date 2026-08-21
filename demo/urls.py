@@ -26,11 +26,10 @@ urlpatterns = [
 
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}),
 
-    path('wizard/', include('apps.leads.urls')),
+    path('flytteforesporsel/', include('apps.leads.urls')),
 
-    path('', home, name='home'), 
+    path('', home, name='home'),
 
-    path('flytteforesporsel/', flytteforesporsel, name='flytteforesporsel'),
     path('send-flytteforesporsel/', send_flytteforesporsel, name='send_flytteforesporsel'),
     path("takk-for-din-foresporsel/<int:inquiry_id>/", takk_for_foresporsel, name="takk_for_foresporsel"),
 

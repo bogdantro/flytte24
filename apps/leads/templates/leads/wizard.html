@@ -121,10 +121,15 @@
           <div class="wizard-step__body">
             <div class="pill-group" data-pill-group="flytte_type">
               <p class="pill-group__label">Type</p>
-              <div class="pill-group__grid pill-group__grid--3col">
+              <div class="pill-group__grid pill-group__grid--2col">
                 <label class="pill-button"><input type="radio" name="flytte_type" value="privat" {% if form.flytte_type.value == "privat" %}checked{% endif %}>Privat</label>
                 <label class="pill-button"><input type="radio" name="flytte_type" value="bedrift" {% if form.flytte_type.value == "bedrift" %}checked{% endif %}>Bedrift</label>
+                {% comment %}
+                Internasjonal hidden per request — kept here (not deleted) so
+                it's a one-line uncomment if it comes back, rather than a
+                re-write of the field/pill/validation/copy from scratch.
                 <label class="pill-button"><input type="radio" name="flytte_type" value="internasjonal" {% if form.flytte_type.value == "internasjonal" %}checked{% endif %}>Internasjonal</label>
+                {% endcomment %}
               </div>
             </div>
             <div class="pill-group" data-pill-group="boligtype">
@@ -147,10 +152,19 @@
           </div>
 
           <div class="wizard-step__body">
-            <label class="date-field">
+            <div class="date-field">
               <span class="field-label">Ønsket flyttedato</span>
-              <input type="date" name="flyttedato" class="field-input" data-date-input value="{{ form.flyttedato.value|default:'' }}">
-            </label>
+              <!-- Custom calendar modal instead of the native <input type="date">,
+                   whose format follows the browser's locale (e.g. US mm/dd/yyyy) —
+                   inconsistent with the rest of this all-Norwegian site. The real
+                   value lives in the hidden input below; the button is just a
+                   Norwegian-formatted display + the modal's trigger. -->
+              <button type="button" class="date-field__trigger field-input" data-date-picker-trigger>
+                <span data-date-picker-label>Velg dato</span>
+                <span data-icon="calendar"></span>
+              </button>
+              <input type="hidden" name="flyttedato" data-date-input value="{{ form.flyttedato.value|default:'' }}">
+            </div>
             <!-- Real checkbox, styled as a dashed pill — no JS needed to know its state -->
             <label class="flex-toggle" data-flex-toggle>
               <input type="checkbox" name="fleksibel" data-flex-checkbox {% if form.fleksibel.value %}checked{% endif %}>
@@ -322,6 +336,39 @@
     <button type="button" class="map-overlay__confirm btn-primary" data-map-overlay-confirm>
       <span data-icon="check"></span>
       Bruk denne plasseringen
+    </button>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- DATE PICKER MODAL — custom calendar, opened from step 3's date field -->
+<!-- ============================================================ -->
+<div class="date-overlay" data-date-overlay role="dialog" aria-modal="true" hidden>
+  <div class="date-overlay__backdrop" data-date-overlay-backdrop></div>
+
+  <div class="date-overlay__card">
+    <div class="date-overlay__header">
+      <button type="button" class="date-overlay__nav" data-date-overlay-prev aria-label="Forrige måned">
+        <span data-icon="arrow-left"></span>
+      </button>
+      <p class="date-overlay__month" data-date-overlay-month>—</p>
+      <button type="button" class="date-overlay__nav" data-date-overlay-next aria-label="Neste måned">
+        <span data-icon="arrow-right"></span>
+      </button>
+      <button type="button" class="date-overlay__close" data-date-overlay-close aria-label="Lukk">
+        <span data-icon="x"></span>
+      </button>
+    </div>
+
+    <!-- Mon-Sun weekday header, built once from the browser's own no-NO locale names -->
+    <div class="date-overlay__weekdays" data-date-overlay-weekdays></div>
+
+    <!-- Day-number buttons, rebuilt on open and on every month navigation -->
+    <div class="date-overlay__grid" data-date-overlay-grid></div>
+
+    <button type="button" class="date-overlay__confirm btn-primary" data-date-overlay-confirm disabled>
+      <span data-icon="check"></span>
+      Bruk denne datoen
     </button>
   </div>
 </div>

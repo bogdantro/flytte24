@@ -772,6 +772,175 @@
     }
   }
 
+  // ---------------------------------------------------------------
+  // Custom date picker modal (step 3) — replaces the native
+  // <input type="date">, whose displayed format follows the browser's
+  // locale (e.g. US mm/dd/yyyy) rather than this all-Norwegian site.
+  // The real value lives in a hidden input; this only builds/drives the
+  // calendar UI and writes the chosen date back into that hidden input.
+  // Month/weekday names come from the browser's own Intl "no-NO" locale
+  // data rather than a hardcoded string table.
+  // ---------------------------------------------------------------
+
+  /** Formats a Date as the yyyy-mm-dd string Django's DateField expects. */
+  function toIsoDate(date) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, "0");
+    const d = String(date.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
+  }
+
+  /** Parses a yyyy-mm-dd string into a local Date, or null for an empty/missing value. */
+  function parseIsoDate(iso) {
+    if (!iso) return null;
+    const [y, m, d] = iso.split("-").map(Number);
+    return new Date(y, m - 1, d);
+  }
+
+  function initDatePicker() {
+    const overlay = document.querySelector("[data-date-overlay]");
+    const trigger = document.querySelector("[data-date-picker-trigger]");
+    const label = document.querySelector("[data-date-picker-label]");
+    const hiddenInput = document.querySelector('[name="flyttedato"]');
+    const fleksibelCheckbox = document.querySelector('[name="fleksibel"]');
+    if (!overlay || !trigger || !hiddenInput) return;
+
+    let viewDate = new Date(); // first-of-month currently shown in the grid
+    let selectedDate = null; // Date | null — chosen in the grid, not yet confirmed
+
+    /** Reflects the hidden input's current value onto the trigger button's visible label. */
+    function refreshTriggerLabel() {
+      const date = parseIsoDate(hiddenInput.value);
+      label.textContent = date
+        ? date.toLocaleDateString("no-NO", { day: "numeric", month: "long", year: "numeric" })
+        : "Velg dato";
+    }
+
+    /** Builds the Mon-Sun weekday header once — it never changes between months. */
+    function renderWeekdays() {
+      const weekdaysEl = overlay.querySelector("[data-date-overlay-weekdays]");
+      if (weekdaysEl.childElementCount > 0) return;
+      // Jan 5 1970 was a Monday — walking 7 days from it gives a Mon-first
+      // week in whatever locale toLocaleDateString formats it in.
+      const monday = new Date(1970, 0, 5);
+      for (let i = 0; i < 7; i++) {
+        const d = new Date(monday);
+        d.setDate(monday.getDate() + i);
+        const cell = document.createElement("span");
+        cell.textContent = d.toLocaleDateString("no-NO", { weekday: "short" });
+        weekdaysEl.appendChild(cell);
+      }
+    }
+
+    /** Rebuilds the day-number grid for whatever month `viewDate` points at. */
+    function renderGrid() {
+      overlay.querySelector("[data-date-overlay-month]").textContent =
+        viewDate.toLocaleDateString("no-NO", { month: "long", year: "numeric" });
+
+      const grid = overlay.querySelector("[data-date-overlay-grid]");
+      grid.innerHTML = "";
+
+      const year = viewDate.getFullYear();
+      const month = viewDate.getMonth();
+      const firstOfMonth = new Date(year, month, 1);
+      // Date.getDay(): 0=Sun..6=Sat — convert to a Monday-first offset (0=Mon..6=Sun).
+      const firstWeekday = (firstOfMonth.getDay() + 6) % 7;
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+      for (let i = 0; i < firstWeekday; i++) {
+        grid.appendChild(document.createElement("span")); // leading blank cells
+      }
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const cellDate = new Date(year, month, day);
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "date-overlay__day";
+        button.textContent = String(day);
+        if (cellDate < today) button.disabled = true;
+        if (toIsoDate(cellDate) === toIsoDate(today)) button.classList.add("is-today");
+        if (selectedDate && toIsoDate(cellDate) === toIsoDate(selectedDate)) {
+          button.classList.add("is-selected");
+        }
+        button.addEventListener("click", () => {
+          selectedDate = cellDate;
+          overlay.querySelector("[data-date-overlay-confirm]").disabled = false;
+          renderGrid();
+        });
+        grid.appendChild(button);
+      }
+    }
+
+    /** Opens the modal, starting the grid on the already-chosen date's month (or the current month). */
+    function open() {
+      selectedDate = parseIsoDate(hiddenInput.value);
+      viewDate = selectedDate
+        ? new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1)
+        : new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+      renderWeekdays();
+      renderGrid();
+      overlay.querySelector("[data-date-overlay-confirm]").disabled = !selectedDate;
+      overlay.hidden = false;
+      document.body.style.overflow = "hidden";
+    }
+
+    function close() {
+      overlay.hidden = true;
+      document.body.style.overflow = "";
+    }
+
+    trigger.addEventListener("click", open);
+    overlay.querySelector("[data-date-overlay-close]").addEventListener("click", close);
+    overlay.querySelector("[data-date-overlay-backdrop]").addEventListener("click", close);
+    overlay.querySelector("[data-date-overlay-prev]").addEventListener("click", () => {
+      viewDate.setMonth(viewDate.getMonth() - 1);
+      renderGrid();
+    });
+    overlay.querySelector("[data-date-overlay-next]").addEventListener("click", () => {
+      viewDate.setMonth(viewDate.getMonth() + 1);
+      renderGrid();
+    });
+    overlay.querySelector("[data-date-overlay-confirm]").addEventListener("click", () => {
+      if (!selectedDate) return;
+      hiddenInput.value = toIsoDate(selectedDate);
+      refreshTriggerLabel();
+      // Picking a date clears "flexible" — the two are mutually exclusive.
+      if (fleksibelCheckbox && fleksibelCheckbox.checked) {
+        fleksibelCheckbox.checked = false;
+        fleksibelCheckbox.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+      // Programmatic value assignment fires no native "input" event, but
+      // updateNavButton()/updateSummaryPanel() are only bound to that event.
+      hiddenInput.dispatchEvent(new Event("input", { bubbles: true }));
+      close();
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !overlay.hidden) close();
+    });
+
+    // Toggling "fleksibel" on clears any chosen date and disables the trigger
+    // (spec: the date field and the flexible toggle are mutually exclusive).
+    if (fleksibelCheckbox) {
+      const syncDisabledState = () => {
+        trigger.disabled = fleksibelCheckbox.checked;
+        trigger.classList.toggle("is-disabled", fleksibelCheckbox.checked);
+      };
+      fleksibelCheckbox.addEventListener("change", () => {
+        syncDisabledState();
+        if (fleksibelCheckbox.checked) {
+          hiddenInput.value = "";
+          refreshTriggerLabel();
+        }
+      });
+      syncDisabledState(); // reflect a repopulated-on-error checkbox state on load
+    }
+
+    refreshTriggerLabel();
+  }
+
   /** Entry point — runs everything this task owns once the DOM is ready. */
   function initWizard() {
     initIconSprite();
@@ -782,6 +951,7 @@
     initDesktopMap();
     initMobileMapPicker();
     initPhotoUpload();
+    initDatePicker();
     KoblyWizard.onStepChange.push((step) => { if (step === 5) updateSummaryPanel(); });
     document.querySelector(".wizard-card").addEventListener("input", updateSummaryPanel);
     document.querySelector(".wizard-card").addEventListener("change", updateSummaryPanel);

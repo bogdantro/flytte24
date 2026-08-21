@@ -341,8 +341,6 @@
     position: relative;
     margin-inline: auto;
     max-width: 1290px;
-    /* Scroll wheel animation */
-    /* Arrow bounce animation */
   }
   .cover .content .text {
     text-align: left;
@@ -558,6 +556,9 @@
   .cover .content .scroll-indicator .arrow span:nth-child(3) {
     animation-delay: 0.4s;
   }
+  .cover .content {
+    /* Scroll wheel animation */
+  }
   @keyframes scroll-wheel {
     0% {
       top: 10px;
@@ -568,6 +569,9 @@
     100% {
       top: 10px;
     }
+  }
+  .cover .content {
+    /* Arrow bounce animation */
   }
   @keyframes arrowBounce {
     0%, 100% {

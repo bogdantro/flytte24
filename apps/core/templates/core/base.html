@@ -1,94 +1,17 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#ffffff">
-    
-    {% block head %}
-    {% endblock %}
-    <base href="/">
-    <!-- links -->
-    
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v6.4.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" integrity="sha512-sVSECYdnRMezwuq5uAjKQJEcu2wybeAPjU4VJQ9pCRcCY4pIpIw4YMHIOQ0CypfwHRvdSPbH++dA3O4Hihm/LQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6/css/fontawesome.min.css" integrity="sha512-P9vJUXK+LyvAzj8otTOKzdfF1F3UYVl13+F8Fof8/2QNb8Twd6Vb+VD52I7+87tex9UXxnzPgWA3rH96RExA7A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6/css/regular.min.css" integrity="sha512-d2x1oQUT6HACW9UlXxWI6XrIBDrEE5z2tit/+kWEdXdVYuift7sm+Q6ucfGWQr1F0+GD9/6eYoYDegw2nm05Vw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">    <link href="https://fonts.googleapis.com/css2?family=Alata&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static '/scss/global/global.css' %}" type="text/css">
-    <link rel="stylesheet" href="{% static '/scss/global/main.css' %}" type="text/css">
-    <script src="{% static '/js/home.js' %}"></script>
-    <script src="{% static '/js/main.js' %}"></script>
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="static/images/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="static/images/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="static/images/favicon/favicon-16x16.png">
-    <link rel="manifest" href="static/images/favicon/site.webmanifest">    
-    <link rel="shortcut icon" href="static/images/favicon/favicon.ico">
-    <link
-      rel="stylesheet"
-      data-purpose="Layout StyleSheet"
-      title="Web Awesome"
-      href="/css/app-wa-9a55d8748fd46de7b7977d9ee8dee7a4.css?vsn=d"
-    >
-
-      <link
-        rel="stylesheet"
-        href="https://site-assets.fontawesome.com/releases/v6.4.2/css/all.css"
-      >
-
-      <link
-        rel="stylesheet"
-        href="https://site-assets.fontawesome.com/releases/v6.4.2/css/sharp-solid.css"
-      >
-
-      <link
-        rel="stylesheet"
-        href="https://site-assets.fontawesome.com/releases/v6.4.2/css/sharp-regular.css"
-      >
-
-      <link
-        rel="stylesheet"
-        href="https://site-assets.fontawesome.com/releases/v6.4.2/css/sharp-light.css"
-      >
-
-      <!-- Favicon -->
-      <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-      <link rel="apple-touch-icon" sizes="180x180" href="static/images/favicon/apple-touch-icon.png">
-      <link rel="icon" type="image/png" sizes="32x32" href="static/images/favicon/favicon-32x32.png">
-      <link rel="icon" type="image/png" sizes="16x16" href="static/images/favicon/favicon-16x16.png">
-      <link rel="manifest" href="static/images/favicon/site.webmanifest">    
-      <link rel="shortcut icon" href="static/images/favicon/favicon.ico">
-
+    <title>Kobly</title>
+    {% block head %}{% endblock %}
 </head>
-
-<body ontouchstart="" >
-    <div id="onPageLoad" style="background: white !important;  z-index: 1000000000000000000 !important; position: fixed; top: 0; left: 0;"></div>
-
-      {% block header %}
-      <header>
-        {% include 'core/nav.html' %}
-      </header>
-    {% endblock %}
-
+<body>
+    {% block header %}{% endblock %}
     <main>
-      {% block content %}{% endblock %}
+        {% block content %}{% endblock %}
     </main>
-
-    {% block footer %}
-      <footer>
-        {% include 'core/footer.html' %}
-      </footer>
-    {% endblock %}
-
+    {% block footer %}{% endblock %}
 </body>
 </html>

@@ -231,12 +231,12 @@
   border-radius: 6px;
   transition: 0.2s;
 }
+.locations .content .flex .city-row .city:hover p {
+  color: #13c265;
+}
 .locations .content .flex .city-row .city:hover {
   background: rgba(228, 255, 237, 0.5607843137);
   border-color: #13c265;
-}
-.locations .content .flex .city-row .city:hover p {
-  color: #13c265;
 }
 .locations .content .flex .bottom-cta {
   margin-top: 25px;

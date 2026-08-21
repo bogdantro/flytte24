@@ -1,0 +1,989 @@
+// static/scss/wizard.scss
+//
+// Styles for /wizard and its thank-you screen. Nested parent/child per
+// section, one comment banner per block — read this top to bottom like a
+// document, not a utility-class soup. Compile after every edit with:
+//   sass static/scss/wizard.scss static/css/wizard.css --style=expanded
+//
+@use "kobly-tokens" as *;
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: $font-sans;
+  color: $color-ink;
+  @extend %kobly-font-features;
+}
+
+// ---------------------------------------------------------------
+// Shared button styles (used by wizard nav, map overlay, thank-you)
+// ---------------------------------------------------------------
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: none;
+  border-radius: $radius-pill;
+  background: $color-brand;
+  color: $color-brand-ink;
+  font-family: $font-sans;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  padding: 0.75rem 1.75rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+
+  &:hover { background: rgba(34, 24, 20, 0.9); }
+
+  // Disabled state (spec §5.11: gray, no hover, no error message)
+  &:disabled {
+    cursor: not-allowed;
+    background: rgba(26, 26, 26, 0.1);
+    color: rgba(26, 26, 26, 0.3);
+  }
+
+  &--full { width: 100%; padding: 1rem 1.5rem; font-size: 1rem; }
+}
+
+.btn-text {
+  background: none;
+  border: none;
+  color: rgba(26, 26, 26, 0.4);
+  font-family: $font-sans;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  &:hover { color: rgba(26, 26, 26, 0.7); }
+}
+
+// ---------------------------------------------------------------
+// .kobly-logo — ring icon + "Kobly" wordmark, two color tones
+// ---------------------------------------------------------------
+.kobly-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &__text {
+    font-size: 1.125rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  &--ink { color: $color-ink; }
+  &--brand-ink { color: $color-brand-ink; }
+}
+
+// =================================================================
+// .wizard — fullscreen root shell
+// =================================================================
+.wizard {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  background: $color-bg;
+
+  // --- Background layers ---
+  &__background {
+    position: absolute;
+    inset: 0;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    &--desktop { display: none; }
+    &--mobile { display: block; }
+  }
+
+  &__background-wash {
+    position: absolute;
+    inset: 0;
+    background: rgba(244, 241, 234, 0.85); // $color-bg at 85% (spec §5.3)
+  }
+
+  &__background-scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.55) 50%, rgba(0, 0, 0, 0.7));
+  }
+
+  // Two stacked mobile background images (see Task 8 markup + Task 10 JS):
+  // "prev" holds the outgoing photo underneath, "current" is the incoming one,
+  // faded in via wizard-fade-in. JS un-hides/hides "prev" around the swap.
+  &__background-photo {
+    position: absolute;
+    inset: 0;
+
+    &--current { animation: wizard-fade-in 0.26s ease both; }
+    &--prev[hidden] { display: none; }
+  }
+
+  // --- Logo placement ---
+  &__logo--desktop {
+    display: none;
+    position: absolute;
+    top: 1.75rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+  }
+
+  &__logo-row {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    padding: 2rem 1.5rem 0.5rem;
+  }
+
+  &__logo--mobile { display: inline-block; }
+}
+
+// =================================================================
+// .wizard-card — the white card holding the form
+// =================================================================
+.wizard-card {
+  position: relative;
+  z-index: 10;
+  margin: 1rem 0;
+  width: calc(100% - 3rem);
+  max-width: 1060px;
+  border-radius: $radius-card;
+  background: $color-surface-soft;
+  box-shadow: $shadow-card-elevated;
+  display: flex;
+  flex-direction: column;
+
+  &__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+
+  // --- Left column: form content ---
+  &__left {
+    position: relative;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 1.5rem 1.5rem 6rem;
+  }
+
+  // --- Right column: map / photo / summary (desktop only) ---
+  &__right {
+    display: none;
+  }
+}
+
+// =================================================================
+// .wizard-progress — 5-segment bar, "Steg X av 5" label
+// =================================================================
+.wizard-progress {
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 1.25rem;
+
+  &__segment {
+    height: 2px;
+    flex: 1;
+    border-radius: $radius-pill;
+    background: rgba(26, 26, 26, 0.1);
+    transition: background-color 0.3s ease;
+
+    &.is-complete { background: $color-ink; }
+  }
+}
+
+.wizard-steplabel {
+  font-size: 0.875rem;
+  color: rgba(26, 26, 26, 0.45);
+  margin-bottom: 0.875rem;
+  display: block;
+}
+
+// =================================================================
+// .wizard-step — one step's content; only .is-active is shown/animated
+// =================================================================
+.wizard-step {
+  display: none;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.875rem;
+
+  &.is-active {
+    display: flex;
+  }
+
+  // Direction-based enter animation (spec §5.11: 260ms slide+fade)
+  &.wizard-step--enter-right { animation: wizard-slide-in-right 0.26s ease both; }
+  &.wizard-step--enter-left { animation: wizard-slide-in-left 0.26s ease both; }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+    margin-top: 1rem;
+
+    &--grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.875rem;
+    }
+  }
+
+  &__server-errors {
+    color: #b3261e;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+  }
+}
+
+@keyframes wizard-slide-in-right {
+  from { opacity: 0; transform: translateX(16px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes wizard-slide-in-left {
+  from { opacity: 0; transform: translateX(-16px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes wizard-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+// --- .step-header — title + optional subtitle, shared by every step ---
+.step-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+
+  &__title {
+    margin: 0;
+    font-family: $font-serif;
+    font-size: 1.875rem;
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: $color-ink;
+  }
+
+  &__subtitle {
+    margin: -0.25rem 0 0;
+    font-size: 0.875rem;
+    color: rgba(26, 26, 26, 0.4);
+  }
+}
+
+// --- shared field primitives ---
+.field-label {
+  display: block;
+  margin-bottom: 0.375rem;
+  font-size: 0.875rem;
+  color: rgba(26, 26, 26, 0.5);
+
+  &--strong {
+    font-size: 1rem;
+    font-weight: 500;
+    color: $color-ink;
+    margin-bottom: 0.25rem;
+  }
+}
+
+.field-hint {
+  margin: 0 0 0.75rem;
+  font-size: 0.875rem;
+  color: rgba(26, 26, 26, 0.5);
+}
+
+.field-input {
+  width: 100%;
+  border: 1.5px solid rgba(26, 26, 26, 0.1);
+  border-radius: $radius-card;
+  background: #f7f5f1;
+  padding: 0.875rem 1rem;
+  font-size: 0.875rem;
+  font-family: $font-sans;
+  color: $color-ink;
+  outline: none;
+  transition: border-color 0.2s ease;
+
+  &:focus { border-color: $color-brand; }
+}
+
+textarea.field-input { resize: none; }
+
+// =================================================================
+// STEP 1 — address fields + suggestion dropdown + mobile map-picker button
+// =================================================================
+.address-field {
+  position: relative;
+
+  .address-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    margin: 0.25rem 0 0;
+    padding: 0;
+    list-style: none;
+    max-height: 18rem;
+    overflow-y: auto;
+    border: 1px solid rgba(26, 26, 26, 0.1);
+    border-radius: $radius-card;
+    background: $color-surface;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+
+    li button {
+      display: flex;
+      width: 100%;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.125rem;
+      border: none;
+      background: none;
+      padding: 0.75rem 1rem;
+      text-align: left;
+      font-size: 0.875rem;
+      cursor: pointer;
+
+      &:hover { background: #f3eee3; }
+    }
+
+    .address-suggestions__meta { font-size: 0.75rem; color: rgba(26, 26, 26, 0.5); }
+  }
+}
+
+// "Plasser i kart" — mobile only
+.map-picker-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  min-height: 44px;
+  border: none;
+  border-radius: $radius-pill;
+  padding: 0 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: rgba(26, 26, 26, 0.05);
+  color: $color-ink;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover { background: rgba(26, 26, 26, 0.1); }
+
+  &.is-placed {
+    background: rgba(214, 232, 168, 0.4); // $color-accent-lime at 40%
+  }
+}
+
+// =================================================================
+// STEP 2 — pill groups (type/size selection)
+// =================================================================
+.pill-group {
+  &__label {
+    margin: 0 0 0.5rem;
+    font-size: 0.875rem;
+    color: rgba(26, 26, 26, 0.5);
+  }
+
+  &__grid {
+    display: grid;
+    gap: 0.5rem;
+
+    &--3col { grid-template-columns: repeat(3, 1fr); }
+    &--2col { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  & + & { margin-top: 1.25rem; }
+}
+
+.pill-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $radius-card;
+  border: 1.5px solid transparent;
+  background: #f3eee3;
+  color: rgba(26, 26, 26, 0.6);
+  padding: 1rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  // The actual state lives on the native radio input — CSS reads :checked,
+  // no JS needed to know whether a pill is selected.
+  input { position: absolute; opacity: 0; pointer-events: none; }
+
+  &:hover { background: #e8e0d0; }
+
+  &:has(input:checked) {
+    border-color: $color-brand;
+    background: $color-brand;
+    color: $color-brand-ink;
+  }
+}
+
+// =================================================================
+// STEP 3 — date field + flexible toggle
+// =================================================================
+.date-field {
+  display: block;
+
+  input[type="date"] {
+    &:disabled { opacity: 0.5; }
+  }
+}
+
+.flex-toggle {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  gap: 0.75rem;
+  border: 1.5px dashed rgba(26, 26, 26, 0.2);
+  border-radius: $radius-pill;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  color: rgba(26, 26, 26, 0.6);
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+
+  input { position: absolute; opacity: 0; pointer-events: none; }
+
+  &__dot {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    border: 1.5px solid rgba(26, 26, 26, 0.2);
+
+    [data-icon] { display: none; width: 0.75rem; height: 0.75rem; color: $color-brand-ink; }
+  }
+
+  &:hover { border-color: rgba(26, 26, 26, 0.4); }
+
+  &:has(input:checked) {
+    border-style: solid;
+    border-color: $color-brand;
+    background: #ede5d8;
+    color: $color-ink;
+
+    .flex-toggle__dot {
+      border-color: $color-brand;
+      background: $color-brand;
+      [data-icon] { display: inline-flex; }
+    }
+  }
+}
+
+// =================================================================
+// STEP 4 — description + photo grid
+// =================================================================
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+.photo-thumb {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: $radius-card;
+  overflow: hidden;
+
+  img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  &__remove {
+    position: absolute;
+    top: 0.25rem;
+    right: 0.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    border: none;
+    border-radius: 50%;
+    background: rgba(26, 26, 26, 0.7);
+    color: white;
+    cursor: pointer;
+
+    [data-icon] { width: 0.75rem; height: 0.75rem; }
+  }
+}
+
+.photo-upload-tile {
+  display: flex;
+  aspect-ratio: 1 / 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  border: 1.5px dashed rgba(26, 26, 26, 0.2);
+  border-radius: $radius-card;
+  background: #f7f5f1;
+  color: rgba(26, 26, 26, 0.6);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+
+  &:hover { border-color: rgba(26, 26, 26, 0.4); }
+}
+
+// =================================================================
+// STEP 5 — contact fields
+// =================================================================
+.text-field {
+  display: block;
+  &--full { grid-column: 1 / -1; }
+}
+
+// =================================================================
+// .wizard-nav — bottom "Tilbake" / "Neste" bar
+// =================================================================
+.wizard-nav {
+  position: absolute;
+  left: 1.5rem;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &__back[hidden] { display: none; }
+}
+
+// =================================================================
+// RIGHT COLUMN PANELS (desktop only, see media query below)
+// =================================================================
+.map-panel, .step-art, .summary-panel {
+  display: none;
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+  border-radius: $radius-card;
+  background: $color-bg;
+
+  &.is-active { display: flex; animation: wizard-fade-in 0.26s ease both; }
+}
+
+.step-art img { width: 100%; height: 100%; object-fit: cover; }
+
+// --- .map-panel — Leaflet map + custom controls ---
+.map-panel {
+  &__map { position: absolute; inset: 0; }
+
+  &__chip {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 1000;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+
+    &[hidden] { display: none; }
+    &-prefix { color: rgba(26, 26, 26, 0.45); }
+  }
+
+  &__zoom {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  &__zoom-btn, &__locate {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: none;
+    border-radius: 8px;
+    background: $color-surface;
+    color: rgba(26, 26, 26, 0.7);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+
+    &:hover { background: #f7f6f3; }
+  }
+
+  &__locate {
+    position: absolute;
+    bottom: 0.75rem;
+    left: 0.75rem;
+    z-index: 1000;
+
+    &.is-locating { animation: wizard-pulse 1.2s ease-in-out infinite; }
+  }
+
+  &__place-toggles {
+    position: absolute;
+    bottom: 0.75rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  &__attribution {
+    position: absolute;
+    bottom: 0.75rem;
+    right: 0.75rem;
+    z-index: 1000;
+
+    &-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.5rem;
+      height: 1.5rem;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.85);
+      color: rgba(26, 26, 26, 0.6);
+      cursor: pointer;
+    }
+
+    &-tooltip {
+      display: none;
+      position: absolute;
+      bottom: 100%;
+      right: 0;
+      margin-bottom: 0.5rem;
+      white-space: nowrap;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 0.375rem 0.625rem;
+      font-size: 11px;
+      color: rgba(26, 26, 26, 0.7);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    &:hover &-tooltip { display: block; }
+  }
+}
+
+@keyframes wizard-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+// "Plasser fra" / "Plasser til" pills on the desktop map
+.place-pill {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: $radius-pill;
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.95);
+  color: $color-ink;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:hover { background: white; }
+
+  &.is-armed { background: $color-brand; color: $color-brand-ink; }
+}
+
+// --- .summary-panel — live receipt, step 5 only ---
+.summary-panel {
+  flex-direction: column;
+  padding: 2rem;
+
+  &__eyebrow { font-size: 0.875rem; color: rgba(26, 26, 26, 0.45); }
+  &__title { margin: 0.5rem 0 0; font-family: $font-serif; font-size: 1.5rem; font-weight: 500; color: $color-ink; }
+  &__intro { margin: 0.5rem 0 0; font-size: 0.875rem; color: rgba(26, 26, 26, 0.5); }
+  &__rows { display: flex; flex-direction: column; gap: 1.25rem; margin-top: 1.75rem; }
+
+  &__row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+
+    &-label { font-size: 0.875rem; color: rgba(26, 26, 26, 0.5); }
+    &-value { font-size: 0.875rem; line-height: 1.4; color: $color-ink; }
+  }
+}
+
+// =================================================================
+// MOBILE MAP PICKER OVERLAY (.map-overlay)
+// =================================================================
+.map-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  background: $color-bg;
+  animation: wizard-fade-in 0.26s ease both;
+
+  &[hidden] { display: none; }
+
+  &__map { position: absolute; inset: 0; touch-action: none; }
+
+  &__header {
+    position: relative;
+    z-index: 1000;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem 1rem 2.5rem;
+    background: linear-gradient(to bottom, $color-bg, rgba(244, 241, 234, 0.95), transparent);
+  }
+
+  &__instruction {
+    flex: 1;
+    border-radius: $radius-card;
+    background: $color-surface;
+    padding: 0.75rem 1rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  &__title { margin: 0; font-size: 0.875rem; font-weight: 600; color: $color-ink; }
+  &__hint { margin: 0.125rem 0 0; font-size: 0.875rem; color: $color-ink-muted; }
+
+  &__close, &__locate {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    flex-shrink: 0;
+    border: none;
+    border-radius: 50%;
+    background: $color-surface;
+    color: $color-ink;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+  }
+
+  &__pin {
+    position: absolute;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    transform: translateY(-1rem);
+
+    [data-icon] {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.75rem;
+      height: 2.75rem;
+      border-radius: 50%;
+      border: 2px solid white;
+      background: $color-brand;
+      color: $color-brand-ink;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+    }
+  }
+
+  &__locate {
+    position: relative;
+    z-index: 1000;
+    margin: auto 1rem 0.75rem auto;
+
+    &.is-locating { animation: wizard-pulse 1.2s ease-in-out infinite; }
+  }
+
+  &__sheet {
+    position: relative;
+    z-index: 1000;
+    background: $color-bg;
+    padding: 1rem 1rem max(1rem, env(safe-area-inset-bottom));
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  &__sheet-label { margin: 0; font-size: 0.75rem; color: $color-ink-muted; }
+  &__sheet-address {
+    margin: 0.25rem 0 0;
+    min-height: 2.75rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: $color-ink;
+
+    &.is-loading { opacity: 0.5; }
+  }
+}
+
+// =================================================================
+// .thankyou — post-submit confirmation screen
+// =================================================================
+.thankyou {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  padding: 2.5rem 1.5rem;
+  background: $color-bg;
+
+  &__background {
+    position: absolute;
+    inset: 0;
+    img { width: 100%; height: 100%; object-fit: cover; }
+  }
+
+  &__background-scrim {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+  }
+}
+
+.thankyou-card {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 520px;
+  border-radius: $radius-card;
+  background: $color-surface-soft;
+  padding: 2.5rem 1.75rem;
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+  animation: wizard-fade-in 0.26s ease both;
+
+  &__title {
+    margin: 2.25rem 0 0;
+    font-family: $font-serif;
+    font-size: 1.875rem;
+    font-weight: 500;
+    line-height: 1.1;
+    color: $color-ink;
+  }
+
+  &__body {
+    margin: 1rem 0 0;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: $color-ink-muted;
+  }
+
+  .btn-primary { margin-top: 2.25rem; }
+}
+
+// --- routing illustration: ring -> dots -> lime checkmarks ---
+.thankyou-illustration {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+
+  &__logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: $color-brand;
+    color: $color-brand-ink;
+  }
+
+  &__dots {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+
+    span {
+      width: 0.375rem;
+      height: 0.375rem;
+      border-radius: 50%;
+      background: rgba(26, 26, 26, 0.25);
+    }
+  }
+
+  &__checks {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &__check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 12px;
+    background: $color-accent-lime;
+    opacity: 0;
+    animation: wizard-pop-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+}
+
+@keyframes wizard-pop-in {
+  from { opacity: 0; transform: scale(0.6); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+// =================================================================
+// RESPONSIVE: desktop layout kicks in at 1024px (spec §5.3)
+// =================================================================
+@media (min-width: 1024px) {
+  .wizard {
+    &__background--desktop { display: block; }
+    &__background--mobile { display: none; }
+    &__logo--desktop { display: block; }
+    &__logo-row { display: none; }
+  }
+
+  .wizard-card {
+    min-height: 640px;
+    margin: 1.5rem 0;
+
+    &__body { flex-direction: row; }
+    &__left { flex: 0 0 58%; padding: 2.75rem 2.75rem 6rem; }
+    &__right {
+      display: flex;
+      flex: 1;
+      padding: 1rem 1rem 1rem 0;
+    }
+  }
+
+  .wizard-nav {
+    left: 2.75rem;
+    right: 2.75rem;
+    bottom: 1.75rem;
+  }
+
+  .map-picker-btn { display: none; } // desktop uses the right-column map instead
+}
+
+@media (min-width: 640px) and (max-width: 1023.98px) {
+  .wizard-card__left { padding: 2.25rem 2.25rem 6rem; }
+  .wizard-nav { left: 2.25rem; right: 2.25rem; bottom: 1.75rem; }
+}

@@ -261,9 +261,27 @@
     // from an earlier query can never land after a newer one (or after the
     // field lost focus) and reopen/overwrite the suggestion list.
     let abortController = null;
+    // Set around every programmatic .value write + its synthetic "input"
+    // dispatch (selectAddress, setAddressFromCoord below). dispatchEvent()
+    // runs listeners synchronously, so without this guard the plain "input"
+    // listener a few lines down — whose job is to react to the user's own
+    // typing by clearing stale coordinates and firing a new search — would
+    // treat our own synthetic event as a fresh keystroke and immediately
+    // wipe the coordinate we just set, and reopen the dropdown on top of it.
+    // The event still bubbles to .wizard-card's own "input" listeners
+    // (updateNavButton/updateSummaryPanel), which is the whole point of
+    // dispatching it — only this field's own reactive logic is skipped.
+    let isProgrammaticWrite = false;
 
     const selectAddress = (address) => {
       const point = address.representasjonspunkt;
+      // A suggestion clicked within 200ms of the last keystroke can otherwise
+      // still have a debounced search pending; without cancelling it here,
+      // that search would resolve after we've already hidden the dropdown
+      // below and reopen it out from under the just-completed selection.
+      clearTimeout(debounceTimer);
+      abortController?.abort();
+      isProgrammaticWrite = true;
       input.value = `${address.adressetekst}, ${address.postnummer} ${address.poststed}`;
       latInput.value = point ? point.lat : "";
       lonInput.value = point ? point.lon : "";
@@ -271,12 +289,14 @@
       // updateNavButton()/updateSummaryPanel() are only bound to that event —
       // without this, selecting a suggestion can leave "Neste" stuck disabled.
       input.dispatchEvent(new Event("input", { bubbles: true }));
+      isProgrammaticWrite = false;
       list.hidden = true;
       // Task 12's map reads these same hidden inputs to place/move its pin.
       KoblyWizard.onCoordChange && KoblyWizard.onCoordChange(key, point ? point.lat : null, point ? point.lon : null, input.value);
     };
 
     input.addEventListener("input", () => {
+      if (isProgrammaticWrite) return;
       // Manual typing invalidates any previously attached coordinate (spec §5.5).
       latInput.value = "";
       lonInput.value = "";
@@ -308,6 +328,11 @@
     // Exposed so Task 12's map (pin drag / click-to-place / geolocation) can
     // push a coordinate + resolved address back into this same field.
     fieldEl.setAddressFromCoord = (lat, lon, address) => {
+      // Same rationale as selectAddress() above — a map placement can land
+      // while an earlier keystroke's search is still pending.
+      clearTimeout(debounceTimer);
+      abortController?.abort();
+      isProgrammaticWrite = true;
       input.value = address;
       latInput.value = lat;
       lonInput.value = lon;
@@ -315,6 +340,7 @@
       // mobile-overlay-confirm paths all set .value programmatically, which
       // fires no native "input" event on its own.
       input.dispatchEvent(new Event("input", { bubbles: true }));
+      isProgrammaticWrite = false;
     };
   }
 

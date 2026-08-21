@@ -156,3 +156,32 @@ class WizardFormTest(TestCase):
         # Spec §5.9: /\S+@\S+\.\S+/ — permissive, not RFC-strict.
         form = WizardForm(_valid_payload(epost="a@b.co"))
         self.assertTrue(form.is_valid(), form.errors)
+
+
+@override_settings(MEDIA_ROOT=tempfile.mkdtemp())
+class WizardPostViewTest(TestCase):
+    def test_valid_post_creates_lead_and_redirects(self):
+        response = self.client.post(reverse("leads:wizard"), _valid_payload())
+        self.assertRedirects(response, reverse("leads:wizard_thank_you"))
+        self.assertEqual(MoveLead.objects.count(), 1)
+        lead = MoveLead.objects.get()
+        self.assertEqual(lead.navn, "Ola Nordmann")
+        self.assertEqual(lead.flytte_type, "privat")
+
+    def test_valid_post_with_photos_creates_lead_images(self):
+        payload = _valid_payload()
+        photo = SimpleUploadedFile("sofa.jpg", b"fake-bytes", content_type="image/jpeg")
+        response = self.client.post(reverse("leads:wizard"), {**payload, "bilder": [photo]})
+        self.assertRedirects(response, reverse("leads:wizard_thank_you"))
+        lead = MoveLead.objects.get()
+        self.assertEqual(lead.images.count(), 1)
+
+    def test_invalid_post_rerenders_form_with_errors(self):
+        response = self.client.post(reverse("leads:wizard"), _valid_payload(navn="O"))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(MoveLead.objects.count(), 0)
+        self.assertTrue(response.context["form"].errors)
+
+    def test_thank_you_page_returns_200(self):
+        response = self.client.get(reverse("leads:wizard_thank_you"))
+        self.assertEqual(response.status_code, 200)

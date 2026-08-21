@@ -305,6 +305,268 @@
     document.querySelectorAll(".address-field").forEach(initOneAddressField);
   }
 
+  // ---------------------------------------------------------------
+  // Desktop map (.map-panel) — Leaflet + free CARTO Voyager tiles.
+  // Two draggable pins (from/to), a 250m circle around "from", a dashed
+  // line + Kobly ring icon at the midpoint once both pins exist, and
+  // "Plasser fra"/"Plasser til" click-to-place toggles (spec §5.5).
+  // ---------------------------------------------------------------
+
+  const PIN_COLOR_FROM = "#221814";
+  const PIN_COLOR_TO = "#3D5507";
+  const TILE_URL = "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png";
+
+  /** Builds a Leaflet divIcon: a colored circle with a white house-pin glyph, matching the reference exactly. */
+  function pinIcon(color) {
+    return L.divIcon({
+      className: "",
+      html: `<div style="width:36px;height:36px;background:${color};border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,0.3);border:2px solid white"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>`,
+      iconSize: [36, 36],
+      iconAnchor: [18, 18],
+    });
+  }
+
+  /** Builds the small white Kobly-ring icon shown at the midpoint of the from/to line. */
+  function midpointIcon() {
+    return L.divIcon({
+      className: "",
+      html: `<div style="width:32px;height:32px;background:white;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.18);border:1.5px solid #E6E1D6"><svg width="16" height="16" viewBox="0 0 27 27" fill="none"><circle cx="13.5" cy="13.5" r="11.625" stroke="#221814" stroke-width="3.75"/><path d="M16.5 1.875C12.7075 5.23556 10.5 9.26144 10.5 13.5887C10.5 17.8401 12.6307 21.8006 16.3019 25.125" stroke="#221814" stroke-width="3.75"/></svg></div>`,
+      iconSize: [32, 32],
+      iconAnchor: [16, 16],
+    });
+  }
+
+  function initDesktopMap() {
+    const panel = document.querySelector(".map-panel");
+    if (!panel || typeof L === "undefined") return;
+
+    const initialCenter = window.KOBLY_WIZARD_INITIAL_CENTER;
+    const map = L.map(panel.querySelector("[data-map-container]"), {
+      center: initialCenter ? [initialCenter.lat, initialCenter.lon] : [60.5, 10.0],
+      zoom: initialCenter ? initialCenter.zoom : 5,
+      zoomControl: false,
+      attributionControl: false,
+    });
+    L.tileLayer(TILE_URL, { maxZoom: 19 }).addTo(map);
+
+    let fromMarker = null;
+    let toMarker = null;
+    let fromCircle = null;
+    let line = null;
+    let midpointMarker = null;
+    let placing = null; // "fra" | "til" | null
+
+    /** Redraws the connecting line, midpoint icon, and "from" radius circle from the two markers' current positions. */
+    function redrawOverlays() {
+      if (fromMarker && toMarker) {
+        const a = fromMarker.getLatLng();
+        const b = toMarker.getLatLng();
+        const latlngs = [a, b];
+        if (line) line.setLatLngs(latlngs);
+        else line = L.polyline(latlngs, { color: "#221814", weight: 2.5, dashArray: "6 6", opacity: 0.7 }).addTo(map);
+        const mid = [(a.lat + b.lat) / 2, (a.lng + b.lng) / 2];
+        if (midpointMarker) midpointMarker.setLatLng(mid);
+        else midpointMarker = L.marker(mid, { icon: midpointIcon(), interactive: false, zIndexOffset: 500 }).addTo(map);
+        map.fitBounds(latlngs, { padding: [40, 40], maxZoom: 13 });
+      } else {
+        if (line) { line.remove(); line = null; }
+        if (midpointMarker) { midpointMarker.remove(); midpointMarker = null; }
+      }
+      if (fromMarker) {
+        const ll = fromMarker.getLatLng();
+        if (fromCircle) fromCircle.setLatLng(ll);
+        else fromCircle = L.circle(ll, { radius: 250, color: "#221814", fillColor: "#221814", fillOpacity: 0.08, opacity: 0.25, weight: 1, interactive: false }).addTo(map);
+      } else if (fromCircle) {
+        fromCircle.remove();
+        fromCircle = null;
+      }
+      updateChip();
+    }
+
+    /** Shows/updates the "Ca. {from} -> {to}" floating chip in the top-left of the map. */
+    function updateChip() {
+      const chip = panel.querySelector("[data-map-chip]");
+      const fraShort = document.querySelector('[name="fra"]').value.split(",")[0]?.trim();
+      const tilShort = document.querySelector('[name="til"]').value.split(",")[0]?.trim();
+      if (!fraShort && !tilShort) { chip.hidden = true; return; }
+      chip.querySelector("[data-map-chip-from]").textContent = fraShort || "—";
+      chip.querySelector("[data-map-chip-to]").textContent = tilShort || "—";
+      chip.hidden = false;
+    }
+
+    /** Places or moves the "fra"/"til" pin at a coordinate, wiring up drag-to-move with reverse geocoding. */
+    function setPin(which, lat, lon) {
+      const color = which === "fra" ? PIN_COLOR_FROM : PIN_COLOR_TO;
+      const existing = which === "fra" ? fromMarker : toMarker;
+      if (existing) {
+        existing.setLatLng([lat, lon]);
+      } else {
+        const marker = L.marker([lat, lon], { icon: pinIcon(color), draggable: true, autoPan: true }).addTo(map);
+        marker.on("drag", redrawOverlays);
+        marker.on("dragend", async () => {
+          const ll = marker.getLatLng();
+          const address = await reverseGeocode(ll.lat, ll.lng, "Pin plassert i kart");
+          applyCoordToField(which, ll.lat, ll.lng, address);
+        });
+        if (which === "fra") fromMarker = marker; else toMarker = marker;
+      }
+      redrawOverlays();
+    }
+
+    /** Writes a coordinate + resolved address into the matching address-field's inputs and repositions its pin. */
+    function applyCoordToField(which, lat, lon, address) {
+      const fieldEl = document.querySelector(`.address-field[data-address-field="${which}"]`);
+      fieldEl.setAddressFromCoord(lat, lon, address);
+      setPin(which, lat, lon);
+    }
+
+    // Address autocomplete (Task 11) reports coordinate changes here so the map stays in sync.
+    KoblyWizard.onCoordChange = (which, lat, lon) => {
+      const key = which === "fra" ? "fra" : "til";
+      if (lat !== null && lon !== null) setPin(key, lat, lon);
+    };
+
+    // Click-to-place ("Plasser fra" / "Plasser til")
+    panel.querySelectorAll("[data-place-toggle]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const which = button.dataset.placeToggle;
+        placing = placing === which ? null : which;
+        panel.querySelectorAll("[data-place-toggle]").forEach((b) => {
+          b.classList.toggle("is-armed", b.dataset.placeToggle === placing);
+          b.textContent = b.dataset.placeToggle === placing ? "Klikk på kartet" : (b.dataset.placeToggle === "fra" ? "Plasser fra" : "Plasser til");
+        });
+      });
+    });
+    map.on("click", async (event) => {
+      if (!placing) return;
+      const address = await reverseGeocode(event.latlng.lat, event.latlng.lng, "Pin plassert i kart");
+      applyCoordToField(placing, event.latlng.lat, event.latlng.lng, address);
+      placing = null;
+      panel.querySelectorAll("[data-place-toggle]").forEach((b) => {
+        b.classList.remove("is-armed");
+        b.textContent = b.dataset.placeToggle === "fra" ? "Plasser fra" : "Plasser til";
+      });
+    });
+
+    // Zoom buttons
+    panel.querySelector("[data-map-zoom-in]").addEventListener("click", () => map.zoomIn());
+    panel.querySelector("[data-map-zoom-out]").addEventListener("click", () => map.zoomOut());
+
+    // "Bruk min plassering" — geolocates and places the "fra" pin
+    panel.querySelector("[data-map-locate]").addEventListener("click", () => {
+      if (!navigator.geolocation) return;
+      const button = panel.querySelector("[data-map-locate]");
+      button.classList.add("is-locating");
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const { latitude, longitude } = position.coords;
+          const address = await reverseGeocode(latitude, longitude, "Min posisjon");
+          applyCoordToField("fra", latitude, longitude, address);
+          button.classList.remove("is-locating");
+        },
+        () => button.classList.remove("is-locating"),
+        { enableHighAccuracy: true, timeout: 8000 },
+      );
+    });
+
+    // Resize fix: Leaflet needs an explicit nudge once its container becomes visible/sized.
+    setTimeout(() => map.invalidateSize(), 100);
+    KoblyWizard.onStepChange.push((step) => { if (step === 1) map.invalidateSize(); });
+  }
+
+  // ---------------------------------------------------------------
+  // Mobile map picker overlay (.map-overlay) — fullscreen, fixed center
+  // crosshair pin, user pans the map underneath it (spec §5.5 mobile).
+  // ---------------------------------------------------------------
+  function initMobileMapPicker() {
+    const overlay = document.querySelector("[data-map-overlay]");
+    if (!overlay || typeof L === "undefined") return;
+
+    let map = null;
+    let activeField = null; // "fra" | "til"
+    let resolvedAddress = null;
+
+    /** Reverse-geocodes the map's current center and updates the bottom sheet's address text. */
+    async function lookupCenter() {
+      const addressEl = overlay.querySelector("[data-map-overlay-address]");
+      addressEl.classList.add("is-loading");
+      const center = map.getCenter();
+      resolvedAddress = await reverseGeocode(center.lat, center.lng, "Plassering valgt i kart");
+      addressEl.textContent = resolvedAddress;
+      addressEl.classList.remove("is-loading");
+    }
+
+    /** Opens the overlay for the given field ("fra"/"til"), initializing the map centered on any existing pin. */
+    function open(which) {
+      activeField = which;
+      overlay.hidden = false;
+      overlay.querySelector("[data-map-overlay-title]").textContent =
+        which === "til" ? "Hvor flytter du til?" : "Hvor flytter du fra?";
+      document.body.style.overflow = "hidden";
+
+      const latInput = document.querySelector(`[data-coord="${which}_lat"]`);
+      const lonInput = document.querySelector(`[data-coord="${which}_lon"]`);
+      const hasPin = latInput.value && lonInput.value;
+      const start = hasPin
+        ? [Number(latInput.value), Number(lonInput.value)]
+        : window.KOBLY_WIZARD_INITIAL_CENTER
+          ? [window.KOBLY_WIZARD_INITIAL_CENTER.lat, window.KOBLY_WIZARD_INITIAL_CENTER.lon]
+          : [59.9139, 10.7522];
+      const zoom = hasPin ? 16 : 14;
+
+      map = L.map(overlay.querySelector("[data-map-overlay-container]"), {
+        center: start, zoom, zoomControl: false, attributionControl: false,
+      });
+      L.tileLayer(TILE_URL, { maxZoom: 19 }).addTo(map);
+      setTimeout(() => map.invalidateSize(), 50);
+      map.on("moveend", lookupCenter);
+      lookupCenter();
+    }
+
+    /** Tears down the Leaflet instance and hides the overlay. */
+    function close() {
+      overlay.hidden = true;
+      document.body.style.overflow = "";
+      if (map) { map.remove(); map = null; }
+      resolvedAddress = null;
+    }
+
+    /** Confirms the map's current center as the chosen coordinate for the active field. */
+    function confirm() {
+      if (!map || !activeField) return;
+      const center = map.getCenter();
+      const fieldEl = document.querySelector(`.address-field[data-address-field="${activeField}"]`);
+      fieldEl.setAddressFromCoord(center.lat, center.lng, resolvedAddress || "Plassering valgt i kart");
+      document.querySelector(`[data-open-map-picker="${activeField}"]`).classList.add("is-placed");
+      document.querySelector(`[data-open-map-picker="${activeField}"] .map-picker-btn__label`).textContent = "Plasseringen valgt · endre i kart";
+      // Reuse the desktop map's own pin-placement path so both stay in sync.
+      KoblyWizard.onCoordChange && KoblyWizard.onCoordChange(activeField, center.lat, center.lng);
+      close();
+    }
+
+    document.querySelectorAll("[data-open-map-picker]").forEach((button) => {
+      button.addEventListener("click", () => open(button.dataset.openMapPicker));
+    });
+    overlay.querySelector("[data-map-overlay-close]").addEventListener("click", close);
+    overlay.querySelector("[data-map-overlay-confirm]").addEventListener("click", confirm);
+    overlay.querySelector("[data-map-overlay-locate]").addEventListener("click", () => {
+      if (!navigator.geolocation || !map) return;
+      const button = overlay.querySelector("[data-map-overlay-locate]");
+      button.classList.add("is-locating");
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          map.setView([position.coords.latitude, position.coords.longitude], 16);
+          button.classList.remove("is-locating");
+        },
+        () => button.classList.remove("is-locating"),
+        { enableHighAccuracy: true, timeout: 8000 },
+      );
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !overlay.hidden) close();
+    });
+  }
+
   /** Entry point — runs everything this task owns once the DOM is ready. */
   function initWizard() {
     initIconSprite();
@@ -312,6 +574,8 @@
     updateProgressBar();
     updateNavButton();
     initAddressAutocomplete();
+    initDesktopMap();
+    initMobileMapPicker();
   }
 
   document.addEventListener("DOMContentLoaded", initWizard);

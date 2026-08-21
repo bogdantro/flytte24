@@ -1,3 +1,6 @@
+from io import StringIO
+
+from django.core.management import call_command
 from django.test import TestCase
 
 from apps.pages.models import Page, PageSection
@@ -46,3 +49,26 @@ class PageSectionModelTests(TestCase):
         )
         section.refresh_from_db()
         self.assertEqual(section.extra_json["items"][0]["question"], "Q?")
+
+
+class SeedHomePageSectionsCommandTests(TestCase):
+    def test_creates_page_and_eight_sections(self):
+        call_command("seed_home_page_sections", stdout=StringIO())
+        page = Page.objects.get(template_key="home")
+        self.assertEqual(page.status, "published")
+        self.assertEqual(page.sections.count(), 8)
+        self.assertEqual(
+            list(page.sections.values_list("section_type", flat=True)),
+            ["hero", "stats", "how_it_works", "testimonials", "trust", "services", "cities", "faq"],
+        )
+
+    def test_idempotent_on_second_run(self):
+        call_command("seed_home_page_sections", stdout=StringIO())
+        call_command("seed_home_page_sections", stdout=StringIO())
+        self.assertEqual(Page.objects.filter(template_key="home").count(), 1)
+        self.assertEqual(PageSection.objects.count(), 8)
+
+    def test_hero_heading_matches_current_hardcoded_copy(self):
+        call_command("seed_home_page_sections", stdout=StringIO())
+        hero = Page.objects.get(template_key="home").sections.get(section_type="hero")
+        self.assertEqual(hero.heading, "Vi finner det beste flyttebyrået for deg")

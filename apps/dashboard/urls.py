@@ -13,4 +13,5 @@ urlpatterns = [
     path("lead/<int:pk>/slett/", views.delete_lead, name="delete_lead"),
     path("sider/", views.page_list, name="page_list"),
     path("sider/<int:pk>/", views.page_edit, name="page_edit"),
+    path("sider/<int:pk>/dupliser/", views.page_duplicate, name="page_duplicate"),
 ]

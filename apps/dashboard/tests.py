@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.urls import reverse
 
@@ -196,3 +197,48 @@ class PageEditViewTests(TestCase):
         self.assertEqual(self.page.status, "published")
         self.assertEqual(self.page.updated_by, self.staff)
         self.assertEqual(self.section.heading, "Ny overskrift")
+
+
+class PageDuplicateViewTests(TestCase):
+    def setUp(self):
+        self.staff = User.objects.create_user("staff4", password="pw", is_staff=True)
+        self.page = Page.objects.create(
+            title="Forside", slug="forside", path="/", template_key="home", status="published"
+        )
+        self.section = PageSection.objects.create(
+            page=self.page,
+            order=1,
+            section_type="hero",
+            heading="Original",
+            image=SimpleUploadedFile("test.gif", b"GIF87a", content_type="image/gif"),
+        )
+
+    def test_requires_post(self):
+        self.client.force_login(self.staff)
+        response = self.client.get(reverse("dashboard:page_duplicate", args=[self.page.pk]))
+        self.assertEqual(response.status_code, 405)
+
+    def test_clones_page_and_section_as_draft(self):
+        self.client.force_login(self.staff)
+        response = self.client.post(reverse("dashboard:page_duplicate", args=[self.page.pk]))
+        clone = Page.objects.exclude(pk=self.page.pk).get()
+        self.assertRedirects(response, reverse("dashboard:page_edit", args=[clone.pk]))
+        self.assertEqual(clone.title, "Forside (kopi)")
+        self.assertEqual(clone.status, "draft")
+        self.assertNotEqual(clone.slug, self.page.slug)
+        self.assertNotEqual(clone.path, self.page.path)
+        self.assertEqual(clone.sections.count(), 1)
+        self.assertEqual(clone.sections.first().heading, "Original")
+
+    def test_clone_gets_its_own_image_file(self):
+        self.client.force_login(self.staff)
+        self.client.post(reverse("dashboard:page_duplicate", args=[self.page.pk]))
+        clone_section = Page.objects.exclude(pk=self.page.pk).get().sections.first()
+        self.assertNotEqual(clone_section.image.name, self.section.image.name)
+
+    def test_duplicating_twice_gets_distinct_slugs(self):
+        self.client.force_login(self.staff)
+        self.client.post(reverse("dashboard:page_duplicate", args=[self.page.pk]))
+        self.client.post(reverse("dashboard:page_duplicate", args=[self.page.pk]))
+        self.assertEqual(Page.objects.count(), 3)
+        self.assertEqual(len({p.slug for p in Page.objects.all()}), 3)

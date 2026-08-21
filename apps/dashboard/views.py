@@ -2,6 +2,7 @@ from functools import wraps
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import user_passes_test
+from django.core.files.base import ContentFile
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
@@ -126,3 +127,50 @@ def page_edit(request, pk):
         "dashboard/page_edit.html",
         {"page": page, "page_form": page_form, "section_forms": section_forms},
     )
+
+
+@staff_required
+@require_POST
+def page_duplicate(request, pk):
+    """Clones a Page and every PageSection under it, physically copying
+    image files rather than re-pointing at the same file, into a new
+    draft Page with a unique slug/path."""
+    source = get_object_or_404(Page, pk=pk)
+
+    base_slug = f"{source.slug}-kopi"
+    base_path = source.path.rstrip("/") + "-kopi/"
+    slug, path, suffix = base_slug, base_path, 1
+    while Page.objects.filter(slug=slug).exists() or Page.objects.filter(path=path).exists():
+        suffix += 1
+        slug = f"{base_slug}-{suffix}"
+        path = source.path.rstrip("/") + f"-kopi-{suffix}/"
+
+    new_page = Page.objects.create(
+        title=f"{source.title} (kopi)",
+        slug=slug,
+        path=path,
+        template_key=source.template_key,
+        status="draft",
+        updated_by=request.user,
+    )
+
+    for section in source.sections.all():
+        new_section = PageSection.objects.create(
+            page=new_page,
+            order=section.order,
+            section_type=section.section_type,
+            heading=section.heading,
+            subheading=section.subheading,
+            body_text=section.body_text,
+            button_label=section.button_label,
+            button_href=section.button_href,
+            extra_json=section.extra_json,
+        )
+        if section.image:
+            new_section.image.save(
+                section.image.name.rsplit("/", 1)[-1],
+                ContentFile(section.image.read()),
+                save=True,
+            )
+
+    return redirect("dashboard:page_edit", pk=new_page.pk)

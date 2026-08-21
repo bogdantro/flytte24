@@ -4,6 +4,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, override_settings
 from django.urls import reverse
 
+from apps.leads.forms import WizardForm
 from apps.leads.models import LeadImage, MoveLead
 
 
@@ -46,3 +47,91 @@ class MoveLeadModelTest(TestCase):
         )
         self.assertEqual(lead.images.count(), 1)
         self.assertEqual(lead.images.first(), image)
+
+
+def _valid_payload(**overrides):
+    data = dict(
+        flytte_type="privat",
+        fra="Kongens gate 1, 0153 Oslo",
+        fra_lat="59.913",
+        fra_lon="10.752",
+        til="Storgata 14, 0184 Oslo",
+        til_lat="",
+        til_lon="",
+        boligtype="leilighet",
+        flyttedato="2026-09-12",
+        fleksibel="",
+        beskrivelse="3-seters sofa",
+        navn="Ola Nordmann",
+        telefon="+47 900 00 000",
+        epost="ola@eksempel.no",
+    )
+    data.update(overrides)
+    return data
+
+
+class WizardFormTest(TestCase):
+    def test_valid_payload_passes(self):
+        form = WizardForm(_valid_payload())
+        self.assertTrue(form.is_valid(), form.errors)
+
+    def test_fra_shorter_than_3_chars_is_invalid(self):
+        form = WizardForm(_valid_payload(fra="Os"))
+        self.assertFalse(form.is_valid())
+        self.assertIn("fra", form.errors)
+
+    def test_til_shorter_than_3_chars_is_invalid(self):
+        form = WizardForm(_valid_payload(til="St"))
+        self.assertFalse(form.is_valid())
+        self.assertIn("til", form.errors)
+
+    def test_coordinates_are_optional(self):
+        form = WizardForm(_valid_payload(fra_lat="", fra_lon="", til_lat="", til_lon=""))
+        self.assertTrue(form.is_valid(), form.errors)
+
+    def test_missing_flytte_type_is_invalid(self):
+        form = WizardForm(_valid_payload(flytte_type=""))
+        self.assertFalse(form.is_valid())
+        self.assertIn("flytte_type", form.errors)
+
+    def test_missing_boligtype_is_invalid(self):
+        form = WizardForm(_valid_payload(boligtype=""))
+        self.assertFalse(form.is_valid())
+        self.assertIn("boligtype", form.errors)
+
+    def test_missing_date_and_not_flexible_is_invalid(self):
+        form = WizardForm(_valid_payload(flyttedato="", fleksibel=""))
+        self.assertFalse(form.is_valid())
+        self.assertIn("__all__", form.errors)
+
+    def test_flexible_without_date_is_valid(self):
+        form = WizardForm(_valid_payload(flyttedato="", fleksibel="on"))
+        self.assertTrue(form.is_valid(), form.errors)
+
+    def test_beskrivelse_is_always_optional(self):
+        form = WizardForm(_valid_payload(beskrivelse=""))
+        self.assertTrue(form.is_valid(), form.errors)
+
+    def test_navn_single_char_is_invalid(self):
+        form = WizardForm(_valid_payload(navn="O"))
+        self.assertFalse(form.is_valid())
+        self.assertIn("navn", form.errors)
+
+    def test_telefon_too_short_is_invalid(self):
+        form = WizardForm(_valid_payload(telefon="123"))
+        self.assertFalse(form.is_valid())
+        self.assertIn("telefon", form.errors)
+
+    def test_telefon_allows_spaces_and_plus(self):
+        form = WizardForm(_valid_payload(telefon="+47 900 00 000"))
+        self.assertTrue(form.is_valid(), form.errors)
+
+    def test_epost_without_at_sign_is_invalid(self):
+        form = WizardForm(_valid_payload(epost="ikke-en-epost"))
+        self.assertFalse(form.is_valid())
+        self.assertIn("epost", form.errors)
+
+    def test_epost_permissive_pattern_accepts_short_domain(self):
+        # Spec §5.9: /\S+@\S+\.\S+/ — permissive, not RFC-strict.
+        form = WizardForm(_valid_payload(epost="a@b.co"))
+        self.assertTrue(form.is_valid(), form.errors)

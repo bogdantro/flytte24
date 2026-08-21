@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
@@ -163,48 +165,81 @@ class PageListViewTests(TestCase):
         self.client.force_login(self.staff)
         response = self.client.get(reverse("dashboard:page_list"))
         self.assertContains(response, "Om oss")
-        self.assertContains(response, reverse("dashboard:page_edit", args=[page.pk]))
+        self.assertContains(response, reverse("dashboard:page_toggle_status", args=[page.pk]))
 
 
-class PageEditViewTests(TestCase):
+class PageToggleStatusViewTests(TestCase):
     def setUp(self):
         self.staff = User.objects.create_user("staff3", password="pw", is_staff=True)
         self.page = Page.objects.create(
             title="Forside", slug="forside", path="/", template_key="home", status="draft"
+        )
+
+    def test_requires_post(self):
+        self.client.force_login(self.staff)
+        response = self.client.get(reverse("dashboard:page_toggle_status", args=[self.page.pk]))
+        self.assertEqual(response.status_code, 405)
+
+    def test_toggles_draft_to_published_and_back(self):
+        self.client.force_login(self.staff)
+        url = reverse("dashboard:page_toggle_status", args=[self.page.pk])
+        response = self.client.post(url)
+        self.assertRedirects(response, reverse("dashboard:page_list"))
+        self.page.refresh_from_db()
+        self.assertEqual(self.page.status, "published")
+        self.assertEqual(self.page.updated_by, self.staff)
+
+        self.client.post(url)
+        self.page.refresh_from_db()
+        self.assertEqual(self.page.status, "draft")
+
+
+class SectionInlineUpdateViewTests(TestCase):
+    def setUp(self):
+        self.staff = User.objects.create_user("staff3b", password="pw", is_staff=True)
+        self.page = Page.objects.create(
+            title="Forside", slug="forside", path="/", template_key="home", status="published"
         )
         self.section = PageSection.objects.create(
             page=self.page, order=1, section_type="hero", heading="Original overskrift"
         )
 
     def test_requires_staff_login(self):
-        url = reverse("dashboard:page_edit", args=[self.page.pk])
-        response = self.client.get(url)
-        self.assertRedirects(response, f"{reverse('dashboard:login')}?next={url}")
+        url = reverse("dashboard:section_inline_update", args=[self.section.pk])
+        response = self.client.post(url, data="{}", content_type="application/json")
+        self.assertEqual(response.status_code, 302)
 
-    def test_get_shows_current_values(self):
+    def test_requires_post(self):
         self.client.force_login(self.staff)
-        response = self.client.get(reverse("dashboard:page_edit", args=[self.page.pk]))
-        self.assertContains(response, "Original overskrift")
+        response = self.client.get(reverse("dashboard:section_inline_update", args=[self.section.pk]))
+        self.assertEqual(response.status_code, 405)
 
-    def test_post_updates_page_and_section_and_sets_updated_by(self):
+    def test_updates_an_allowed_field_and_sets_updated_by(self):
         self.client.force_login(self.staff)
-        url = reverse("dashboard:page_edit", args=[self.page.pk])
-        response = self.client.post(url, {
-            "title": "Forside",
-            "path": "/",
-            "status": "published",
-            f"section-{self.section.pk}-heading": "Ny overskrift",
-            f"section-{self.section.pk}-subheading": "",
-            f"section-{self.section.pk}-body_text": "",
-            f"section-{self.section.pk}-button_label": "",
-            f"section-{self.section.pk}-button_href": "",
-        })
-        self.assertRedirects(response, url)
-        self.page.refresh_from_db()
+        url = reverse("dashboard:section_inline_update", args=[self.section.pk])
+        response = self.client.post(
+            url,
+            data=json.dumps({"field": "heading", "value": "Ny overskrift"}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"ok": True})
         self.section.refresh_from_db()
-        self.assertEqual(self.page.status, "published")
-        self.assertEqual(self.page.updated_by, self.staff)
+        self.page.refresh_from_db()
         self.assertEqual(self.section.heading, "Ny overskrift")
+        self.assertEqual(self.page.updated_by, self.staff)
+
+    def test_rejects_a_field_outside_the_whitelist(self):
+        self.client.force_login(self.staff)
+        url = reverse("dashboard:section_inline_update", args=[self.section.pk])
+        response = self.client.post(
+            url,
+            data=json.dumps({"field": "section_type", "value": "faq"}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 400)
+        self.section.refresh_from_db()
+        self.assertEqual(self.section.section_type, "hero")
 
 
 class PageDuplicateViewTests(TestCase):
@@ -230,7 +265,7 @@ class PageDuplicateViewTests(TestCase):
         self.client.force_login(self.staff)
         response = self.client.post(reverse("dashboard:page_duplicate", args=[self.page.pk]))
         clone = Page.objects.exclude(pk=self.page.pk).get()
-        self.assertRedirects(response, reverse("dashboard:page_edit", args=[clone.pk]))
+        self.assertRedirects(response, reverse("dashboard:page_list"))
         self.assertEqual(clone.title, "Forside (kopi)")
         self.assertEqual(clone.status, "draft")
         self.assertNotEqual(clone.slug, self.page.slug)

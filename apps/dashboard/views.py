@@ -1,3 +1,4 @@
+import json
 from functools import wraps
 
 from django.contrib.auth import authenticate, login, logout
@@ -5,11 +6,12 @@ from django.contrib.auth.decorators import user_passes_test
 from django.core.exceptions import ValidationError
 from django.core.files.base import ContentFile
 from django.db.models import Q
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
 
-from apps.dashboard.forms import BusinessCoreForm, BusinessPublicInfoForm, PageForm, PageSectionForm
+from apps.dashboard.forms import BusinessCoreForm, BusinessPublicInfoForm
 from apps.leads.models import MoveLead
 from apps.pages.models import Page, PageSection
 from apps.store.models import Bedrift_info, BusinessImage, PublicBusinessInformation, Review
@@ -103,34 +105,18 @@ def page_list(request):
 
 
 @staff_required
-def page_edit(request, pk):
+@require_POST
+def page_toggle_status(request, pk):
+    """Publish/unpublish a page — the one page-level action that still
+    needs a dashboard control, since it isn't something you'd toggle
+    from within the live page itself. Content editing happens inline on
+    the page (see section_inline_update); this is the last remaining
+    piece of the old form-based editor."""
     page = get_object_or_404(Page, pk=pk)
-    sections = list(page.sections.all())
-
-    if request.method == "POST":
-        page_form = PageForm(request.POST, instance=page)
-        section_forms = [
-            PageSectionForm(request.POST, request.FILES, instance=s, prefix=f"section-{s.pk}")
-            for s in sections
-        ]
-        if page_form.is_valid() and all(f.is_valid() for f in section_forms):
-            saved_page = page_form.save(commit=False)
-            saved_page.updated_by = request.user
-            saved_page.save()
-            for f in section_forms:
-                f.save()
-            return redirect("dashboard:page_edit", pk=page.pk)
-    else:
-        page_form = PageForm(instance=page)
-        section_forms = [
-            PageSectionForm(instance=s, prefix=f"section-{s.pk}") for s in sections
-        ]
-
-    return render(
-        request,
-        "dashboard/page_edit.html",
-        {"page": page, "page_form": page_form, "section_forms": section_forms},
-    )
+    page.status = "draft" if page.status == "published" else "published"
+    page.updated_by = request.user
+    page.save(update_fields=["status", "updated_by", "updated_at"])
+    return redirect("dashboard:page_list")
 
 
 @staff_required
@@ -177,7 +163,7 @@ def page_duplicate(request, pk):
                 save=True,
             )
 
-    return redirect("dashboard:page_edit", pk=new_page.pk)
+    return redirect("dashboard:page_list")
 
 
 @staff_required
@@ -324,3 +310,33 @@ def review_delete(request, pk, review_pk):
     review = get_object_or_404(Review, pk=review_pk, business=business)
     review.delete()
     return redirect("dashboard:business_detail", pk=business.pk)
+
+
+# Every text field a PageSection can be edited into inline, straight from the
+# live page (see inline-edit.js). Whitelisted so the POST body can never
+# write to a field outside this set (e.g. section_type, page, extra_json).
+INLINE_EDITABLE_FIELDS = {"heading", "subheading", "body_text", "button_label", "button_href"}
+
+
+@staff_required
+@require_POST
+def section_inline_update(request, pk):
+    """Saves one text field of one PageSection, called from a page's own
+    contenteditable elements (apps/core/templates/core/home.html) rather
+    than from the dashboard's own page editor."""
+    section = get_object_or_404(PageSection, pk=pk)
+    try:
+        data = json.loads(request.body.decode("utf-8"))
+    except (json.JSONDecodeError, UnicodeDecodeError):
+        return JsonResponse({"ok": False, "error": "invalid_json"}, status=400)
+
+    field = data.get("field")
+    value = data.get("value", "")
+    if field not in INLINE_EDITABLE_FIELDS:
+        return JsonResponse({"ok": False, "error": "invalid_field"}, status=400)
+
+    setattr(section, field, value)
+    section.save(update_fields=[field])
+    section.page.updated_by = request.user
+    section.page.save(update_fields=["updated_by", "updated_at"])
+    return JsonResponse({"ok": True})

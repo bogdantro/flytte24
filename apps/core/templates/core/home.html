@@ -3,15 +3,25 @@
 
 {% block content %}
 
+{% if is_editable %}
+  <!-- Staff-only: confirms edit mode is on, and where the CSRF token for
+       inline-edit.js's fetch() calls comes from (Django only sets the
+       csrftoken cookie because apps/core/views.py:home() forces it via
+       get_token() — this page has no <form> of its own to trigger that). -->
+  <div class="inline-edit-banner" data-inline-edit-banner>
+    Redigeringsmodus — klikk på en tekst for å endre den. Endringer lagres automatisk.
+  </div>
+{% endif %}
+
 <!-- ===================== HERO ===================== -->
 <section class="hero">
   <div class="hero__inner">
     <div class="hero__left">
       <p class="hero__eyebrow">{{ sections.hero.extra_json.eyebrow|default:"Norges smarteste tilbudstjeneste" }}</p>
-      <h1 class="hero__title">{{ sections.hero.heading|default:"Vi finner det beste flyttebyrået for deg" }}</h1>
-      <p class="hero__subline">{{ sections.hero.subheading|default:"Kobly kobler deg med kvalitetssjekkede byråer i ditt område" }}</p>
+      <h1 class="hero__title" {% if is_editable %}contenteditable="true" data-inline-section="{{ sections.hero.id }}" data-inline-field="heading"{% endif %}>{{ sections.hero.heading|default:"Vi finner det beste flyttebyrået for deg" }}</h1>
+      <p class="hero__subline" {% if is_editable %}contenteditable="true" data-inline-section="{{ sections.hero.id }}" data-inline-field="subheading"{% endif %}>{{ sections.hero.subheading|default:"Kobly kobler deg med kvalitetssjekkede byråer i ditt område" }}</p>
       <a href="{{ sections.hero.button_href|default:"/flytteforesporsel/" }}" class="btn-primary hero__cta">
-        {{ sections.hero.button_label|default:"Få 3 tilbud gratis" }}
+        <span {% if is_editable %}contenteditable="true" data-inline-section="{{ sections.hero.id }}" data-inline-field="button_label"{% endif %}>{{ sections.hero.button_label|default:"Få 3 tilbud gratis" }}</span>
         <span data-icon="arrow-right"></span>
       </a>
     </div>
@@ -80,7 +90,7 @@
 <!-- ===================== HOW IT WORKS ===================== -->
 <section class="section how-it-works">
   <div class="content-width">
-    <h2 class="how-it-works__title">{{ sections.how_it_works.heading|default:"Slik fungerer det" }}</h2>
+    <h2 class="how-it-works__title" {% if is_editable %}contenteditable="true" data-inline-section="{{ sections.how_it_works.id }}" data-inline-field="heading"{% endif %}>{{ sections.how_it_works.heading|default:"Slik fungerer det" }}</h2>
     <ol class="how-it-works__grid">
       {% if sections.how_it_works.extra_json.steps %}
         {% for step in sections.how_it_works.extra_json.steps %}
@@ -114,7 +124,7 @@
     </ol>
     <div class="how-it-works__cta">
       <a href="{{ sections.how_it_works.button_href|default:"/flytteforesporsel/" }}" class="btn-primary">
-        {{ sections.how_it_works.button_label|default:"Få 3 tilbud gratis" }}
+        <span {% if is_editable %}contenteditable="true" data-inline-section="{{ sections.how_it_works.id }}" data-inline-field="button_label"{% endif %}>{{ sections.how_it_works.button_label|default:"Få 3 tilbud gratis" }}</span>
         <span data-icon="arrow-right"></span>
       </a>
     </div>
@@ -124,7 +134,7 @@
 <!-- ===================== TESTIMONIALS ===================== -->
 <section class="section testimonials">
   <div class="content-width">
-    <h2 class="testimonials__title">{{ sections.testimonials.heading|default:"Hva sier kundene våre?" }}</h2>
+    <h2 class="testimonials__title" {% if is_editable %}contenteditable="true" data-inline-section="{{ sections.testimonials.id }}" data-inline-field="heading"{% endif %}>{{ sections.testimonials.heading|default:"Hva sier kundene våre?" }}</h2>
     <div class="testimonials__grid">
       {% if sections.testimonials.extra_json.items %}
         {% for item in sections.testimonials.extra_json.items %}
@@ -158,11 +168,11 @@
 <!-- ===================== TRUST ===================== -->
 <section class="section trust">
   <div class="content-width">
-    <h2 class="trust__title">{{ sections.trust.heading|default:"Norges smarteste tilbudstjeneste" }}</h2>
-    <p class="trust__body">{{ sections.trust.body_text|default:"Kobly flytter ikke selv — vi samler byråene som gjør det best, og kobler deg med tre som passer akkurat din flytting." }}</p>
+    <h2 class="trust__title" {% if is_editable %}contenteditable="true" data-inline-section="{{ sections.trust.id }}" data-inline-field="heading"{% endif %}>{{ sections.trust.heading|default:"Norges smarteste tilbudstjeneste" }}</h2>
+    <p class="trust__body" {% if is_editable %}contenteditable="true" data-inline-section="{{ sections.trust.id }}" data-inline-field="body_text"{% endif %}>{{ sections.trust.body_text|default:"Kobly flytter ikke selv — vi samler byråene som gjør det best, og kobler deg med tre som passer akkurat din flytting." }}</p>
     <div class="trust__ctas">
       <a href="{{ sections.trust.button_href|default:"/flytteforesporsel/" }}" class="btn-primary">
-        {{ sections.trust.button_label|default:"Få 3 tilbud gratis" }}
+        <span {% if is_editable %}contenteditable="true" data-inline-section="{{ sections.trust.id }}" data-inline-field="button_label"{% endif %}>{{ sections.trust.button_label|default:"Få 3 tilbud gratis" }}</span>
         <span data-icon="arrow-right"></span>
       </a>
       <a href="{{ sections.trust.extra_json.secondary_href|default:"/byraer/" }}" class="btn-outline">{{ sections.trust.extra_json.secondary_label|default:"Møt byråene" }}</a>
@@ -181,7 +191,7 @@
 <section class="section services">
   <div class="content-width">
     <div class="services__header">
-      <h2 class="services__title">{{ sections.services.heading|default:"Alt du trenger på ett sted" }}</h2>
+      <h2 class="services__title" {% if is_editable %}contenteditable="true" data-inline-section="{{ sections.services.id }}" data-inline-field="heading"{% endif %}>{{ sections.services.heading|default:"Alt du trenger på ett sted" }}</h2>
       <span class="services__underline" aria-hidden="true"></span>
     </div>
     <div class="services__grid">
@@ -225,8 +235,8 @@
 <!-- ===================== CITIES ===================== -->
 <section class="section cities">
   <div class="content-width">
-    <h2 class="cities__title">{{ sections.cities.heading|default:"Flytter du i en av disse byene?" }}</h2>
-    <p class="cities__body">{{ sections.cities.body_text|default:"Vi har kvalitetssjekkede byråer som tar oppdrag i hele landet. Velg byen din for å komme raskere i gang." }}</p>
+    <h2 class="cities__title" {% if is_editable %}contenteditable="true" data-inline-section="{{ sections.cities.id }}" data-inline-field="heading"{% endif %}>{{ sections.cities.heading|default:"Flytter du i en av disse byene?" }}</h2>
+    <p class="cities__body" {% if is_editable %}contenteditable="true" data-inline-section="{{ sections.cities.id }}" data-inline-field="body_text"{% endif %}>{{ sections.cities.body_text|default:"Vi har kvalitetssjekkede byråer som tar oppdrag i hele landet. Velg byen din for å komme raskere i gang." }}</p>
     <ul class="cities__grid">
       {% if sections.cities.extra_json.items %}
         {% for city in sections.cities.extra_json.items %}
@@ -247,7 +257,7 @@
 <section class="section">
   <div class="content-width">
     <div class="faq" data-faq>
-      <h2 class="faq__title">{{ sections.faq.heading|default:"Ofte stilte spørsmål" }}</h2>
+      <h2 class="faq__title" {% if is_editable %}contenteditable="true" data-inline-section="{{ sections.faq.id }}" data-inline-field="heading"{% endif %}>{{ sections.faq.heading|default:"Ofte stilte spørsmål" }}</h2>
       <ul class="faq__list">
         {% if sections.faq.extra_json.items %}
           {% for item in sections.faq.extra_json.items %}
@@ -308,6 +318,9 @@
 <section class="section footer-cta">
   <div class="content-width">
     <div class="footer-cta__inner">
+      <!-- No "cta" PageSection is seeded today, so there's nothing to save
+           an inline edit into here yet — heading stays read-only until a
+           cta section exists (see seed_home_page_sections.py). -->
       <h2 class="footer-cta__title">{{ sections.cta.heading|default:"Klar for å flytte?" }}</h2>
       <form class="postnummer-form" data-postnummer-form novalidate>
         <div class="postnummer-form__row">
@@ -324,5 +337,9 @@
     </div>
   </div>
 </section>
+
+{% if is_editable %}
+  <script src="{% static 'js/inline-edit.js' %}"></script>
+{% endif %}
 
 {% endblock %}

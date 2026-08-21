@@ -38,11 +38,18 @@ from django.views.decorators.http import require_POST
 from django.utils import timezone
 
 def home(request):
+    from django.middleware.csrf import get_token
     from apps.pages.models import Page
 
     page = Page.objects.filter(template_key="home", status="published").first()
     sections = {s.section_type: s for s in page.sections.all()} if page else {}
-    return render(request, 'core/home.html', {"page": page, "sections": sections})
+    # Staff editing a page has no <form> on this page to trigger Django's
+    # normal csrftoken-cookie-on-render behavior — force it so inline-edit.js
+    # has a token to read before the user's first edit.
+    is_editable = bool(page) and request.user.is_authenticated and request.user.is_staff
+    if is_editable:
+        get_token(request)
+    return render(request, 'core/home.html', {"page": page, "sections": sections, "is_editable": is_editable})
 
 
 from django.shortcuts import render, redirect

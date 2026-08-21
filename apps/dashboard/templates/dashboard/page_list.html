@@ -19,7 +19,7 @@
       </thead>
       <tbody>
         {% for page in pages %}
-          <tr onclick="window.location='{% url 'dashboard:page_edit' page.pk %}'">
+          <tr onclick="window.location='{{ page.path }}'">
             <td>{{ page.title }}</td>
             <td class="lead-table__muted">{{ page.path }}</td>
             <td><span class="status-badge status-badge--{% if page.status == 'published' %}new{% else %}booked{% endif %}">{{ page.get_status_display }}</span></td>
@@ -27,7 +27,11 @@
               {{ page.updated_at|date:"d.m.Y H:i" }}{% if page.updated_by %} av {{ page.updated_by.get_username }}{% endif %}
             </td>
             <td onclick="event.stopPropagation();">
-              <a href="{{ page.path }}" target="_blank" rel="noopener" class="btn-outline">Vis live</a>
+              <a href="{{ page.path }}" class="btn-outline">Rediger på siden</a>
+              <form method="post" action="{% url 'dashboard:page_toggle_status' page.pk %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn-outline">{% if page.status == 'published' %}Sett som utkast{% else %}Publiser{% endif %}</button>
+              </form>
               <form method="post" action="{% url 'dashboard:page_duplicate' page.pk %}" style="display:inline;">
                 {% csrf_token %}
                 <button type="submit" class="btn-outline">Dupliser</button>

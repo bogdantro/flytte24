@@ -183,11 +183,17 @@
   // blur so a click on a suggestion registers before the list vanishes.
   // ---------------------------------------------------------------
 
-  /** Calls the Geonorge address search API and returns its `adresser` array (or [] on any failure). */
-  async function searchAddresses(query) {
+  /**
+   * Calls the Geonorge address search API and returns its `adresser` array
+   * (or [] on any failure, including an intentional `signal` abort — an
+   * aborted request must not be treated as "no results" by its caller, so
+   * callers check `signal.aborted` themselves rather than trusting an empty
+   * array here to mean "user typed a query with zero matches").
+   */
+  async function searchAddresses(query, signal) {
     try {
       const url = `https://ws.geonorge.no/adresser/v1/sok?sok=${encodeURIComponent(query)}&treffPerSide=8&side=0`;
-      const response = await fetch(url);
+      const response = await fetch(url, { signal });
       if (!response.ok) return [];
       const json = await response.json();
       return json.adresser || [];
@@ -241,6 +247,10 @@
     const latInput = fieldEl.querySelector(`[data-coord="${key}_lat"]`);
     const lonInput = fieldEl.querySelector(`[data-coord="${key}_lon"]`);
     let debounceTimer = null;
+    // Aborted on every new keystroke's search and on blur, so a slow response
+    // from an earlier query can never land after a newer one (or after the
+    // field lost focus) and reopen/overwrite the suggestion list.
+    let abortController = null;
 
     const selectAddress = (address) => {
       const point = address.representasjonspunkt;
@@ -257,18 +267,22 @@
       latInput.value = "";
       lonInput.value = "";
       clearTimeout(debounceTimer);
+      abortController?.abort();
       const query = input.value.trim();
       if (query.length < 2) {
         list.hidden = true;
         return;
       }
       debounceTimer = setTimeout(async () => {
-        const results = await searchAddresses(query);
+        abortController = new AbortController();
+        const results = await searchAddresses(query, abortController.signal);
+        if (abortController.signal.aborted) return;
         renderSuggestions(list, results, selectAddress);
       }, 200);
     });
 
     input.addEventListener("blur", () => {
+      abortController?.abort();
       setTimeout(() => { list.hidden = true; }, 120);
     });
 

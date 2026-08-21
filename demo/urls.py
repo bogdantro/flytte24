@@ -27,6 +27,7 @@ urlpatterns = [
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}),
 
     path('flytteforesporsel/', include('apps.leads.urls')),
+    path('dashboard/', include('apps.dashboard.urls')),
 
     path('', home, name='home'),
 

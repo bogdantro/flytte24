@@ -10,7 +10,7 @@ class LeadImageInline(admin.TabularInline):
 
 @admin.register(MoveLead)
 class MoveLeadAdmin(admin.ModelAdmin):
-    list_display = ("reference", "navn", "flytte_type", "boligtype", "fra", "til", "created_at")
-    list_filter = ("flytte_type", "boligtype", "fleksibel")
+    list_display = ("reference", "navn", "status", "flytte_type", "boligtype", "fra", "til", "created_at")
+    list_filter = ("status", "flytte_type", "boligtype", "fleksibel")
     search_fields = ("reference", "navn", "epost", "telefon", "fra", "til")
     inlines = [LeadImageInline]

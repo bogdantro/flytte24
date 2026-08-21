@@ -1,0 +1,40 @@
+<!-- apps/dashboard/templates/dashboard/_base.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Dashbord{% endblock %} — Kobly</title>
+  <link rel="icon" type="image/svg+xml" href="{% static 'images/favicon.svg' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+</head>
+<body>
+
+<header class="dashboard-topbar">
+  <div class="dashboard-topbar__inner">
+    <a href="{% url 'dashboard:lead_list' %}" class="dashboard-topbar__logo">
+      <svg width="20" height="20" viewBox="0 0 27 27" fill="none" aria-hidden="true">
+        <circle cx="13.5" cy="13.5" r="11.625" stroke="currentColor" stroke-width="3.75" />
+        <path d="M16.5 1.875C12.7075 5.23556 10.5 9.26144 10.5 13.5887C10.5 17.8401 12.6307 21.8006 16.3019 25.125" stroke="currentColor" stroke-width="3.75" />
+      </svg>
+      <span class="dashboard-topbar__wordmark">Kobly</span>
+      <span class="dashboard-topbar__label">Dashbord</span>
+    </a>
+    <div class="dashboard-topbar__right">
+      <span class="dashboard-topbar__user">{{ request.user.get_username }}</span>
+      <form method="post" action="{% url 'dashboard:logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn-outline">Logg ut</button>
+      </form>
+    </div>
+  </div>
+</header>
+
+<main class="dashboard-main">
+  {% block content %}{% endblock %}
+</main>
+
+</body>
+</html>

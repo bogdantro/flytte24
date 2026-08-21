@@ -1,0 +1,57 @@
+<!-- apps/dashboard/templates/dashboard/list.html -->
+{% extends "dashboard/_base.html" %}
+
+{% block title %}Forespørsler{% endblock %}
+
+{% block content %}
+  <h1 class="dashboard-heading">Flytteforespørsler</h1>
+
+  <!-- Quick stats: total + how many still need a first response -->
+  <div class="dashboard-stats">
+    <div class="dashboard-stat">
+      <span class="dashboard-stat__value">{{ total_count }}</span>
+      <span class="dashboard-stat__label">Totalt</span>
+    </div>
+    <div class="dashboard-stat">
+      <span class="dashboard-stat__value">{{ new_count }}</span>
+      <span class="dashboard-stat__label">Nye, ikke kontaktet</span>
+    </div>
+  </div>
+
+  <!-- Status filter pills -->
+  <div class="dashboard-filters">
+    <a href="{% url 'dashboard:lead_list' %}" class="filter-pill {% if not status_filter %}is-active{% endif %}">Alle</a>
+    {% for value, display in status_choices %}
+      <a href="?status={{ value }}" class="filter-pill {% if status_filter == value %}is-active{% endif %}">{{ display }}</a>
+    {% endfor %}
+  </div>
+
+  {% if leads %}
+    <table class="lead-table">
+      <thead>
+        <tr>
+          <th>Referanse</th>
+          <th>Navn</th>
+          <th>Type</th>
+          <th>Fra → Til</th>
+          <th>Status</th>
+          <th>Mottatt</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for lead in leads %}
+          <tr onclick="window.location='{% url 'dashboard:lead_detail' lead.pk %}'">
+            <td class="lead-table__reference">{{ lead.reference }}</td>
+            <td>{{ lead.navn }}</td>
+            <td>{{ lead.get_flytte_type_display }}</td>
+            <td class="lead-table__muted">{{ lead.fra }} → {{ lead.til }}</td>
+            <td><span class="status-badge status-badge--{{ lead.status }}">{{ lead.get_status_display }}</span></td>
+            <td class="lead-table__muted">{{ lead.created_at|date:"d.m.Y H:i" }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="dashboard-empty">Ingen forespørsler {% if status_filter %}med denne statusen{% endif %} ennå.</p>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,48 @@
+<!-- apps/dashboard/templates/dashboard/login.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logg inn — Kobly dashbord</title>
+  <link rel="icon" type="image/svg+xml" href="{% static 'images/favicon.svg' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+</head>
+<body>
+
+<div class="dashboard-login">
+  <div class="dashboard-login__card">
+    <span class="dashboard-login__logo">
+      <svg width="22" height="22" viewBox="0 0 27 27" fill="none" aria-hidden="true">
+        <circle cx="13.5" cy="13.5" r="11.625" stroke="currentColor" stroke-width="3.75" />
+        <path d="M16.5 1.875C12.7075 5.23556 10.5 9.26144 10.5 13.5887C10.5 17.8401 12.6307 21.8006 16.3019 25.125" stroke="currentColor" stroke-width="3.75" />
+      </svg>
+      <span class="dashboard-login__wordmark">Kobly</span>
+    </span>
+
+    <h1 class="dashboard-login__title">Dashbord</h1>
+    <p class="dashboard-login__subtitle">Logg inn for å se innkomne flytteforespørsler.</p>
+
+    {% if error %}
+      <p class="dashboard-login__error">{{ error }}</p>
+    {% endif %}
+
+    <form method="post">
+      {% csrf_token %}
+      <label class="dashboard-login__field">
+        <span>Brukernavn</span>
+        <input type="text" name="username" autocomplete="username" required autofocus>
+      </label>
+      <label class="dashboard-login__field">
+        <span>Passord</span>
+        <input type="password" name="password" autocomplete="current-password" required>
+      </label>
+      <button type="submit" class="btn-primary dashboard-login__submit">Logg inn</button>
+    </form>
+  </div>
+</div>
+
+</body>
+</html>

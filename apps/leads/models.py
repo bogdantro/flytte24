@@ -22,10 +22,19 @@ class MoveLead(models.Model):
         ("enebolig", "Enebolig"),
         ("annet", "Annet"),
     ]
+    STATUS_CHOICES = [
+        ("new", "Ny"),
+        ("contacted", "Kontaktet"),
+        ("booked", "Bestilt"),
+    ]
 
     # Auto-generated in save(), e.g. "KOB-2026-42" — used as the customer-facing
     # reference number in the receipt email (spec §12 LEAD.ref).
     reference = models.CharField(max_length=32, unique=True, editable=False, blank=True)
+
+    # Internal pipeline state, set/changed only from the staff dashboard —
+    # never part of WizardForm, so every lead starts "new" by default.
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="new")
 
     # Step 2
     flytte_type = models.CharField(max_length=20, choices=FLYTTE_TYPE_CHOICES)

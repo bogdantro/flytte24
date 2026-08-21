@@ -1,0 +1,110 @@
+<!-- apps/dashboard/templates/dashboard/detail.html -->
+{% extends "dashboard/_base.html" %}
+{% load static %}
+
+{% block title %}{{ lead.reference }}{% endblock %}
+
+{% block content %}
+  <a href="{% url 'dashboard:lead_list' %}" class="lead-detail__back">← Alle forespørsler</a>
+
+  <div class="lead-detail__header">
+    <h1 class="lead-detail__title">{{ lead.reference }} — {{ lead.navn }}</h1>
+    <span class="status-badge status-badge--{{ lead.status }}">{{ lead.get_status_display }}</span>
+  </div>
+
+  <div class="lead-detail">
+    <!-- Left column: everything the customer submitted -->
+    <div>
+      <div class="lead-card" style="margin-bottom: 1.5rem;">
+        <p class="lead-card__title">Flytting</p>
+        <div class="lead-row">
+          <span class="lead-row__label">Fra</span>
+          <span class="lead-row__value">{{ lead.fra }}{% if lead.fra_lat %} <span style="color:#8a8a8a;">({{ lead.fra_lat }}, {{ lead.fra_lon }})</span>{% endif %}</span>
+        </div>
+        <div class="lead-row">
+          <span class="lead-row__label">Til</span>
+          <span class="lead-row__value">{{ lead.til }}{% if lead.til_lat %} <span style="color:#8a8a8a;">({{ lead.til_lat }}, {{ lead.til_lon }})</span>{% endif %}</span>
+        </div>
+        <div class="lead-row">
+          <span class="lead-row__label">Type</span>
+          <span class="lead-row__value">{{ lead.get_flytte_type_display }}</span>
+        </div>
+        <div class="lead-row">
+          <span class="lead-row__label">Boligtype</span>
+          <span class="lead-row__value">{{ lead.get_boligtype_display }}</span>
+        </div>
+        <div class="lead-row">
+          <span class="lead-row__label">Dato</span>
+          <span class="lead-row__value">{% if lead.fleksibel %}Fleksibel dato{% elif lead.flyttedato %}{{ lead.flyttedato|date:"d.m.Y" }}{% else %}—{% endif %}</span>
+        </div>
+        {% if lead.beskrivelse %}
+        <div class="lead-row">
+          <span class="lead-row__label">Beskrivelse</span>
+          <span class="lead-row__value">{{ lead.beskrivelse }}</span>
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="lead-card" style="margin-bottom: 1.5rem;">
+        <p class="lead-card__title">Kontakt</p>
+        <div class="lead-row">
+          <span class="lead-row__label">Navn</span>
+          <span class="lead-row__value">{{ lead.navn }}</span>
+        </div>
+        <div class="lead-row">
+          <span class="lead-row__label">Telefon</span>
+          <span class="lead-row__value"><a href="tel:{{ lead.telefon }}">{{ lead.telefon }}</a></span>
+        </div>
+        <div class="lead-row">
+          <span class="lead-row__label">E-post</span>
+          <span class="lead-row__value"><a href="mailto:{{ lead.epost }}">{{ lead.epost }}</a></span>
+        </div>
+        <div class="lead-row">
+          <span class="lead-row__label">Mottatt</span>
+          <span class="lead-row__value">{{ lead.created_at|date:"d.m.Y H:i" }}</span>
+        </div>
+      </div>
+
+      {% if lead.images.all %}
+      <div class="lead-card">
+        <p class="lead-card__title">Bilder ({{ lead.images.count }})</p>
+        <div class="lead-photo-grid">
+          {% for image in lead.images.all %}
+            <a href="{{ image.image.url }}" target="_blank" rel="noopener">
+              <img src="{{ image.image.url }}" alt="">
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Right column: internal actions — status + delete -->
+    <div>
+      <div class="lead-card" style="margin-bottom: 1.5rem;">
+        <p class="lead-card__title">Status</p>
+        <div class="status-form">
+          {% for value, display in status_choices %}
+            <form method="post" action="{% url 'dashboard:update_status' lead.pk %}">
+              {% csrf_token %}
+              <input type="hidden" name="status" value="{{ value }}">
+              <button type="submit" class="status-pill-btn {% if lead.status == value %}is-current{% endif %}" {% if lead.status == value %}disabled{% endif %}>
+                {{ display }}
+              </button>
+            </form>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="lead-card">
+        <p class="lead-card__title">Farlig sone</p>
+        <form method="post" action="{% url 'dashboard:delete_lead' lead.pk %}" data-confirm-delete>
+          {% csrf_token %}
+          <button type="submit" class="btn-danger">Slett forespørsel</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="{% load static %}{% static 'js/dashboard.js' %}"></script>
+{% endblock %}

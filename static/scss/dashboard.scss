@@ -1,0 +1,439 @@
+// static/scss/dashboard.scss
+//
+// Internal staff dashboard for managing submitted wizard leads. Shares the
+// same design tokens as the public site (static/scss/_kobly-tokens.scss) so
+// it reads as unmistakably Kobly, but the layout itself is a plain
+// utilitarian admin shell (top bar + table), not a marketing page. Nested
+// parent/child per section, one comment banner per block.
+// Compile after every edit with:
+//   sass static/scss/dashboard.scss static/css/dashboard.css --style=expanded
+//
+@use "kobly-tokens" as *;
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: $font-sans;
+  color: $color-ink;
+  background: $color-bg;
+  @extend %kobly-font-features;
+}
+
+a { color: inherit; text-decoration: none; }
+
+// ---------------------------------------------------------------
+// Shared building blocks (buttons, badges) — reused across every page
+// ---------------------------------------------------------------
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: none;
+  border-radius: $radius-pill;
+  background: $color-brand;
+  color: $color-brand-ink;
+  font-family: $font-sans;
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover { background: rgba(34, 24, 20, 0.9); }
+  &:disabled { cursor: not-allowed; opacity: 0.5; }
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1.5px solid $color-line;
+  border-radius: $radius-pill;
+  background: $color-surface;
+  color: $color-ink;
+  font-family: $font-sans;
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+
+  &:hover { border-color: rgba(26, 26, 26, 0.3); background: $color-surface-soft; }
+}
+
+// Deliberately outside the brand palette — the one place on this page a
+// destructive action needs to visually stand apart from every other button.
+.btn-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1.5px solid #d9534f;
+  border-radius: $radius-pill;
+  background: $color-surface;
+  color: #b3261e;
+  font-family: $font-sans;
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+
+  &:hover { background: #d9534f; color: white; }
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border-radius: $radius-pill;
+  padding: 0.3125rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+
+  &::before {
+    content: "";
+    width: 0.4375rem;
+    height: 0.4375rem;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  &--new { background: rgba(214, 232, 168, 0.5); color: #3d5507; }
+  &--contacted { background: rgba(232, 168, 124, 0.35); color: #8a4a1f; }
+  &--booked { background: rgba(26, 26, 26, 0.08); color: $color-ink; }
+}
+
+// ---------------------------------------------------------------
+// .dashboard-login — standalone, pre-auth page
+// ---------------------------------------------------------------
+.dashboard-login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: $color-brand;
+
+  &__card {
+    width: 100%;
+    max-width: 380px;
+    border-radius: $radius-card;
+    background: $color-surface;
+    box-shadow: $shadow-card-elevated;
+    padding: 2.5rem;
+  }
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: $color-ink;
+    margin-bottom: 0.5rem;
+  }
+
+  &__wordmark { font-size: 1.125rem; font-weight: 700; }
+
+  &__title {
+    margin: 1.5rem 0 0.25rem;
+    font-family: $font-serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+  }
+
+  &__subtitle { margin: 0 0 1.5rem; font-size: 0.875rem; color: $color-ink-muted; }
+
+  &__error {
+    margin: 0 0 1rem;
+    border-radius: 10px;
+    background: rgba(217, 83, 79, 0.1);
+    color: #b3261e;
+    font-size: 0.8125rem;
+    padding: 0.75rem 1rem;
+  }
+
+  &__field {
+    display: block;
+    margin-bottom: 1rem;
+
+    span { display: block; margin-bottom: 0.375rem; font-size: 0.8125rem; color: $color-ink-muted; }
+
+    input {
+      width: 100%;
+      border: 1.5px solid rgba(26, 26, 26, 0.1);
+      border-radius: 10px;
+      background: #f7f5f1;
+      padding: 0.75rem 0.875rem;
+      font-size: 0.9375rem;
+      font-family: $font-sans;
+      outline: none;
+      transition: border-color 0.2s ease;
+
+      &:focus { border-color: $color-brand; }
+    }
+  }
+
+  &__submit { width: 100%; justify-content: center; margin-top: 0.5rem; }
+}
+
+// ---------------------------------------------------------------
+// .dashboard-topbar — present on every authenticated page
+// ---------------------------------------------------------------
+.dashboard-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(244, 241, 234, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid $color-line;
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem;
+  }
+
+  &__logo { display: inline-flex; align-items: center; gap: 0.5rem; color: $color-ink; }
+  &__wordmark { font-size: 1.0625rem; font-weight: 700; }
+  &__label {
+    margin-left: 0.5rem;
+    padding-left: 0.75rem;
+    border-left: 1px solid $color-line;
+    font-size: 0.8125rem;
+    color: $color-ink-muted;
+  }
+
+  &__right { display: flex; align-items: center; gap: 1rem; }
+  &__user { font-size: 0.8125rem; color: $color-ink-muted; }
+}
+
+// ---------------------------------------------------------------
+// .dashboard-main — content wrapper shared by list/detail
+// ---------------------------------------------------------------
+.dashboard-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.dashboard-heading {
+  margin: 0 0 1.5rem;
+  font-family: $font-serif;
+  font-size: 1.75rem;
+  font-weight: 500;
+}
+
+// ---------------------------------------------------------------
+// STATS ROW (list page)
+// ---------------------------------------------------------------
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-stat {
+  border-radius: $radius-card;
+  background: $color-surface;
+  border: 1px solid $color-line;
+  padding: 1.25rem 1.5rem;
+
+  &__value { display: block; font-family: $font-serif; font-size: 1.75rem; font-weight: 500; }
+  &__label { display: block; margin-top: 0.25rem; font-size: 0.8125rem; color: $color-ink-muted; }
+}
+
+// ---------------------------------------------------------------
+// FILTER PILLS (list page)
+// ---------------------------------------------------------------
+.dashboard-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.filter-pill {
+  display: inline-flex;
+  align-items: center;
+  border: 1.5px solid $color-line;
+  border-radius: $radius-pill;
+  padding: 0.5rem 1rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: $color-ink-muted;
+  background: $color-surface;
+  transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+
+  &:hover { border-color: rgba(26, 26, 26, 0.3); }
+
+  &.is-active {
+    border-color: $color-brand;
+    background: $color-brand;
+    color: $color-brand-ink;
+  }
+}
+
+// ---------------------------------------------------------------
+// LEAD TABLE (list page)
+// ---------------------------------------------------------------
+.lead-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: $radius-card;
+  overflow: hidden;
+  background: $color-surface;
+  border: 1px solid $color-line;
+
+  th, td {
+    text-align: left;
+    padding: 0.875rem 1.25rem;
+    font-size: 0.875rem;
+    border-bottom: 1px solid $color-line;
+  }
+
+  th {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: $color-ink-muted;
+    background: $color-surface-soft;
+  }
+
+  tbody tr {
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+
+    &:hover { background: $color-surface-soft; }
+    &:last-child td { border-bottom: none; }
+  }
+
+  &__reference { font-weight: 600; }
+  &__muted { color: $color-ink-muted; }
+}
+
+.dashboard-empty {
+  border-radius: $radius-card;
+  background: $color-surface;
+  border: 1px dashed $color-line;
+  padding: 3rem 1.5rem;
+  text-align: center;
+  color: $color-ink-muted;
+}
+
+// ---------------------------------------------------------------
+// LEAD DETAIL PAGE
+// ---------------------------------------------------------------
+.lead-detail {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+
+  &__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    color: $color-ink-muted;
+
+    &:hover { color: $color-ink; }
+  }
+
+  &__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  &__title { margin: 0; font-family: $font-serif; font-size: 1.5rem; font-weight: 500; }
+}
+
+.lead-card {
+  border-radius: $radius-card;
+  background: $color-surface;
+  border: 1px solid $color-line;
+  padding: 1.5rem;
+
+  &__title {
+    margin: 0 0 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: $color-ink-muted;
+  }
+}
+
+.lead-row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 1rem;
+  padding: 0.625rem 0;
+  border-bottom: 1px solid $color-line;
+  font-size: 0.875rem;
+
+  &:last-child { border-bottom: none; }
+
+  &__label { color: $color-ink-muted; }
+  &__value { color: $color-ink; }
+}
+
+.status-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.status-pill-btn {
+  border: 1.5px solid $color-line;
+  border-radius: $radius-pill;
+  background: $color-surface;
+  padding: 0.5rem 1rem;
+  font-family: $font-sans;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+
+  &:hover { border-color: rgba(26, 26, 26, 0.3); }
+
+  &.is-current {
+    border-color: $color-brand;
+    background: $color-brand;
+    color: $color-brand-ink;
+    cursor: default;
+  }
+}
+
+.lead-photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 0.75rem;
+}
+
+.lead-photo-grid img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid $color-line;
+}
+
+@media (min-width: 900px) {
+  .lead-detail {
+    grid-template-columns: 2fr 1fr;
+    align-items: start;
+  }
+}

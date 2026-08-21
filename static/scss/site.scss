@@ -20,7 +20,9 @@ body {
   @extend %kobly-font-features;
 }
 
-a { color: inherit; }
+a { color: inherit; text-decoration: none; }
+
+button { font-family: $font-sans; text-decoration: none; }
 
 // =================================================================
 // .site-header — sticky top nav, present on every marketing page
@@ -162,15 +164,30 @@ a { color: inherit; }
 }
 
 .section {
-  padding: 3rem 0;
+  padding: 2rem 0;
 }
 
 @media (min-width: 640px) {
-  .section { padding: 4.5rem 0; }
+  .section { padding: 2.75rem 0; }
 }
 
 @media (min-width: 1024px) {
-  .section { padding: 6rem 0; }
+  .section { padding: 3.5rem 0; }
+}
+
+// Every section H2 shares this desktop size — 42px, matching the reference
+// site exactly (its "sm:text-[42px]" utility across HowItWorks, Testimonials,
+// Trust, Services, Cities, and FAQ). Grouped here once instead of repeating
+// the same media query six times next to each section's own rules.
+@media (min-width: 640px) {
+  .how-it-works__title,
+  .testimonials__title,
+  .trust__title,
+  .services__title,
+  .cities__title,
+  .faq__title {
+    font-size: 42px;
+  }
 }
 
 .btn-primary {
@@ -236,12 +253,12 @@ a { color: inherit; }
     margin: 0;
     font-family: $font-serif;
     font-weight: 600;
-    font-size: 2rem;
+    font-size: 2.5rem;
     line-height: 1.05;
     color: $color-ink;
   }
 
-  &__subline { margin: 1rem 0 0; max-width: 28rem; font-size: 1rem; color: $color-ink-muted; }
+  &__subline { margin: 1rem 0 0; max-width: 28rem; font-size: 1.125rem; color: $color-ink-muted; }
 
   &__cta { margin-top: 1.75rem; }
 
@@ -250,12 +267,12 @@ a { color: inherit; }
 
 @media (min-width: 1024px) {
   .hero {
-    padding: 7rem 2.5rem 10rem;
+    padding: 5rem 2.5rem 5rem;
 
     &__inner { grid-template-columns: 1.1fr 0.9fr; gap: 4rem; }
     &__left { align-items: flex-start; text-align: left; }
     &__eyebrow { display: block; }
-    &__title { margin-top: 0.75rem; font-size: 3rem; }
+    &__title { margin-top: 0.75rem; font-size: 3.75rem; }
     &__subline, &__cta { display: none; }
     &__card { display: block; }
   }
@@ -300,8 +317,8 @@ a { color: inherit; }
     background: $color-accent-lime;
   }
 
-  &__title { margin: 1.75rem 0 0; text-align: center; font-size: 1.25rem; font-weight: 500; color: $color-ink; }
-  &__body { margin: 0.75rem 0 0; text-align: center; font-size: 0.875rem; line-height: 1.6; color: $color-ink-muted; }
+  &__title { margin: 1.75rem 0 0; text-align: center; font-size: 1.5rem; font-weight: 500; color: $color-ink; }
+  &__body { margin: 0.75rem 0 0; text-align: center; font-size: 1rem; line-height: 1.6; color: $color-ink-muted; }
 
   &__cta {
     width: 100%;
@@ -340,27 +357,32 @@ a { color: inherit; }
 }
 
 .stats--compact {
-  gap: 0.5rem;
+  gap: 0.75rem;
 
   .stat {
-    padding: 1rem 0.75rem;
+    padding: 1.5rem 1rem;
     background: rgba(250, 249, 246, 0.85);
     backdrop-filter: blur(8px);
 
-    &__value { font-size: 1.25rem; }
-    &__label { margin-top: 0.5rem; font-size: 0.6875rem; line-height: 1.3; }
+    &__value { font-size: 1.5rem; }
+    &__label { margin-top: 0.625rem; font-size: 0.8125rem; line-height: 1.3; }
   }
 }
 
 @media (min-width: 1024px) {
-  .stats--compact .stat__value { font-size: 1.5rem; }
+  .stats--compact .stat {
+    padding: 1.75rem 1.25rem;
+  }
+
+  .stats--compact .stat__value { font-size: 1.875rem; }
+  .stats--compact .stat__label { font-size: 0.875rem; }
 }
 
 // =================================================================
 // .image-strip — infinite marquee of lifestyle photos, pure CSS
 // =================================================================
 .image-strip {
-  padding-bottom: 3rem;
+  padding-bottom: 2rem;
 
   &__mask {
     overflow: hidden;
@@ -404,7 +426,7 @@ a { color: inherit; }
 }
 
 @media (min-width: 1024px) {
-  .image-strip { padding-bottom: 5rem; }
+  .image-strip { padding-bottom: 3rem; }
   .image-strip__tile { width: 430px; height: 540px; }
 }
 

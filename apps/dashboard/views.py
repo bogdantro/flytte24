@@ -5,8 +5,9 @@ from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
+from apps.dashboard.forms import PageForm, PageSectionForm
 from apps.leads.models import MoveLead
-from apps.pages.models import Page
+from apps.pages.models import Page, PageSection
 
 
 def staff_required(view_func):
@@ -94,3 +95,34 @@ def page_list(request):
     """Every page on the site, newest-updated first."""
     pages = Page.objects.all().order_by("-updated_at")
     return render(request, "dashboard/page_list.html", {"pages": pages})
+
+
+@staff_required
+def page_edit(request, pk):
+    page = get_object_or_404(Page, pk=pk)
+    sections = list(page.sections.all())
+
+    if request.method == "POST":
+        page_form = PageForm(request.POST, instance=page)
+        section_forms = [
+            PageSectionForm(request.POST, request.FILES, instance=s, prefix=f"section-{s.pk}")
+            for s in sections
+        ]
+        if page_form.is_valid() and all(f.is_valid() for f in section_forms):
+            saved_page = page_form.save(commit=False)
+            saved_page.updated_by = request.user
+            saved_page.save()
+            for f in section_forms:
+                f.save()
+            return redirect("dashboard:page_edit", pk=page.pk)
+    else:
+        page_form = PageForm(instance=page)
+        section_forms = [
+            PageSectionForm(instance=s, prefix=f"section-{s.pk}") for s in sections
+        ]
+
+    return render(
+        request,
+        "dashboard/page_edit.html",
+        {"page": page, "page_form": page_form, "section_forms": section_forms},
+    )

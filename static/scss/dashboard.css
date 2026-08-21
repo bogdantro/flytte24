@@ -466,6 +466,50 @@ a {
   cursor: default;
 }
 
+.dashboard-form__group {
+  margin-bottom: 1rem;
+}
+.dashboard-form__group:last-child {
+  margin-bottom: 0;
+}
+
+.dashboard-form__label {
+  display: block;
+  margin-bottom: 0.375rem;
+  font-size: 0.8125rem;
+  color: #5c5c5c;
+}
+
+.dashboard-form__group input[type=text],
+.dashboard-form__group input[type=email],
+.dashboard-form__group input[type=url],
+.dashboard-form__group input[type=tel],
+.dashboard-form__group textarea,
+.dashboard-form__group select {
+  width: 100%;
+  border: 1.5px solid rgba(26, 26, 26, 0.1);
+  border-radius: 10px;
+  background: #f7f5f1;
+  padding: 0.75rem 0.875rem;
+  font-size: 0.9375rem;
+  font-family: "Moderat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+.dashboard-form__group input[type=text]:focus,
+.dashboard-form__group input[type=email]:focus,
+.dashboard-form__group input[type=url]:focus,
+.dashboard-form__group input[type=tel]:focus,
+.dashboard-form__group textarea:focus,
+.dashboard-form__group select:focus {
+  border-color: #221814;
+}
+
+.dashboard-form__group textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
 .lead-photo-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));

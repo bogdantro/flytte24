@@ -155,3 +155,44 @@ class PageListViewTests(TestCase):
         self.client.force_login(self.staff)
         response = self.client.get(reverse("dashboard:page_list"))
         self.assertContains(response, "Ingen sider ennå")
+
+
+class PageEditViewTests(TestCase):
+    def setUp(self):
+        self.staff = User.objects.create_user("staff3", password="pw", is_staff=True)
+        self.page = Page.objects.create(
+            title="Forside", slug="forside", path="/", template_key="home", status="draft"
+        )
+        self.section = PageSection.objects.create(
+            page=self.page, order=1, section_type="hero", heading="Original overskrift"
+        )
+
+    def test_requires_staff_login(self):
+        url = reverse("dashboard:page_edit", args=[self.page.pk])
+        response = self.client.get(url)
+        self.assertRedirects(response, f"{reverse('dashboard:login')}?next={url}")
+
+    def test_get_shows_current_values(self):
+        self.client.force_login(self.staff)
+        response = self.client.get(reverse("dashboard:page_edit", args=[self.page.pk]))
+        self.assertContains(response, "Original overskrift")
+
+    def test_post_updates_page_and_section_and_sets_updated_by(self):
+        self.client.force_login(self.staff)
+        url = reverse("dashboard:page_edit", args=[self.page.pk])
+        response = self.client.post(url, {
+            "title": "Forside",
+            "path": "/",
+            "status": "published",
+            f"section-{self.section.pk}-heading": "Ny overskrift",
+            f"section-{self.section.pk}-subheading": "",
+            f"section-{self.section.pk}-body_text": "",
+            f"section-{self.section.pk}-button_label": "",
+            f"section-{self.section.pk}-button_href": "",
+        })
+        self.assertRedirects(response, url)
+        self.page.refresh_from_db()
+        self.section.refresh_from_db()
+        self.assertEqual(self.page.status, "published")
+        self.assertEqual(self.page.updated_by, self.staff)
+        self.assertEqual(self.section.heading, "Ny overskrift")

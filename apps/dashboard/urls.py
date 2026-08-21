@@ -12,4 +12,5 @@ urlpatterns = [
     path("lead/<int:pk>/status/", views.update_status, name="update_status"),
     path("lead/<int:pk>/slett/", views.delete_lead, name="delete_lead"),
     path("sider/", views.page_list, name="page_list"),
+    path("sider/<int:pk>/", views.page_edit, name="page_edit"),
 ]

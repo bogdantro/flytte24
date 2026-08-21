@@ -1,5 +1,7 @@
+import tempfile
+
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.urls import reverse
 
 from apps.leads.models import LeadImage, MoveLead
@@ -11,6 +13,7 @@ class WizardViewSmokeTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
+@override_settings(MEDIA_ROOT=tempfile.mkdtemp())
 class MoveLeadModelTest(TestCase):
     def _make_lead(self, **overrides):
         data = dict(

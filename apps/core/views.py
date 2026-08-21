@@ -38,8 +38,11 @@ from django.views.decorators.http import require_POST
 from django.utils import timezone
 
 def home(request):
+    from apps.pages.models import Page
 
-    return render(request, 'core/home.html')
+    page = Page.objects.filter(template_key="home", status="published").first()
+    sections = {s.section_type: s for s in page.sections.all()} if page else {}
+    return render(request, 'core/home.html', {"page": page, "sections": sections})
 
 
 from django.shortcuts import render, redirect

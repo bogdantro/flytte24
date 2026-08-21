@@ -1,0 +1,49 @@
+// static/scss/_kobly-tokens.scss
+//
+// Kobly design system tokens — spec §3 (kobly-full-site-spec.pdf).
+// One source of truth for color/type/shape values used by wizard.scss
+// (and every later marketing-page SCSS file, in a future phase).
+// Partial file (leading underscore) — imported with @use, never compiled
+// standalone.
+
+// --- Colors (spec §3.1) ---
+$color-bg: #f4f1ea;
+$color-surface: #ffffff;
+$color-surface-soft: #faf9f6;
+$color-ink: #1a1a1a;
+$color-ink-muted: #5c5c5c;
+$color-line: #e6e1d6;
+$color-brand: #221814; // primary brand fill — CTAs, selected states, footer
+$color-brand-ink: #faf9f6; // text/icon color placed on top of $color-brand
+$color-accent-lime: #d6e8a8;
+$color-accent-amber: #e8a87c;
+$color-olive: #3d5507; // hardcoded outlier used only for checkmarks + the "to" map pin
+
+// --- Type (spec §3.2) ---
+$font-sans: "Moderat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+$font-serif: "Crimson Pro", Georgia, "Times New Roman", serif;
+
+// --- Shape / elevation (spec §3.3) ---
+$radius-card: 14px;
+$radius-pill: 9999px;
+$shadow-card-elevated: 0 20px 60px rgba(0, 0, 0, 0.28), 0 4px 16px rgba(0, 0, 0, 0.1);
+
+@font-face {
+  font-family: "Moderat";
+  src: url("/static/fonts/Moderat-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Moderat";
+  src: url("/static/fonts/Moderat-Semibold.otf") format("opentype");
+  font-weight: 600;
+  font-display: swap;
+}
+
+// spec §3.2: cv11 on globally, ss01 deliberately left off (swaps ?/% glyphs
+// for alternates missing from the Semibold weight — looks thin next to bold text).
+%kobly-font-features {
+  font-feature-settings: "cv11";
+}

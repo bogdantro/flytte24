@@ -174,3 +174,11 @@ def page_duplicate(request, pk):
             )
 
     return redirect("dashboard:page_edit", pk=new_page.pk)
+
+
+@staff_required
+@require_POST
+def page_delete(request, pk):
+    page = get_object_or_404(Page, pk=pk)
+    page.delete()
+    return redirect("dashboard:page_list")

@@ -242,3 +242,22 @@ class PageDuplicateViewTests(TestCase):
         self.client.post(reverse("dashboard:page_duplicate", args=[self.page.pk]))
         self.assertEqual(Page.objects.count(), 3)
         self.assertEqual(len({p.slug for p in Page.objects.all()}), 3)
+
+
+class PageDeleteViewTests(TestCase):
+    def setUp(self):
+        self.staff = User.objects.create_user("staff5", password="pw", is_staff=True)
+        self.page = Page.objects.create(
+            title="Om oss", slug="om-oss", path="/om-oss/", template_key="about"
+        )
+
+    def test_requires_post(self):
+        self.client.force_login(self.staff)
+        response = self.client.get(reverse("dashboard:page_delete", args=[self.page.pk]))
+        self.assertEqual(response.status_code, 405)
+
+    def test_deletes_and_redirects(self):
+        self.client.force_login(self.staff)
+        response = self.client.post(reverse("dashboard:page_delete", args=[self.page.pk]))
+        self.assertRedirects(response, reverse("dashboard:page_list"))
+        self.assertFalse(Page.objects.filter(pk=self.page.pk).exists())

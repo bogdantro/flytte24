@@ -282,6 +282,11 @@
     });
 
     input.addEventListener("blur", () => {
+      // Cancel both a pending debounce (search hasn't fired yet) and an
+      // in-flight request (search already fired) — either one resolving
+      // after blur must not be able to reopen the dropdown on a field
+      // that's no longer focused.
+      clearTimeout(debounceTimer);
       abortController?.abort();
       setTimeout(() => { list.hidden = true; }, 120);
     });

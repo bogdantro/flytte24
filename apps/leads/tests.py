@@ -222,3 +222,17 @@ class ReceiptEmailTest(TestCase):
         )
         send_receipt_email(lead)
         self.assertIn("Fleksibel dato", mail.outbox[0].alternatives[0][0])
+
+    def test_move_date_is_rendered_in_norwegian(self):
+        lead = MoveLead.objects.create(
+            flytte_type="privat",
+            fra="Kongens gate 1, 0153 Oslo",
+            til="Storgata 14, 0184 Oslo",
+            boligtype="leilighet",
+            flyttedato="2026-09-12",
+            navn="Ola Nordmann",
+            telefon="+47 900 00 000",
+            epost="ola@eksempel.no",
+        )
+        send_receipt_email(lead)
+        self.assertIn("12. september 2026", mail.outbox[0].alternatives[0][0])

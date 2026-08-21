@@ -40,7 +40,7 @@ tjenester adaptation.
             <tr>
               <td style="padding:14px 0; border-bottom:1px solid #e6e1d6;">
                 <p style="margin:0; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size:13px; line-height:1.4; color:#5c5c5c;">Ønsket dato</p>
-                <p style="margin:4px 0 0; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size:16px; line-height:1.5; font-weight:600; color:#1a1a1a;">{% if lead.fleksibel %}Fleksibel dato{% else %}{{ lead.flyttedato|date:"j. F Y" }}{% endif %}</p>
+                <p style="margin:4px 0 0; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size:16px; line-height:1.5; font-weight:600; color:#1a1a1a;">{% if lead.fleksibel %}Fleksibel dato{% else %}{{ formatted_date }}{% endif %}</p>
               </td>
             </tr>
             <tr>

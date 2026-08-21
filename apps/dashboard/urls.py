@@ -20,4 +20,7 @@ urlpatterns = [
     path("bedrifter/<int:pk>/aktiver/", views.business_toggle_active, name="business_toggle_active"),
     path("bedrifter/<int:pk>/bilde/legg-til/", views.business_image_add, name="business_image_add"),
     path("bedrifter/<int:pk>/bilde/<int:image_pk>/slett/", views.business_image_delete, name="business_image_delete"),
+    path("bedrifter/<int:pk>/anmeldelse/legg-til/", views.review_add, name="review_add"),
+    path("bedrifter/<int:pk>/anmeldelse/<int:review_pk>/rediger/", views.review_edit, name="review_edit"),
+    path("bedrifter/<int:pk>/anmeldelse/<int:review_pk>/slett/", views.review_delete, name="review_delete"),
 ]

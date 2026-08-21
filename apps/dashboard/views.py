@@ -11,7 +11,7 @@ from django.views.decorators.http import require_POST
 from apps.dashboard.forms import BusinessCoreForm, BusinessPublicInfoForm, PageForm, PageSectionForm
 from apps.leads.models import MoveLead
 from apps.pages.models import Page, PageSection
-from apps.store.models import Bedrift_info, BusinessImage, PublicBusinessInformation
+from apps.store.models import Bedrift_info, BusinessImage, PublicBusinessInformation, Review
 
 
 def staff_required(view_func):
@@ -276,4 +276,37 @@ def business_image_delete(request, pk, image_pk):
     business = get_object_or_404(Bedrift_info, pk=pk)
     image = get_object_or_404(BusinessImage, pk=image_pk, public_info__business=business)
     image.delete()
+    return redirect("dashboard:business_detail", pk=business.pk)
+
+
+@staff_required
+@require_POST
+def review_add(request, pk):
+    business = get_object_or_404(Bedrift_info, pk=pk)
+    name = request.POST.get("name", "").strip()
+    comment = request.POST.get("comment", "").strip()
+    rating = request.POST.get("rating", "5")
+    if name and comment:
+        Review.objects.create(business=business, name=name, comment=comment, rating=rating)
+    return redirect("dashboard:business_detail", pk=business.pk)
+
+
+@staff_required
+@require_POST
+def review_edit(request, pk, review_pk):
+    business = get_object_or_404(Bedrift_info, pk=pk)
+    review = get_object_or_404(Review, pk=review_pk, business=business)
+    review.name = request.POST.get("name", review.name).strip()
+    review.comment = request.POST.get("comment", review.comment).strip()
+    review.rating = request.POST.get("rating", review.rating)
+    review.save(update_fields=["name", "comment", "rating"])
+    return redirect("dashboard:business_detail", pk=business.pk)
+
+
+@staff_required
+@require_POST
+def review_delete(request, pk, review_pk):
+    business = get_object_or_404(Bedrift_info, pk=pk)
+    review = get_object_or_404(Review, pk=review_pk, business=business)
+    review.delete()
     return redirect("dashboard:business_detail", pk=business.pk)

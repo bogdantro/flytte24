@@ -5,7 +5,7 @@ from django.urls import reverse
 
 from apps.leads.models import MoveLead
 from apps.pages.models import Page, PageSection
-from apps.store.models import Bedrift_info, BusinessImage, PublicBusinessInformation
+from apps.store.models import Bedrift_info, BusinessImage, PublicBusinessInformation, Review
 
 
 def _make_lead(**overrides):
@@ -419,3 +419,62 @@ class BusinessImageViewTests(TestCase):
         response = self.client.post(url)
         self.assertRedirects(response, reverse("dashboard:business_detail", args=[self.business.pk]))
         self.assertFalse(BusinessImage.objects.filter(pk=image.pk).exists())
+
+
+class ReviewViewTests(TestCase):
+    def setUp(self):
+        self.staff = User.objects.create_user("staff10", password="pw", is_staff=True)
+        self.business = Bedrift_info.objects.create(
+            company_name="Flytt AS", email="flytt@example.com", phone="12345678",
+            address="Gate 1", postal_code="0001", city="Oslo",
+            first_name="Ola", last_name="Nordmann",
+        )
+
+    def test_add_requires_post(self):
+        self.client.force_login(self.staff)
+        response = self.client.get(reverse("dashboard:review_add", args=[self.business.pk]))
+        self.assertEqual(response.status_code, 405)
+
+    def test_add_creates_review(self):
+        self.client.force_login(self.staff)
+        url = reverse("dashboard:review_add", args=[self.business.pk])
+        response = self.client.post(url, {"name": "Kari", "rating": "4", "comment": "Veldig bra!"})
+        self.assertRedirects(response, reverse("dashboard:business_detail", args=[self.business.pk]))
+        review = self.business.reviews.get()
+        self.assertEqual(review.name, "Kari")
+        self.assertEqual(review.rating, 4)
+
+    def test_add_ignores_blank_name(self):
+        self.client.force_login(self.staff)
+        url = reverse("dashboard:review_add", args=[self.business.pk])
+        self.client.post(url, {"name": "", "rating": "4", "comment": "Bra"})
+        self.assertEqual(self.business.reviews.count(), 0)
+
+    def test_edit_updates_fields(self):
+        self.client.force_login(self.staff)
+        review = Review.objects.create(business=self.business, name="Kari", rating=3, comment="Ok.")
+        url = reverse("dashboard:review_edit", args=[self.business.pk, review.pk])
+        self.client.post(url, {"name": "Kari Nordmann", "rating": "5", "comment": "Utmerket!"})
+        review.refresh_from_db()
+        self.assertEqual(review.name, "Kari Nordmann")
+        self.assertEqual(review.rating, 5)
+
+    def test_delete_removes_review(self):
+        self.client.force_login(self.staff)
+        review = Review.objects.create(business=self.business, name="Kari", rating=3, comment="Ok.")
+        url = reverse("dashboard:review_delete", args=[self.business.pk, review.pk])
+        response = self.client.post(url)
+        self.assertRedirects(response, reverse("dashboard:business_detail", args=[self.business.pk]))
+        self.assertFalse(Review.objects.filter(pk=review.pk).exists())
+
+    def test_cannot_delete_another_businesss_review(self):
+        other_business = Bedrift_info.objects.create(
+            company_name="Annen AS", email="annen@example.com", phone="11111111",
+            address="Gate 3", postal_code="0003", city="Trondheim",
+            first_name="Per", last_name="Hansen",
+        )
+        review = Review.objects.create(business=other_business, name="Kari", rating=3, comment="Ok.")
+        self.client.force_login(self.staff)
+        url = reverse("dashboard:review_delete", args=[self.business.pk, review.pk])
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 404)

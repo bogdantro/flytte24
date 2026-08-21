@@ -87,8 +87,8 @@
               <!-- Suggestion dropdown, populated by wizard.js from ws.geonorge.no -->
               <ul class="address-suggestions" hidden></ul>
               <!-- Hidden coordinate pair — set by JS on autocomplete select / geolocation / map pin -->
-              <input type="hidden" name="fra_lat" data-coord="fra_lat">
-              <input type="hidden" name="fra_lon" data-coord="fra_lon">
+              <input type="hidden" name="fra_lat" data-coord="fra_lat" value="{{ form.fra_lat.value|default:'' }}">
+              <input type="hidden" name="fra_lon" data-coord="fra_lon" value="{{ form.fra_lon.value|default:'' }}">
               <!-- Mobile-only: opens the fullscreen map picker overlay -->
               <button type="button" class="map-picker-btn" data-open-map-picker="fra">
                 <span data-icon="map-pin"></span>
@@ -102,8 +102,8 @@
                      placeholder="F.eks. Storgata 14, 0184 Oslo"
                      value="{{ form.til.value|default:'' }}">
               <ul class="address-suggestions" hidden></ul>
-              <input type="hidden" name="til_lat" data-coord="til_lat">
-              <input type="hidden" name="til_lon" data-coord="til_lon">
+              <input type="hidden" name="til_lat" data-coord="til_lat" value="{{ form.til_lat.value|default:'' }}">
+              <input type="hidden" name="til_lon" data-coord="til_lon" value="{{ form.til_lon.value|default:'' }}">
               <button type="button" class="map-picker-btn" data-open-map-picker="til">
                 <span data-icon="map-pin"></span>
                 <span class="map-picker-btn__label">Plasser i kart</span>
@@ -122,18 +122,18 @@
             <div class="pill-group" data-pill-group="flytte_type">
               <p class="pill-group__label">Type</p>
               <div class="pill-group__grid pill-group__grid--3col">
-                <label class="pill-button"><input type="radio" name="flytte_type" value="privat">Privat</label>
-                <label class="pill-button"><input type="radio" name="flytte_type" value="bedrift">Bedrift</label>
-                <label class="pill-button"><input type="radio" name="flytte_type" value="internasjonal">Internasjonal</label>
+                <label class="pill-button"><input type="radio" name="flytte_type" value="privat" {% if form.flytte_type.value == "privat" %}checked{% endif %}>Privat</label>
+                <label class="pill-button"><input type="radio" name="flytte_type" value="bedrift" {% if form.flytte_type.value == "bedrift" %}checked{% endif %}>Bedrift</label>
+                <label class="pill-button"><input type="radio" name="flytte_type" value="internasjonal" {% if form.flytte_type.value == "internasjonal" %}checked{% endif %}>Internasjonal</label>
               </div>
             </div>
             <div class="pill-group" data-pill-group="boligtype">
               <p class="pill-group__label">Størrelse</p>
               <div class="pill-group__grid pill-group__grid--2col">
-                <label class="pill-button"><input type="radio" name="boligtype" value="leilighet">Leilighet</label>
-                <label class="pill-button"><input type="radio" name="boligtype" value="rekkehus">Rekkehus</label>
-                <label class="pill-button"><input type="radio" name="boligtype" value="enebolig">Enebolig</label>
-                <label class="pill-button"><input type="radio" name="boligtype" value="annet">Annet</label>
+                <label class="pill-button"><input type="radio" name="boligtype" value="leilighet" {% if form.boligtype.value == "leilighet" %}checked{% endif %}>Leilighet</label>
+                <label class="pill-button"><input type="radio" name="boligtype" value="rekkehus" {% if form.boligtype.value == "rekkehus" %}checked{% endif %}>Rekkehus</label>
+                <label class="pill-button"><input type="radio" name="boligtype" value="enebolig" {% if form.boligtype.value == "enebolig" %}checked{% endif %}>Enebolig</label>
+                <label class="pill-button"><input type="radio" name="boligtype" value="annet" {% if form.boligtype.value == "annet" %}checked{% endif %}>Annet</label>
               </div>
             </div>
           </div>
@@ -149,11 +149,11 @@
           <div class="wizard-step__body">
             <label class="date-field">
               <span class="field-label">Ønsket flyttedato</span>
-              <input type="date" name="flyttedato" class="field-input" data-date-input>
+              <input type="date" name="flyttedato" class="field-input" data-date-input value="{{ form.flyttedato.value|default:'' }}">
             </label>
             <!-- Real checkbox, styled as a dashed pill — no JS needed to know its state -->
             <label class="flex-toggle" data-flex-toggle>
-              <input type="checkbox" name="fleksibel" data-flex-checkbox>
+              <input type="checkbox" name="fleksibel" data-flex-checkbox {% if form.fleksibel.value %}checked{% endif %}>
               <span class="flex-toggle__dot"><span data-icon="check"></span></span>
               Jeg er fleksibel på datoen
             </label>
@@ -217,6 +217,12 @@
         <div class="wizard-step__server-errors" role="alert">
           {{ form.non_field_errors }}
           {% for field in form %}{{ field.errors }}{% endfor %}
+        </div>
+        {% endif %}
+        {% if photo_errors %}
+        <!-- Server-side photo validation failures (too many/too large/not a real image) — accept="image/*" is client-side only -->
+        <div class="wizard-step__server-errors" role="alert">
+          {% for error in photo_errors %}<p>{{ error }}</p>{% endfor %}
         </div>
         {% endif %}
 

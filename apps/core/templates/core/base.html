@@ -17,7 +17,8 @@
     <main>
         {% block content %}{% endblock %}
     </main>
-    {% block footer %}{% endblock %}
+    {% block footer %}{% include "core/footer.html" %}{% endblock %}
+    {% include "core/_icon_sprite.html" %}
     <script src="{% static 'js/site.js' %}"></script>
 </body>
 </html>

@@ -29,10 +29,16 @@ a { color: inherit; }
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(244, 241, 234, 0.9); // $color-bg, slightly translucent
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-bottom: 1px solid $color-line;
+  // Transparent over the hero until the page scrolls >8px, then the bg
+  // wash + blur kick in (site.js toggles .is-scrolled) — spec §4.1.
+  background: transparent;
+  transition: background-color 0.2s ease;
+
+  &.is-scrolled {
+    background: rgba(244, 241, 234, 0.85); // $color-bg at 85%
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
 
   &__inner {
     display: flex;
@@ -142,4 +148,647 @@ a { color: inherit; }
 
     &__cta { margin: 0; }
   }
+}
+
+// =================================================================
+// Shared building blocks — buttons + the standard section content width
+// (72rem/1152px, matching spec §3.3 "max-w-6xl"; the header stays 1500px
+// per an explicit, separate request and is not affected by this).
+// =================================================================
+.content-width {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.section {
+  padding: 3rem 0;
+}
+
+@media (min-width: 640px) {
+  .section { padding: 4.5rem 0; }
+}
+
+@media (min-width: 1024px) {
+  .section { padding: 6rem 0; }
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: none;
+  border-radius: $radius-pill;
+  background: $color-brand;
+  color: $color-brand-ink;
+  font-family: $font-sans;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 1rem 1.75rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover { background: rgba(34, 24, 20, 0.9); }
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $radius-pill;
+  border: 1px solid $color-line;
+  background: none;
+  color: $color-ink;
+  font-family: $font-sans;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.75rem 1.25rem;
+  transition: background-color 0.2s ease;
+
+  &:hover { background: rgba(26, 26, 26, 0.05); }
+}
+
+// =================================================================
+// .hero — H1 + eyebrow/subline (mobile) or a HeroCard (desktop)
+// =================================================================
+.hero {
+  padding: 2rem 1.5rem 3rem;
+
+  &__inner {
+    max-width: 72rem;
+    margin: 0 auto;
+    display: grid;
+    gap: 2.5rem;
+    align-items: center;
+  }
+
+  &__left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  &__eyebrow { display: none; font-size: 0.875rem; font-weight: 500; color: $color-ink-muted; }
+
+  &__title {
+    margin: 0;
+    font-family: $font-serif;
+    font-weight: 600;
+    font-size: 2rem;
+    line-height: 1.05;
+    color: $color-ink;
+  }
+
+  &__subline { margin: 1rem 0 0; max-width: 28rem; font-size: 1rem; color: $color-ink-muted; }
+
+  &__cta { margin-top: 1.75rem; }
+
+  &__card { display: none; }
+}
+
+@media (min-width: 1024px) {
+  .hero {
+    padding: 7rem 2.5rem 10rem;
+
+    &__inner { grid-template-columns: 1.1fr 0.9fr; gap: 4rem; }
+    &__left { align-items: flex-start; text-align: left; }
+    &__eyebrow { display: block; }
+    &__title { margin-top: 0.75rem; font-size: 3rem; }
+    &__subline, &__cta { display: none; }
+    &__card { display: block; }
+  }
+}
+
+// =================================================================
+// .hero-card — reused as-is by the hero (desktop) and could be reused
+// elsewhere later (agency pages, city pages) — kept generic on purpose.
+// =================================================================
+.hero-card {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 400px;
+  border-radius: $radius-card;
+  background: $color-surface-soft;
+  padding: 1.75rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03), 0 12px 32px -16px rgba(0, 0, 0, 0.1);
+
+  &__icons { display: flex; align-items: center; justify-content: center; gap: 0.625rem; }
+
+  &__mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: $color-brand;
+    color: $color-brand-ink;
+  }
+
+  &__dots { display: flex; align-items: center; gap: 0.25rem; }
+  &__dots span { width: 0.375rem; height: 0.375rem; border-radius: 50%; background: rgba(26, 26, 26, 0.25); }
+
+  &__end {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: $radius-card;
+    background: $color-accent-lime;
+  }
+
+  &__title { margin: 1.75rem 0 0; text-align: center; font-size: 1.25rem; font-weight: 500; color: $color-ink; }
+  &__body { margin: 0.75rem 0 0; text-align: center; font-size: 0.875rem; line-height: 1.6; color: $color-ink-muted; }
+
+  &__cta {
+    width: 100%;
+    justify-content: center;
+    margin-top: 1.75rem;
+  }
+}
+
+// =================================================================
+// .stats — 4-tile stat grid, plus a .stats--compact variant used over
+// the image marquee
+// =================================================================
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: $radius-card;
+  background: $color-surface-soft;
+  padding: 2rem 1.25rem;
+  border: 1px solid $color-line;
+
+  &__value { font-size: 2.25rem; font-weight: 700; line-height: 1; color: $color-ink; }
+  &__label { margin-top: 1rem; font-size: 0.875rem; color: $color-ink-muted; }
+}
+
+@media (min-width: 768px) {
+  .stats { grid-template-columns: repeat(4, 1fr); }
+}
+
+.stats--compact {
+  gap: 0.5rem;
+
+  .stat {
+    padding: 1rem 0.75rem;
+    background: rgba(250, 249, 246, 0.85);
+    backdrop-filter: blur(8px);
+
+    &__value { font-size: 1.25rem; }
+    &__label { margin-top: 0.5rem; font-size: 0.6875rem; line-height: 1.3; }
+  }
+}
+
+@media (min-width: 1024px) {
+  .stats--compact .stat__value { font-size: 1.5rem; }
+}
+
+// =================================================================
+// .image-strip — infinite marquee of lifestyle photos, pure CSS
+// =================================================================
+.image-strip {
+  padding-bottom: 3rem;
+
+  &__mask {
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+  }
+
+  &__track {
+    display: flex;
+    gap: 1rem;
+    width: max-content;
+    animation: image-strip-scroll 100s linear infinite;
+  }
+
+  &__tile {
+    position: relative;
+    flex-shrink: 0;
+    width: 270px;
+    height: 340px;
+    border-radius: $radius-card;
+    overflow: hidden;
+  }
+
+  &__tile img { width: 100%; height: 100%; object-fit: cover; }
+
+  &__stats {
+    margin-top: 2.5rem;
+    padding: 0 1.5rem;
+  }
+
+  &__stats-inner { max-width: 62rem; margin: 0 auto; }
+}
+
+@keyframes image-strip-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@media (min-width: 640px) {
+  .image-strip__tile { width: 350px; height: 440px; }
+}
+
+@media (min-width: 1024px) {
+  .image-strip { padding-bottom: 5rem; }
+  .image-strip__tile { width: 430px; height: 540px; }
+}
+
+// =================================================================
+// .how-it-works — 3 numbered step cards
+// =================================================================
+.how-it-works {
+  &__title { margin: 0; text-align: center; font-size: 1.875rem; font-weight: 600; color: $color-ink; }
+
+  &__grid {
+    margin-top: 2.5rem;
+    display: grid;
+    gap: 1rem;
+  }
+}
+
+.step-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: $radius-card;
+  background: $color-surface-soft;
+  padding: 1.5rem;
+
+  &__number {
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background: $color-brand;
+    color: $color-brand-ink;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  &__art { display: flex; justify-content: center; padding-top: 2.5rem; }
+  &__art img { width: 100%; max-width: 140px; height: auto; mix-blend-mode: multiply; }
+
+  &__title { margin: 1.5rem 0 0; font-size: 1.5rem; font-weight: 600; color: $color-ink; }
+  &__body { margin: 0.75rem 0 0; font-size: 1rem; color: $color-ink-muted; }
+}
+
+.how-it-works__cta { display: flex; justify-content: center; margin-top: 3rem; }
+
+@media (min-width: 768px) {
+  .how-it-works__grid { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+}
+
+// =================================================================
+// .testimonials — 3 quote cards with a photo
+// =================================================================
+.testimonials__title { margin: 0 auto; max-width: 42rem; text-align: center; font-size: 1.875rem; font-weight: 600; color: $color-ink; }
+
+.testimonials__grid {
+  margin-top: 3rem;
+  display: grid;
+  gap: 2rem;
+}
+
+.testimonial-card {
+  &__photo {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    border-radius: $radius-card;
+    overflow: hidden;
+    background: $color-line;
+  }
+
+  &__photo img { width: 100%; height: 100%; object-fit: cover; }
+
+  &__quote { margin: 1.5rem 0 0; font-size: 1.25rem; line-height: 1.3; color: $color-ink; }
+
+  &__byline { margin: 1rem 0 0; font-size: 0.875rem; color: $color-ink-muted; }
+  &__byline span { color: rgba(26, 26, 26, 0.4); }
+}
+
+@media (min-width: 768px) {
+  .testimonials__grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+// =================================================================
+// .trust — headline + CTAs + agency logo row
+// =================================================================
+.trust__title { margin: 0; font-size: 1.875rem; font-weight: 600; line-height: 1.1; color: $color-ink; }
+.trust__body { margin: 1rem 0 0; max-width: 36rem; font-size: 1rem; color: $color-ink-muted; }
+
+.trust__ctas {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.trust__ctas .btn-primary { padding: 0.75rem 1.25rem; font-size: 0.875rem; }
+
+.trust__logos {
+  margin-top: 3rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.trust__logos img {
+  height: 2.5rem;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+
+  &:hover { opacity: 1; }
+}
+
+.trust__logo--blend { mix-blend-mode: multiply; }
+
+// =================================================================
+// .services — 6-card static grid
+// =================================================================
+.services__header { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.services__title { margin: 0; font-size: 1.875rem; font-weight: 600; color: $color-ink; }
+
+.services__underline {
+  margin-top: 0.75rem;
+  width: 4rem;
+  height: 0.25rem;
+  border-radius: $radius-pill;
+  background: $color-accent-amber;
+}
+
+.services__grid {
+  margin-top: 3rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.service-card {
+  border-radius: $radius-card;
+  background: $color-surface-soft;
+  border: 1px solid $color-line;
+  padding: 1.5rem;
+  transition: background-color 0.2s ease;
+
+  &:hover { background: rgba(250, 249, 246, 0.7); }
+
+  &__title { margin: 0; font-size: 1.5rem; font-weight: 600; color: $color-ink; }
+  &__body { margin: 0.75rem 0 0; font-size: 0.9375rem; line-height: 1.6; color: $color-ink-muted; }
+}
+
+@media (min-width: 768px) {
+  .services__grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+// =================================================================
+// .cities — 5-card link grid
+// =================================================================
+.cities__title { margin: 0; font-size: 1.875rem; font-weight: 600; line-height: 1.1; color: $color-ink; }
+.cities__body { margin: 1rem 0 0; max-width: 36rem; font-size: 1rem; color: $color-ink-muted; }
+
+.cities__grid {
+  margin-top: 2.5rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.city-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: $radius-card;
+  background: $color-surface-soft;
+  border: 1px solid $color-line;
+  padding: 1.25rem 1.5rem;
+  transition: background-color 0.2s ease;
+
+  &:hover { background: rgba(250, 249, 246, 0.7); }
+  &:hover .city-card__arrow { transform: translate(2px, -2px); color: $color-ink; }
+
+  &__name { font-size: 1.125rem; font-weight: 500; color: $color-ink; }
+  &__arrow { color: rgba(26, 26, 26, 0.4); transition: transform 0.2s ease, color 0.2s ease; }
+}
+
+@media (min-width: 768px) {
+  .cities__grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (min-width: 1024px) {
+  .cities__grid { grid-template-columns: repeat(5, 1fr); }
+}
+
+// =================================================================
+// .faq — single-open-at-a-time accordion
+// =================================================================
+.faq { max-width: 48rem; margin: 0 auto; padding: 0 1.5rem; }
+.faq__title { margin: 0; font-size: 1.875rem; font-weight: 600; line-height: 1.1; color: $color-ink; }
+
+.faq__list {
+  margin: 2.5rem 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid $color-line;
+}
+
+.faq-item {
+  border-bottom: 1px solid $color-line;
+
+  &__trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    width: 100%;
+    border: none;
+    background: none;
+    padding: 1.5rem 0;
+    text-align: left;
+    font-family: $font-sans;
+    cursor: pointer;
+  }
+
+  &__question { font-size: 1rem; font-weight: 500; color: $color-ink; }
+
+  &__icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    color: rgba(26, 26, 26, 0.6);
+    transition: transform 0.2s ease;
+
+    .faq-item__icon-minus { display: none; }
+  }
+
+  &__answer {
+    display: none;
+    margin: 0;
+    max-width: 40rem;
+    padding: 0 2.5rem 1.5rem 0;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: $color-ink-muted;
+  }
+
+  &.is-open {
+    .faq-item__icon { transform: rotate(180deg); }
+    .faq-item__icon-plus { display: none; }
+    .faq-item__icon-minus { display: inline-flex; }
+    .faq-item__answer { display: block; }
+  }
+}
+
+// =================================================================
+// .postnummer-form — 4-digit postal code box + submit pill
+// =================================================================
+.postnummer-form { width: 100%; max-width: 28rem; margin: 0 auto; }
+
+.postnummer-form__row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.postnummer-form__field {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  border-radius: $radius-pill;
+  background: $color-surface;
+  border: 1px solid $color-line;
+  padding: 0.75rem 1.25rem;
+}
+
+.postnummer-form__field input {
+  width: 100%;
+  border: none;
+  background: none;
+  outline: none;
+  font-size: 1rem;
+  font-family: $font-sans;
+  color: $color-ink;
+
+  &::placeholder { color: rgba(26, 26, 26, 0.4); }
+}
+
+.postnummer-form__submit {
+  flex-shrink: 0;
+  padding: 0.875rem 1.5rem;
+  font-size: 0.9375rem;
+}
+
+.postnummer-form__error {
+  margin: 0.5rem 0 0;
+  font-size: 0.875rem;
+  color: $color-ink-muted;
+}
+
+// =================================================================
+// .footer-cta — centered "Klar for å flytte?" + PostnummerInput
+// =================================================================
+.footer-cta__inner { max-width: 48rem; margin: 0 auto; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.footer-cta__title { margin: 0; font-size: 2.25rem; font-weight: 600; line-height: 1.05; color: $color-ink; }
+.footer-cta .postnummer-form { margin-top: 2rem; }
+
+// =================================================================
+// .site-footer — full-bleed brand-dark footer with a giant watermark
+// =================================================================
+.site-footer {
+  position: relative;
+  overflow: hidden;
+  background: $color-brand;
+  color: $color-brand-ink;
+  padding: 4rem 1.5rem 2rem;
+}
+
+.site-footer__inner {
+  max-width: 72rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.site-footer__about { max-width: 28rem; }
+
+.site-footer__logo { display: inline-flex; align-items: center; gap: 0.5rem; }
+.site-footer__wordmark { font-size: 1.125rem; font-weight: 700; }
+
+.site-footer__blurb { margin: 1rem 0 0; font-size: 0.9375rem; line-height: 1.6; color: rgba(250, 249, 246, 0.7); }
+
+.site-footer__email {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  border-radius: $radius-pill;
+  border: 1px solid rgba(250, 249, 246, 0.2);
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  color: rgba(250, 249, 246, 0.8);
+  transition: background-color 0.2s ease, color 0.2s ease;
+
+  &:hover { background: rgba(250, 249, 246, 0.1); color: $color-brand-ink; }
+}
+
+.site-footer__copyright { margin: 2rem 0 0; font-size: 0.75rem; color: rgba(250, 249, 246, 0.4); }
+
+.site-footer__card {
+  border-radius: $radius-card;
+  background: rgba(250, 249, 246, 0.06);
+  border: 1px solid rgba(250, 249, 246, 0.15);
+  padding: 1.5rem;
+}
+
+.site-footer__card-title { margin: 0; font-size: 1.25rem; color: $color-brand-ink; }
+.site-footer__card-body { margin: 0.5rem 0 0; font-size: 0.875rem; color: rgba(250, 249, 246, 0.6); }
+
+.site-footer__card .btn-primary {
+  width: 100%;
+  justify-content: center;
+  margin-top: 1.5rem;
+  background: $color-brand-ink;
+  color: $color-ink;
+
+  &:hover { background: rgba(250, 249, 246, 0.9); }
+}
+
+.site-footer__watermark {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: clamp(6rem, 28vw, 24rem);
+  font-weight: 600;
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  color: rgba(250, 249, 246, 0.08);
+  user-select: none;
+}
+
+@media (min-width: 1024px) {
+  .site-footer { padding-top: 6rem; }
+  .site-footer__inner { flex-direction: row; align-items: flex-start; justify-content: space-between; gap: 4rem; }
+  .site-footer__card { width: 100%; max-width: 24rem; }
 }

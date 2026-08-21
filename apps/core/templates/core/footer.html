@@ -1,0 +1,39 @@
+<!-- apps/core/templates/core/footer.html -->
+{% comment %}
+Site footer (spec §4.3) — full-bleed brand-dark, present on every marketing
+page. The reference site links this section's "E-post" button to an
+internal QA-only /email-preview tool (spec §15 flags this as a leftover
+that shouldn't really be public) — that page doesn't exist in this Django
+port at all, so this links to a plain mailto: instead, using the same
+hei@kobly.no address already established by the receipt email template.
+{% endcomment %}
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <div class="site-footer__about">
+      <span class="site-footer__logo">
+        <svg width="20" height="20" viewBox="0 0 27 27" fill="none" aria-hidden="true">
+          <circle cx="13.5" cy="13.5" r="11.625" stroke="currentColor" stroke-width="3.75" />
+          <path d="M16.5 1.875C12.7075 5.23556 10.5 9.26144 10.5 13.5887C10.5 17.8401 12.6307 21.8006 16.3019 25.125" stroke="currentColor" stroke-width="3.75" />
+        </svg>
+        <span class="site-footer__wordmark">Kobly</span>
+      </span>
+      <p class="site-footer__blurb">Vi finner det beste flyttebyrået for deg. Kobly kobler privatpersoner med kvalitetssjekkede byråer i hele Norge.</p>
+      <a href="mailto:hei@kobly.no" class="site-footer__email">
+        <span data-icon="mail"></span>
+        E-post
+      </a>
+      <p class="site-footer__copyright">Kobly AS &middot; &copy; 2026</p>
+    </div>
+
+    <div class="site-footer__card">
+      <p class="site-footer__card-title">Klar for å flytte?</p>
+      <p class="site-footer__card-body">Tre uforpliktende tilbud på under to minutter.</p>
+      <a href="/flytteforesporsel/" class="btn-primary">
+        Få 3 tilbud gratis
+        <span data-icon="arrow-right"></span>
+      </a>
+    </div>
+  </div>
+
+  <p class="site-footer__watermark" aria-hidden="true">kobly</p>
+</footer>

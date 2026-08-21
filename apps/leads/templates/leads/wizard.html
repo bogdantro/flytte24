@@ -233,7 +233,10 @@
       <!-- RIGHT COLUMN: desktop only — map (step 1), step photo (2-4), summary (step 5) -->
       <div class="wizard-card__right">
         <!-- Step 1: live Leaflet map, built by wizard.js -->
-        <div class="map-panel" data-step-panel="1">
+        <!-- is-active hardcoded here (matching step 1's .wizard-step above) since
+             wizard.js never calls showStep() on initial load — only on navigation,
+             to avoid an unwanted slide-in animation firing on first paint. -->
+        <div class="map-panel is-active" data-step-panel="1">
           <div class="map-panel__map" data-map-container></div>
           <div class="map-panel__chip" data-map-chip hidden>
             <span class="map-panel__chip-prefix">Ca.</span>

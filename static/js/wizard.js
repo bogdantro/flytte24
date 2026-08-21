@@ -19,9 +19,16 @@
   const TOTAL_STEPS = 5;
   let currentStep = 1;
 
-  /** Clones the matching <symbol> from the icon sprite into every [data-icon] placeholder. */
+  /**
+   * Clones the matching <symbol> from the icon sprite into every not-yet-
+   * hydrated [data-icon] placeholder. Idempotent on purpose — Task 13 calls
+   * this again after every photo add/remove to hydrate newly created remove-
+   * button icons, and re-running it must not duplicate SVGs into every icon
+   * placeholder already hydrated elsewhere on the page.
+   */
   function initIconSprite() {
     document.querySelectorAll("[data-icon]").forEach((el) => {
+      if (el.querySelector("svg")) return; // already hydrated
       const name = el.getAttribute("data-icon");
       const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
       svg.setAttribute("width", "16");

@@ -7,10 +7,10 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
-from apps.dashboard.forms import PageForm, PageSectionForm
+from apps.dashboard.forms import BusinessCoreForm, BusinessPublicInfoForm, PageForm, PageSectionForm
 from apps.leads.models import MoveLead
 from apps.pages.models import Page, PageSection
-from apps.store.models import Bedrift_info
+from apps.store.models import Bedrift_info, PublicBusinessInformation
 
 
 def staff_required(view_func):
@@ -210,3 +210,43 @@ def business_list(request):
         "active_count": Bedrift_info.objects.filter(active=True).count(),
     }
     return render(request, "dashboard/business_list.html", context)
+
+
+@staff_required
+def business_detail(request, pk):
+    business = get_object_or_404(Bedrift_info, pk=pk)
+    public_info, _ = PublicBusinessInformation.objects.get_or_create(business=business)
+
+    if request.method == "POST":
+        core_form = BusinessCoreForm(request.POST, instance=business)
+        public_form = BusinessPublicInfoForm(request.POST, request.FILES, instance=public_info)
+        if core_form.is_valid() and public_form.is_valid():
+            core_form.save()
+            public_form.save()
+            return redirect("dashboard:business_detail", pk=business.pk)
+    else:
+        core_form = BusinessCoreForm(instance=business)
+        public_form = BusinessPublicInfoForm(instance=public_info)
+
+    context = {
+        "business": business,
+        "public_info": public_info,
+        "core_form": core_form,
+        "public_form": public_form,
+        "images": public_info.images.all(),
+        "reviews": business.reviews.all(),
+        "jobs": business.distribution_primary.all() | business.distribution_secondary.all() | business.distribution_tertiary.all(),
+    }
+    return render(request, "dashboard/business_detail.html", context)
+
+
+@staff_required
+@require_POST
+def business_toggle_active(request, pk):
+    business = get_object_or_404(Bedrift_info, pk=pk)
+    business.active = not business.active
+    business.save(update_fields=["active"])
+    next_url = request.POST.get("next")
+    if next_url:
+        return redirect(next_url)
+    return redirect("dashboard:business_detail", pk=business.pk)

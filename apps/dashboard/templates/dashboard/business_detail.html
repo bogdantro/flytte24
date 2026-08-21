@@ -1,0 +1,156 @@
+<!-- apps/dashboard/templates/dashboard/business_detail.html -->
+{% extends "dashboard/_base.html" %}
+
+{% block title %}{{ business.company_name }}{% endblock %}
+
+{% block content %}
+  <a href="{% url 'dashboard:business_list' %}" class="lead-detail__back">← Alle bedrifter</a>
+
+  <div class="lead-detail__header">
+    <h1 class="lead-detail__title">{{ business.company_name }}</h1>
+    <span class="status-badge status-badge--{% if business.active %}new{% else %}contacted{% endif %}">{% if business.active %}Aktiv{% else %}Inaktiv{% endif %}</span>
+  </div>
+
+  <div class="lead-detail">
+    <div>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="lead-card" style="margin-bottom: 1.5rem;">
+          <p class="lead-card__title">Firmainformasjon</p>
+          <div class="dashboard-form__group"><label class="dashboard-form__label">Firmanavn</label>{{ core_form.company_name }}</div>
+          <div class="dashboard-form__group"><label class="dashboard-form__label">Org.nr.</label>{{ core_form.company_number }}</div>
+          <div class="dashboard-form__group"><label class="dashboard-form__label">E-post</label>{{ core_form.email }}</div>
+          <div class="dashboard-form__group"><label class="dashboard-form__label">Telefon</label>{{ core_form.phone }}</div>
+          <div class="dashboard-form__group"><label class="dashboard-form__label">Nettside</label>{{ core_form.website }}</div>
+          <div class="dashboard-form__group"><label class="dashboard-form__label">Adresse</label>{{ core_form.address }}</div>
+          <div class="dashboard-form__group"><label class="dashboard-form__label">Postnummer</label>{{ core_form.postal_code }}</div>
+          <div class="dashboard-form__group"><label class="dashboard-form__label">By</label>{{ core_form.city }}</div>
+          <div class="dashboard-form__group"><label class="dashboard-form__label">Tiltaleform</label>{{ core_form.tiltaleform }}</div>
+          <div class="dashboard-form__group"><label class="dashboard-form__label">Fornavn</label>{{ core_form.first_name }}</div>
+          <div class="dashboard-form__group"><label class="dashboard-form__label">Etternavn</label>{{ core_form.last_name }}</div>
+        </div>
+
+        <div class="lead-card" style="margin-bottom: 1.5rem;">
+          <p class="lead-card__title">Dekning</p>
+          <div class="dashboard-form__group"><label class="dashboard-form__label">Byer (kommaseparert)</label>{{ core_form.cities }}</div>
+          <div class="dashboard-form__group"><label class="dashboard-form__label">Flyttetype (kommaseparert)</label>{{ core_form.move_type }}</div>
+        </div>
+
+        <div class="lead-card" style="margin-bottom: 1.5rem;">
+          <p class="lead-card__title">Lead-innstillinger</p>
+          <div class="dashboard-form__group"><label class="dashboard-form__label">Leads per dag</label>{{ core_form.leads_per_day }}</div>
+          <div class="dashboard-form__group"><label class="dashboard-form__label">Leads per uke</label>{{ core_form.leads_per_week }}</div>
+          <div class="dashboard-form__group"><label class="dashboard-form__label">Leads per måned</label>{{ core_form.leads_per_month }}</div>
+          <div class="dashboard-form__group">
+            <label class="dashboard-form__label">Prioritet (1–10)</label>
+            {{ core_form.priority_score }}
+            <p style="margin:0.375rem 0 0; font-size:0.75rem; color:#8a8a8a;">OBS: brukes foreløpig ikke av matching-algoritmen.</p>
+          </div>
+          <div class="dashboard-form__group">
+            <label class="dashboard-form__label">Totalt mottatte leads</label>
+            <p style="margin:0;">{{ business.total_leads_received|default:"0" }}</p>
+          </div>
+        </div>
+
+        <div class="lead-card" style="margin-bottom: 1.5rem;">
+          <p class="lead-card__title">Offentlig profil</p>
+          <div class="dashboard-form__group">
+            <label class="dashboard-form__label">Logo</label>
+            {% if public_info.logo %}<img src="{{ public_info.logo.url }}" alt="" style="max-width:120px; display:block; margin-bottom:0.5rem; border-radius:10px;">{% endif %}
+            {{ public_form.logo }}
+          </div>
+          <div class="dashboard-form__group"><label class="dashboard-form__label">Om oss</label>{{ public_form.about_us }}</div>
+          <div class="dashboard-form__group"><label class="dashboard-form__label">Spørsmål og svar</label>{{ public_form.faq }}</div>
+        </div>
+
+        <button type="submit" class="btn-primary">Lagre</button>
+      </form>
+    </div>
+
+    <div>
+      <div class="lead-card" style="margin-bottom: 1.5rem;">
+        <p class="lead-card__title">Handlinger</p>
+        <form method="post" action="{% url 'dashboard:business_toggle_active' business.pk %}" style="margin-bottom: 0.75rem;">
+          {% csrf_token %}
+          <button type="submit" class="{% if business.active %}btn-outline{% else %}btn-primary{% endif %}">
+            {% if business.active %}Deaktiver{% else %}Aktiver{% endif %}
+          </button>
+        </form>
+        <a href="{% url 'public_business_profile' business.id %}" target="_blank" rel="noopener" class="btn-outline">Vis offentlig profil</a>
+      </div>
+
+      <div class="lead-card" style="margin-bottom: 1.5rem;">
+        <!-- JobDistribution — see docs/superpowers/specs/2026-08-21-dashboard-cms-and-business-admin-design.md
+             "Resolved: which lead pipeline is live" — this list queries the
+             only model that actually links a lead to a business, but no
+             current template calls send_flytteforesporsel (the only view
+             that creates JobDistribution rows), so this is empty for every
+             business until that pipeline is wired into a live page. -->
+        <p class="lead-card__title">Mottatte leads ({{ jobs.count }})</p>
+        {% if jobs %}
+          {% for job in jobs %}
+            <div class="lead-row">
+              <span class="lead-row__label">{{ job.created_at|date:"d.m.Y" }}</span>
+              <span class="lead-row__value">{{ job.inquiry }}</span>
+            </div>
+          {% endfor %}
+        {% else %}
+          <p class="dashboard-empty">Ingen leads mottatt ennå.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="lead-card" style="margin: 1.5rem 0;">
+    <p class="lead-card__title">Bildegalleri ({{ images.count }}/6)</p>
+    <div class="lead-photo-grid">
+      {% for image in images %}
+        <div>
+          <img src="{{ image.image.url }}" alt="">
+          <form method="post" action="{% url 'dashboard:business_image_delete' business.pk image.pk %}" data-confirm-delete>
+            {% csrf_token %}
+            <button type="submit" class="btn-danger" style="margin-top:0.5rem; width:100%;">Slett</button>
+          </form>
+        </div>
+      {% endfor %}
+    </div>
+    {% if images.count < 6 %}
+      <form method="post" action="{% url 'dashboard:business_image_add' business.pk %}" enctype="multipart/form-data" style="margin-top:1rem;">
+        {% csrf_token %}
+        <input type="file" name="image" accept="image/*" required>
+        <button type="submit" class="btn-outline">Legg til bilde</button>
+      </form>
+    {% endif %}
+  </div>
+
+  <div class="lead-card" style="margin: 1.5rem 0;">
+    <p class="lead-card__title">Anmeldelser ({{ reviews.count }})</p>
+    {% for review in reviews %}
+      <div class="lead-row">
+        <span class="lead-row__label">{{ review.rating }}⭐ {{ review.name }}</span>
+        <span class="lead-row__value">
+          {{ review.comment }}
+          <form method="post" action="{% url 'dashboard:review_delete' business.pk review.pk %}" data-confirm-delete style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn-danger">Slett</button>
+          </form>
+        </span>
+      </div>
+    {% endfor %}
+    <form method="post" action="{% url 'dashboard:review_add' business.pk %}" style="margin-top:1rem;">
+      {% csrf_token %}
+      <div class="dashboard-form__group"><label class="dashboard-form__label">Navn</label><input type="text" name="name" required></div>
+      <div class="dashboard-form__group">
+        <label class="dashboard-form__label">Vurdering</label>
+        <select name="rating">
+          {% for i in "12345" %}<option value="{{ i }}">{{ i }} ⭐</option>{% endfor %}
+        </select>
+      </div>
+      <div class="dashboard-form__group"><label class="dashboard-form__label">Kommentar</label><textarea name="comment" required></textarea></div>
+      <button type="submit" class="btn-primary">Legg til anmeldelse</button>
+    </form>
+  </div>
+
+  <script src="{% load static %}{% static 'js/dashboard.js' %}"></script>
+{% endblock %}

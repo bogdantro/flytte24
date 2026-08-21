@@ -16,4 +16,6 @@ urlpatterns = [
     path("sider/<int:pk>/dupliser/", views.page_duplicate, name="page_duplicate"),
     path("sider/<int:pk>/slett/", views.page_delete, name="page_delete"),
     path("bedrifter/", views.business_list, name="business_list"),
+    path("bedrifter/<int:pk>/", views.business_detail, name="business_detail"),
+    path("bedrifter/<int:pk>/aktiver/", views.business_toggle_active, name="business_toggle_active"),
 ]

@@ -5,7 +5,7 @@ from django.urls import reverse
 
 from apps.leads.models import MoveLead
 from apps.pages.models import Page, PageSection
-from apps.store.models import Bedrift_info
+from apps.store.models import Bedrift_info, PublicBusinessInformation
 
 
 def _make_lead(**overrides):
@@ -299,3 +299,77 @@ class BusinessListViewTests(TestCase):
         response = self.client.get(reverse("dashboard:business_list"), {"q": "Bergen"})
         self.assertContains(response, "Inaktiv Flytt AS")
         self.assertNotContains(response, "Aktiv Flytt AS")
+
+
+class BusinessDetailViewTests(TestCase):
+    def setUp(self):
+        self.staff = User.objects.create_user("staff7", password="pw", is_staff=True)
+        self.business = Bedrift_info.objects.create(
+            company_name="Flytt AS", email="flytt@example.com", phone="12345678",
+            address="Gate 1", postal_code="0001", city="Oslo",
+            first_name="Ola", last_name="Nordmann", active=False,
+            total_leads_received="7",
+        )
+
+    def test_requires_staff_login(self):
+        url = reverse("dashboard:business_detail", args=[self.business.pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+
+    def test_get_creates_public_info_if_missing_and_shows_totals(self):
+        self.client.force_login(self.staff)
+        response = self.client.get(reverse("dashboard:business_detail", args=[self.business.pk]))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "7")
+        self.assertTrue(PublicBusinessInformation.objects.filter(business=self.business).exists())
+
+    def test_post_updates_core_and_public_fields_but_not_active_or_total(self):
+        self.client.force_login(self.staff)
+        url = reverse("dashboard:business_detail", args=[self.business.pk])
+        response = self.client.post(url, {
+            "company_name": "Flytt AS", "company_number": "", "email": "ny@example.com",
+            "phone": "12345678", "website": "", "address": "Gate 1", "postal_code": "0001",
+            "city": "Oslo", "tiltaleform": "", "first_name": "Ola", "last_name": "Nordmann",
+            "cities": "Oslo, Bergen", "move_type": "privat",
+            "leads_per_day": "5", "leads_per_week": "", "leads_per_month": "", "priority_score": "8",
+            "about_us": "Vi flytter deg trygt.", "faq": "",
+        })
+        self.assertRedirects(response, url)
+        self.business.refresh_from_db()
+        self.assertEqual(self.business.email, "ny@example.com")
+        self.assertEqual(self.business.cities, "Oslo, Bergen")
+        self.assertEqual(self.business.leads_per_day, "5")
+        self.assertEqual(self.business.priority_score, "8")
+        self.assertFalse(self.business.active)
+        self.assertEqual(self.business.total_leads_received, "7")
+        self.assertEqual(self.business.public_info.about_us, "Vi flytter deg trygt.")
+
+
+class BusinessToggleActiveViewTests(TestCase):
+    def setUp(self):
+        self.staff = User.objects.create_user("staff8", password="pw", is_staff=True)
+        self.business = Bedrift_info.objects.create(
+            company_name="Flytt AS", email="flytt@example.com", phone="12345678",
+            address="Gate 1", postal_code="0001", city="Oslo",
+            first_name="Ola", last_name="Nordmann", active=False,
+        )
+
+    def test_requires_post(self):
+        self.client.force_login(self.staff)
+        response = self.client.get(reverse("dashboard:business_toggle_active", args=[self.business.pk]))
+        self.assertEqual(response.status_code, 405)
+
+    def test_flips_active_and_redirects_to_detail_by_default(self):
+        self.client.force_login(self.staff)
+        url = reverse("dashboard:business_toggle_active", args=[self.business.pk])
+        response = self.client.post(url)
+        self.assertRedirects(response, reverse("dashboard:business_detail", args=[self.business.pk]))
+        self.business.refresh_from_db()
+        self.assertTrue(self.business.active)
+
+    def test_respects_next_param(self):
+        self.client.force_login(self.staff)
+        url = reverse("dashboard:business_toggle_active", args=[self.business.pk])
+        list_url = reverse("dashboard:business_list")
+        response = self.client.post(url, {"next": list_url})
+        self.assertRedirects(response, list_url)

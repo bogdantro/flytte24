@@ -57,6 +57,7 @@ class PageSection(models.Model):
         ("faq", "Ofte stilte spørsmål"),
         ("how_it_works", "Slik fungerer det"),
         ("trust", "Tillit"),
+        ("cities", "Byer"),
         ("cta", "Call-to-action"),
         ("footer", "Footer"),
         ("generic_text", "Generisk tekst"),

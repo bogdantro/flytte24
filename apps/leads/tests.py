@@ -1,10 +1,12 @@
 import json
 import tempfile
 
+from django.core import mail
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, override_settings
 from django.urls import reverse
 
+from apps.leads.emails import send_receipt_email
 from apps.leads.forms import WizardForm
 from apps.leads.models import LeadImage, MoveLead
 
@@ -185,3 +187,38 @@ class WizardPostViewTest(TestCase):
     def test_thank_you_page_returns_200(self):
         response = self.client.get(reverse("leads:wizard_thank_you"))
         self.assertEqual(response.status_code, 200)
+
+
+class ReceiptEmailTest(TestCase):
+    def test_sends_one_email_to_the_lead(self):
+        lead = MoveLead.objects.create(
+            flytte_type="privat",
+            fra="Kongens gate 1, 0153 Oslo",
+            til="Storgata 14, 0184 Oslo",
+            boligtype="leilighet",
+            flyttedato="2026-09-12",
+            navn="Ola Nordmann",
+            telefon="+47 900 00 000",
+            epost="ola@eksempel.no",
+        )
+        send_receipt_email(lead)
+        self.assertEqual(len(mail.outbox), 1)
+        sent = mail.outbox[0]
+        self.assertEqual(sent.to, ["ola@eksempel.no"])
+        self.assertEqual(sent.subject, "Vi har mottatt flytteforespørselen din")
+        self.assertIn(lead.reference, sent.alternatives[0][0])
+        self.assertIn("Ola Nordmann", sent.alternatives[0][0])
+
+    def test_flexible_date_shows_fleksibel_dato_label(self):
+        lead = MoveLead.objects.create(
+            flytte_type="privat",
+            fra="Kongens gate 1, 0153 Oslo",
+            til="Storgata 14, 0184 Oslo",
+            boligtype="leilighet",
+            fleksibel=True,
+            navn="Kari Nordmann",
+            telefon="+47 900 00 000",
+            epost="kari@eksempel.no",
+        )
+        send_receipt_email(lead)
+        self.assertIn("Fleksibel dato", mail.outbox[0].alternatives[0][0])

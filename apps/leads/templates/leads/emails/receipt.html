@@ -1,0 +1,116 @@
+{% extends "leads/emails/_shell.html" %}
+{% comment %}
+Ported from lib/emails/receipt.ts. `lead` is a MoveLead instance passed in
+from send_receipt_email(). See Task 6's note above on the beskrivelse/
+tjenester adaptation.
+{% endcomment %}
+
+{% block content %}
+<tr>
+  <td style="padding:36px 32px 0;">
+    <h1 style="margin:0; font-family:Georgia, 'Times New Roman', Times, serif; font-size:28px; line-height:1.2; font-weight:normal; color:#1a1a1a;">Takk, vi har mottatt forespørselen din</h1>
+  </td>
+</tr>
+<tr>
+  <td style="padding:16px 32px 0;">
+    <p style="margin:0; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size:16px; line-height:1.65; color:#1a1a1a;">Hei {{ lead.navn }}! Forespørselen din er registrert, og vi er allerede i gang med å finne byråer som passer. Her er det du sendte inn:</p>
+  </td>
+</tr>
+
+<!-- Summary card: reference + submitted fields -->
+<tr>
+  <td style="padding:24px 32px 0;">
+    <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color:#faf9f6; border:1px solid #e6e1d6; border-radius:14px;">
+      <tr>
+        <td style="padding:22px 24px;">
+          <p style="margin:0 0 4px; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size:13px; font-weight:600; letter-spacing:0.02em; color:#5c5c5c;">Forespørsel {{ lead.reference }}</p>
+          <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0">
+            <tr>
+              <td style="padding:14px 0; border-bottom:1px solid #e6e1d6;">
+                <p style="margin:0; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size:13px; line-height:1.4; color:#5c5c5c;">Flytter fra</p>
+                <p style="margin:4px 0 0; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size:16px; line-height:1.5; font-weight:600; color:#1a1a1a;">{{ lead.fra }}</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:14px 0; border-bottom:1px solid #e6e1d6;">
+                <p style="margin:0; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size:13px; line-height:1.4; color:#5c5c5c;">Flytter til</p>
+                <p style="margin:4px 0 0; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size:16px; line-height:1.5; font-weight:600; color:#1a1a1a;">{{ lead.til }}</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:14px 0; border-bottom:1px solid #e6e1d6;">
+                <p style="margin:0; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size:13px; line-height:1.4; color:#5c5c5c;">Ønsket dato</p>
+                <p style="margin:4px 0 0; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size:16px; line-height:1.5; font-weight:600; color:#1a1a1a;">{% if lead.fleksibel %}Fleksibel dato{% else %}{{ lead.flyttedato|date:"j. F Y" }}{% endif %}</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:14px 0; {% if lead.beskrivelse %}border-bottom:1px solid #e6e1d6;{% endif %}">
+                <p style="margin:0; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size:13px; line-height:1.4; color:#5c5c5c;">Boligtype</p>
+                <p style="margin:4px 0 0; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size:16px; line-height:1.5; font-weight:600; color:#1a1a1a;">{{ lead.get_boligtype_display }}</p>
+              </td>
+            </tr>
+            {% if lead.beskrivelse %}
+            <tr>
+              <td style="padding:14px 0;">
+                <p style="margin:0; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size:13px; line-height:1.4; color:#5c5c5c;">Om tingene dine</p>
+                <p style="margin:4px 0 0; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size:16px; line-height:1.5; font-weight:600; color:#1a1a1a;">{{ lead.beskrivelse }}</p>
+              </td>
+            </tr>
+            {% endif %}
+          </table>
+        </td>
+      </tr>
+    </table>
+  </td>
+</tr>
+
+<!-- "Slik går vi frem" steps list -->
+<tr>
+  <td style="padding:32px 32px 0;">
+    <p style="margin:0; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size:16px; font-weight:600; line-height:1.5; color:#1a1a1a;">Slik går vi frem</p>
+  </td>
+</tr>
+<tr>
+  <td style="padding:18px 32px 0;">
+    <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0">
+      <tr>
+        <td width="34" valign="top" style="padding:0 0 16px;">
+          <table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td width="26" height="26" align="center" valign="middle" bgcolor="#d6e8a8" style="width:26px; height:26px; border-radius:13px; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size:13px; font-weight:600; color:#1a1a1a;">1</td></tr></table>
+        </td>
+        <td valign="top" style="padding:0 0 16px;">
+          <p style="margin:2px 0 0; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size:15px; line-height:1.6; color:#1a1a1a;">Vi matcher deg med 3 kvalitetssjekkede byråer som passer flyttingen din.</p>
+        </td>
+      </tr>
+      <tr>
+        <td width="34" valign="top" style="padding:0 0 16px;">
+          <table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td width="26" height="26" align="center" valign="middle" bgcolor="#d6e8a8" style="width:26px; height:26px; border-radius:13px; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size:13px; font-weight:600; color:#1a1a1a;">2</td></tr></table>
+        </td>
+        <td valign="top" style="padding:0 0 16px;">
+          <p style="margin:2px 0 0; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size:15px; line-height:1.6; color:#1a1a1a;">Byråene kontakter deg med tilbud innen 24 timer.</p>
+        </td>
+      </tr>
+      <tr>
+        <td width="34" valign="top">
+          <table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td width="26" height="26" align="center" valign="middle" bgcolor="#d6e8a8" style="width:26px; height:26px; border-radius:13px; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size:13px; font-weight:600; color:#1a1a1a;">3</td></tr></table>
+        </td>
+        <td valign="top">
+          <p style="margin:2px 0 0; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size:15px; line-height:1.6; color:#1a1a1a;">Du sammenligner og velger. Helt uforpliktende.</p>
+        </td>
+      </tr>
+    </table>
+  </td>
+</tr>
+
+<!-- Closing note -->
+<tr>
+  <td style="padding:28px 32px 0;">
+    <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0">
+      <tr>
+        <td style="border-top:1px solid #e6e1d6; padding-top:22px;">
+          <p style="margin:0; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size:14px; line-height:1.65; color:#5c5c5c;">Du trenger ikke gjøre noe nå. Vil du endre noe i forespørselen, er det bare å svare på denne e-posten, så ordner vi det.</p>
+        </td>
+      </tr>
+    </table>
+  </td>
+</tr>
+{% endblock %}

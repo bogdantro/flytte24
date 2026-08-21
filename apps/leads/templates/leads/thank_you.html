@@ -1,6 +1,59 @@
-<!-- Placeholder — replaced with the real thank-you markup in Task 8. -->
+<!-- apps/leads/templates/leads/thank_you.html -->
+{% load static %}
 <!DOCTYPE html>
 <html lang="nb">
-<head><meta charset="UTF-8"><title>Kobly</title></head>
-<body>Forespørselen er sendt!</body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kobly</title>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/wizard.css' %}">
+</head>
+<body>
+
+<!-- Same background photo as the wizard, flat-darkened instead of a gradient scrim (spec §5.10) -->
+<div class="thankyou">
+  <div class="thankyou__background" aria-hidden="true">
+    <img src="{% static 'images/wizard/boxes-and-plants.jpg' %}" alt="">
+    <div class="thankyou__background-scrim"></div>
+  </div>
+
+  <div class="thankyou-card">
+    <!-- Routing illustration: Kobly ring -> 3 dots -> 3 lime checkmarks, staggered pop-in -->
+    <div class="thankyou-illustration">
+      <span class="thankyou-illustration__logo">
+        <svg width="24" height="24" viewBox="0 0 27 27" fill="none" aria-hidden="true">
+          <circle cx="13.5" cy="13.5" r="11.625" stroke="currentColor" stroke-width="3.75" />
+          <path d="M16.5 1.875C12.7075 5.23556 10.5 9.26144 10.5 13.5887C10.5 17.8401 12.6307 21.8006 16.3019 25.125" stroke="currentColor" stroke-width="3.75" />
+        </svg>
+      </span>
+      <span class="thankyou-illustration__dots" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </span>
+      <span class="thankyou-illustration__checks">
+        <span class="thankyou-illustration__check" style="animation-delay: 120ms">
+          <svg width="26" height="26" viewBox="0 0 42 42" fill="none" aria-hidden="true">
+            <path d="M20.6 33.27V20.74M20.6 20.74 9.69 14.48M20.6 20.74l10.91-6.26M14.96 11.06l11.27 6.45M19.35 32.93c.38.22.81.34 1.25.34s.87-.12 1.25-.34l8.77-5.01c.38-.22.7-.54.92-.92.22-.38.34-.81.34-1.25V15.73c0-.44-.12-.87-.34-1.25-.22-.38-.54-.7-.92-.92l-8.77-5.01c-.38-.22-.81-.34-1.25-.34s-.87.12-1.25.34l-8.77 5.01c-.38.22-.7.54-.92.92-.22.38-.34.81-.34 1.25v10.02c0 .44.12.87.34 1.25.22.38.54.7.92.92l8.77 5.01Z" stroke="#3D5507" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="thankyou-illustration__check" style="animation-delay: 230ms">
+          <svg width="26" height="26" viewBox="0 0 42 42" fill="none" aria-hidden="true">
+            <path d="M20.6 33.27V20.74M20.6 20.74 9.69 14.48M20.6 20.74l10.91-6.26M14.96 11.06l11.27 6.45M19.35 32.93c.38.22.81.34 1.25.34s.87-.12 1.25-.34l8.77-5.01c.38-.22.7-.54.92-.92.22-.38.34-.81.34-1.25V15.73c0-.44-.12-.87-.34-1.25-.22-.38-.54-.7-.92-.92l-8.77-5.01c-.38-.22-.81-.34-1.25-.34s-.87.12-1.25.34l-8.77 5.01c-.38.22-.7.54-.92.92-.22.38-.34.81-.34 1.25v10.02c0 .44.12.87.34 1.25.22.38.54.7.92.92l8.77 5.01Z" stroke="#3D5507" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="thankyou-illustration__check" style="animation-delay: 340ms">
+          <svg width="26" height="26" viewBox="0 0 42 42" fill="none" aria-hidden="true">
+            <path d="M20.6 33.27V20.74M20.6 20.74 9.69 14.48M20.6 20.74l10.91-6.26M14.96 11.06l11.27 6.45M19.35 32.93c.38.22.81.34 1.25.34s.87-.12 1.25-.34l8.77-5.01c.38-.22.7-.54.92-.92.22-.38.34-.81.34-1.25V15.73c0-.44-.12-.87-.34-1.25-.22-.38-.54-.7-.92-.92l-8.77-5.01c-.38-.22-.81-.34-1.25-.34s-.87.12-1.25.34l-8.77 5.01c-.38.22-.7.54-.92.92-.22.38-.34.81-.34 1.25v10.02c0 .44.12.87.34 1.25.22.38.54.7.92.92l8.77 5.01Z" stroke="#3D5507" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+      </span>
+    </div>
+
+    <h1 class="thankyou-card__title">Forespørselen er sendt!</h1>
+    <p class="thankyou-card__body">Vi har nå sendt forespørselen din til tre kvalitetssjekkede byråer i ditt område. Du mottar tilbud på e-post innen kort tid.</p>
+    <a href="/" class="btn-primary btn-primary--full">Tilbake til forsiden</a>
+  </div>
+</div>
+
+</body>
 </html>

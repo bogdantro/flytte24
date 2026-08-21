@@ -189,6 +189,33 @@ class WizardPostViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
+class WizardTemplateRenderTest(TestCase):
+    def test_renders_all_five_step_headings(self):
+        response = self.client.get(reverse("leads:wizard"))
+        content = response.content.decode()
+        for heading in [
+            "Hvor skal du flytte?",
+            "Hva slags flytting er det?",
+            "Når skal du flytte?",
+            "Hva skal du flytte?",
+            "La oss ta kontakt",
+        ]:
+            self.assertIn(heading, content)
+
+    def test_renders_five_progress_segments(self):
+        response = self.client.get(reverse("leads:wizard"))
+        self.assertContains(response, 'class="wizard-progress__segment"', count=5)
+
+    def test_renders_csrf_token(self):
+        response = self.client.get(reverse("leads:wizard"))
+        self.assertContains(response, "csrfmiddlewaretoken")
+
+    def test_thank_you_renders_confirmation_copy(self):
+        response = self.client.get(reverse("leads:wizard_thank_you"))
+        self.assertContains(response, "Forespørselen er sendt!")
+        self.assertContains(response, "Tilbake til forsiden")
+
+
 class ReceiptEmailTest(TestCase):
     def test_sends_one_email_to_the_lead(self):
         lead = MoveLead.objects.create(

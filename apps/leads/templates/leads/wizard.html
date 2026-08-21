@@ -1,6 +1,339 @@
-<!-- Placeholder — replaced with the full 5-step markup in Task 8. -->
+<!-- apps/leads/templates/leads/wizard.html -->
+{% load static %}
 <!DOCTYPE html>
 <html lang="nb">
-<head><meta charset="UTF-8"><title>Kobly</title></head>
-<body>{{ form.fra }}</body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kobly — Få 3 tilbud gratis</title>
+
+  <!-- Crimson Pro is a free Google Font (spec §3.2) — Moderat is self-hosted, see wizard.css -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Leaflet (map library) — loaded from its public CDN, same as the CARTO
+       tiles and Geonorge APIs used below: all free/keyless per spec §5.13 -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+
+  <link rel="stylesheet" href="{% static 'css/wizard.css' %}">
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- WIZARD ROOT — fullscreen takeover, independent of page scroll -->
+<!-- ============================================================ -->
+<div class="wizard" data-total-steps="5">
+
+  <!-- Desktop background: fixed calm photo under a light wash (spec §5.3) -->
+  <div class="wizard__background wizard__background--desktop" aria-hidden="true">
+    <img src="{% static 'images/wizard/boxes-and-plants.jpg' %}" alt="">
+    <div class="wizard__background-wash"></div>
+  </div>
+
+  <!-- Mobile background: step-specific photo + dark scrim, crossfades on step change.
+       Two stacked <img> elements (not one per step) — wizard.js swaps "current"'s src
+       and briefly keeps the old photo visible in "prev" underneath it while the new one
+       fades in, matching spec §5.3's crossfade technique. -->
+  <div class="wizard__background wizard__background--mobile" aria-hidden="true">
+    <img class="wizard__background-photo wizard__background-photo--prev" data-step-bg-prev alt="" hidden>
+    <img class="wizard__background-photo wizard__background-photo--current" data-step-bg-current src="{% static 'images/wizard/boxes-and-plants.jpg' %}" alt="">
+    <div class="wizard__background-scrim"></div>
+  </div>
+
+  <!-- Logo — floats over the photo on desktop, sits inline above the card on mobile -->
+  <a href="/" class="wizard__logo wizard__logo--desktop" aria-label="Kobly hjem">
+    {% include "leads/_logo.html" with tone="ink" %}
+  </a>
+  <div class="wizard__logo-row">
+    <a href="/" class="wizard__logo wizard__logo--mobile" aria-label="Kobly hjem">
+      {% include "leads/_logo.html" with tone="brand-ink" %}
+    </a>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- CARD — one form, all 5 steps, only one visible at a time (JS) -->
+  <!-- ============================================================ -->
+  <form class="wizard-card" method="post" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+    <div class="wizard-card__body">
+
+      <!-- LEFT COLUMN: progress bar, step content, bottom nav -->
+      <div class="wizard-card__left">
+
+        <!-- Progress bar: 5 segments, filled = completed steps only -->
+        <div class="wizard-progress" role="presentation">
+          <div class="wizard-progress__segment"></div>
+          <div class="wizard-progress__segment"></div>
+          <div class="wizard-progress__segment"></div>
+          <div class="wizard-progress__segment"></div>
+          <div class="wizard-progress__segment"></div>
+        </div>
+        <span class="wizard-steplabel">Steg <span data-current-step-label>1</span> av 5</span>
+
+        <!-- ===================== STEP 1: address + map ===================== -->
+        <section class="wizard-step is-active" data-step="1">
+          <div class="step-header">
+            <h1 class="step-header__title">Hvor skal du flytte?</h1>
+            <p class="step-header__subtitle">Skriv inn fra-adresse og til-adresse</p>
+          </div>
+
+          <div class="wizard-step__body">
+            <div class="address-field" data-address-field="fra">
+              <label class="field-label" for="id_fra">Fra adresse</label>
+              <input type="text" id="id_fra" name="fra" class="field-input" autocomplete="off"
+                     placeholder="F.eks. Kongens gate 1, 0153 Oslo"
+                     value="{{ form.fra.value|default:'' }}">
+              <!-- Suggestion dropdown, populated by wizard.js from ws.geonorge.no -->
+              <ul class="address-suggestions" hidden></ul>
+              <!-- Hidden coordinate pair — set by JS on autocomplete select / geolocation / map pin -->
+              <input type="hidden" name="fra_lat" data-coord="fra_lat">
+              <input type="hidden" name="fra_lon" data-coord="fra_lon">
+              <!-- Mobile-only: opens the fullscreen map picker overlay -->
+              <button type="button" class="map-picker-btn" data-open-map-picker="fra">
+                <span data-icon="map-pin"></span>
+                <span class="map-picker-btn__label">Plasser i kart</span>
+              </button>
+            </div>
+
+            <div class="address-field" data-address-field="til">
+              <label class="field-label" for="id_til">Til adresse</label>
+              <input type="text" id="id_til" name="til" class="field-input" autocomplete="off"
+                     placeholder="F.eks. Storgata 14, 0184 Oslo"
+                     value="{{ form.til.value|default:'' }}">
+              <ul class="address-suggestions" hidden></ul>
+              <input type="hidden" name="til_lat" data-coord="til_lat">
+              <input type="hidden" name="til_lon" data-coord="til_lon">
+              <button type="button" class="map-picker-btn" data-open-map-picker="til">
+                <span data-icon="map-pin"></span>
+                <span class="map-picker-btn__label">Plasser i kart</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== STEP 2: type & size ===================== -->
+        <section class="wizard-step" data-step="2">
+          <div class="step-header">
+            <h1 class="step-header__title">Hva slags flytting er det?</h1>
+          </div>
+
+          <div class="wizard-step__body">
+            <div class="pill-group" data-pill-group="flytte_type">
+              <p class="pill-group__label">Type</p>
+              <div class="pill-group__grid pill-group__grid--3col">
+                <label class="pill-button"><input type="radio" name="flytte_type" value="privat">Privat</label>
+                <label class="pill-button"><input type="radio" name="flytte_type" value="bedrift">Bedrift</label>
+                <label class="pill-button"><input type="radio" name="flytte_type" value="internasjonal">Internasjonal</label>
+              </div>
+            </div>
+            <div class="pill-group" data-pill-group="boligtype">
+              <p class="pill-group__label">Størrelse</p>
+              <div class="pill-group__grid pill-group__grid--2col">
+                <label class="pill-button"><input type="radio" name="boligtype" value="leilighet">Leilighet</label>
+                <label class="pill-button"><input type="radio" name="boligtype" value="rekkehus">Rekkehus</label>
+                <label class="pill-button"><input type="radio" name="boligtype" value="enebolig">Enebolig</label>
+                <label class="pill-button"><input type="radio" name="boligtype" value="annet">Annet</label>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== STEP 3: date ===================== -->
+        <section class="wizard-step" data-step="3">
+          <div class="step-header">
+            <h1 class="step-header__title">Når skal du flytte?</h1>
+            <p class="step-header__subtitle">Velg en dato eller la oss vite om du er fleksibel</p>
+          </div>
+
+          <div class="wizard-step__body">
+            <label class="date-field">
+              <span class="field-label">Ønsket flyttedato</span>
+              <input type="date" name="flyttedato" class="field-input" data-date-input>
+            </label>
+            <!-- Real checkbox, styled as a dashed pill — no JS needed to know its state -->
+            <label class="flex-toggle" data-flex-toggle>
+              <input type="checkbox" name="fleksibel" data-flex-checkbox>
+              <span class="flex-toggle__dot"><span data-icon="check"></span></span>
+              Jeg er fleksibel på datoen
+            </label>
+          </div>
+        </section>
+
+        <!-- ===================== STEP 4: goods / photos ===================== -->
+        <section class="wizard-step" data-step="4">
+          <div class="step-header">
+            <h1 class="step-header__title">Hva skal du flytte?</h1>
+            <p class="step-header__subtitle">Legg til bilder eller en beskrivelse av tingene dine.</p>
+          </div>
+
+          <div class="wizard-step__body">
+            <label class="textarea-field">
+              <span class="field-label field-label--strong">Beskrivelse</span>
+              <textarea name="beskrivelse" rows="4" class="field-input"
+                        placeholder="F.eks. 3-seters sofa, stort spisebord, 2 senger, 10 esker...">{{ form.beskrivelse.value|default:'' }}</textarea>
+            </label>
+
+            <div class="photo-field">
+              <p class="field-label field-label--strong">Bilder</p>
+              <p class="field-hint">Legg ved bilder av tingene dine for et mer presist tilbud.</p>
+              <!-- Populated entirely by wizard.js (photo thumbnails + upload tile) -->
+              <div class="photo-grid" data-photo-grid>
+                <label class="photo-upload-tile">
+                  <span data-icon="upload"></span>
+                  <span>Last opp</span>
+                  <input type="file" name="bilder" multiple accept="image/*" data-photo-input hidden>
+                </label>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== STEP 5: contact ===================== -->
+        <section class="wizard-step" data-step="5">
+          <div class="step-header">
+            <h1 class="step-header__title">La oss ta kontakt</h1>
+            <p class="step-header__subtitle">Vi kobler deg med tre byråer. Du hører fra dem innen 24 timer.</p>
+          </div>
+
+          <div class="wizard-step__body wizard-step__body--grid">
+            <label class="text-field">
+              <span class="field-label">Navn</span>
+              <input type="text" name="navn" class="field-input" placeholder="Ola Nordmann" value="{{ form.navn.value|default:'' }}">
+            </label>
+            <label class="text-field">
+              <span class="field-label">Telefon</span>
+              <input type="tel" name="telefon" class="field-input" placeholder="+47 000 00 000" value="{{ form.telefon.value|default:'' }}">
+            </label>
+            <label class="text-field text-field--full">
+              <span class="field-label">E-post</span>
+              <input type="email" name="epost" class="field-input" placeholder="ola@eksempel.no" value="{{ form.epost.value|default:'' }}">
+            </label>
+          </div>
+        </section>
+
+        {% if form.errors %}
+        <!-- Only reachable if a client bypasses the JS validation (spec §5.11 note in Task 5) -->
+        <div class="wizard-step__server-errors" role="alert">
+          {{ form.non_field_errors }}
+          {% for field in form %}{{ field.errors }}{% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Bottom nav: back link (hidden on step 1) + primary Neste/Send button -->
+        <div class="wizard-nav">
+          <button type="button" class="wizard-nav__back" data-wizard-back hidden>Tilbake</button>
+          <button type="button" class="wizard-nav__next btn-primary" data-wizard-next disabled>
+            <span data-next-label>Neste</span>
+            <span data-icon="arrow-right"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: desktop only — map (step 1), step photo (2-4), summary (step 5) -->
+      <div class="wizard-card__right">
+        <!-- Step 1: live Leaflet map, built by wizard.js -->
+        <div class="map-panel" data-step-panel="1">
+          <div class="map-panel__map" data-map-container></div>
+          <div class="map-panel__chip" data-map-chip hidden>
+            <span class="map-panel__chip-prefix">Ca.</span>
+            <span data-map-chip-from>—</span>
+            <span data-icon="arrow-right"></span>
+            <span data-map-chip-to>—</span>
+          </div>
+          <div class="map-panel__zoom">
+            <button type="button" class="map-panel__zoom-btn" data-map-zoom-in aria-label="Zoom inn"><span data-icon="zoom-in"></span></button>
+            <button type="button" class="map-panel__zoom-btn" data-map-zoom-out aria-label="Zoom ut"><span data-icon="zoom-out"></span></button>
+          </div>
+          <button type="button" class="map-panel__locate" data-map-locate aria-label="Bruk min plassering" title="Bruk min plassering">
+            <span data-icon="send"></span>
+          </button>
+          <div class="map-panel__place-toggles">
+            <button type="button" class="place-pill" data-place-toggle="fra">Plasser fra</button>
+            <button type="button" class="place-pill" data-place-toggle="til">Plasser til</button>
+          </div>
+          <div class="map-panel__attribution">
+            <button type="button" class="map-panel__attribution-btn" aria-label="Kart-attribusjon"><span data-icon="info"></span></button>
+            <div class="map-panel__attribution-tooltip">&copy; Leaflet &middot; &copy; CARTO &middot; &copy; OpenStreetMap</div>
+          </div>
+        </div>
+
+        <!-- Steps 2-4: static lifestyle photo -->
+        <div class="step-art" data-step-panel="2">
+          <img src="{% static 'images/wizard/R1-07829-0034.jpg' %}" alt="">
+        </div>
+        <div class="step-art" data-step-panel="3">
+          <img src="{% static 'images/wizard/rull3_26.jpg' %}" alt="">
+        </div>
+        <div class="step-art" data-step-panel="4">
+          <img src="{% static 'images/wizard/R1-09476-0028.jpg' %}" alt="">
+        </div>
+
+        <!-- Step 5: live summary/receipt panel, filled in by wizard.js as fields change -->
+        <div class="summary-panel" data-step-panel="5">
+          <span class="summary-panel__eyebrow">Kvittering</span>
+          <h3 class="summary-panel__title">Din forespørsel</h3>
+          <p class="summary-panel__intro">Vi sender denne til tre kvalitetssjekkede byråer i ditt område.</p>
+          <div class="summary-panel__rows" data-summary-rows>
+            <!-- Rows injected by updateSummaryPanel() in wizard.js: Fra / Til / Flytting / Når / Innhold / Bilder -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </form>
+</div>
+
+<!-- ============================================================ -->
+<!-- MOBILE MAP PICKER OVERLAY — fullscreen, opened via "Plasser i kart" -->
+<!-- ============================================================ -->
+<div class="map-overlay" data-map-overlay role="dialog" aria-modal="true" hidden>
+  <div class="map-overlay__map" data-map-overlay-container></div>
+
+  <div class="map-overlay__header">
+    <div class="map-overlay__instruction">
+      <p class="map-overlay__title" data-map-overlay-title>Hvor flytter du fra?</p>
+      <p class="map-overlay__hint">Flytt kartet så nålen står på adressen din</p>
+    </div>
+    <button type="button" class="map-overlay__close" data-map-overlay-close aria-label="Lukk kart">
+      <span data-icon="x"></span>
+    </button>
+  </div>
+
+  <!-- Fixed center crosshair pin — the map pans underneath it -->
+  <div class="map-overlay__pin" aria-hidden="true"><span data-icon="crosshair"></span></div>
+
+  <button type="button" class="map-overlay__locate" data-map-overlay-locate aria-label="Bruk min posisjon">
+    <span data-icon="locate-fixed"></span>
+  </button>
+
+  <div class="map-overlay__sheet">
+    <p class="map-overlay__sheet-label">Valgt plassering</p>
+    <p class="map-overlay__sheet-address" data-map-overlay-address>Finner adresse …</p>
+    <button type="button" class="map-overlay__confirm btn-primary" data-map-overlay-confirm>
+      <span data-icon="check"></span>
+      Bruk denne plasseringen
+    </button>
+  </div>
+</div>
+
+{% include "leads/_icon_sprite.html" %}
+
+<script>
+  // Server-computed context, read once by wizard.js on load.
+  window.KOBLY_WIZARD_INITIAL_CENTER = {{ initial_center_json|safe }};
+  // Mobile background image per step (spec §5.3) — filenames are fixed, but the
+  // URLs must come from the static template tag, so this map is built server-side and read
+  // by wizard.js's mobile background crossfade logic.
+  window.KOBLY_MOBILE_BACKGROUNDS = {
+    1: "{% static 'images/wizard/boxes-and-plants.jpg' %}",
+    2: "{% static 'images/wizard/R1-07829-0034.jpg' %}",
+    3: "{% static 'images/wizard/rull3_26.jpg' %}",
+    4: "{% static 'images/wizard/R1-09476-0023-kopi.jpg' %}",
+    5: "{% static 'images/wizard/boxes-and-plants.jpg' %}"
+  };
+</script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="{% static 'js/wizard.js' %}"></script>
+</body>
 </html>

@@ -234,6 +234,19 @@ class WizardPostViewTest(TestCase):
         response = self.client.get(reverse("leads:wizard_thank_you"))
         self.assertEqual(response.status_code, 200)
 
+    def test_uploaded_photo_is_stored_under_a_random_name_not_the_attacker_supplied_one(self):
+        # An HTML-polyglot upload named to look like a script must never be
+        # stored with that name/extension — media/ is served from the site's
+        # own origin, so a same-origin "*.html" file would execute as a page.
+        payload = _valid_payload()
+        photo = _make_valid_image_upload("payload.html")
+        response = self.client.post(reverse("leads:wizard"), {**payload, "bilder": [photo]})
+        self.assertRedirects(response, reverse("leads:wizard_thank_you"))
+        lead = MoveLead.objects.get()
+        stored_name = lead.images.get().image.name
+        self.assertNotIn("payload", stored_name)
+        self.assertTrue(stored_name.endswith(".jpg"))
+
 
 class ValidatePhotosTest(TestCase):
     """Unit tests on views._validate_photos — the server-side gate on request.FILES.getlist("bilder"), since accept="image/*" is client-side only."""

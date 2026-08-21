@@ -1,8 +1,9 @@
 import json
 import logging
+import uuid
 
 from django.shortcuts import redirect, render
-from PIL import Image, UnidentifiedImageError
+from PIL import Image
 
 from .cities import CITIES
 from .emails import send_receipt_email
@@ -13,10 +14,37 @@ logger = logging.getLogger(__name__)
 
 MAX_PHOTOS = 20
 MAX_PHOTO_SIZE_BYTES = 10 * 1024 * 1024  # 10 MB
+# Every accepted photo is re-saved under a random name with one of these
+# extensions (matching Pillow's own detected format, never the extension the
+# upload arrived with) — an attacker-chosen name/extension (e.g. "x.html"
+# wrapping a JPEG-polyglot payload that still parses as a valid image) must
+# never survive into storage, since media/ is served from the site's own
+# origin and a same-origin .html file would run as a same-origin page.
+PHOTO_FORMAT_EXTENSIONS = {"JPEG": "jpg", "PNG": "png", "GIF": "gif", "WEBP": "webp"}
+
+
+def _detect_photo_format(f):
+    """Returns the Pillow-detected image format ("JPEG"/"PNG"/...) for an uploaded file, or None if it isn't a real, decodable image Pillow recognizes — never trusts the filename or the browser-supplied Content-Type. Restores the file's read position before returning either way."""
+    try:
+        f.seek(0)
+        image = Image.open(f)
+        image.verify()
+        # verify() leaves the Image object unusable for anything further —
+        # Pillow's own documented pattern is to re-open for a real read.
+        f.seek(0)
+        image_format = Image.open(f).format
+    except Exception:
+        # Deliberately broad: a corrupt file, a decompression-bomb header, or
+        # any other malformed input should fail validation, not crash the
+        # request — this is untrusted public input, fail closed.
+        return None
+    finally:
+        f.seek(0)
+    return image_format
 
 
 def _validate_photos(files):
-    """Returns a list of Norwegian error strings for any file that's too large, over the count cap, or not a real decodable image — server-side, since accept="image/*" is a client-side hint only."""
+    """Returns a list of Norwegian error strings for any file that's too large, over the count cap, or not a real, supported-format image — server-side, since accept="image/*" is a client-side hint only."""
     errors = []
     if len(files) > MAX_PHOTOS:
         errors.append(f"Du kan laste opp maks {MAX_PHOTOS} bilder.")
@@ -25,11 +53,8 @@ def _validate_photos(files):
         if f.size > MAX_PHOTO_SIZE_BYTES:
             errors.append(f"{f.name} er for stort (maks 10 MB per bilde).")
             continue
-        try:
-            f.seek(0)
-            Image.open(f).verify()
-            f.seek(0)
-        except (UnidentifiedImageError, OSError):
+        image_format = _detect_photo_format(f)
+        if image_format not in PHOTO_FORMAT_EXTENSIONS:
             errors.append(f"{f.name} er ikke et gyldig bilde.")
     return errors
 
@@ -58,6 +83,12 @@ def wizard(request):
         if form.is_valid() and not photo_errors:
             lead = MoveLead.objects.create(**form.cleaned_data)
             for uploaded_file in photo_files:
+                # Re-detect format (cheap, and avoids trusting anything cached
+                # from validation) and rename to a random filename with a
+                # matching extension — never the attacker-supplied name.
+                image_format = _detect_photo_format(uploaded_file)
+                ext = PHOTO_FORMAT_EXTENSIONS.get(image_format, "jpg")
+                uploaded_file.name = f"{uuid.uuid4().hex}.{ext}"
                 LeadImage.objects.create(lead=lead, image=uploaded_file)
             try:
                 send_receipt_email(lead)

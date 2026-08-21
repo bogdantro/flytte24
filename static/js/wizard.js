@@ -597,6 +597,119 @@
     });
   }
 
+  // ---------------------------------------------------------------
+  // Photo upload (step 4) — browsers can't append to a file input's
+  // FileList directly, so we keep our own array of File objects and
+  // rebuild the input's .files from it via DataTransfer on every change.
+  // ---------------------------------------------------------------
+  let selectedPhotos = [];
+
+  /** Rebuilds the hidden file input's FileList from the current selectedPhotos array. */
+  function syncPhotoInput() {
+    const input = document.querySelector("[data-photo-input]");
+    const transfer = new DataTransfer();
+    selectedPhotos.forEach((file) => transfer.items.add(file));
+    input.files = transfer.files;
+  }
+
+  /** Redraws the 4-column thumbnail grid (existing photos + the trailing upload tile) from selectedPhotos. */
+  function renderPhotoGrid() {
+    const grid = document.querySelector("[data-photo-grid]");
+    const uploadTile = grid.querySelector(".photo-upload-tile");
+    grid.querySelectorAll(".photo-thumb").forEach((el) => el.remove());
+
+    selectedPhotos.forEach((file, index) => {
+      const url = URL.createObjectURL(file);
+      const thumb = document.createElement("div");
+      thumb.className = "photo-thumb";
+      thumb.innerHTML = `<img src="${url}" alt=""><button type="button" class="photo-thumb__remove" aria-label="Fjern bilde"><span data-icon="x"></span></button>`;
+      thumb.querySelector(".photo-thumb__remove").addEventListener("click", () => {
+        selectedPhotos.splice(index, 1);
+        syncPhotoInput();
+        renderPhotoGrid();
+      });
+      grid.insertBefore(thumb, uploadTile);
+    });
+
+    // The upload tile's icon placeholder was just re-inserted into the DOM
+    // context above (it's never removed) but new [data-icon] spans in the
+    // freshly-created remove buttons need their SVGs cloned in.
+    initIconSprite();
+  }
+
+  /** Wires up the file input's change event to append new files to selectedPhotos (spec §5.8: "New files append to the existing array"). */
+  function initPhotoUpload() {
+    const input = document.querySelector("[data-photo-input]");
+    if (!input) return;
+    input.addEventListener("change", () => {
+      selectedPhotos = selectedPhotos.concat(Array.from(input.files));
+      syncPhotoInput();
+      renderPhotoGrid();
+    });
+  }
+
+  // ---------------------------------------------------------------
+  // Live summary panel (step 5, desktop) — re-reads the form's current
+  // values and re-renders the receipt rows every time anything changes.
+  // ---------------------------------------------------------------
+  const FLYTTE_TYPE_LABELS = { privat: "Privat flytting", bedrift: "Bedriftsflytting", internasjonal: "Internasjonal" };
+  const BOLIGTYPE_LABELS = { leilighet: "Leilighet", rekkehus: "Rekkehus", enebolig: "Enebolig", annet: "Annet" };
+
+  /** Builds one label/value row element for the summary panel. */
+  function summaryRow(label, value) {
+    const row = document.createElement("div");
+    row.className = "summary-panel__row";
+    row.innerHTML = `<span class="summary-panel__row-label">${label}</span><span class="summary-panel__row-value"></span>`;
+    row.querySelector(".summary-panel__row-value").textContent = value;
+    return row;
+  }
+
+  /** Reads every wizard field from the DOM and re-renders the step-5 receipt panel (Fra/Til/Flytting/Når/Innhold/Bilder). */
+  function updateSummaryPanel() {
+    const rows = document.querySelector("[data-summary-rows]");
+    if (!rows) return;
+    const form = document.querySelector(".wizard-card");
+    rows.innerHTML = "";
+
+    const fra = form.querySelector('[name="fra"]').value.trim();
+    const til = form.querySelector('[name="til"]').value.trim();
+    const flytteType = form.querySelector('[name="flytte_type"]:checked');
+    const boligtype = form.querySelector('[name="boligtype"]:checked');
+    const dato = form.querySelector('[name="flyttedato"]').value;
+    const fleksibel = form.querySelector('[name="fleksibel"]').checked;
+    const beskrivelse = form.querySelector('[name="beskrivelse"]').value.trim();
+
+    if (fra) rows.appendChild(summaryRow("Fra", fra));
+    if (til) rows.appendChild(summaryRow("Til", til));
+    if (flytteType || boligtype) {
+      const parts = [flytteType && FLYTTE_TYPE_LABELS[flytteType.value], boligtype && BOLIGTYPE_LABELS[boligtype.value]].filter(Boolean);
+      rows.appendChild(summaryRow("Flytting", parts.join(" · ")));
+    }
+    if (dato || fleksibel) {
+      const value = fleksibel ? "Fleksibel dato" : new Date(dato).toLocaleDateString("no-NO", { day: "numeric", month: "long", year: "numeric" });
+      rows.appendChild(summaryRow("Når", value));
+    }
+    if (beskrivelse) rows.appendChild(summaryRow("Innhold", beskrivelse));
+    if (selectedPhotos.length > 0) {
+      const label = document.createElement("span");
+      label.className = "summary-panel__row-label";
+      label.textContent = "Bilder";
+      const grid = document.createElement("div");
+      grid.className = "photo-grid";
+      selectedPhotos.forEach((file) => {
+        const thumb = document.createElement("div");
+        thumb.className = "photo-thumb";
+        thumb.innerHTML = `<img src="${URL.createObjectURL(file)}" alt="">`;
+        grid.appendChild(thumb);
+      });
+      const wrapper = document.createElement("div");
+      wrapper.className = "summary-panel__row";
+      wrapper.appendChild(label);
+      wrapper.appendChild(grid);
+      rows.appendChild(wrapper);
+    }
+  }
+
   /** Entry point — runs everything this task owns once the DOM is ready. */
   function initWizard() {
     initIconSprite();
@@ -606,6 +719,10 @@
     initAddressAutocomplete();
     initDesktopMap();
     initMobileMapPicker();
+    initPhotoUpload();
+    KoblyWizard.onStepChange.push((step) => { if (step === 5) updateSummaryPanel(); });
+    document.querySelector(".wizard-card").addEventListener("input", updateSummaryPanel);
+    document.querySelector(".wizard-card").addEventListener("change", updateSummaryPanel);
   }
 
   document.addEventListener("DOMContentLoaded", initWizard);

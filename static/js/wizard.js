@@ -336,6 +336,7 @@
     });
   }
 
+  /** Builds and wires up the step-1 desktop map — a page-lifetime singleton, never destroyed/recreated. */
   function initDesktopMap() {
     const panel = document.querySelector(".map-panel");
     if (!panel || typeof L === "undefined") return;
@@ -383,6 +384,25 @@
       updateChip();
     }
 
+    /**
+     * Live position update for the "drag" event only — moves the line/circle/
+     * midpoint to follow the pin without touching the viewport. Kept separate
+     * from redrawOverlays() so dragging an already-placed pin doesn't fight
+     * the user by re-fitBounds-ing the map on every mouse-move tick; the full
+     * redraw (with fitBounds) still runs once, on "dragend".
+     */
+    function updatePositionsDuringDrag() {
+      if (fromMarker && toMarker && line) {
+        const a = fromMarker.getLatLng();
+        const b = toMarker.getLatLng();
+        line.setLatLngs([a, b]);
+        if (midpointMarker) midpointMarker.setLatLng([(a.lat + b.lat) / 2, (a.lng + b.lng) / 2]);
+      }
+      if (fromMarker && fromCircle) {
+        fromCircle.setLatLng(fromMarker.getLatLng());
+      }
+    }
+
     /** Shows/updates the "Ca. {from} -> {to}" floating chip in the top-left of the map. */
     function updateChip() {
       const chip = panel.querySelector("[data-map-chip]");
@@ -402,7 +422,7 @@
         existing.setLatLng([lat, lon]);
       } else {
         const marker = L.marker([lat, lon], { icon: pinIcon(color), draggable: true, autoPan: true }).addTo(map);
-        marker.on("drag", redrawOverlays);
+        marker.on("drag", updatePositionsDuringDrag);
         marker.on("dragend", async () => {
           const ll = marker.getLatLng();
           const address = await reverseGeocode(ll.lat, ll.lng, "Pin plassert i kart");
@@ -485,13 +505,23 @@
     let map = null;
     let activeField = null; // "fra" | "til"
     let resolvedAddress = null;
+    // Guards against a slower, earlier reverse-geocode (e.g. from a previous
+    // pan) landing after a newer one and overwriting it with a stale address
+    // that no longer matches the map's current center — the same race Task
+    // 11 solved for address search, applied here without needing to touch
+    // reverseGeocode()'s signature (Geonorge calls are cheap enough that
+    // discarding a stale result is sufficient; no network-level abort needed).
+    let lookupSequence = 0;
 
     /** Reverse-geocodes the map's current center and updates the bottom sheet's address text. */
     async function lookupCenter() {
       const addressEl = overlay.querySelector("[data-map-overlay-address]");
       addressEl.classList.add("is-loading");
       const center = map.getCenter();
-      resolvedAddress = await reverseGeocode(center.lat, center.lng, "Plassering valgt i kart");
+      const sequence = ++lookupSequence;
+      const address = await reverseGeocode(center.lat, center.lng, "Plassering valgt i kart");
+      if (sequence !== lookupSequence) return; // superseded by a newer pan/lookup — discard
+      resolvedAddress = address;
       addressEl.textContent = resolvedAddress;
       addressEl.classList.remove("is-loading");
     }

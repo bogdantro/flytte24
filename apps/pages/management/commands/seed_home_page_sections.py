@@ -67,16 +67,19 @@ class Command(BaseCommand):
                             "quote": "Kobly fant meg tre seriøse byråer i løpet av få timer. Sparte meg for både tid og masse penger.",
                             "name": "Kristoffer Skogen",
                             "meta": "Privatkunde, Bergen",
+                            "image": "ciocan-ciprian-_Z2eTqGL7dg-unsplash.jpg",
                         },
                         {
                             "quote": "Vi fikk skreddersydde tilbud uten å måtte ringe ti forskjellige byråer selv. Anbefales på det varmeste.",
                             "name": "Sunniva Thune",
                             "meta": "Næringsflytting, Oslo",
+                            "image": "sinitta-leunen-Y6fw-exCnsg-unsplash.jpg",
                         },
                         {
                             "quote": "Trygg og enkel prosess fra start til slutt. Byråene som tok kontakt var profesjonelle og hyggelige.",
                             "name": "Eivind Johansen",
                             "meta": "Privatkunde, Trondheim",
+                            "image": "veronika-trushkevich-krFfLPfSj4k-unsplash.jpg",
                         },
                     ]
                 },

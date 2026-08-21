@@ -59,3 +59,8 @@ class HomePageRenderingTests(TestCase):
         call_command("seed_home_page_sections", stdout=StringIO())
         response = self.client.get("/")
         self.assertContains(response, "howitworks-1-skjema.png")
+
+    def test_seeded_testimonials_still_show_photos(self):
+        call_command("seed_home_page_sections", stdout=StringIO())
+        response = self.client.get("/")
+        self.assertContains(response, "ciocan-ciprian-_Z2eTqGL7dg-unsplash.jpg")

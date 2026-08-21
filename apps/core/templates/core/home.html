@@ -122,9 +122,6 @@
 </section>
 
 <!-- ===================== TESTIMONIALS ===================== -->
-<!-- Photos on the hardcoded fallback cards are decorative stock photography,
-     intentionally not part of the seeded/editable content (same reasoning
-     as the image strip above) — editing swaps quote/name/meta only. -->
 <section class="section testimonials">
   <div class="content-width">
     <h2 class="testimonials__title">{{ sections.testimonials.heading|default:"Hva sier kundene våre?" }}</h2>
@@ -132,6 +129,7 @@
       {% if sections.testimonials.extra_json.items %}
         {% for item in sections.testimonials.extra_json.items %}
           <article class="testimonial-card">
+            <div class="testimonial-card__photo"><img src="{% static 'images/home/'|add:item.image %}" alt=""></div>
             <p class="testimonial-card__quote">"{{ item.quote }}"</p>
             <p class="testimonial-card__byline">{{ item.name }}<span> · {{ item.meta }}</span></p>
           </article>

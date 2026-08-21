@@ -177,12 +177,122 @@
     onStepChange: [], // array of function(step) — populated by later sections
   };
 
+  // ---------------------------------------------------------------
+  // Address autocomplete — Kartverket's free, keyless Geonorge API
+  // (spec §5.13). 200ms debounce, up to 8 results, closes 120ms after
+  // blur so a click on a suggestion registers before the list vanishes.
+  // ---------------------------------------------------------------
+
+  /** Calls the Geonorge address search API and returns its `adresser` array (or [] on any failure). */
+  async function searchAddresses(query) {
+    try {
+      const url = `https://ws.geonorge.no/adresser/v1/sok?sok=${encodeURIComponent(query)}&treffPerSide=8&side=0`;
+      const response = await fetch(url);
+      if (!response.ok) return [];
+      const json = await response.json();
+      return json.adresser || [];
+    } catch {
+      return [];
+    }
+  }
+
+  /** Calls the Geonorge reverse-geocode API for one coordinate; falls back to `fallbackText` on failure. */
+  async function reverseGeocode(lat, lon, fallbackText) {
+    try {
+      const url = `https://ws.geonorge.no/adresser/v1/punktsok?radius=200&lat=${lat}&lon=${lon}&treffPerSide=1&side=0`;
+      const response = await fetch(url);
+      if (!response.ok) return fallbackText;
+      const json = await response.json();
+      const hit = (json.adresser || [])[0];
+      return hit ? `${hit.adressetekst}, ${hit.postnummer} ${hit.poststed}` : fallbackText;
+    } catch {
+      return fallbackText;
+    }
+  }
+
+  /** Renders the suggestion <li> list for one address field, wiring up click-to-select on each row. */
+  function renderSuggestions(listEl, suggestions, onSelect) {
+    listEl.innerHTML = "";
+    if (suggestions.length === 0) {
+      listEl.hidden = true;
+      return;
+    }
+    suggestions.forEach((address) => {
+      const li = document.createElement("li");
+      const button = document.createElement("button");
+      button.type = "button";
+      button.innerHTML = `<span>${address.adressetekst}</span><span class="address-suggestions__meta">${address.postnummer} ${address.poststed}</span>`;
+      // mousedown (not click) fires before the input's blur handler closes the list.
+      button.addEventListener("mousedown", (event) => {
+        event.preventDefault();
+        onSelect(address);
+      });
+      li.appendChild(button);
+      listEl.appendChild(li);
+    });
+    listEl.hidden = false;
+  }
+
+  /** Wires up debounced search + selection for one .address-field element ("fra" or "til"). */
+  function initOneAddressField(fieldEl) {
+    const key = fieldEl.dataset.addressField; // "fra" | "til"
+    const input = fieldEl.querySelector(`[name="${key}"]`);
+    const list = fieldEl.querySelector(".address-suggestions");
+    const latInput = fieldEl.querySelector(`[data-coord="${key}_lat"]`);
+    const lonInput = fieldEl.querySelector(`[data-coord="${key}_lon"]`);
+    let debounceTimer = null;
+
+    const selectAddress = (address) => {
+      const point = address.representasjonspunkt;
+      input.value = `${address.adressetekst}, ${address.postnummer} ${address.poststed}`;
+      latInput.value = point ? point.lat : "";
+      lonInput.value = point ? point.lon : "";
+      list.hidden = true;
+      // Task 12's map reads these same hidden inputs to place/move its pin.
+      KoblyWizard.onCoordChange && KoblyWizard.onCoordChange(key, point ? point.lat : null, point ? point.lon : null, input.value);
+    };
+
+    input.addEventListener("input", () => {
+      // Manual typing invalidates any previously attached coordinate (spec §5.5).
+      latInput.value = "";
+      lonInput.value = "";
+      clearTimeout(debounceTimer);
+      const query = input.value.trim();
+      if (query.length < 2) {
+        list.hidden = true;
+        return;
+      }
+      debounceTimer = setTimeout(async () => {
+        const results = await searchAddresses(query);
+        renderSuggestions(list, results, selectAddress);
+      }, 200);
+    });
+
+    input.addEventListener("blur", () => {
+      setTimeout(() => { list.hidden = true; }, 120);
+    });
+
+    // Exposed so Task 12's map (pin drag / click-to-place / geolocation) can
+    // push a coordinate + resolved address back into this same field.
+    fieldEl.setAddressFromCoord = (lat, lon, address) => {
+      input.value = address;
+      latInput.value = lat;
+      lonInput.value = lon;
+    };
+  }
+
+  /** Wires up both address fields (fra/til) on step 1. */
+  function initAddressAutocomplete() {
+    document.querySelectorAll(".address-field").forEach(initOneAddressField);
+  }
+
   /** Entry point — runs everything this task owns once the DOM is ready. */
   function initWizard() {
     initIconSprite();
     initNavigation();
     updateProgressBar();
     updateNavButton();
+    initAddressAutocomplete();
   }
 
   document.addEventListener("DOMContentLoaded", initWizard);

@@ -1,3 +1,4 @@
+import json
 import tempfile
 
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -12,6 +13,26 @@ class WizardViewSmokeTest(TestCase):
     def test_get_wizard_page_returns_200(self):
         response = self.client.get(reverse("leads:wizard"))
         self.assertEqual(response.status_code, 200)
+
+
+class WizardGetViewTest(TestCase):
+    def test_fra_query_param_prefills_form(self):
+        response = self.client.get(reverse("leads:wizard"), {"fra": "1170"})
+        self.assertContains(response, 'value="1170"')
+
+    def test_by_query_param_sets_initial_center(self):
+        response = self.client.get(reverse("leads:wizard"), {"by": "bergen"})
+        center = json.loads(response.context["initial_center_json"])
+        self.assertEqual(center["lat"], 60.3913)
+        self.assertEqual(center["zoom"], 11)
+
+    def test_unknown_by_query_param_is_ignored(self):
+        response = self.client.get(reverse("leads:wizard"), {"by": "narnia"})
+        self.assertEqual(response.context["initial_center_json"], "null")
+
+    def test_no_by_query_param_gives_null_center(self):
+        response = self.client.get(reverse("leads:wizard"))
+        self.assertEqual(response.context["initial_center_json"], "null")
 
 
 @override_settings(MEDIA_ROOT=tempfile.mkdtemp())

@@ -1,0 +1,47 @@
+<!-- apps/dashboard/templates/dashboard/page_list.html -->
+{% extends "dashboard/_base.html" %}
+
+{% block title %}Sider{% endblock %}
+
+{% block content %}
+  <h1 class="dashboard-heading">Sider</h1>
+
+  {% if pages %}
+    <table class="lead-table">
+      <thead>
+        <tr>
+          <th>Tittel</th>
+          <th>Sti</th>
+          <th>Status</th>
+          <th>Sist oppdatert</th>
+          <th>Handlinger</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for page in pages %}
+          <tr onclick="window.location='{% url 'dashboard:page_edit' page.pk %}'">
+            <td>{{ page.title }}</td>
+            <td class="lead-table__muted">{{ page.path }}</td>
+            <td><span class="status-badge status-badge--{% if page.status == 'published' %}new{% else %}booked{% endif %}">{{ page.get_status_display }}</span></td>
+            <td class="lead-table__muted">
+              {{ page.updated_at|date:"d.m.Y H:i" }}{% if page.updated_by %} av {{ page.updated_by.get_username }}{% endif %}
+            </td>
+            <td onclick="event.stopPropagation();">
+              <a href="{{ page.path }}" target="_blank" rel="noopener" class="btn-outline">Vis live</a>
+              <form method="post" action="{% url 'dashboard:page_duplicate' page.pk %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn-outline">Dupliser</button>
+              </form>
+              <form method="post" action="{% url 'dashboard:page_delete' page.pk %}" data-confirm-delete style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn-danger">Slett</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="dashboard-empty">Ingen sider ennå. Sider legges til ved å duplisere en eksisterende side.</p>
+  {% endif %}
+{% endblock %}

@@ -8,7 +8,7 @@
   <title>{% block title %}Dashbord{% endblock %} — Kobly</title>
   <link rel="icon" type="image/svg+xml" href="{% static 'images/favicon.svg' %}">
   <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+  <link rel="stylesheet" href="{% static 'scss/dashboard.css' %}">
 </head>
 <body>
 
@@ -22,6 +22,10 @@
       <span class="dashboard-topbar__wordmark">Kobly</span>
       <span class="dashboard-topbar__label">Dashbord</span>
     </a>
+    <nav class="dashboard-topbar__nav">
+      <a href="{% url 'dashboard:lead_list' %}" class="dashboard-topbar__link">Leads</a>
+      <a href="{% url 'dashboard:page_list' %}" class="dashboard-topbar__link">Sider</a>
+    </nav>
     <div class="dashboard-topbar__right">
       <span class="dashboard-topbar__user">{{ request.user.get_username }}</span>
       <form method="post" action="{% url 'dashboard:logout' %}">

@@ -3,6 +3,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 from apps.leads.models import MoveLead
+from apps.pages.models import Page, PageSection
 
 
 def _make_lead(**overrides):
@@ -140,3 +141,17 @@ class DashboardLeadDetailTest(TestCase):
         response = self.client.get(reverse("dashboard:delete_lead", args=[lead.pk]))
         self.assertEqual(response.status_code, 405)
         self.assertEqual(MoveLead.objects.filter(pk=lead.pk).count(), 1)
+
+
+class PageListViewTests(TestCase):
+    def setUp(self):
+        self.staff = User.objects.create_user("staff2", password="pw", is_staff=True)
+
+    def test_requires_staff_login(self):
+        response = self.client.get(reverse("dashboard:page_list"))
+        self.assertRedirects(response, f"{reverse('dashboard:login')}?next={reverse('dashboard:page_list')}")
+
+    def test_empty_state_when_no_pages(self):
+        self.client.force_login(self.staff)
+        response = self.client.get(reverse("dashboard:page_list"))
+        self.assertContains(response, "Ingen sider ennå")

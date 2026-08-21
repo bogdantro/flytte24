@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
 from apps.leads.models import MoveLead
+from apps.pages.models import Page
 
 
 def staff_required(view_func):
@@ -86,3 +87,10 @@ def delete_lead(request, pk):
     lead = get_object_or_404(MoveLead, pk=pk)
     lead.delete()
     return redirect("dashboard:lead_list")
+
+
+@staff_required
+def page_list(request):
+    """Every page on the site, newest-updated first."""
+    pages = Page.objects.all().order_by("-updated_at")
+    return render(request, "dashboard/page_list.html", {"pages": pages})

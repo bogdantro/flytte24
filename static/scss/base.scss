@@ -837,6 +837,13 @@ $radiusPill: 9999px;
     justify-content: flex-end;
     background: rgba(26, 26, 26, 0.4);
 
+    // Without this, the [hidden] attribute JS toggles has no effect —
+    // this class's own display:flex has the same specificity as the
+    // browser default [hidden]{display:none} rule and wins by being
+    // later in the cascade, so the panel would render regardless of
+    // whether it's actually hidden.
+    &[hidden]{ display: none; }
+
     &__inner{
       width: 100%;
       max-width: 360px;
@@ -1802,6 +1809,13 @@ $radiusPill: 9999px;
     display: flex;
     justify-content: flex-end;
     background: rgba(26, 26, 26, 0.4);
+
+    // Without this, the [hidden] attribute JS toggles has no effect —
+    // this class's own display:flex has the same specificity as the
+    // browser default [hidden]{display:none} rule and wins by being
+    // later in the cascade, so the panel would render regardless of
+    // whether it's actually hidden.
+    &[hidden]{ display: none; }
 
     &__inner{
       width: 100%;

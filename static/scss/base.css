@@ -769,6 +769,9 @@
     justify-content: flex-end;
     background: rgba(26, 26, 26, 0.4);
   }
+  .page-settings-panel[hidden] {
+    display: none;
+  }
   .page-settings-panel__inner {
     width: 100%;
     max-width: 360px;
@@ -1679,6 +1682,9 @@
     display: flex;
     justify-content: flex-end;
     background: rgba(26, 26, 26, 0.4);
+  }
+  .page-settings-panel[hidden] {
+    display: none;
   }
   .page-settings-panel__inner {
     width: 100%;

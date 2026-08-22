@@ -1,6 +1,12 @@
 {% extends 'core/base.html' %}
 {% load static %}
 
+{% block page_title %}{% if page.meta_title %}{{ page.meta_title }}{% elif page.title %}{{ page.title }}{% else %}Kobly{% endif %}{% endblock %}
+
+{% block page_meta %}
+  {% if page.meta_description %}<meta name="description" content="{{ page.meta_description }}">{% endif %}
+{% endblock %}
+
 {% block content %}
 
 {% if is_editable %}
@@ -9,7 +15,33 @@
        csrftoken cookie because apps/core/views.py:home() forces it via
        get_token() — this page has no <form> of its own to trigger that). -->
   <div class="inline-edit-banner" data-inline-edit-banner>
-    Redigeringsmodus — klikk på en tekst for å endre den. Endringer lagres automatisk.
+    <span>Redigeringsmodus — klikk på en tekst for å endre den. Endringer lagres automatisk.</span>
+    <button type="button" class="inline-edit-banner__settings" data-page-settings-open>Sideinnstillinger</button>
+  </div>
+
+  <div class="page-settings-panel" data-page-settings-panel data-page-id="{{ page.id }}" hidden>
+    <div class="page-settings-panel__inner">
+      <div class="page-settings-panel__header">
+        <p class="page-settings-panel__title">Sideinnstillinger</p>
+        <button type="button" class="page-settings-panel__close" data-page-settings-close aria-label="Lukk">
+          <span data-icon="x"></span>
+        </button>
+      </div>
+      <label class="page-settings-panel__field">
+        <span>Tittel (internt navn)</span>
+        <input type="text" data-page-field="title" value="{{ page.title }}">
+      </label>
+      <label class="page-settings-panel__field">
+        <span>SEO-tittel <em>(fanenavn/søkeresultater — tom = sidetittel)</em></span>
+        <input type="text" maxlength="70" data-page-field="meta_title" value="{{ page.meta_title }}">
+      </label>
+      <label class="page-settings-panel__field">
+        <span>SEO-beskrivelse <em>(vises under tittelen i søkeresultater)</em></span>
+        <textarea maxlength="160" data-page-field="meta_description">{{ page.meta_description }}</textarea>
+      </label>
+      <button type="button" class="btn-primary" data-page-settings-save>Lagre</button>
+      <span class="page-settings-panel__feedback" data-page-settings-feedback></span>
+    </div>
   </div>
 {% endif %}
 

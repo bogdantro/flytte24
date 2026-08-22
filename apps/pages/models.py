@@ -26,6 +26,15 @@ class Page(models.Model):
     path = models.CharField(max_length=200, unique=True, help_text="Ekte URL, f.eks. /om-oss/")
     template_key = models.CharField(max_length=50, choices=TEMPLATE_KEY_CHOICES)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="draft")
+    # SEO — not rendered anywhere on the page itself, so not part of the
+    # inline click-to-edit surface; edited from the Sideinnstillinger panel
+    # instead (apps/dashboard/views.py page_update_meta).
+    meta_title = models.CharField(
+        max_length=70, blank=True, default="", help_text="Vises i nettleserfanen og søkeresultater. Tomt = sidetittel."
+    )
+    meta_description = models.CharField(
+        max_length=160, blank=True, default="", help_text="Vises under tittelen i søkeresultater."
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.ForeignKey(

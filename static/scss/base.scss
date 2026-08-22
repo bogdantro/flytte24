@@ -770,12 +770,32 @@ $radiusPill: 9999px;
     position: sticky;
     top: 0;
     z-index: 40;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
     padding: 10px 16px;
     text-align: center;
     background: $accentAmber;
     color: $ink;
     font-size: 13px;
     font-weight: 500;
+
+    &__settings{
+      flex-shrink: 0;
+      border: 1px solid rgba(26, 26, 26, 0.3);
+      border-radius: 9999px;
+      background: rgba(250, 249, 246, 0.6);
+      padding: 4px 12px;
+      font-family: $fontSans;
+      font-size: 12px;
+      font-weight: 600;
+      color: $ink;
+      cursor: pointer;
+
+      &:hover{ background: $surface; }
+    }
   }
 
   [data-inline-field]{
@@ -807,6 +827,78 @@ $radiusPill: 9999px;
 
     &.is-visible{ opacity: 1; transform: translateY(0); }
     &--error{ background: #b3261e; }
+  }
+
+  .page-settings-panel{
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    justify-content: flex-end;
+    background: rgba(26, 26, 26, 0.4);
+
+    &__inner{
+      width: 100%;
+      max-width: 360px;
+      height: 100%;
+      overflow-y: auto;
+      background: $surface;
+      padding: 20px;
+    }
+
+    &__header{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    &__title{
+      margin: 0;
+      font-family: $fontSerif;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    &__close{
+      display: inline-flex;
+      border: none;
+      background: none;
+      padding: 4px;
+      color: $inkMuted;
+      cursor: pointer;
+
+      &:hover{ color: $ink; }
+    }
+
+    &__field{
+      display: block;
+      margin-bottom: 16px;
+
+      span{ display: block; margin-bottom: 6px; font-size: 13px; font-weight: 500; color: $ink; }
+      em{ font-style: normal; font-weight: 400; color: $inkMuted; }
+
+      input, textarea{
+        width: 100%;
+        border: 1.5px solid $line;
+        border-radius: 10px;
+        background: $surfaceSoft;
+        padding: 10px 12px;
+        font-family: $fontSans;
+        font-size: 14px;
+        outline: none;
+
+        &:focus{ border-color: $ink; }
+      }
+
+      textarea{ min-height: 70px; resize: vertical; }
+    }
+
+    &__feedback{
+      margin-left: 10px;
+      font-size: 13px;
+      color: $inkMuted;
+    }
   }
 
   // ---------------- site footer ----------------
@@ -1644,12 +1736,31 @@ $radiusPill: 9999px;
     position: sticky;
     top: 0;
     z-index: 40;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
     padding: 10px 16px;
     text-align: center;
     background: $accentAmber;
     color: $ink;
     font-size: 13px;
     font-weight: 500;
+
+    &__settings{
+      flex-shrink: 0;
+      border: 1px solid rgba(26, 26, 26, 0.3);
+      border-radius: 9999px;
+      background: rgba(250, 249, 246, 0.6);
+      padding: 4px 12px;
+      font-family: $fontSans;
+      font-size: 12px;
+      font-weight: 600;
+      color: $ink;
+      cursor: pointer;
+
+      &:hover{ background: $surface; }
+    }
   }
 
   [data-inline-field]{
@@ -1682,6 +1793,78 @@ $radiusPill: 9999px;
 
     &.is-visible{ opacity: 1; transform: translateY(0); }
     &--error{ background: #b3261e; }
+  }
+
+  .page-settings-panel{
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    justify-content: flex-end;
+    background: rgba(26, 26, 26, 0.4);
+
+    &__inner{
+      width: 100%;
+      max-width: 400px;
+      height: 100%;
+      overflow-y: auto;
+      background: $surface;
+      padding: 28px;
+    }
+
+    &__header{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    &__title{
+      margin: 0;
+      font-family: $fontSerif;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    &__close{
+      display: inline-flex;
+      border: none;
+      background: none;
+      padding: 4px;
+      color: $inkMuted;
+      cursor: pointer;
+
+      &:hover{ color: $ink; }
+    }
+
+    &__field{
+      display: block;
+      margin-bottom: 18px;
+
+      span{ display: block; margin-bottom: 6px; font-size: 13px; font-weight: 500; color: $ink; }
+      em{ font-style: normal; font-weight: 400; color: $inkMuted; }
+
+      input, textarea{
+        width: 100%;
+        border: 1.5px solid $line;
+        border-radius: 10px;
+        background: $surfaceSoft;
+        padding: 10px 12px;
+        font-family: $fontSans;
+        font-size: 14px;
+        outline: none;
+
+        &:focus{ border-color: $ink; }
+      }
+
+      textarea{ min-height: 70px; resize: vertical; }
+    }
+
+    &__feedback{
+      margin-left: 10px;
+      font-size: 13px;
+      color: $inkMuted;
+    }
   }
 
   // ---------------- site footer ----------------

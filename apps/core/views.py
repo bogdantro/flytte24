@@ -37,11 +37,13 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.utils import timezone
 
-def home(request):
+def _page_context(request, page):
+    """Shared by home() and render_page() — every view that renders a
+    Page/PageSection-backed template builds its context this way, so
+    duplicated pages (or any future non-home Page using this same
+    template) render identically to the original."""
     from django.middleware.csrf import get_token
-    from apps.pages.models import Page
 
-    page = Page.objects.filter(template_key="home", status="published").first()
     sections = {s.section_type: s for s in page.sections.all()} if page else {}
     # Staff editing a page has no <form> on this page to trigger Django's
     # normal csrftoken-cookie-on-render behavior — force it so inline-edit.js
@@ -49,7 +51,34 @@ def home(request):
     is_editable = bool(page) and request.user.is_authenticated and request.user.is_staff
     if is_editable:
         get_token(request)
-    return render(request, 'core/home.html', {"page": page, "sections": sections, "is_editable": is_editable})
+    return {"page": page, "sections": sections, "is_editable": is_editable}
+
+
+def home(request):
+    from apps.pages.models import Page
+
+    page = Page.objects.filter(template_key="home", status="published").first()
+    return render(request, 'core/home.html', _page_context(request, page))
+
+
+def render_page(request, page_path):
+    """Catch-all for any Page at a path other than "/" (e.g. a duplicated
+    page) — see demo/urls.py, where this is the last pattern tried. Draft
+    pages are visible to staff only (so a freshly duplicated page can be
+    previewed and edited before publishing) — everyone else 404s on a
+    draft exactly as if the page didn't exist. Only template_key="home"
+    has a section-based template today (the others still render fully
+    hardcoded — see apps/pages's design spec), so a Page using any other
+    template_key 404s here rather than silently rendering the wrong
+    markup."""
+    from apps.pages.models import Page
+
+    path = "/" + page_path.rstrip("/") + "/"
+    page = Page.objects.filter(path=path).first()
+    is_staff = request.user.is_authenticated and request.user.is_staff
+    if not page or page.template_key != "home" or (page.status != "published" and not is_staff):
+        raise Http404("Ingen side på denne stien.")
+    return render(request, 'core/home.html', _page_context(request, page))
 
 
 from django.shortcuts import render, redirect

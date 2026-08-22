@@ -62,6 +62,23 @@ class MoveLead(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
 
+    # Manual staff assignment to up to 3 businesses (dashboard:lead_detail).
+    # MoveLead is the live lead pipeline; store.JobDistribution's FK is
+    # hard-typed to the separate, unreachable core.Flytteforesporsel model
+    # (see docs/superpowers/specs/2026-08-21-dashboard-cms-and-business-admin-design.md
+    # "Resolved: which lead pipeline is live"), so it can't represent an
+    # assignment against a real MoveLead — these are their own fields
+    # rather than repurposing that model.
+    business_1 = models.ForeignKey(
+        "store.Bedrift_info", null=True, blank=True, on_delete=models.SET_NULL, related_name="assigned_leads_primary"
+    )
+    business_2 = models.ForeignKey(
+        "store.Bedrift_info", null=True, blank=True, on_delete=models.SET_NULL, related_name="assigned_leads_secondary"
+    )
+    business_3 = models.ForeignKey(
+        "store.Bedrift_info", null=True, blank=True, on_delete=models.SET_NULL, related_name="assigned_leads_tertiary"
+    )
+
     class Meta:
         ordering = ["-created_at"]
 

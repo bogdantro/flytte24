@@ -74,7 +74,16 @@ def lead_detail(request, pk):
     return render(
         request,
         "dashboard/detail.html",
-        {"lead": lead, "status_choices": MoveLead.STATUS_CHOICES},
+        {
+            "lead": lead,
+            "status_choices": MoveLead.STATUS_CHOICES,
+            "businesses": Bedrift_info.objects.filter(active=True).order_by("company_name"),
+            "assign_fields": [
+                ("business_1", lead.business_1),
+                ("business_2", lead.business_2),
+                ("business_3", lead.business_3),
+            ],
+        },
     )
 
 
@@ -98,10 +107,61 @@ def delete_lead(request, pk):
 
 
 @staff_required
+@require_POST
+def lead_assign_businesses(request, pk):
+    """Manually assigns a lead to up to 3 businesses. MoveLead is the live
+    lead pipeline; store.JobDistribution can't represent this assignment
+    since its FK is hard-typed to the separate, unreachable
+    core.Flytteforesporsel model (see apps/leads/models.py MoveLead's
+    business_1/2/3 fields for why these live directly on the lead)."""
+    lead = get_object_or_404(MoveLead, pk=pk)
+    for field in ("business_1", "business_2", "business_3"):
+        value = request.POST.get(field, "")
+        if value:
+            setattr(lead, field, get_object_or_404(Bedrift_info, pk=value))
+        else:
+            setattr(lead, field, None)
+    lead.save(update_fields=["business_1", "business_2", "business_3"])
+    return redirect("dashboard:lead_detail", pk=lead.pk)
+
+
+@staff_required
 def page_list(request):
     """Every page on the site, newest-updated first."""
     pages = Page.objects.all().order_by("-updated_at")
     return render(request, "dashboard/page_list.html", {"pages": pages})
+
+
+# Page-level fields editable from the "Sideinnstillinger" panel on the live
+# page (see static/js/inline-edit.js) — path/slug/template_key/status are
+# deliberately excluded: status has its own dedicated toggle, and path/slug
+# changes are risky enough (routing, uniqueness) to stay out of this v1.
+PAGE_META_EDITABLE_FIELDS = {"title", "meta_title", "meta_description"}
+
+
+@staff_required
+@require_POST
+def page_update_meta(request, pk):
+    """Saves the Sideinnstillinger panel's fields — same shape as
+    section_inline_update, but for Page rather than PageSection."""
+    page = get_object_or_404(Page, pk=pk)
+    try:
+        data = json.loads(request.body.decode("utf-8"))
+    except (json.JSONDecodeError, UnicodeDecodeError):
+        return JsonResponse({"ok": False, "error": "invalid_json"}, status=400)
+
+    update_fields = []
+    for field in PAGE_META_EDITABLE_FIELDS:
+        if field in data:
+            setattr(page, field, data[field])
+            update_fields.append(field)
+    if not update_fields:
+        return JsonResponse({"ok": False, "error": "no_fields"}, status=400)
+
+    page.updated_by = request.user
+    update_fields += ["updated_by", "updated_at"]
+    page.save(update_fields=update_fields)
+    return JsonResponse({"ok": True})
 
 
 @staff_required
@@ -127,13 +187,19 @@ def page_duplicate(request, pk):
     draft Page with a unique slug/path."""
     source = get_object_or_404(Page, pk=pk)
 
+    # path is always derived from slug (never from source.path) so it's
+    # guaranteed well-formed — deriving it from source.path directly used
+    # to produce a leading-slash-less "-kopi/" for the home page (whose
+    # path is just "/"), which the URL router (see demo/urls.py
+    # render_page) could never match, so a duplicated page could never
+    # actually render. Checking slug uniqueness alone is enough, since
+    # path is a deterministic function of it.
     base_slug = f"{source.slug}-kopi"
-    base_path = source.path.rstrip("/") + "-kopi/"
-    slug, path, suffix = base_slug, base_path, 1
-    while Page.objects.filter(slug=slug).exists() or Page.objects.filter(path=path).exists():
+    slug, suffix = base_slug, 1
+    while Page.objects.filter(slug=slug).exists():
         suffix += 1
         slug = f"{base_slug}-{suffix}"
-        path = source.path.rstrip("/") + f"-kopi-{suffix}/"
+    path = f"/{slug}/"
 
     new_page = Page.objects.create(
         title=f"{source.title} (kopi)",

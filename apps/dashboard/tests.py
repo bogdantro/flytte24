@@ -147,6 +147,54 @@ class DashboardLeadDetailTest(TestCase):
         self.assertEqual(MoveLead.objects.filter(pk=lead.pk).count(), 1)
 
 
+class LeadAssignBusinessesViewTests(TestCase):
+    def setUp(self):
+        User.objects.create_user("staffuser", password="secret-pw-123", is_staff=True)
+        self.client.login(username="staffuser", password="secret-pw-123")
+        self.biz1 = Bedrift_info.objects.create(
+            company_name="Flytt AS", email="flytt@example.com", phone="12345678",
+            address="Gate 1", postal_code="0001", city="Oslo",
+            first_name="Ola", last_name="Nordmann", active=True,
+        )
+        self.biz2 = Bedrift_info.objects.create(
+            company_name="Rask Flytting AS", email="rask@example.com", phone="87654321",
+            address="Gate 2", postal_code="0002", city="Bergen",
+            first_name="Kari", last_name="Nordmann", active=True,
+        )
+
+    def test_requires_post(self):
+        lead = _make_lead()
+        response = self.client.get(reverse("dashboard:lead_assign_businesses", args=[lead.pk]))
+        self.assertEqual(response.status_code, 405)
+
+    def test_assigns_up_to_three_businesses(self):
+        lead = _make_lead()
+        url = reverse("dashboard:lead_assign_businesses", args=[lead.pk])
+        response = self.client.post(url, {
+            "business_1": self.biz1.pk,
+            "business_2": self.biz2.pk,
+            "business_3": "",
+        })
+        self.assertRedirects(response, reverse("dashboard:lead_detail", args=[lead.pk]))
+        lead.refresh_from_db()
+        self.assertEqual(lead.business_1, self.biz1)
+        self.assertEqual(lead.business_2, self.biz2)
+        self.assertIsNone(lead.business_3)
+
+    def test_clearing_a_selection_unassigns_it(self):
+        lead = _make_lead(business_1=self.biz1)
+        url = reverse("dashboard:lead_assign_businesses", args=[lead.pk])
+        self.client.post(url, {"business_1": "", "business_2": "", "business_3": ""})
+        lead.refresh_from_db()
+        self.assertIsNone(lead.business_1)
+
+    def test_lead_detail_shows_assigned_businesses_in_dropdowns(self):
+        lead = _make_lead(business_1=self.biz1)
+        response = self.client.get(reverse("dashboard:lead_detail", args=[lead.pk]))
+        self.assertContains(response, "Flytt AS")
+        self.assertContains(response, "Rask Flytting AS")
+
+
 class PageListViewTests(TestCase):
     def setUp(self):
         self.staff = User.objects.create_user("staff2", password="pw", is_staff=True)
@@ -242,6 +290,51 @@ class SectionInlineUpdateViewTests(TestCase):
         self.assertEqual(self.section.section_type, "hero")
 
 
+class PageUpdateMetaViewTests(TestCase):
+    def setUp(self):
+        self.staff = User.objects.create_user("staff3c", password="pw", is_staff=True)
+        self.page = Page.objects.create(
+            title="Forside", slug="forside", path="/", template_key="home", status="published"
+        )
+
+    def test_requires_post(self):
+        self.client.force_login(self.staff)
+        response = self.client.get(reverse("dashboard:page_update_meta", args=[self.page.pk]))
+        self.assertEqual(response.status_code, 405)
+
+    def test_updates_meta_fields_and_sets_updated_by(self):
+        self.client.force_login(self.staff)
+        url = reverse("dashboard:page_update_meta", args=[self.page.pk])
+        response = self.client.post(
+            url,
+            data=json.dumps({
+                "title": "Ny tittel",
+                "meta_title": "SEO-tittel",
+                "meta_description": "SEO-beskrivelse.",
+            }),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"ok": True})
+        self.page.refresh_from_db()
+        self.assertEqual(self.page.title, "Ny tittel")
+        self.assertEqual(self.page.meta_title, "SEO-tittel")
+        self.assertEqual(self.page.meta_description, "SEO-beskrivelse.")
+        self.assertEqual(self.page.updated_by, self.staff)
+
+    def test_rejects_a_field_outside_the_whitelist(self):
+        self.client.force_login(self.staff)
+        url = reverse("dashboard:page_update_meta", args=[self.page.pk])
+        response = self.client.post(
+            url,
+            data=json.dumps({"path": "/noe-annet/"}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 400)
+        self.page.refresh_from_db()
+        self.assertEqual(self.page.path, "/")
+
+
 class PageDuplicateViewTests(TestCase):
     def setUp(self):
         self.staff = User.objects.create_user("staff4", password="pw", is_staff=True)
@@ -285,6 +378,21 @@ class PageDuplicateViewTests(TestCase):
         self.client.post(reverse("dashboard:page_duplicate", args=[self.page.pk]))
         self.assertEqual(Page.objects.count(), 3)
         self.assertEqual(len({p.slug for p in Page.objects.all()}), 3)
+
+    def test_clone_of_home_page_actually_renders_at_its_own_path(self):
+        """Regression test for the final-review Minor finding that a
+        duplicated page's path/URL never actually resolved to anything —
+        this proves the fix end to end, not just that a Page row exists."""
+        self.client.force_login(self.staff)
+        self.client.post(reverse("dashboard:page_duplicate", args=[self.page.pk]))
+        clone = Page.objects.exclude(pk=self.page.pk).get()
+        self.assertTrue(clone.path.startswith("/"))
+        self.assertTrue(clone.path.endswith("/"))
+        # Draft clones render for staff (still logged in from above) so they
+        # can be previewed/edited before publishing.
+        response = self.client.get(clone.path)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Original")
 
 
 class PageDeleteViewTests(TestCase):

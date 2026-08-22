@@ -56,7 +56,12 @@ urlpatterns = [
     # API
     path('api/check-user/', check_user_exists, name='check_user_exists'),
 
-    
+    # Catch-all for CMS pages (apps.pages) at any path other than "/" —
+    # e.g. a duplicated page (dashboard:page_duplicate). Must stay LAST:
+    # every route above is tried first, and this only matches paths
+    # ending in "/", so it never shadows media file URLs (which don't).
+    path('<path:page_path>/', render_page, name='render_page'),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

@@ -700,12 +700,32 @@
     position: sticky;
     top: 0;
     z-index: 40;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
     padding: 10px 16px;
     text-align: center;
     background: #e8a87c;
     color: #1a1a1a;
     font-size: 13px;
     font-weight: 500;
+  }
+  .inline-edit-banner__settings {
+    flex-shrink: 0;
+    border: 1px solid rgba(26, 26, 26, 0.3);
+    border-radius: 9999px;
+    background: rgba(250, 249, 246, 0.6);
+    padding: 4px 12px;
+    font-family: "Moderat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: #1a1a1a;
+    cursor: pointer;
+  }
+  .inline-edit-banner__settings:hover {
+    background: #ffffff;
   }
   [data-inline-field] {
     outline: 1px dashed transparent;
@@ -740,6 +760,83 @@
   }
   .inline-edit-feedback--error {
     background: #b3261e;
+  }
+  .page-settings-panel {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    justify-content: flex-end;
+    background: rgba(26, 26, 26, 0.4);
+  }
+  .page-settings-panel__inner {
+    width: 100%;
+    max-width: 360px;
+    height: 100%;
+    overflow-y: auto;
+    background: #ffffff;
+    padding: 20px;
+  }
+  .page-settings-panel__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .page-settings-panel__title {
+    margin: 0;
+    font-family: "Crimson Pro", Georgia, "Times New Roman", serif;
+    font-size: 18px;
+    font-weight: 600;
+  }
+  .page-settings-panel__close {
+    display: inline-flex;
+    border: none;
+    background: none;
+    padding: 4px;
+    color: #5c5c5c;
+    cursor: pointer;
+  }
+  .page-settings-panel__close:hover {
+    color: #1a1a1a;
+  }
+  .page-settings-panel__field {
+    display: block;
+    margin-bottom: 16px;
+  }
+  .page-settings-panel__field span {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #1a1a1a;
+  }
+  .page-settings-panel__field em {
+    font-style: normal;
+    font-weight: 400;
+    color: #5c5c5c;
+  }
+  .page-settings-panel__field input, .page-settings-panel__field textarea {
+    width: 100%;
+    border: 1.5px solid #e6e1d6;
+    border-radius: 10px;
+    background: #faf9f6;
+    padding: 10px 12px;
+    font-family: "Moderat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 14px;
+    outline: none;
+  }
+  .page-settings-panel__field input:focus, .page-settings-panel__field textarea:focus {
+    border-color: #1a1a1a;
+  }
+  .page-settings-panel__field textarea {
+    min-height: 70px;
+    resize: vertical;
+  }
+  .page-settings-panel__feedback {
+    margin-left: 10px;
+    font-size: 13px;
+    color: #5c5c5c;
   }
   .site-footer {
     position: relative;
@@ -1514,12 +1611,31 @@
     position: sticky;
     top: 0;
     z-index: 40;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
     padding: 10px 16px;
     text-align: center;
     background: #e8a87c;
     color: #1a1a1a;
     font-size: 13px;
     font-weight: 500;
+  }
+  .inline-edit-banner__settings {
+    flex-shrink: 0;
+    border: 1px solid rgba(26, 26, 26, 0.3);
+    border-radius: 9999px;
+    background: rgba(250, 249, 246, 0.6);
+    padding: 4px 12px;
+    font-family: "Moderat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: #1a1a1a;
+    cursor: pointer;
+  }
+  .inline-edit-banner__settings:hover {
+    background: #ffffff;
   }
   [data-inline-field] {
     outline: 1px dashed transparent;
@@ -1555,6 +1671,83 @@
   }
   .inline-edit-feedback--error {
     background: #b3261e;
+  }
+  .page-settings-panel {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    justify-content: flex-end;
+    background: rgba(26, 26, 26, 0.4);
+  }
+  .page-settings-panel__inner {
+    width: 100%;
+    max-width: 400px;
+    height: 100%;
+    overflow-y: auto;
+    background: #ffffff;
+    padding: 28px;
+  }
+  .page-settings-panel__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  .page-settings-panel__title {
+    margin: 0;
+    font-family: "Crimson Pro", Georgia, "Times New Roman", serif;
+    font-size: 20px;
+    font-weight: 600;
+  }
+  .page-settings-panel__close {
+    display: inline-flex;
+    border: none;
+    background: none;
+    padding: 4px;
+    color: #5c5c5c;
+    cursor: pointer;
+  }
+  .page-settings-panel__close:hover {
+    color: #1a1a1a;
+  }
+  .page-settings-panel__field {
+    display: block;
+    margin-bottom: 18px;
+  }
+  .page-settings-panel__field span {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #1a1a1a;
+  }
+  .page-settings-panel__field em {
+    font-style: normal;
+    font-weight: 400;
+    color: #5c5c5c;
+  }
+  .page-settings-panel__field input, .page-settings-panel__field textarea {
+    width: 100%;
+    border: 1.5px solid #e6e1d6;
+    border-radius: 10px;
+    background: #faf9f6;
+    padding: 10px 12px;
+    font-family: "Moderat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 14px;
+    outline: none;
+  }
+  .page-settings-panel__field input:focus, .page-settings-panel__field textarea:focus {
+    border-color: #1a1a1a;
+  }
+  .page-settings-panel__field textarea {
+    min-height: 70px;
+    resize: vertical;
+  }
+  .page-settings-panel__feedback {
+    margin-left: 10px;
+    font-size: 13px;
+    color: #5c5c5c;
   }
   .site-footer {
     position: relative;

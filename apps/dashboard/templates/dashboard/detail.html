@@ -96,6 +96,25 @@
         </div>
       </div>
 
+      <div class="lead-card" style="margin-bottom: 1.5rem;">
+        <p class="lead-card__title">Tildel til bedrifter</p>
+        <form method="post" action="{% url 'dashboard:lead_assign_businesses' lead.pk %}">
+          {% csrf_token %}
+          {% for field, current in assign_fields %}
+            <div class="dashboard-form__group">
+              <label class="dashboard-form__label">Bedrift {{ forloop.counter }}</label>
+              <select name="{{ field }}" class="dashboard-form__select">
+                <option value="">— Ikke tildelt —</option>
+                {% for business in businesses %}
+                  <option value="{{ business.pk }}" {% if current.pk == business.pk %}selected{% endif %}>{{ business.company_name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          {% endfor %}
+          <button type="submit" class="btn-primary">Lagre tildeling</button>
+        </form>
+      </div>
+
       <div class="lead-card">
         <p class="lead-card__title">Farlig sone</p>
         <form method="post" action="{% url 'dashboard:delete_lead' lead.pk %}" data-confirm-delete>

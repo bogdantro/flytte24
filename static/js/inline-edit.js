@@ -79,5 +79,46 @@
     });
   }
 
-  document.addEventListener("DOMContentLoaded", initInlineEdit);
+  /** Wires up the "Sideinnstillinger" slide-over panel — title/SEO fields, which have no on-page visual spot to be contenteditable in place. */
+  function initPageSettingsPanel() {
+    const panel = document.querySelector("[data-page-settings-panel]");
+    const openBtn = document.querySelector("[data-page-settings-open]");
+    if (!panel || !openBtn) return;
+
+    const closeBtn = panel.querySelector("[data-page-settings-close]");
+    const saveBtn = panel.querySelector("[data-page-settings-save]");
+    const feedback = panel.querySelector("[data-page-settings-feedback]");
+    const pageId = panel.dataset.pageId;
+
+    openBtn.addEventListener("click", () => { panel.hidden = false; });
+    closeBtn.addEventListener("click", () => { panel.hidden = true; });
+
+    saveBtn.addEventListener("click", async () => {
+      const fields = {};
+      panel.querySelectorAll("[data-page-field]").forEach((input) => {
+        fields[input.dataset.pageField] = input.value.trim();
+      });
+
+      feedback.textContent = "Lagrer …";
+      try {
+        const response = await fetch(`/dashboard/sider/${pageId}/metadata/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCsrfToken(),
+          },
+          body: JSON.stringify(fields),
+        });
+        const data = response.ok ? await response.json() : { ok: false };
+        feedback.textContent = data.ok ? "Lagret" : "Kunne ikke lagre";
+      } catch {
+        feedback.textContent = "Kunne ikke lagre";
+      }
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    initInlineEdit();
+    initPageSettingsPanel();
+  });
 })();

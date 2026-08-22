@@ -1,2 +1,157 @@
 {% extends 'core/base.html' %}
-{% block content %}{% endblock %}
+{% load static %}
+
+{% block page_title %}For flyttebyråer{% endblock %}
+
+{% block page_meta %}
+  <meta name="description" content="Kobly sender kvalitetssjekkede leads direkte til ditt flyttebyrå. Du velger jobbene selv og betaler kun for jobbene du vinner.">
+{% endblock %}
+
+{% block content %}
+
+<!-- ===================== HERO ===================== -->
+<section class="hero for-bedrifter-hero">
+  <div class="content-width">
+    <p class="hero__eyebrow">For flyttebyråer</p>
+    <h1 class="for-bedrifter-hero__title">Få flere kunder uten å konkurrere på pris</h1>
+    <p class="for-bedrifter-hero__subline">Kobly sender kvalitetssjekkede leads direkte til ditt byrå. Du velger selv hvilke jobber du tar, og betaler kun for jobbene du faktisk vinner.</p>
+    <div class="for-bedrifter-hero__ctas">
+      <a href="#bli-partner" class="btn-primary">
+        Bli partner
+        <span data-icon="arrow-right"></span>
+      </a>
+      <a href="#hvordan" class="btn-outline">Slik fungerer det</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== STATS ===================== -->
+<section class="section">
+  <div class="content-width">
+    <div class="stats">
+      <div class="stat"><span class="stat__value">5 000+</span><span class="stat__label">Forespørsler i året</span></div>
+      <div class="stat"><span class="stat__value">70 %</span><span class="stat__label">Booking-rate på leads</span></div>
+      <div class="stat"><span class="stat__value">0 kr</span><span class="stat__label">Oppstartskostnad</span></div>
+      <div class="stat"><span class="stat__value">24 t</span><span class="stat__label">Snitt responstid</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== VALUE PROPS ===================== -->
+<section class="section value-props">
+  <div class="content-width">
+    <h2 class="value-props__title">Vi gjør det enkelt å vokse</h2>
+    <div class="value-props__grid">
+      <article class="value-card">
+        <span class="value-card__icon" data-icon="filter"></span>
+        <h3 class="value-card__title">Forhåndskvalifiserte leads</h3>
+        <p class="value-card__body">Vi spør kunden om alt: adresse, type flytting, boligtype, dato og volum. Du får kun forespørsler som matcher området og kapasiteten din.</p>
+      </article>
+      <article class="value-card">
+        <span class="value-card__icon" data-icon="wallet"></span>
+        <h3 class="value-card__title">Pay-per-job</h3>
+        <p class="value-card__body">Ingen fastpris, ingen forpliktelser. Du betaler kun en liten andel per jobb du faktisk vinner. Ingen vinst, ingen kostnad.</p>
+      </article>
+      <article class="value-card">
+        <span class="value-card__icon" data-icon="check-circle"></span>
+        <h3 class="value-card__title">Du velger jobbene</h3>
+        <p class="value-card__body">Se forespørselen, og takk ja eller nei. Ingen krav om å takke ja til alt — du styrer kapasiteten selv.</p>
+      </article>
+      <article class="value-card">
+        <span class="value-card__icon" data-icon="sparkles"></span>
+        <h3 class="value-card__title">Bygg omdømme</h3>
+        <p class="value-card__body">Hver jobb gir deg en mulighet til å samle anmeldelser. Gode tilbakemeldinger gjør at du blir foretrukket i fremtidige matchinger.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== HOW IT WORKS ===================== -->
+<section class="section how-it-works" id="hvordan">
+  <div class="content-width">
+    <h2 class="how-it-works__title">Slik fungerer det</h2>
+    <ol class="how-it-works__grid">
+      <li class="step-card">
+        <span class="step-card__number">1</span>
+        <h3 class="step-card__title">Søk om partnerskap</h3>
+        <p class="step-card__body">Fyll ut en kort søknad om bedriften din — område, kapasitet og dokumentasjon. Vi vurderer søknaden innen få dager.</p>
+      </li>
+      <li class="step-card">
+        <span class="step-card__number">2</span>
+        <h3 class="step-card__title">Få leads automatisk</h3>
+        <p class="step-card__body">Vi sender deg forespørsler som matcher kapasiteten din. Hver forespørsel inneholder fra-/til-adresse, beskrivelse og bilder.</p>
+      </li>
+      <li class="step-card">
+        <span class="step-card__number">3</span>
+        <h3 class="step-card__title">Vinn jobber, betal per kontrakt</h3>
+        <p class="step-card__body">Send tilbud direkte i systemet. Når kunden velger deg, betaler du en liten andel av jobben — ellers ingenting.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ===================== FAQ ===================== -->
+<section class="section">
+  <div class="content-width">
+    <div class="faq" data-faq>
+      <h2 class="faq__title">Ofte stilte spørsmål</h2>
+      <ul class="faq__list">
+        <li class="faq-item" data-faq-item>
+          <button type="button" class="faq-item__trigger" data-faq-trigger aria-expanded="false">
+            <span class="faq-item__question">Hva koster det å være partner?</span>
+            <span class="faq-item__icon"><span class="faq-item__icon-plus" data-icon="plus"></span><span class="faq-item__icon-minus" data-icon="minus"></span></span>
+          </button>
+          <p class="faq-item__answer">Det er gratis å bli partner og motta leads. Du betaler kun en liten andel per jobb du faktisk vinner — ingen oppstartskostnad eller månedsabonnement.</p>
+        </li>
+        <li class="faq-item" data-faq-item>
+          <button type="button" class="faq-item__trigger" data-faq-trigger aria-expanded="false">
+            <span class="faq-item__question">Hvilke krav stiller dere til byråene?</span>
+            <span class="faq-item__icon"><span class="faq-item__icon-plus" data-icon="plus"></span><span class="faq-item__icon-minus" data-icon="minus"></span></span>
+          </button>
+          <p class="faq-item__answer">Vi krever norsk organisasjonsnummer, gyldig forsikring, dokumentert flytteerfaring og positive kundeanmeldelser. Vi følger opp kvaliteten kontinuerlig.</p>
+        </li>
+        <li class="faq-item" data-faq-item>
+          <button type="button" class="faq-item__trigger" data-faq-trigger aria-expanded="false">
+            <span class="faq-item__question">Kan jeg si nei til en lead?</span>
+            <span class="faq-item__icon"><span class="faq-item__icon-plus" data-icon="plus"></span><span class="faq-item__icon-minus" data-icon="minus"></span></span>
+          </button>
+          <p class="faq-item__answer">Ja. Du ser hver forespørsel før du svarer, og kan takke nei uten konsekvenser. Du styrer selv hvor mange jobber du vil ta.</p>
+        </li>
+        <li class="faq-item" data-faq-item>
+          <button type="button" class="faq-item__trigger" data-faq-trigger aria-expanded="false">
+            <span class="faq-item__question">Hvor mange leads kan jeg forvente?</span>
+            <span class="faq-item__icon"><span class="faq-item__icon-plus" data-icon="plus"></span><span class="faq-item__icon-minus" data-icon="minus"></span></span>
+          </button>
+          <p class="faq-item__answer">Det varierer med område og kapasitet. Bedrifter i Oslo, Bergen og Trondheim får i snitt 15–40 forespørsler i måneden. Vi gir deg konkrete estimater for ditt område når du søker.</p>
+        </li>
+        <li class="faq-item" data-faq-item>
+          <button type="button" class="faq-item__trigger" data-faq-trigger aria-expanded="false">
+            <span class="faq-item__question">Hvor raskt får jeg første lead?</span>
+            <span class="faq-item__icon"><span class="faq-item__icon-plus" data-icon="plus"></span><span class="faq-item__icon-minus" data-icon="minus"></span></span>
+          </button>
+          <p class="faq-item__answer">Etter godkjent søknad får du tilgang til neste matching-runde. De fleste partnere mottar første forespørsel innen en uke.</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FINAL CTA ===================== -->
+<section class="section partner-cta" id="bli-partner">
+  <div class="content-width">
+    <div class="partner-cta__card">
+      <h2 class="partner-cta__title">Bli en av Norges mest foretrukne byråer</h2>
+      <p class="partner-cta__body">Søk om partnerskap i dag. Vi tar kontakt innen kort tid for å vurdere søknaden.</p>
+      <!-- Deliberate deviation from the reference: the reference site links this button to a bare
+           "mailto:" address for the partner team, but this port has a real signup form + backend
+           at /for-bedrifter/bli-partner/ (see for_business_partner in apps/core/views.py), so we
+           link there instead of a mailto: placeholder. -->
+      <a href="/for-bedrifter/bli-partner/" class="btn-primary partner-cta__button">
+        Send søknad
+        <span data-icon="arrow-right"></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

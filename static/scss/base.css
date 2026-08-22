@@ -696,6 +696,77 @@
   .footer-cta .postnummer-form {
     margin-top: 32px;
   }
+  .value-props .value-props__title {
+    margin: 0;
+    font-size: 30px;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+  .value-props .value-props__grid {
+    margin-top: 40px;
+    display: grid;
+    gap: 16px;
+  }
+  .value-card {
+    border-radius: 14px;
+    background: #faf9f6;
+    border: 1px solid #e6e1d6;
+    padding: 24px;
+  }
+  .value-card .value-card__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #d6e8a8;
+    color: #1a1a1a;
+  }
+  .value-card .value-card__title {
+    margin: 20px 0 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+  .value-card .value-card__body {
+    margin: 8px 0 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #5c5c5c;
+  }
+  .partner-cta .partner-cta__card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border-radius: 14px;
+    background: #221814;
+    color: #faf9f6;
+    padding: 48px 24px;
+  }
+  .partner-cta .partner-cta__title {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 1.1;
+    color: #faf9f6;
+  }
+  .partner-cta .partner-cta__body {
+    margin: 16px 0 0;
+    max-width: 420px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: rgba(250, 249, 246, 0.7);
+  }
+  .partner-cta .partner-cta__button {
+    margin-top: 28px;
+    background: #faf9f6;
+    color: #1a1a1a;
+  }
+  .partner-cta .partner-cta__button:hover {
+    background: rgba(250, 249, 246, 0.9);
+  }
   .blog-hero__title, .agencies-hero__title {
     margin: 12px 0 0;
     font-family: "Crimson Pro", Georgia, "Times New Roman", serif;
@@ -703,6 +774,30 @@
     font-size: 40px;
     line-height: 1.05;
     color: #1a1a1a;
+  }
+  .for-bedrifter-hero__title {
+    margin: 12px 0 0;
+    font-family: "Crimson Pro", Georgia, "Times New Roman", serif;
+    font-weight: 600;
+    font-size: 40px;
+    line-height: 1.05;
+    color: #1a1a1a;
+  }
+  .for-bedrifter-hero__subline {
+    margin: 16px 0 0;
+    max-width: 576px;
+    font-size: 16px;
+    color: #5c5c5c;
+  }
+  .for-bedrifter-hero__ctas {
+    margin-top: 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .for-bedrifter-hero__ctas .btn-primary, .for-bedrifter-hero__ctas .btn-outline {
+    justify-content: center;
   }
   .blog-hero__subline, .agencies-hero__subline {
     margin: 16px 0 0;
@@ -2009,6 +2104,81 @@
   .footer-cta .postnummer-form {
     margin-top: 40px;
   }
+  .value-props .value-props__title {
+    margin: 0;
+    font-size: 42px;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+  .value-props .value-props__grid {
+    margin-top: 56px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  .value-card {
+    border-radius: 14px;
+    background: #faf9f6;
+    border: 1px solid #e6e1d6;
+    padding: 32px;
+  }
+  .value-card:hover {
+    background: rgba(250, 249, 246, 0.7);
+  }
+  .value-card .value-card__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #d6e8a8;
+    color: #1a1a1a;
+  }
+  .value-card .value-card__title {
+    margin: 24px 0 0;
+    font-size: 22px;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+  .value-card .value-card__body {
+    margin: 10px 0 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #5c5c5c;
+  }
+  .partner-cta .partner-cta__card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border-radius: 14px;
+    background: #221814;
+    color: #faf9f6;
+    padding: 72px 40px;
+  }
+  .partner-cta .partner-cta__title {
+    margin: 0;
+    font-size: 48px;
+    font-weight: 600;
+    line-height: 1.05;
+    color: #faf9f6;
+  }
+  .partner-cta .partner-cta__body {
+    margin: 16px 0 0;
+    max-width: 480px;
+    font-size: 18px;
+    line-height: 1.6;
+    color: rgba(250, 249, 246, 0.7);
+  }
+  .partner-cta .partner-cta__button {
+    margin-top: 32px;
+    background: #faf9f6;
+    color: #1a1a1a;
+  }
+  .partner-cta .partner-cta__button:hover {
+    background: rgba(250, 249, 246, 0.9);
+  }
   .blog-hero__title, .agencies-hero__title {
     margin: 12px 0 0;
     font-family: "Crimson Pro", Georgia, "Times New Roman", serif;
@@ -2016,6 +2186,27 @@
     font-size: 56px;
     line-height: 1.05;
     color: #1a1a1a;
+  }
+  .for-bedrifter-hero__title {
+    margin: 12px 0 0;
+    font-family: "Crimson Pro", Georgia, "Times New Roman", serif;
+    font-weight: 600;
+    font-size: 56px;
+    line-height: 1.05;
+    color: #1a1a1a;
+  }
+  .for-bedrifter-hero__subline {
+    margin: 16px 0 0;
+    max-width: 576px;
+    font-size: 18px;
+    color: #5c5c5c;
+  }
+  .for-bedrifter-hero__ctas {
+    margin-top: 32px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
   }
   .blog-hero__subline, .agencies-hero__subline {
     margin: 16px 0 0;

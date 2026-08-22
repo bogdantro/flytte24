@@ -765,7 +765,86 @@ $radiusPill: 9999px;
     margin-top: 32px;
   }
 
-  // ---------------- blog & agencies simple hero (blogg/index, byraer/index) ----------------
+  // ---------------- value props (pages/about/for-business.html) ----------------
+  .value-props{
+    .value-props__title{
+      margin: 0;
+      font-size: 30px;
+      font-weight: 600;
+      color: $ink;
+    }
+    .value-props__grid{
+      margin-top: 40px;
+      display: grid;
+      gap: 16px;
+    }
+  }
+  .value-card{
+    border-radius: $radiusCard;
+    background: $surfaceSoft;
+    border: 1px solid $line;
+    padding: 24px;
+    .value-card__icon{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: $accentLime;
+      color: $ink;
+    }
+    .value-card__title{
+      margin: 20px 0 0;
+      font-size: 20px;
+      font-weight: 600;
+      color: $ink;
+    }
+    .value-card__body{
+      margin: 8px 0 0;
+      font-size: 15px;
+      line-height: 1.6;
+      color: $inkMuted;
+    }
+  }
+
+  // ---------------- partner cta banner (pages/about/for-business.html) ----------------
+  .partner-cta{
+    .partner-cta__card{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      border-radius: $radiusCard;
+      background: $brand;
+      color: $brandInk;
+      padding: 48px 24px;
+    }
+    .partner-cta__title{
+      margin: 0;
+      font-size: 32px;
+      font-weight: 600;
+      line-height: 1.1;
+      color: $brandInk;
+    }
+    .partner-cta__body{
+      margin: 16px 0 0;
+      max-width: 420px;
+      font-size: 16px;
+      line-height: 1.6;
+      color: rgba(250, 249, 246, 0.7);
+    }
+    .partner-cta__button{
+      margin-top: 28px;
+      background: $brandInk;
+      color: $ink;
+      &:hover{
+        background: rgba(250, 249, 246, 0.9);
+      }
+    }
+  }
+
+  // ---------------- blog & agencies & for-bedrifter simple hero (blogg/index, byraer/index, for-bedrifter) ----------------
   .blog-hero__title, .agencies-hero__title{
     margin: 12px 0 0;
     font-family: $fontSerif;
@@ -773,6 +852,30 @@ $radiusPill: 9999px;
     font-size: 40px;
     line-height: 1.05;
     color: $ink;
+  }
+  .for-bedrifter-hero__title{
+    margin: 12px 0 0;
+    font-family: $fontSerif;
+    font-weight: 600;
+    font-size: 40px;
+    line-height: 1.05;
+    color: $ink;
+  }
+  .for-bedrifter-hero__subline{
+    margin: 16px 0 0;
+    max-width: 576px;
+    font-size: 16px;
+    color: $inkMuted;
+  }
+  .for-bedrifter-hero__ctas{
+    margin-top: 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    .btn-primary, .btn-outline{
+      justify-content: center;
+    }
   }
   .blog-hero__subline, .agencies-hero__subline{
     margin: 16px 0 0;
@@ -2149,7 +2252,90 @@ $radiusPill: 9999px;
     margin-top: 40px;
   }
 
-  // ---------------- blog & agencies simple hero (blogg/index, byraer/index) ----------------
+  // ---------------- value props (pages/about/for-business.html) ----------------
+  .value-props{
+    .value-props__title{
+      margin: 0;
+      font-size: 42px;
+      font-weight: 600;
+      color: $ink;
+    }
+    .value-props__grid{
+      margin-top: 56px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+  }
+  .value-card{
+    border-radius: $radiusCard;
+    background: $surfaceSoft;
+    border: 1px solid $line;
+    padding: 32px;
+    &:hover{
+      background: rgba(250, 249, 246, 0.7);
+    }
+    .value-card__icon{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: $accentLime;
+      color: $ink;
+    }
+    .value-card__title{
+      margin: 24px 0 0;
+      font-size: 22px;
+      font-weight: 600;
+      color: $ink;
+    }
+    .value-card__body{
+      margin: 10px 0 0;
+      font-size: 16px;
+      line-height: 1.6;
+      color: $inkMuted;
+    }
+  }
+
+  // ---------------- partner cta banner (pages/about/for-business.html) ----------------
+  .partner-cta{
+    .partner-cta__card{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      border-radius: $radiusCard;
+      background: $brand;
+      color: $brandInk;
+      padding: 72px 40px;
+    }
+    .partner-cta__title{
+      margin: 0;
+      font-size: 48px;
+      font-weight: 600;
+      line-height: 1.05;
+      color: $brandInk;
+    }
+    .partner-cta__body{
+      margin: 16px 0 0;
+      max-width: 480px;
+      font-size: 18px;
+      line-height: 1.6;
+      color: rgba(250, 249, 246, 0.7);
+    }
+    .partner-cta__button{
+      margin-top: 32px;
+      background: $brandInk;
+      color: $ink;
+      &:hover{
+        background: rgba(250, 249, 246, 0.9);
+      }
+    }
+  }
+
+  // ---------------- blog & agencies & for-bedrifter simple hero (blogg/index, byraer/index, for-bedrifter) ----------------
   .blog-hero__title, .agencies-hero__title{
     margin: 12px 0 0;
     font-family: $fontSerif;
@@ -2157,6 +2343,27 @@ $radiusPill: 9999px;
     font-size: 56px;
     line-height: 1.05;
     color: $ink;
+  }
+  .for-bedrifter-hero__title{
+    margin: 12px 0 0;
+    font-family: $fontSerif;
+    font-weight: 600;
+    font-size: 56px;
+    line-height: 1.05;
+    color: $ink;
+  }
+  .for-bedrifter-hero__subline{
+    margin: 16px 0 0;
+    max-width: 576px;
+    font-size: 18px;
+    color: $inkMuted;
+  }
+  .for-bedrifter-hero__ctas{
+    margin-top: 32px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
   }
   .blog-hero__subline, .agencies-hero__subline{
     margin: 16px 0 0;

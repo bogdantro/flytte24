@@ -180,3 +180,24 @@ class SeedMarketingContentCommandTests(TestCase):
         call_command("seed_marketing_content", stdout=StringIO())
         self.assertEqual(Agency.objects.count(), 4)
         self.assertEqual(Article.objects.count(), 3)
+
+
+class ForBusinessPageTests(TestCase):
+    def test_page_200_with_h1(self):
+        response = self.client.get("/for-bedrifter/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Få flere kunder uten å konkurrere på pris")
+
+    def test_page_contains_a_faq_question(self):
+        response = self.client.get("/for-bedrifter/")
+        self.assertContains(response, "Hva koster det å være partner?")
+
+    def test_cta_links_to_real_signup_form_not_a_mailto(self):
+        """Deliberate deviation from the reference site, which links its final CTA to a bare
+        mailto:partner@kobly.no. This port has a real signup form + backend at
+        /for-bedrifter/bli-partner/ (for_business_partner in apps/core/views.py), so the button
+        must point there instead — this is the detail most likely to get silently reverted back
+        to the reference's mailto: placeholder, so assert both sides explicitly."""
+        response = self.client.get("/for-bedrifter/")
+        self.assertContains(response, 'href="/for-bedrifter/bli-partner/"')
+        self.assertNotContains(response, "mailto:partner@kobly.no")

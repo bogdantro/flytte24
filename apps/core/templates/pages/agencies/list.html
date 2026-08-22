@@ -1,0 +1,49 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block page_title %}Flyttebyråer i Kobly-nettverket — Kobly{% endblock %}
+
+{% block page_meta %}
+  <meta name="description" content="Møt de kvalitetssjekkede flyttebyråene i Kobly-nettverket.">
+{% endblock %}
+
+{% block content %}
+
+<!-- ===================== AGENCIES HERO ===================== -->
+<section class="hero agencies-hero">
+  <div class="content-width">
+    <p class="hero__eyebrow">Kobly-nettverket</p>
+    <h1 class="agencies-hero__title">Flyttebyråer i Kobly-nettverket</h1>
+    <p class="agencies-hero__subline">Håndplukkede, kvalitetssjekkede byråer — les om hvordan de jobber før du ber om tilbud.</p>
+  </div>
+</section>
+
+<!-- ===================== AGENCY GRID ===================== -->
+<section class="section agencies-index">
+  <div class="content-width">
+    <div class="agency-grid">
+      {% for agency in agencies %}
+        <article class="agency-card">
+          <a href="{% url 'agency_detail' agency.slug %}" class="agency-card__link">
+            <div class="agency-card__logo{% if agency.logo_blend_multiply %} agency-card__logo--blend{% endif %}">
+              <img src="{% static agency.logo %}" alt="{{ agency.name }}">
+            </div>
+            <h2 class="agency-card__name">{{ agency.name }}</h2>
+            <p class="agency-card__tagline">{{ agency.tagline }}</p>
+            <p class="agency-card__short">{{ agency.short }}</p>
+            <div class="agency-card__footer">
+              <!-- Decimal renders with a period, not a Norwegian comma (see wizard-form-spec
+                   note) — accepted for v1 rather than building a dedicated number filter. -->
+              <span class="agency-card__rating">
+                <span data-icon="star" class="agency-card__rating-icon"></span>
+                {{ agency.rating|floatformat:1 }} <span class="agency-card__review-count">({{ agency.review_count }} anmeldelser)</span>
+              </span>
+            </div>
+          </a>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}

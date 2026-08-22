@@ -4,6 +4,7 @@ from django.core.management import call_command
 from django.test import TestCase
 
 from apps.pages.models import Page, PageSection
+from apps.core.models import Agency, Article
 
 
 class HomePageRenderingTests(TestCase):
@@ -121,3 +122,61 @@ class RenderPageViewTests(TestCase):
         )
         response = self.client.get("/om-oss/")
         self.assertEqual(response.status_code, 404)
+
+
+class BlogPageTests(TestCase):
+    def setUp(self):
+        call_command("seed_marketing_content", stdout=StringIO())
+
+    def test_blog_index_200_lists_both_article_titles(self):
+        response = self.client.get("/blogg/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Hva er viktig å tenke på når du skal flytte?")
+        self.assertContains(response, "Hva koster det å bruke flyttebyrå i 2026?")
+
+    def test_blog_article_200_shows_real_block_content(self):
+        response = self.client.get("/blogg/hva-er-viktig-a-tenke-pa-nar-du-skal-flytte/")
+        self.assertEqual(response.status_code, 200)
+        # h2 block
+        self.assertContains(response, "Seks uker før: ta de store valgene")
+        # p block
+        self.assertContains(response, "De fleste undervurderer ikke selve flyttedagen")
+
+    def test_blog_article_404s_on_unknown_slug(self):
+        response = self.client.get("/blogg/dette-finnes-ikke/")
+        self.assertEqual(response.status_code, 404)
+
+
+class AgencyPageTests(TestCase):
+    def setUp(self):
+        call_command("seed_marketing_content", stdout=StringIO())
+
+    def test_agency_list_200_lists_all_four_agency_names(self):
+        response = self.client.get("/byraer/")
+        self.assertEqual(response.status_code, 200)
+        for name in ["LØFT", "relok.", "Flyttefoten", "Flytteby"]:
+            self.assertContains(response, name)
+
+    def test_agency_detail_200_shows_tagline_services_and_a_review(self):
+        response = self.client.get("/byraer/loft/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Flytting med hodet, ikke bare ryggen")
+        self.assertContains(response, "Piano og flygel")
+        self.assertContains(response, "hele leiligheten var nede på tre timer")
+
+    def test_agency_detail_404s_on_unknown_slug(self):
+        response = self.client.get("/byraer/dette-finnes-ikke/")
+        self.assertEqual(response.status_code, 404)
+
+
+class SeedMarketingContentCommandTests(TestCase):
+    def test_seed_creates_four_agencies_and_three_articles(self):
+        call_command("seed_marketing_content", stdout=StringIO())
+        self.assertEqual(Agency.objects.count(), 4)
+        self.assertEqual(Article.objects.count(), 3)
+
+    def test_seed_run_twice_does_not_duplicate(self):
+        call_command("seed_marketing_content", stdout=StringIO())
+        call_command("seed_marketing_content", stdout=StringIO())
+        self.assertEqual(Agency.objects.count(), 4)
+        self.assertEqual(Article.objects.count(), 3)

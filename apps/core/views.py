@@ -375,5 +375,29 @@ def for_business(request):
 def contact(request):      
     return render(request, 'pages/contact/contact.html')  
 
-def about(request):      
-    return render(request, 'pages/about/about.html')  
+def about(request):
+    return render(request, 'pages/about/about.html')
+
+
+def blog_index(request):
+    from apps.core.models import Article
+    articles = Article.objects.all()
+    return render(request, "pages/blog/index.html", {"articles": articles})
+
+
+def blog_article(request, slug):
+    from apps.core.models import Article
+    article = get_object_or_404(Article, slug=slug)
+    return render(request, "pages/blog/article.html", {"article": article})
+
+
+def agency_list(request):
+    from apps.core.models import Agency
+    agencies = Agency.objects.all()
+    return render(request, "pages/agencies/list.html", {"agencies": agencies})
+
+
+def agency_detail(request, slug):
+    from apps.core.models import Agency
+    agency = get_object_or_404(Agency, slug=slug)
+    return render(request, "pages/agencies/detail.html", {"agency": agency})  

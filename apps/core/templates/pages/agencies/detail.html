@@ -1,0 +1,110 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block page_title %}{{ agency.name }} — Kobly{% endblock %}
+
+{% block page_meta %}
+  <meta name="description" content="{{ agency.tagline }}">
+{% endblock %}
+
+{% block content %}
+
+<!-- ===================== AGENCY HEADER ===================== -->
+<section class="section agency-detail">
+  <div class="content-width agency-detail__inner">
+    <a href="{% url 'agency_list' %}" class="agency-detail__back">&larr; Tilbake til byråer</a>
+
+    <div class="agency-detail__header">
+      <div class="agency-detail__logo{% if agency.logo_blend_multiply %} agency-detail__logo--blend{% endif %}">
+        <img src="{% static agency.logo %}" alt="{{ agency.name }}">
+      </div>
+      <div class="agency-detail__header-text">
+        <h1 class="agency-detail__name">{{ agency.name }}</h1>
+        <p class="agency-detail__tagline">{{ agency.tagline }}</p>
+      </div>
+    </div>
+
+    <!-- ===================== STATS ROW ===================== -->
+    <div class="agency-detail__stats">
+      <div class="agency-detail__stat">
+        <span class="agency-detail__stat-value">
+          <span data-icon="star" class="agency-detail__stat-icon"></span>{{ agency.rating|floatformat:1 }}
+        </span>
+        <span class="agency-detail__stat-label">{{ agency.review_count }} anmeldelser</span>
+      </div>
+      <div class="agency-detail__stat">
+        <span class="agency-detail__stat-value">{{ agency.jobs_completed }}</span>
+        <span class="agency-detail__stat-label">Fullførte oppdrag</span>
+      </div>
+      <div class="agency-detail__stat">
+        <span class="agency-detail__stat-value">{{ agency.response_time }}</span>
+        <span class="agency-detail__stat-label">Responstid</span>
+      </div>
+      <div class="agency-detail__stat">
+        <span class="agency-detail__stat-value">{{ agency.member_since }}</span>
+        <span class="agency-detail__stat-label">Medlem i Kobly siden</span>
+      </div>
+    </div>
+
+    <!-- ===================== ABOUT ===================== -->
+    <div class="agency-detail__about">
+      {% for paragraph in agency.about %}
+        <p>{{ paragraph }}</p>
+      {% endfor %}
+    </div>
+
+    <!-- ===================== SERVICES + AREAS ===================== -->
+    <div class="agency-detail__lists">
+      <div class="agency-detail__list-block">
+        <h2 class="agency-detail__list-title">Tjenester</h2>
+        <ul class="agency-detail__tags">
+          {% for service in agency.services %}
+            <li>{{ service }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="agency-detail__list-block">
+        <h2 class="agency-detail__list-title">Dekningsområder</h2>
+        <ul class="agency-detail__tags">
+          {% for area in agency.areas %}
+            <li>{{ area }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <!-- ===================== CONTACT ===================== -->
+    <div class="agency-detail__contact">
+      <p class="agency-detail__contact-name">{{ agency.contact_name }}</p>
+      <p class="agency-detail__contact-role">{{ agency.contact_role }} · {{ agency.contact_phone }}</p>
+    </div>
+
+    <!-- ===================== REVIEWS ===================== -->
+    <div class="agency-detail__reviews">
+      <h2 class="agency-detail__reviews-title">Hva sier kundene?</h2>
+      <div class="testimonials__grid agency-reviews-grid">
+        {% for review in agency.reviews %}
+          <article class="testimonial-card review-card">
+            <div class="review-card__stars">
+              {% for i in "12345" %}
+                <span data-icon="star" class="review-card__star{% if forloop.counter <= review.stars %} review-card__star--filled{% else %} review-card__star--empty{% endif %}"></span>
+              {% endfor %}
+            </div>
+            <p class="testimonial-card__quote review-card__comment">&ldquo;{{ review.comment }}&rdquo;</p>
+            <p class="testimonial-card__byline">{{ review.name }}<span> · {{ review.service }} · {{ review.date|date:"d.m.Y" }}</span></p>
+          </article>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- ===================== CTA ===================== -->
+    <div class="agency-detail__cta">
+      <a href="/flytteforesporsel/" class="btn-primary">
+        Få tilbud fra {{ agency.name }}
+        <span data-icon="arrow-right"></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

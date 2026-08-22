@@ -1,0 +1,46 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block page_title %}Bloggen — Kobly{% endblock %}
+
+{% block page_meta %}
+  <meta name="description" content="Gode råd om flytting, flyttebyrå og flyttevask, fra Kobly.">
+{% endblock %}
+
+{% block content %}
+
+<!-- ===================== BLOG HERO ===================== -->
+<section class="hero blog-hero">
+  <div class="content-width">
+    <p class="hero__eyebrow">Kobly-bloggen</p>
+    <h1 class="blog-hero__title">Fra bloggen</h1>
+    <p class="blog-hero__subline">Gode råd om flytting, pris og flyttevask — skrevet for deg som skal flytte i Norge.</p>
+  </div>
+</section>
+
+<!-- ===================== ARTICLE GRID ===================== -->
+<section class="section blog-index">
+  <div class="content-width">
+    <div class="blog-grid">
+      {% for article in articles %}
+        <article class="blog-card">
+          <a href="{% url 'blog_article' article.slug %}" class="blog-card__link">
+            <!-- No real photography for these articles in this Django project yet — see
+                 apps/core/templates/pages/blog/article.html for the same placeholder note. -->
+            <div class="blog-card__image-placeholder" aria-hidden="true"></div>
+            <div class="blog-card__body">
+              <p class="blog-card__meta">{{ article.date|date:"d.m.Y" }} · {{ article.read_minutes }} min lesetid</p>
+              <h2 class="blog-card__title">{{ article.title }}</h2>
+              <p class="blog-card__ingress">{{ article.ingress }}</p>
+              <span class="blog-card__cta">Les mer<span data-icon="arrow-right"></span></span>
+            </div>
+          </a>
+        </article>
+      {% empty %}
+        <p class="blog-index__empty">Ingen artikler enda.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}

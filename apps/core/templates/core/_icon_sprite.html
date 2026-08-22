@@ -25,4 +25,11 @@ inline hydration below) clones the matching <symbol> into each placeholder.
   <symbol id="icon-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
   </symbol>
+  <!-- Used for agency review ratings (pages/agencies/detail.html, list.html) —
+       filled via currentColor rather than stroke-only like the icons above,
+       so a wrapping .rating-stars__star--filled/--empty span class can color
+       it amber or muted without needing a second symbol. -->
+  <symbol id="icon-star" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+    <path d="M12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2Z"/>
+  </symbol>
 </svg>

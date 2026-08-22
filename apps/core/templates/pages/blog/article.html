@@ -1,0 +1,61 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block page_title %}{{ article.title }} — Kobly{% endblock %}
+
+{% block page_meta %}
+  <meta name="description" content="{{ article.ingress }}">
+{% endblock %}
+
+{% block content %}
+
+<!-- ===================== ARTICLE HEADER ===================== -->
+<section class="section blog-article">
+  <div class="content-width blog-article__inner">
+    <a href="{% url 'blog_index' %}" class="blog-article__back">&larr; Tilbake til bloggen</a>
+
+    <p class="blog-article__meta">{{ article.date|date:"d.m.Y" }} · {{ article.read_minutes }} min lesetid</p>
+    <h1 class="blog-article__title">{{ article.title }}</h1>
+    <p class="blog-article__ingress">{{ article.ingress }}</p>
+
+    <!-- article.header_image holds the reference site's hotlinked Unsplash URL (kept
+         faithfully in the seeded data), but there's no real photography wired into this
+         Django project's static files yet, so we render a placeholder box instead of an
+         <img> that would just 404. -->
+    <div class="blog-article__image-placeholder" aria-hidden="true"></div>
+
+    <div class="blog-article__body">
+      {% for block in article.blocks %}
+        {% if block.type == "h2" %}
+          <h2>{{ block.text }}</h2>
+        {% elif block.type == "p" %}
+          <p>{{ block.text }}</p>
+        {% elif block.type == "list" %}
+          <ul>
+            {% for item in block.items %}
+              <li>{{ item }}</li>
+            {% endfor %}
+          </ul>
+        {% elif block.type == "image" %}
+          <!-- block.src/alt/caption are stored verbatim from the reference data, but this
+               project has no matching image file, so we render a placeholder box rather
+               than a broken <img>. alt text kept as an HTML comment, not shown visually. -->
+          <!-- alt: {{ block.alt }} -->
+          <figure class="blog-article__figure">
+            <div class="blog-article__image-placeholder blog-article__image-placeholder--inline" aria-hidden="true"></div>
+            {% if block.caption %}<figcaption class="blog-article__caption">{{ block.caption }}</figcaption>{% endif %}
+          </figure>
+        {% elif block.type == "cta" %}
+          <div class="blog-article__cta">
+            <a href="/flytteforesporsel/" class="btn-primary">
+              Få 3 tilbud gratis
+              <span data-icon="arrow-right"></span>
+            </a>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}

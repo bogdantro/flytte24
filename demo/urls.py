@@ -56,6 +56,11 @@ urlpatterns = [
     # API
     path('api/check-user/', check_user_exists, name='check_user_exists'),
 
+    path('blogg/', blog_index, name='blog_index'),
+    path('blogg/<slug:slug>/', blog_article, name='blog_article'),
+    path('byraer/', agency_list, name='agency_list'),
+    path('byraer/<slug:slug>/', agency_detail, name='agency_detail'),
+
     # Catch-all for CMS pages (apps.pages) at any path other than "/" —
     # e.g. a duplicated page (dashboard:page_duplicate). Must stay LAST:
     # every route above is tried first, and this only matches paths

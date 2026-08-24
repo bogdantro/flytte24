@@ -137,14 +137,21 @@ order) clean instead of leaving invisible nav/footer content behind it.
               <span class="field-label">Adresse</span>
               <input type="text" name="address" class="field-input" value="{{ form.address.value|default:'' }}">
             </label>
-            <label class="text-field">
-              <span class="field-label">Postnummer</span>
-              <input type="text" name="postal_code" class="field-input" inputmode="numeric" maxlength="4" value="{{ form.postal_code.value|default:'' }}">
-            </label>
-            <label class="text-field">
-              <span class="field-label">By</span>
-              <input type="text" name="city" class="field-input" value="{{ form.city.value|default:'' }}">
-            </label>
+            <div class="field-row">
+              <label class="text-field">
+                <span class="field-label">Postnummer</span>
+                <input type="text" name="postal_code" class="field-input" inputmode="numeric" maxlength="4" value="{{ form.postal_code.value|default:'' }}" data-postal-code-input>
+              </label>
+              <label class="text-field">
+                <span class="field-label">By</span>
+                <!-- Filled in automatically from postal_code (static/js/partner-wizard.js,
+                     Bring's free postal-code lookup) — stays a normal editable
+                     text input rather than readonly, so it can be corrected by
+                     hand if the lookup fails or a postal code covers more than
+                     one place name. -->
+                <input type="text" name="city" class="field-input" value="{{ form.city.value|default:'' }}" data-city-input>
+              </label>
+            </div>
           </div>
         </section>
 
@@ -156,29 +163,26 @@ order) clean instead of leaving invisible nav/footer content behind it.
           </div>
 
           <div class="wizard-step__body">
-            <div class="pill-group" data-pill-group="tiltaleform">
-              <p class="pill-group__label">Tiltaleform</p>
-              <div class="pill-group__grid pill-group__grid--2col">
-                <label class="pill-button"><input type="radio" name="tiltaleform" value="Du" {% if form.tiltaleform.value == "Du" %}checked{% endif %}>Du</label>
-                <label class="pill-button"><input type="radio" name="tiltaleform" value="Dere" {% if form.tiltaleform.value == "Dere" %}checked{% endif %}>Dere</label>
-              </div>
+            <div class="field-row">
+              <label class="text-field">
+                <span class="field-label">Fornavn</span>
+                <input type="text" name="first_name" class="field-input" value="{{ form.first_name.value|default:'' }}">
+              </label>
+              <label class="text-field">
+                <span class="field-label">Etternavn</span>
+                <input type="text" name="last_name" class="field-input" value="{{ form.last_name.value|default:'' }}">
+              </label>
             </div>
-            <label class="text-field">
-              <span class="field-label">Fornavn</span>
-              <input type="text" name="first_name" class="field-input" value="{{ form.first_name.value|default:'' }}">
-            </label>
-            <label class="text-field">
-              <span class="field-label">Etternavn</span>
-              <input type="text" name="last_name" class="field-input" value="{{ form.last_name.value|default:'' }}">
-            </label>
-            <label class="text-field">
-              <span class="field-label">E-post</span>
-              <input type="email" name="email" class="field-input" value="{{ form.email.value|default:'' }}">
-            </label>
-            <label class="text-field">
-              <span class="field-label">Telefon</span>
-              <input type="tel" name="phone" class="field-input" value="{{ form.phone.value|default:'' }}">
-            </label>
+            <div class="field-row">
+              <label class="text-field">
+                <span class="field-label">E-post</span>
+                <input type="email" name="email" class="field-input" value="{{ form.email.value|default:'' }}">
+              </label>
+              <label class="text-field">
+                <span class="field-label">Telefon</span>
+                <input type="tel" name="phone" class="field-input" value="{{ form.phone.value|default:'' }}">
+              </label>
+            </div>
 
             <div class="photo-field">
               <p class="field-label field-label--strong">Logo</p>

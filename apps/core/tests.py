@@ -227,7 +227,6 @@ def _valid_partner_payload(**overrides):
         "address": "Storgata 1",
         "postal_code": "0153",
         "city": "Oslo",
-        "tiltaleform": "Du",
         "first_name": "Ola",
         "last_name": "Nordmann",
         "email": "ola@nordisk-flytt.no",

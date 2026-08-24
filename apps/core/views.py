@@ -366,7 +366,6 @@ def for_business_partner(request):
                 address=form.cleaned_data["address"],
                 postal_code=form.cleaned_data["postal_code"],
                 city=form.cleaned_data["city"],
-                tiltaleform=form.cleaned_data["tiltaleform"],
                 first_name=form.cleaned_data["first_name"],
                 last_name=form.cleaned_data["last_name"],
             )

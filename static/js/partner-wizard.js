@@ -152,6 +152,42 @@
   }
 
   // ---------------------------------------------------------------
+  // Postnummer -> By autofill (step 3) — same free, keyless Norwegian
+  // lookup pattern used elsewhere in this codebase for address autofill
+  // (Geonorge, in the customer wizard), here using Bring's public
+  // postal-code API. Fails silently on error/unknown code and just
+  // leaves the By field for manual entry.
+  // ---------------------------------------------------------------
+  let lastLookedUpPostalCode = null;
+
+  /** Looks up the city name for a 4-digit Norwegian postal code and fills [name="city"] with it. */
+  function lookupCityFromPostalCode(postalCode) {
+    if (lastLookedUpPostalCode === postalCode) return;
+    lastLookedUpPostalCode = postalCode;
+    fetch(`https://api.bring.com/shippingguide/api/postalCode.json?pnr=${postalCode}&country=NO`)
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data) => {
+        if (!data || !data.valid || !data.result) return;
+        const cityInput = document.querySelector('[name="city"]');
+        cityInput.value = data.result;
+        cityInput.dispatchEvent(new Event("input", { bubbles: true }));
+      })
+      .catch(() => {
+        // No network / API down — leave the By field for manual entry.
+      });
+  }
+
+  /** Wires up the postal-code field to trigger the city autofill once 4 digits are entered. */
+  function initPostalCodeLookup() {
+    const input = document.querySelector("[data-postal-code-input]");
+    if (!input) return;
+    input.addEventListener("input", () => {
+      const postalCode = input.value.trim();
+      if (/^\d{4}$/.test(postalCode)) lookupCityFromPostalCode(postalCode);
+    });
+  }
+
+  // ---------------------------------------------------------------
   // Logo upload (step 4) — same object-URL-preview technique as
   // wizard.js's photo grid, trimmed to a single file: selecting a new
   // file replaces (not appends to) the current selection, and the upload
@@ -225,6 +261,7 @@
     updateProgressBar();
     updateNavButton();
     initLogoUpload();
+    initPostalCodeLookup();
   }
 
   document.addEventListener("DOMContentLoaded", initWizard);

@@ -59,7 +59,6 @@ class PartnerWizardForm(forms.Form):
     city = forms.CharField(error_messages={"required": "By er påkrevd."})
 
     # --- Step 4: contact person + logo ---
-    tiltaleform = forms.CharField(required=False)
     first_name = forms.CharField(error_messages={"required": "Fornavn er påkrevd."})
     last_name = forms.CharField(error_messages={"required": "Etternavn er påkrevd."})
     email = forms.EmailField(error_messages={

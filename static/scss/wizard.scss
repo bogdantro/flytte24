@@ -190,6 +190,11 @@ body {
     flex-direction: column;
     min-width: 0;
     padding: 1.5rem 1.5rem 6rem;
+    // The card clips overflow to its rounded corners (see .wizard-card's
+    // own overflow:hidden above) — without this, a step with more fields
+    // than fit the card's fixed height (e.g. a step with 7 inputs) just
+    // gets cut off with no way to reach the rest, instead of scrolling.
+    overflow-y: auto;
   }
 
   // --- Right column: map / photo / summary (desktop only) ---
@@ -289,7 +294,7 @@ body {
   &__title {
     margin: 0;
     font-family: $font-serif;
-    font-size: 1.875rem;
+    font-size: 44px;
     font-weight: 500;
     line-height: 1.15;
     letter-spacing: -0.01em;
@@ -341,6 +346,18 @@ body {
 
 textarea.field-input { resize: none; }
 
+// Pairs two fields side by side on one line (e.g. company name + org
+// number) instead of each taking a full row — wraps back to stacked on
+// narrow viewports since it's just a flex row with wrapping, no media
+// query needed.
+.field-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.875rem;
+
+  > * { flex: 1 1 200px; }
+}
+
 // =================================================================
 // STEP 1 — address fields + suggestion dropdown + mobile map-picker button
 // =================================================================
@@ -380,6 +397,16 @@ textarea.field-input { resize: none; }
     }
 
     .address-suggestions__meta { font-size: 0.75rem; color: rgba(26, 26, 26, 0.5); }
+
+    // "Bruk min plassering" — leading row on the "fra" field only, icon +
+    // label side by side instead of the stacked address/postnummer rows.
+    .address-suggestions__locate {
+      flex-direction: row;
+      align-items: center;
+      gap: 0.5rem;
+
+      [data-icon] { flex-shrink: 0; color: rgba(26, 26, 26, 0.6); }
+    }
   }
 }
 
@@ -598,7 +625,11 @@ textarea.field-input { resize: none; }
   bottom: 1.5rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  // margin-left: auto on __next (not justify-content: space-between on the
+  // container) keeps Neste pinned to the right even when Tilbake is
+  // [hidden] on step 1 — space-between collapses to flex-start with a
+  // single visible flex child, which pushed Neste to the left.
+  justify-content: flex-start;
 
   &__back {
     border: none;
@@ -612,6 +643,18 @@ textarea.field-input { resize: none; }
 
     &:hover { color: rgba(26, 26, 26, 0.7); }
     &[hidden] { display: none; }
+  }
+
+  &__next {
+    margin-left: auto;
+    // Reference (app/wizard/page.tsx) uses rounded-lg/text-sm/py-2.5 for
+    // this specific button, not the pill shape .btn-primary uses on the
+    // marketing pages — override those three properties only.
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    padding: 0.625rem 1.75rem;
+
+    [data-icon] { width: 0.875rem; height: 0.875rem; }
   }
 }
 

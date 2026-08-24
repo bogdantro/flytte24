@@ -113,22 +113,26 @@ order) clean instead of leaving invisible nav/footer content behind it.
           </div>
 
           <div class="wizard-step__body">
-            <label class="text-field">
-              <span class="field-label">Firmanavn</span>
-              <input type="text" name="company_name" class="field-input" placeholder="F.eks. Nordisk Flyttebyrå AS" value="{{ form.company_name.value|default:'' }}">
-            </label>
-            <label class="text-field">
-              <span class="field-label">Organisasjonsnummer</span>
-              <input type="text" name="company_number" class="field-input" placeholder="123 456 789" value="{{ form.company_number.value|default:'' }}">
-            </label>
-            <label class="text-field">
-              <span class="field-label">Antall ansatte</span>
-              <input type="text" name="employees" class="field-input" placeholder="F.eks. 12" value="{{ form.employees.value|default:'' }}">
-            </label>
-            <label class="text-field">
-              <span class="field-label">Nettside</span>
-              <input type="text" name="website" class="field-input" placeholder="https://eksempel.no" value="{{ form.website.value|default:'' }}">
-            </label>
+            <div class="field-row">
+              <label class="text-field">
+                <span class="field-label">Firmanavn</span>
+                <input type="text" name="company_name" class="field-input" placeholder="F.eks. Nordisk Flyttebyrå AS" value="{{ form.company_name.value|default:'' }}">
+              </label>
+              <label class="text-field">
+                <span class="field-label">Organisasjonsnummer</span>
+                <input type="text" name="company_number" class="field-input" placeholder="123 456 789" value="{{ form.company_number.value|default:'' }}">
+              </label>
+            </div>
+            <div class="field-row">
+              <label class="text-field">
+                <span class="field-label">Antall ansatte</span>
+                <input type="text" name="employees" class="field-input" placeholder="F.eks. 12" value="{{ form.employees.value|default:'' }}">
+              </label>
+              <label class="text-field">
+                <span class="field-label">Nettside</span>
+                <input type="text" name="website" class="field-input" placeholder="https://eksempel.no" value="{{ form.website.value|default:'' }}">
+              </label>
+            </div>
             <label class="text-field">
               <span class="field-label">Adresse</span>
               <input type="text" name="address" class="field-input" placeholder="Gateadresse 1" value="{{ form.address.value|default:'' }}">

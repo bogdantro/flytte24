@@ -1,2 +1,58 @@
 {% extends 'core/base.html' %}
-{% block content %}{% endblock %}
+{% load static %}
+
+{% block page_title %}Opprett bruker{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static 'scss/pages/account/signup.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="signup">
+  <div class="signup-card">
+    <h1 class="signup-card__title">Opprett bruker</h1>
+    <p class="signup-card__subtitle">Fullfør registreringen for å komme i gang med Kobly.</p>
+
+    {% if form.errors or userprofileform.errors %}
+    <div class="signup-card__errors" role="alert">
+      {{ form.non_field_errors }}
+      {% for field in form %}{{ field.errors }}{% endfor %}
+      {{ userprofileform.non_field_errors }}
+      {% for field in userprofileform %}{{ field.errors }}{% endfor %}
+    </div>
+    {% endif %}
+
+    <form method="post" class="signup-form">
+      {% csrf_token %}
+      <label class="text-field">
+        <span class="field-label">E-post</span>
+        <input type="text" name="username" class="field-input" value="{{ form.username.value|default:'' }}" required>
+      </label>
+
+      <div class="field-row">
+        <label class="text-field">
+          <span class="field-label">Fornavn</span>
+          <input type="text" name="first_name" class="field-input" value="{{ form.first_name.value|default:'' }}" required>
+        </label>
+        <label class="text-field">
+          <span class="field-label">Etternavn</span>
+          <input type="text" name="last_name" class="field-input" value="{{ form.last_name.value|default:'' }}" required>
+        </label>
+      </div>
+
+      <label class="text-field">
+        <span class="field-label">Passord</span>
+        <input type="password" name="password1" class="field-input" required>
+      </label>
+      <label class="text-field">
+        <span class="field-label">Bekreft passord</span>
+        <input type="password" name="password2" class="field-input" required>
+      </label>
+
+      <button type="submit" class="btn-primary">Opprett bruker</button>
+    </form>
+
+    <p class="signup-card__footer">Har du allerede en bruker? <a href="/for-bedrifter/bruker/logg-inn/">Logg inn</a></p>
+  </div>
+</section>
+{% endblock %}

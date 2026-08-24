@@ -1192,13 +1192,13 @@ textarea.field-input { resize: none; }
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    max-width: 220px;
-    height: 3rem;
-    padding: 0 1rem;
-    border-radius: 12px;
+    max-width: 300px;
+    height: 3.5rem;
+    padding: 0 1.375rem;
+    border-radius: 14px;
     background: $color-accent-lime;
     color: $color-ink;
-    font-size: 0.9375rem;
+    font-size: 1.25rem;
     font-weight: 600;
     white-space: nowrap;
     overflow: hidden;

@@ -333,39 +333,54 @@ def for_business(request):
 
 
 
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+from apps.store.models import PublicBusinessInformation
+from .forms import PartnerWizardForm
 
 
-@csrf_exempt
 def for_business_partner(request):
+    """
+    Renders the 4-step business-signup wizard (GET) and processes the final
+    submission (POST) — a real form POST + 302 redirect, mirroring
+    apps.leads.views.wizard's own pattern (not the JSON/AJAX response this
+    view used to return, which no JS on the page ever called).
+
+    POST: validates via PartnerWizardForm; on success creates the
+    Bedrift_info row (move_type/cities joined from the validated list
+    fields) and a linked PublicBusinessInformation row (logo, if uploaded),
+    then redirects to the account-creation step of the signup flow. On
+    invalid input, re-renders the same template with the bound form so
+    entered values and errors persist.
+    """
     if request.method == "POST":
-        move_type = request.POST.getlist("moveType")
-        cities = request.POST.getlist("city")
+        form = PartnerWizardForm(request.POST, request.FILES)
+        if form.is_valid():
+            company = Bedrift_info.objects.create(
+                move_type=", ".join(form.cleaned_data["move_type"]),
+                cities=", ".join(form.cleaned_data["cities"]),
+                company_name=form.cleaned_data["company_name"],
+                company_number=form.cleaned_data["company_number"],
+                employees=form.cleaned_data["employees"],
+                email=form.cleaned_data["email"],
+                phone=form.cleaned_data["phone"],
+                website=form.cleaned_data["website"],
+                address=form.cleaned_data["address"],
+                postal_code=form.cleaned_data["postal_code"],
+                city=form.cleaned_data["city"],
+                tiltaleform=form.cleaned_data["tiltaleform"],
+                first_name=form.cleaned_data["first_name"],
+                last_name=form.cleaned_data["last_name"],
+            )
+            PublicBusinessInformation.objects.create(
+                business=company,
+                logo=form.cleaned_data["logo"],
+            )
+            return redirect(f"/reg/fullfor/lag-bruker/?email={company.email}")
+        # Invalid: fall through and re-render with errors attached (only
+        # reachable if a client bypasses partner-wizard.js's own validation).
+    else:
+        form = PartnerWizardForm()
 
-        company = Bedrift_info.objects.create(
-            move_type=", ".join(move_type),
-            cities=", ".join(cities),
-            company_name=request.POST.get("companyName"),
-            company_number=request.POST.get("companyNumber"),
-            employees=request.POST.get("employees"),
-            email=request.POST.get("email"),
-            phone=request.POST.get("phone"),
-            website=request.POST.get("website"),
-            address=request.POST.get("address"),
-            postal_code=request.POST.get("postalCode"),
-            city=request.POST.get("companyCity"),
-            tiltaleform=request.POST.get("tiltaleform"),
-            first_name=request.POST.get("firstName"),
-            last_name=request.POST.get("lastName"),
-        )
-
-        return JsonResponse({
-            "success": True,
-            "redirect_url": f"/reg/fullfor/lag-bruker/?email={company.email}"
-        })
-
-    return render(request, "pages/about/for-business-partner.html")
+    return render(request, "pages/about/for-business-partner.html", {"form": form})
 
 
 def for_business(request):      

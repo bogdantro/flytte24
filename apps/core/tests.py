@@ -1,10 +1,14 @@
+import io
 from io import StringIO
 
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.management import call_command
 from django.test import TestCase
+from PIL import Image
 
 from apps.pages.models import Page, PageSection
 from apps.core.models import Agency, Article
+from apps.store.models import Bedrift_info, PublicBusinessInformation
 
 
 class HomePageRenderingTests(TestCase):
@@ -201,3 +205,80 @@ class ForBusinessPageTests(TestCase):
         response = self.client.get("/for-bedrifter/")
         self.assertContains(response, 'href="/for-bedrifter/bli-partner/"')
         self.assertNotContains(response, "mailto:partner@kobly.no")
+
+
+def _make_valid_logo_upload(name="logo.jpg"):
+    """Builds a real, tiny decodable JPEG wrapped in a SimpleUploadedFile — same technique
+    as apps.leads.tests._make_valid_image_upload, for a file that passes ImageField validation."""
+    buffer = io.BytesIO()
+    Image.new("RGB", (1, 1)).save(buffer, "JPEG")
+    buffer.seek(0)
+    return SimpleUploadedFile(name, buffer.read(), content_type="image/jpeg")
+
+
+def _valid_partner_payload(**overrides):
+    payload = {
+        "move_type": ["Flyttehjelp", "Pakking"],
+        "cities": ["Oslo", "Bergen"],
+        "company_name": "Nordisk Flyttebyrå AS",
+        "company_number": "123456789",
+        "employees": "12",
+        "website": "https://nordisk-flytt.no",
+        "address": "Storgata 1",
+        "postal_code": "0153",
+        "city": "Oslo",
+        "tiltaleform": "Du",
+        "first_name": "Ola",
+        "last_name": "Nordmann",
+        "email": "ola@nordisk-flytt.no",
+        "phone": "912 34 567",
+    }
+    payload.update(overrides)
+    return payload
+
+
+class ForBusinessPartnerWizardTests(TestCase):
+    """/for-bedrifter/bli-partner/ — the business-signup wizard (apps.core.views.for_business_partner)."""
+
+    def test_get_200_shows_all_four_step_headings(self):
+        response = self.client.get("/for-bedrifter/bli-partner/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Hvilke tjenester tilbyr dere?")
+        self.assertContains(response, "Hvilke byer dekker dere?")
+        self.assertContains(response, "Om bedriften")
+        self.assertContains(response, "Kontaktperson og logo")
+
+    def test_valid_post_creates_bedrift_info_with_joined_move_type_and_cities(self):
+        self.client.post("/for-bedrifter/bli-partner/", _valid_partner_payload())
+        self.assertEqual(Bedrift_info.objects.count(), 1)
+        company = Bedrift_info.objects.get()
+        self.assertEqual(company.move_type, "Flyttehjelp, Pakking")
+        self.assertEqual(company.cities, "Oslo, Bergen")
+        self.assertEqual(company.company_name, "Nordisk Flyttebyrå AS")
+        self.assertEqual(company.email, "ola@nordisk-flytt.no")
+
+    def test_valid_post_creates_linked_public_business_information(self):
+        self.client.post("/for-bedrifter/bli-partner/", _valid_partner_payload())
+        company = Bedrift_info.objects.get()
+        self.assertTrue(PublicBusinessInformation.objects.filter(business=company).exists())
+
+    def test_valid_post_with_logo_attaches_it_to_public_business_information(self):
+        logo = _make_valid_logo_upload()
+        self.client.post("/for-bedrifter/bli-partner/", {**_valid_partner_payload(), "logo": logo})
+        company = Bedrift_info.objects.get()
+        self.assertTrue(company.public_info.logo.name)
+        self.assertIn("business_logos/", company.public_info.logo.name)
+
+    def test_post_missing_company_name_does_not_create_bedrift_info_and_rerenders_200(self):
+        response = self.client.post("/for-bedrifter/bli-partner/", _valid_partner_payload(company_name=""))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Bedrift_info.objects.count(), 0)
+
+    def test_valid_post_redirects_to_account_signup_with_company_email(self):
+        response = self.client.post("/for-bedrifter/bli-partner/", _valid_partner_payload())
+        company = Bedrift_info.objects.get()
+        self.assertRedirects(
+            response,
+            f"/reg/fullfor/lag-bruker/?email={company.email}",
+            fetch_redirect_response=False,
+        )

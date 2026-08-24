@@ -1,2 +1,238 @@
 {% extends 'core/base.html' %}
-{% block content %}{% endblock %}
+{% load static %}
+{% comment %}
+apps/core/templates/pages/about/for-business-partner.html — the 4-step
+business-signup wizard at /for-bedrifter/bli-partner/. Deliberately built
+from the SAME wizard.css classes as apps/leads/templates/leads/wizard.html
+(the customer lead wizard) — .wizard-card/.wizard-progress/.wizard-step/
+.pill-group/.field-input/.photo-upload-tile/.wizard-nav etc. — rather than a
+parallel copy of that CSS, per the build spec's core instruction. Simplified
+relative to the reference: no map/date-picker/address-autocomplete panels
+(none of those fields apply here) and no mobile background-photo crossfade —
+just the same card/progress/step-transition mechanics, driven by
+static/js/partner-wizard.js instead of wizard.js (which is tightly coupled
+to the address/map/date-picker features this page doesn't have).
+
+Overrides header/footer to empty so this renders as the same kind of
+fullscreen takeover as the customer wizard, rather than the site's normal
+nav+content+footer chrome — .wizard is `position: fixed; inset: 0` in
+wizard.css regardless, but an empty header/footer keeps the DOM (and tab
+order) clean instead of leaving invisible nav/footer content behind it.
+{% endcomment %}
+
+{% block page_title %}Kobly — Bli partner{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'scss/wizard.css' %}">
+{% endblock %}
+
+{% block header %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block content %}
+<div class="wizard" data-total-steps="4">
+
+  <a href="/" class="wizard__logo wizard__logo--desktop" aria-label="Kobly hjem">
+    {% include "leads/_logo.html" with tone="ink" %}
+  </a>
+  <div class="wizard__logo-row">
+    <a href="/" class="wizard__logo wizard__logo--mobile" aria-label="Kobly hjem">
+      {% include "leads/_logo.html" with tone="brand-ink" %}
+    </a>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- CARD — one form, all 4 steps, only one visible at a time (JS) -->
+  <!-- ============================================================ -->
+  <form class="wizard-card" method="post" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+    <div class="wizard-card__body">
+
+      <!-- LEFT COLUMN: progress bar, step content, bottom nav -->
+      <div class="wizard-card__left">
+
+        <!-- Progress bar: 4 segments, filled = completed steps only -->
+        <div class="wizard-progress" role="presentation">
+          <div class="wizard-progress__segment"></div>
+          <div class="wizard-progress__segment"></div>
+          <div class="wizard-progress__segment"></div>
+          <div class="wizard-progress__segment"></div>
+        </div>
+        <span class="wizard-steplabel">Steg <span data-current-step-label>1</span> av 4</span>
+
+        <!-- ===================== STEP 1: services ===================== -->
+        <section class="wizard-step is-active" data-step="1">
+          <div class="step-header">
+            <h1 class="step-header__title">Hvilke tjenester tilbyr dere?</h1>
+            <p class="step-header__subtitle">Velg alle tjenestene bedriften leverer</p>
+          </div>
+
+          <div class="wizard-step__body">
+            <div class="pill-group" data-pill-group="move_type">
+              <p class="pill-group__label">Tjenester</p>
+              <div class="pill-group__grid pill-group__grid--2col">
+                <label class="pill-button"><input type="checkbox" name="move_type" value="Flyttehjelp" {% if "Flyttehjelp" in form.move_type.value|default_if_none:"" %}checked{% endif %}>Flyttehjelp</label>
+                <label class="pill-button"><input type="checkbox" name="move_type" value="Pakking" {% if "Pakking" in form.move_type.value|default_if_none:"" %}checked{% endif %}>Pakking</label>
+                <label class="pill-button"><input type="checkbox" name="move_type" value="Flyttevask" {% if "Flyttevask" in form.move_type.value|default_if_none:"" %}checked{% endif %}>Flyttevask</label>
+                <label class="pill-button"><input type="checkbox" name="move_type" value="Lagring" {% if "Lagring" in form.move_type.value|default_if_none:"" %}checked{% endif %}>Lagring</label>
+                <label class="pill-button"><input type="checkbox" name="move_type" value="Montering" {% if "Montering" in form.move_type.value|default_if_none:"" %}checked{% endif %}>Montering</label>
+                <label class="pill-button"><input type="checkbox" name="move_type" value="Kontorflytting" {% if "Kontorflytting" in form.move_type.value|default_if_none:"" %}checked{% endif %}>Kontorflytting</label>
+                <label class="pill-button"><input type="checkbox" name="move_type" value="Utlandsflytting" {% if "Utlandsflytting" in form.move_type.value|default_if_none:"" %}checked{% endif %}>Utlandsflytting</label>
+                <label class="pill-button"><input type="checkbox" name="move_type" value="Dødsbo" {% if "Dødsbo" in form.move_type.value|default_if_none:"" %}checked{% endif %}>Dødsbo</label>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== STEP 2: cities covered ===================== -->
+        <section class="wizard-step" data-step="2">
+          <div class="step-header">
+            <h1 class="step-header__title">Hvilke byer dekker dere?</h1>
+            <p class="step-header__subtitle">Velg alle byene bedriften tar oppdrag i</p>
+          </div>
+
+          <div class="wizard-step__body">
+            <div class="pill-group" data-pill-group="cities">
+              <p class="pill-group__label">Byer</p>
+              <div class="pill-group__grid pill-group__grid--3col">
+                <label class="pill-button"><input type="checkbox" name="cities" value="Oslo" {% if "Oslo" in form.cities.value|default_if_none:"" %}checked{% endif %}>Oslo</label>
+                <label class="pill-button"><input type="checkbox" name="cities" value="Bergen" {% if "Bergen" in form.cities.value|default_if_none:"" %}checked{% endif %}>Bergen</label>
+                <label class="pill-button"><input type="checkbox" name="cities" value="Trondheim" {% if "Trondheim" in form.cities.value|default_if_none:"" %}checked{% endif %}>Trondheim</label>
+                <label class="pill-button"><input type="checkbox" name="cities" value="Stavanger" {% if "Stavanger" in form.cities.value|default_if_none:"" %}checked{% endif %}>Stavanger</label>
+                <label class="pill-button"><input type="checkbox" name="cities" value="Tromsø" {% if "Tromsø" in form.cities.value|default_if_none:"" %}checked{% endif %}>Tromsø</label>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== STEP 3: about the company ===================== -->
+        <section class="wizard-step" data-step="3">
+          <div class="step-header">
+            <h1 class="step-header__title">Om bedriften</h1>
+            <p class="step-header__subtitle">Fortell oss litt om selskapet deres</p>
+          </div>
+
+          <div class="wizard-step__body">
+            <label class="text-field">
+              <span class="field-label">Firmanavn</span>
+              <input type="text" name="company_name" class="field-input" placeholder="F.eks. Nordisk Flyttebyrå AS" value="{{ form.company_name.value|default:'' }}">
+            </label>
+            <label class="text-field">
+              <span class="field-label">Organisasjonsnummer</span>
+              <input type="text" name="company_number" class="field-input" placeholder="123 456 789" value="{{ form.company_number.value|default:'' }}">
+            </label>
+            <label class="text-field">
+              <span class="field-label">Antall ansatte</span>
+              <input type="text" name="employees" class="field-input" placeholder="F.eks. 12" value="{{ form.employees.value|default:'' }}">
+            </label>
+            <label class="text-field">
+              <span class="field-label">Nettside</span>
+              <input type="text" name="website" class="field-input" placeholder="https://eksempel.no" value="{{ form.website.value|default:'' }}">
+            </label>
+            <label class="text-field">
+              <span class="field-label">Adresse</span>
+              <input type="text" name="address" class="field-input" placeholder="Gateadresse 1" value="{{ form.address.value|default:'' }}">
+            </label>
+            <label class="text-field">
+              <span class="field-label">Postnummer</span>
+              <input type="text" name="postal_code" class="field-input" inputmode="numeric" maxlength="4" placeholder="0153" value="{{ form.postal_code.value|default:'' }}">
+            </label>
+            <label class="text-field">
+              <span class="field-label">By</span>
+              <input type="text" name="city" class="field-input" placeholder="F.eks. Oslo" value="{{ form.city.value|default:'' }}">
+            </label>
+          </div>
+        </section>
+
+        <!-- ===================== STEP 4: contact person + logo ===================== -->
+        <section class="wizard-step" data-step="4">
+          <div class="step-header">
+            <h1 class="step-header__title">Kontaktperson og logo</h1>
+            <p class="step-header__subtitle">Hvem skal vi kontakte, og hvordan vil dere bli presentert?</p>
+          </div>
+
+          <div class="wizard-step__body">
+            <div class="pill-group" data-pill-group="tiltaleform">
+              <p class="pill-group__label">Tiltaleform</p>
+              <div class="pill-group__grid pill-group__grid--2col">
+                <label class="pill-button"><input type="radio" name="tiltaleform" value="Du" {% if form.tiltaleform.value == "Du" %}checked{% endif %}>Du</label>
+                <label class="pill-button"><input type="radio" name="tiltaleform" value="Dere" {% if form.tiltaleform.value == "Dere" %}checked{% endif %}>Dere</label>
+              </div>
+            </div>
+            <label class="text-field">
+              <span class="field-label">Fornavn</span>
+              <input type="text" name="first_name" class="field-input" placeholder="Ola" value="{{ form.first_name.value|default:'' }}">
+            </label>
+            <label class="text-field">
+              <span class="field-label">Etternavn</span>
+              <input type="text" name="last_name" class="field-input" placeholder="Nordmann" value="{{ form.last_name.value|default:'' }}">
+            </label>
+            <label class="text-field">
+              <span class="field-label">E-post</span>
+              <input type="email" name="email" class="field-input" placeholder="ola@eksempel.no" value="{{ form.email.value|default:'' }}">
+            </label>
+            <label class="text-field">
+              <span class="field-label">Telefon</span>
+              <input type="tel" name="phone" class="field-input" placeholder="+47 000 00 000" value="{{ form.phone.value|default:'' }}">
+            </label>
+
+            <div class="photo-field">
+              <p class="field-label field-label--strong">Logo</p>
+              <p class="field-hint">Last opp bedriftens logo (valgfritt).</p>
+              <!-- Populated entirely by partner-wizard.js — one thumbnail + the upload tile -->
+              <div class="photo-grid" data-logo-grid>
+                <label class="photo-upload-tile">
+                  <span data-icon="upload"></span>
+                  <span>Last opp</span>
+                  <input type="file" name="logo" accept="image/*" data-logo-input hidden>
+                </label>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {% if form.errors %}
+        <!-- Only reachable if a client bypasses the JS validation -->
+        <div class="wizard-step__server-errors" role="alert">
+          {{ form.non_field_errors }}
+          {% for field in form %}{{ field.errors }}{% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Bottom nav: back link (hidden on step 1) + primary Neste/Send button -->
+        <div class="wizard-nav">
+          <button type="button" class="wizard-nav__back" data-wizard-back hidden>Tilbake</button>
+          <button type="button" class="wizard-nav__next btn-primary" data-wizard-next disabled>
+            <span data-next-label>Neste</span>
+            <span data-icon="arrow-right"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: desktop only — static lifestyle photo per step, same
+           images the customer wizard already ships (no new asset weight).
+           is-active hardcoded on step 1's panel here (matching the .wizard-step
+           above), since partner-wizard.js only calls showStep() on navigation,
+           never on initial load, to avoid an unwanted slide-in animation on
+           first paint. -->
+      <div class="wizard-card__right">
+        <div class="step-art is-active" data-step-panel="1">
+          <img src="{% static 'images/wizard/boxes-and-plants.jpg' %}" alt="">
+        </div>
+        <div class="step-art" data-step-panel="2">
+          <img src="{% static 'images/wizard/R1-07829-0034.jpg' %}" alt="">
+        </div>
+        <div class="step-art" data-step-panel="3">
+          <img src="{% static 'images/wizard/rull3_26.jpg' %}" alt="">
+        </div>
+        <div class="step-art" data-step-panel="4">
+          <img src="{% static 'images/wizard/R1-09476-0028.jpg' %}" alt="">
+        </div>
+      </div>
+
+    </div>
+  </form>
+</div>
+
+<script src="{% static 'js/partner-wizard.js' %}"></script>
+{% endblock %}

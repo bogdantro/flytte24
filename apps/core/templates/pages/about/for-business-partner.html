@@ -116,34 +116,34 @@ order) clean instead of leaving invisible nav/footer content behind it.
             <div class="field-row">
               <label class="text-field">
                 <span class="field-label">Firmanavn</span>
-                <input type="text" name="company_name" class="field-input" placeholder="F.eks. Nordisk Flyttebyrå AS" value="{{ form.company_name.value|default:'' }}">
+                <input type="text" name="company_name" class="field-input" value="{{ form.company_name.value|default:'' }}">
               </label>
               <label class="text-field">
                 <span class="field-label">Organisasjonsnummer</span>
-                <input type="text" name="company_number" class="field-input" placeholder="123 456 789" value="{{ form.company_number.value|default:'' }}">
+                <input type="text" name="company_number" class="field-input" value="{{ form.company_number.value|default:'' }}">
               </label>
             </div>
             <div class="field-row">
               <label class="text-field">
                 <span class="field-label">Antall ansatte</span>
-                <input type="text" name="employees" class="field-input" placeholder="F.eks. 12" value="{{ form.employees.value|default:'' }}">
+                <input type="text" name="employees" class="field-input" value="{{ form.employees.value|default:'' }}">
               </label>
               <label class="text-field">
                 <span class="field-label">Nettside</span>
-                <input type="text" name="website" class="field-input" placeholder="https://eksempel.no" value="{{ form.website.value|default:'' }}">
+                <input type="text" name="website" class="field-input" value="{{ form.website.value|default:'' }}">
               </label>
             </div>
             <label class="text-field">
               <span class="field-label">Adresse</span>
-              <input type="text" name="address" class="field-input" placeholder="Gateadresse 1" value="{{ form.address.value|default:'' }}">
+              <input type="text" name="address" class="field-input" value="{{ form.address.value|default:'' }}">
             </label>
             <label class="text-field">
               <span class="field-label">Postnummer</span>
-              <input type="text" name="postal_code" class="field-input" inputmode="numeric" maxlength="4" placeholder="0153" value="{{ form.postal_code.value|default:'' }}">
+              <input type="text" name="postal_code" class="field-input" inputmode="numeric" maxlength="4" value="{{ form.postal_code.value|default:'' }}">
             </label>
             <label class="text-field">
               <span class="field-label">By</span>
-              <input type="text" name="city" class="field-input" placeholder="F.eks. Oslo" value="{{ form.city.value|default:'' }}">
+              <input type="text" name="city" class="field-input" value="{{ form.city.value|default:'' }}">
             </label>
           </div>
         </section>
@@ -165,19 +165,19 @@ order) clean instead of leaving invisible nav/footer content behind it.
             </div>
             <label class="text-field">
               <span class="field-label">Fornavn</span>
-              <input type="text" name="first_name" class="field-input" placeholder="Ola" value="{{ form.first_name.value|default:'' }}">
+              <input type="text" name="first_name" class="field-input" value="{{ form.first_name.value|default:'' }}">
             </label>
             <label class="text-field">
               <span class="field-label">Etternavn</span>
-              <input type="text" name="last_name" class="field-input" placeholder="Nordmann" value="{{ form.last_name.value|default:'' }}">
+              <input type="text" name="last_name" class="field-input" value="{{ form.last_name.value|default:'' }}">
             </label>
             <label class="text-field">
               <span class="field-label">E-post</span>
-              <input type="email" name="email" class="field-input" placeholder="ola@eksempel.no" value="{{ form.email.value|default:'' }}">
+              <input type="email" name="email" class="field-input" value="{{ form.email.value|default:'' }}">
             </label>
             <label class="text-field">
               <span class="field-label">Telefon</span>
-              <input type="tel" name="phone" class="field-input" placeholder="+47 000 00 000" value="{{ form.phone.value|default:'' }}">
+              <input type="tel" name="phone" class="field-input" value="{{ form.phone.value|default:'' }}">
             </label>
 
             <div class="photo-field">

@@ -164,6 +164,13 @@ body {
   margin: 1rem 0;
   width: calc(100% - 3rem);
   max-width: 1060px;
+  // Caps the card to the viewport so a tall step's content scrolls inside
+  // .wizard-card__left (see its own overflow-y:auto) instead of growing
+  // the card past the viewport — .wizard centers its content, and a flex
+  // container with justify-content:center whose content overflows is a
+  // well-known case where the browser can't reliably be scrolled to reach
+  // what's pushed off the far edge, which was cutting off the nav bar.
+  max-height: calc(100vh - 2rem);
   // Without this, a flex child that refuses to shrink below its content's
   // natural size (e.g. the step photo's own pixel dimensions) can render
   // past the card's rounded edge instead of being clipped to it — this
@@ -180,6 +187,11 @@ body {
     flex: 1;
     flex-direction: column;
     min-width: 0;
+    // A flex item's height defaults to its content's natural size (not 0)
+    // even inside a height-constrained parent — without this, .wizard-card's
+    // new max-height can't actually make this shrink, so nothing would
+    // ever reach __left's overflow-y:auto below.
+    min-height: 0;
   }
 
   // --- Left column: form content ---
@@ -189,6 +201,7 @@ body {
     flex: 1;
     flex-direction: column;
     min-width: 0;
+    min-height: 0;
     padding: 1.5rem 1.5rem 6rem;
     // The card clips overflow to its rounded corners (see .wizard-card's
     // own overflow:hidden above) — without this, a step with more fields
@@ -1193,6 +1206,7 @@ textarea.field-input { resize: none; }
   .wizard-card {
     min-height: 640px;
     margin: 1.5rem 0;
+    max-height: calc(100vh - 3rem);
 
     &__body { flex-direction: row; }
     &__left { flex: 0 0 58%; padding: 2.75rem 2.75rem 6rem; }

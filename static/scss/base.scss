@@ -381,6 +381,12 @@ $radiusPill: 9999px;
 
   // ---------------- how it works ----------------
   .how-it-works{
+    // PartnerHowItWorks.tsx (for-bedrifter's own reference component)
+    // specifies its own py-20/28/40 spacing — home.html's how-it-works
+    // section relies on the generic .section rhythm instead, so this is
+    // scoped to the for-bedrifter page only, not the shared .how-it-works
+    // class itself.
+    &.for-bedrifter-how-it-works{ padding: 80px 0; }
     .how-it-works__title{
       margin: 0;
       text-align: center;
@@ -767,6 +773,10 @@ $radiusPill: 9999px;
 
   // ---------------- value props (pages/about/for-business.html) ----------------
   .value-props{
+    // Bigger than the generic .section 40px/72px rhythm — this page's own
+    // reference component (PartnerValueProps.tsx) specifies its own,
+    // more generous py-20/28/32 spacing, distinct from home.html's.
+    padding: 80px 0;
     .value-props__title{
       margin: 0;
       font-size: 30px;
@@ -796,7 +806,7 @@ $radiusPill: 9999px;
     }
     .value-card__title{
       margin: 20px 0 0;
-      font-size: 20px;
+      font-size: 24px;
       font-weight: 600;
       color: $ink;
     }
@@ -808,8 +818,16 @@ $radiusPill: 9999px;
     }
   }
 
+  // ---------------- stats + faq section padding overrides (pages/about/for-business.html) ----------------
+  // PartnerStats.tsx/PartnerFAQ.tsx specify their own py-16/py-20 spacing,
+  // more generous than the generic .section rhythm home.html's equivalent
+  // sections use — reusing .stats/.faq's markup but not their padding.
+  .for-bedrifter-stats{ padding: 64px 0; }
+  .for-bedrifter-faq{ padding: 80px 0; }
+
   // ---------------- partner cta banner (pages/about/for-business.html) ----------------
   .partner-cta{
+    padding: 80px 0;
     .partner-cta__card{
       display: flex;
       flex-direction: column;
@@ -818,11 +836,14 @@ $radiusPill: 9999px;
       border-radius: $radiusCard;
       background: $brand;
       color: $brandInk;
-      padding: 48px 24px;
+      padding: 56px 32px;
+    }
+    .partner-cta__text{
+      max-width: 100%;
     }
     .partner-cta__title{
       margin: 0;
-      font-size: 32px;
+      font-size: 30px;
       font-weight: 600;
       line-height: 1.1;
       color: $brandInk;
@@ -853,6 +874,10 @@ $radiusPill: 9999px;
     line-height: 1.05;
     color: $ink;
   }
+  // PartnerHero.tsx uses its own pt-8/pb-12 (mobile), distinct from
+  // home.html's hero — .for-bedrifter-hero wins the padding cascade over
+  // the shared .hero rule by appearing later in this file's source order.
+  .for-bedrifter-hero{ padding: 32px 24px 48px; }
   .for-bedrifter-hero__title{
     margin: 12px 0 0;
     font-family: $fontSerif;
@@ -1858,6 +1883,7 @@ $radiusPill: 9999px;
 
   // ---------------- how it works ----------------
   .how-it-works{
+    &.for-bedrifter-how-it-works{ padding: 160px 0; }
     .how-it-works__title{
       margin: 0;
       text-align: center;
@@ -1922,6 +1948,16 @@ $radiusPill: 9999px;
       font-size: 16px;
       color: $inkMuted;
     }
+  }
+
+  // for-bedrifter's how-it-works cards are tall (aspect-[4/5] on desktop
+  // per PartnerHowItWorks.tsx) since they have no .step-card__art image —
+  // home.html's own step-cards keep their natural height instead, since
+  // their image already gives them a taller feel; scoped to this page's
+  // own grid modifier so home.html's cards are unaffected.
+  .how-it-works__grid--tall .step-card{
+    aspect-ratio: 4 / 5;
+    justify-content: flex-end;
   }
 
   // ---------------- testimonials ----------------
@@ -2254,6 +2290,7 @@ $radiusPill: 9999px;
 
   // ---------------- value props (pages/about/for-business.html) ----------------
   .value-props{
+    padding: 128px 0;
     .value-props__title{
       margin: 0;
       font-size: 42px;
@@ -2287,7 +2324,7 @@ $radiusPill: 9999px;
     }
     .value-card__title{
       margin: 24px 0 0;
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 600;
       color: $ink;
     }
@@ -2299,21 +2336,30 @@ $radiusPill: 9999px;
     }
   }
 
+  .for-bedrifter-stats{ padding: 96px 0; }
+  .for-bedrifter-faq{ padding: 128px 0; }
+
   // ---------------- partner cta banner (pages/about/for-business.html) ----------------
   .partner-cta{
+    padding: 160px 0;
     .partner-cta__card{
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
+      flex-direction: row;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 32px;
+      text-align: left;
       border-radius: $radiusCard;
       background: $brand;
       color: $brandInk;
-      padding: 72px 40px;
+      padding: 80px 64px;
+    }
+    .partner-cta__text{
+      max-width: 640px;
     }
     .partner-cta__title{
       margin: 0;
-      font-size: 48px;
+      font-size: 44px;
       font-weight: 600;
       line-height: 1.05;
       color: $brandInk;
@@ -2326,7 +2372,8 @@ $radiusPill: 9999px;
       color: rgba(250, 249, 246, 0.7);
     }
     .partner-cta__button{
-      margin-top: 32px;
+      flex-shrink: 0;
+      margin-top: 0;
       background: $brandInk;
       color: $ink;
       &:hover{
@@ -2344,11 +2391,15 @@ $radiusPill: 9999px;
     line-height: 1.05;
     color: $ink;
   }
+  // PartnerHero.tsx uses its own lg:pt-28/pb-32, more generous than
+  // home.html's hero — wins the cascade over the shared .hero rule by
+  // appearing later in this file's source order.
+  .for-bedrifter-hero{ padding: 112px 40px 128px; }
   .for-bedrifter-hero__title{
     margin: 12px 0 0;
     font-family: $fontSerif;
     font-weight: 600;
-    font-size: 56px;
+    font-size: 60px;
     line-height: 1.05;
     color: $ink;
   }

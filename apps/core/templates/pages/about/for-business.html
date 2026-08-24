@@ -26,7 +26,7 @@
 </section>
 
 <!-- ===================== STATS ===================== -->
-<section class="section">
+<section class="section for-bedrifter-stats">
   <div class="content-width">
     <div class="stats">
       <div class="stat"><span class="stat__value">5 000+</span><span class="stat__label">Forespørsler i året</span></div>
@@ -67,10 +67,10 @@
 </section>
 
 <!-- ===================== HOW IT WORKS ===================== -->
-<section class="section how-it-works" id="hvordan">
+<section class="section how-it-works for-bedrifter-how-it-works" id="hvordan">
   <div class="content-width">
     <h2 class="how-it-works__title">Slik fungerer det</h2>
-    <ol class="how-it-works__grid">
+    <ol class="how-it-works__grid how-it-works__grid--tall">
       <li class="step-card">
         <span class="step-card__number">1</span>
         <h3 class="step-card__title">Søk om partnerskap</h3>
@@ -91,7 +91,7 @@
 </section>
 
 <!-- ===================== FAQ ===================== -->
-<section class="section">
+<section class="section for-bedrifter-faq">
   <div class="content-width">
     <div class="faq" data-faq>
       <h2 class="faq__title">Ofte stilte spørsmål</h2>
@@ -140,8 +140,10 @@
 <section class="section partner-cta" id="bli-partner">
   <div class="content-width">
     <div class="partner-cta__card">
-      <h2 class="partner-cta__title">Bli en av Norges mest foretrukne byråer</h2>
-      <p class="partner-cta__body">Søk om partnerskap i dag. Vi tar kontakt innen kort tid for å vurdere søknaden.</p>
+      <div class="partner-cta__text">
+        <h2 class="partner-cta__title">Bli en av Norges mest foretrukne byråer</h2>
+        <p class="partner-cta__body">Søk om partnerskap i dag. Vi tar kontakt innen kort tid for å vurdere søknaden.</p>
+      </div>
       <!-- Deliberate deviation from the reference: the reference site links this button to a bare
            "mailto:" address for the partner team, but this port has a real signup form + backend
            at /for-bedrifter/bli-partner/ (see for_business_partner in apps/core/views.py), so we

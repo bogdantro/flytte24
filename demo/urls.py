@@ -37,8 +37,9 @@ urlpatterns = [
     path('contact-us/', contact, name='contact'), 
     path('about-us/', about, name='about'), 
     path('for-bedrifter/', for_business, name='for_business'), 
-    path('for-bedrifter/bli-partner/', for_business_partner, name='for_business_partner'), 
-    
+    path('for-bedrifter/bli-partner/', for_business_partner, name='for_business_partner'),
+    path('for-bedrifter/soknad-sendt/', partner_wizard_thank_you, name='partner_wizard_thank_you'),
+
 
     path('for-bedrifter/bruker/logg-inn/', views.LoginView.as_view(template_name='core/login.html'), name='login'),
     path('reg/fullfor/lag-bruker/', signup, name='signup'),

@@ -273,11 +273,22 @@ class ForBusinessPartnerWizardTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Bedrift_info.objects.count(), 0)
 
-    def test_valid_post_redirects_to_account_signup_with_company_email(self):
+    def test_valid_post_redirects_to_thank_you_page_with_company_email(self):
         response = self.client.post("/for-bedrifter/bli-partner/", _valid_partner_payload())
         company = Bedrift_info.objects.get()
         self.assertRedirects(
             response,
-            f"/reg/fullfor/lag-bruker/?email={company.email}",
+            f"/for-bedrifter/soknad-sendt/?email={company.email}",
             fetch_redirect_response=False,
         )
+
+
+class PartnerWizardThankYouPageTests(TestCase):
+    def test_200_and_shows_confirmation_copy(self):
+        response = self.client.get("/for-bedrifter/soknad-sendt/?email=ola@nordisk-flytt.no")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Søknaden er sendt!")
+
+    def test_account_creation_button_carries_the_submitted_email(self):
+        response = self.client.get("/for-bedrifter/soknad-sendt/?email=ola@nordisk-flytt.no")
+        self.assertContains(response, "/reg/fullfor/lag-bruker/?email=ola%40nordisk-flytt.no")

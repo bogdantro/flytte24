@@ -1153,6 +1153,24 @@ textarea.field-input {
   opacity: 0;
   animation: wizard-pop-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
+.thankyou-illustration__name {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 220px;
+  height: 3rem;
+  padding: 0 1rem;
+  border-radius: 12px;
+  background: #d6e8a8;
+  color: #1a1a1a;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0;
+  animation: wizard-pop-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 120ms both;
+}
 
 @keyframes wizard-pop-in {
   from {

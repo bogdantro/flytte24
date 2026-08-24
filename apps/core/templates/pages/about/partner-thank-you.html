@@ -31,23 +31,10 @@
       <span class="thankyou-illustration__dots" aria-hidden="true">
         <span></span><span></span><span></span>
       </span>
-      <span class="thankyou-illustration__checks">
-        <span class="thankyou-illustration__check" style="animation-delay: 120ms">
-          <svg width="26" height="26" viewBox="0 0 42 42" fill="none" aria-hidden="true">
-            <path d="M20.6 33.27V20.74M20.6 20.74 9.69 14.48M20.6 20.74l10.91-6.26M14.96 11.06l11.27 6.45M19.35 32.93c.38.22.81.34 1.25.34s.87-.12 1.25-.34l8.77-5.01c.38-.22.7-.54.92-.92.22-.38.34-.81.34-1.25V15.73c0-.44-.12-.87-.34-1.25-.22-.38-.54-.7-.92-.92l-8.77-5.01c-.38-.22-.81-.34-1.25-.34s-.87.12-1.25.34l-8.77 5.01c-.38.22-.7.54-.92.92-.22.38-.34.81-.34 1.25v10.02c0 .44.12.87.34 1.25.22.38.54.7.92.92l8.77 5.01Z" stroke="#3D5507" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </span>
-        <span class="thankyou-illustration__check" style="animation-delay: 230ms">
-          <svg width="26" height="26" viewBox="0 0 42 42" fill="none" aria-hidden="true">
-            <path d="M20.6 33.27V20.74M20.6 20.74 9.69 14.48M20.6 20.74l10.91-6.26M14.96 11.06l11.27 6.45M19.35 32.93c.38.22.81.34 1.25.34s.87-.12 1.25-.34l8.77-5.01c.38-.22.7-.54.92-.92.22-.38.34-.81.34-1.25V15.73c0-.44-.12-.87-.34-1.25-.22-.38-.54-.7-.92-.92l-8.77-5.01c-.38-.22-.81-.34-1.25-.34s-.87.12-1.25.34l-8.77 5.01c-.38.22-.7.54-.92.92-.22.38-.34.81-.34 1.25v10.02c0 .44.12.87.34 1.25.22.38.54.7.92.92l8.77 5.01Z" stroke="#3D5507" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </span>
-        <span class="thankyou-illustration__check" style="animation-delay: 340ms">
-          <svg width="26" height="26" viewBox="0 0 42 42" fill="none" aria-hidden="true">
-            <path d="M20.6 33.27V20.74M20.6 20.74 9.69 14.48M20.6 20.74l10.91-6.26M14.96 11.06l11.27 6.45M19.35 32.93c.38.22.81.34 1.25.34s.87-.12 1.25-.34l8.77-5.01c.38-.22.7-.54.92-.92.22-.38.34-.81.34-1.25V15.73c0-.44-.12-.87-.34-1.25-.22-.38-.54-.7-.92-.92l-8.77-5.01c-.38-.22-.81-.34-1.25-.34s-.87.12-1.25.34l-8.77 5.01c-.38.22-.7.54-.92.92-.22.38-.34.81-.34 1.25v10.02c0 .44.12.87.34 1.25.22.38.54.7.92.92l8.77 5.01Z" stroke="#3D5507" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </span>
-      </span>
+      <!-- One business per application (unlike the leads flow's 3-box routing
+           illustration this was copied from) — shows the company name the
+           applicant just typed into the wizard instead of generic icons. -->
+      <span class="thankyou-illustration__name">{{ company_name }}</span>
     </div>
 
     <h1 class="thankyou-card__title">Søknaden er sendt!</h1>

@@ -273,22 +273,26 @@ class ForBusinessPartnerWizardTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Bedrift_info.objects.count(), 0)
 
-    def test_valid_post_redirects_to_thank_you_page_with_company_email(self):
+    def test_valid_post_redirects_to_thank_you_page_with_company_email_and_name(self):
         response = self.client.post("/for-bedrifter/bli-partner/", _valid_partner_payload())
         company = Bedrift_info.objects.get()
         self.assertRedirects(
             response,
-            f"/for-bedrifter/soknad-sendt/?email={company.email}",
+            f"/for-bedrifter/soknad-sendt/?email={company.email}&company=Nordisk%20Flyttebyr%C3%A5%20AS",
             fetch_redirect_response=False,
         )
 
 
 class PartnerWizardThankYouPageTests(TestCase):
     def test_200_and_shows_confirmation_copy(self):
-        response = self.client.get("/for-bedrifter/soknad-sendt/?email=ola@nordisk-flytt.no")
+        response = self.client.get("/for-bedrifter/soknad-sendt/?email=ola@nordisk-flytt.no&company=Nordisk+Flyttebyr%C3%A5+AS")
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Søknaden er sendt!")
 
     def test_account_creation_button_carries_the_submitted_email(self):
-        response = self.client.get("/for-bedrifter/soknad-sendt/?email=ola@nordisk-flytt.no")
+        response = self.client.get("/for-bedrifter/soknad-sendt/?email=ola@nordisk-flytt.no&company=Nordisk+Flyttebyr%C3%A5+AS")
         self.assertContains(response, "/reg/fullfor/lag-bruker/?email=ola%40nordisk-flytt.no")
+
+    def test_illustration_shows_the_submitted_company_name(self):
+        response = self.client.get("/for-bedrifter/soknad-sendt/?email=ola@nordisk-flytt.no&company=Nordisk+Flyttebyr%C3%A5+AS")
+        self.assertContains(response, "Nordisk Flyttebyrå AS")

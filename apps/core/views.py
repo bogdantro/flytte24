@@ -2,6 +2,7 @@ import warnings
 import random
 import requests
 import json
+from urllib.parse import quote
 
 from urllib import *
 from django.shortcuts import *
@@ -373,7 +374,7 @@ def for_business_partner(request):
                 business=company,
                 logo=form.cleaned_data["logo"],
             )
-            return redirect(f"/for-bedrifter/soknad-sendt/?email={company.email}")
+            return redirect(f"/for-bedrifter/soknad-sendt/?email={quote(company.email)}&company={quote(company.company_name)}")
         # Invalid: fall through and re-render with errors attached (only
         # reachable if a client bypasses partner-wizard.js's own validation).
     else:
@@ -385,9 +386,14 @@ def for_business_partner(request):
 def partner_wizard_thank_you(request):
     """Static thank-you screen shown after a successful partner-wizard submit,
     mirroring apps.leads.views.wizard_thank_you. Carries the just-submitted
-    company's email (via ?email=) so its "Opprett bruker" button can hand it
-    straight to the account-creation form."""
-    return render(request, "pages/about/partner-thank-you.html", {"email": request.GET.get("email", "")})
+    company's email (via ?email=, so the "Opprett bruker" button can hand it
+    straight to the account-creation form) and company name (via ?company=,
+    shown in the routing illustration in place of the leads flow's 3 boxes,
+    since a partner application only ever involves the one business)."""
+    return render(request, "pages/about/partner-thank-you.html", {
+        "email": request.GET.get("email", ""),
+        "company_name": request.GET.get("company", ""),
+    })
 
 
 def for_business(request):

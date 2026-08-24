@@ -1,0 +1,376 @@
+// static/scss/pages/agencies/detail.scss
+// Page-specific styles for /byraer/<slug>/ (apps/core/templates/pages/agencies/detail.html).
+// Loaded alongside static/scss/base.css — shared classes this page also
+// uses (.section, .content-width, .btn-primary) stay in base.scss.
+//
+// Compile after every edit with:
+//   sass static/scss/pages/agencies/detail.scss static/scss/pages/agencies/detail.css --style=expanded
+
+$ink: #1a1a1a;
+$inkMuted: #5c5c5c;
+$line: #e6e1d6;
+$surfaceSoft: #faf9f6;
+$accentAmber: #e8a87c;
+$fontSerif: "Crimson Pro", Georgia, "Times New Roman", serif;
+$radiusCard: 14px;
+$radiusPill: 9999px;
+
+@media (max-width: 1049px) {
+  .agency-detail__inner{
+    max-width: 840px;
+    margin: 0 auto;
+  }
+  .agency-detail__back{
+    display: inline-block;
+    margin-bottom: 24px;
+    font-size: 14px;
+    font-weight: 500;
+    color: $inkMuted;
+    &:hover{
+      color: $ink;
+    }
+  }
+  .agency-detail__header{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .agency-detail__logo{
+    flex-shrink: 0;
+    width: 72px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $radiusCard;
+    background: $surfaceSoft;
+    border: 1px solid $line;
+    padding: 12px;
+    img{
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    &.agency-detail__logo--blend img{
+      mix-blend-mode: multiply;
+    }
+  }
+  .agency-detail__name{
+    margin: 0;
+    font-family: $fontSerif;
+    font-weight: 600;
+    font-size: 30px;
+    color: $ink;
+  }
+  .agency-detail__tagline{
+    margin: 6px 0 0;
+    font-size: 16px;
+    color: $inkMuted;
+  }
+  .agency-detail__stats{
+    margin-top: 32px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .agency-detail__stat{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border-radius: $radiusCard;
+    background: $surfaceSoft;
+    border: 1px solid $line;
+    padding: 20px;
+  }
+  .agency-detail__stat-value{
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 20px;
+    font-weight: 700;
+    color: $ink;
+  }
+  .agency-detail__stat-icon{
+    color: $accentAmber;
+  }
+  .agency-detail__stat-label{
+    font-size: 13px;
+    color: $inkMuted;
+  }
+  .agency-detail__about{
+    margin-top: 40px;
+    p{
+      margin: 16px 0 0;
+      font-size: 16px;
+      line-height: 1.7;
+      color: $inkMuted;
+      &:first-child{
+        margin-top: 0;
+      }
+    }
+  }
+  .agency-detail__lists{
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .agency-detail__list-title{
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: $ink;
+  }
+  .agency-detail__tags{
+    margin: 16px 0 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    li{
+      border-radius: $radiusPill;
+      background: $surfaceSoft;
+      border: 1px solid $line;
+      padding: 8px 14px;
+      font-size: 14px;
+      color: $ink;
+    }
+  }
+  .agency-detail__contact{
+    margin-top: 32px;
+    border-radius: $radiusCard;
+    background: $surfaceSoft;
+    border: 1px solid $line;
+    padding: 20px 24px;
+  }
+  .agency-detail__contact-name{
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: $ink;
+  }
+  .agency-detail__contact-role{
+    margin: 4px 0 0;
+    font-size: 14px;
+    color: $inkMuted;
+  }
+  .agency-detail__reviews{
+    margin-top: 56px;
+  }
+  .agency-detail__reviews-title{
+    margin: 0;
+    font-size: 26px;
+    font-weight: 600;
+    color: $ink;
+  }
+  .agency-reviews-grid{
+    margin-top: 24px;
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .review-card{
+    .review-card__stars{
+      display: flex;
+      gap: 4px;
+      margin-bottom: 4px;
+    }
+    .review-card__star--filled{
+      color: $accentAmber;
+    }
+    .review-card__star--empty{
+      color: $line;
+    }
+    .review-card__comment{
+      margin-top: 12px;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+  }
+  .agency-detail__cta{
+    margin-top: 48px;
+    display: flex;
+    justify-content: center;
+  }
+}
+
+@media (min-width: 1050px) {
+  .agency-detail__inner{
+    max-width: 840px;
+    margin: 0 auto;
+  }
+  .agency-detail__back{
+    display: inline-block;
+    margin-bottom: 24px;
+    font-size: 14px;
+    font-weight: 500;
+    color: $inkMuted;
+    &:hover{
+      color: $ink;
+    }
+  }
+  .agency-detail__header{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  .agency-detail__logo{
+    flex-shrink: 0;
+    width: 88px;
+    height: 88px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $radiusCard;
+    background: $surfaceSoft;
+    border: 1px solid $line;
+    padding: 14px;
+    img{
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    &.agency-detail__logo--blend img{
+      mix-blend-mode: multiply;
+    }
+  }
+  .agency-detail__name{
+    margin: 0;
+    font-family: $fontSerif;
+    font-weight: 600;
+    font-size: 36px;
+    color: $ink;
+  }
+  .agency-detail__tagline{
+    margin: 6px 0 0;
+    font-size: 17px;
+    color: $inkMuted;
+  }
+  .agency-detail__stats{
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .agency-detail__stat{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border-radius: $radiusCard;
+    background: $surfaceSoft;
+    border: 1px solid $line;
+    padding: 20px;
+  }
+  .agency-detail__stat-value{
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 22px;
+    font-weight: 700;
+    color: $ink;
+  }
+  .agency-detail__stat-icon{
+    color: $accentAmber;
+  }
+  .agency-detail__stat-label{
+    font-size: 13px;
+    color: $inkMuted;
+  }
+  .agency-detail__about{
+    margin-top: 48px;
+    p{
+      margin: 16px 0 0;
+      font-size: 17px;
+      line-height: 1.75;
+      color: $inkMuted;
+      &:first-child{
+        margin-top: 0;
+      }
+    }
+  }
+  .agency-detail__lists{
+    margin-top: 48px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+  }
+  .agency-detail__list-title{
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: $ink;
+  }
+  .agency-detail__tags{
+    margin: 16px 0 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    li{
+      border-radius: $radiusPill;
+      background: $surfaceSoft;
+      border: 1px solid $line;
+      padding: 8px 14px;
+      font-size: 14px;
+      color: $ink;
+    }
+  }
+  .agency-detail__contact{
+    margin-top: 40px;
+    border-radius: $radiusCard;
+    background: $surfaceSoft;
+    border: 1px solid $line;
+    padding: 24px 28px;
+  }
+  .agency-detail__contact-name{
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: $ink;
+  }
+  .agency-detail__contact-role{
+    margin: 4px 0 0;
+    font-size: 14px;
+    color: $inkMuted;
+  }
+  .agency-detail__reviews{
+    margin-top: 64px;
+  }
+  .agency-detail__reviews-title{
+    margin: 0;
+    font-size: 32px;
+    font-weight: 600;
+    color: $ink;
+  }
+  .agency-reviews-grid{
+    margin-top: 32px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  .review-card{
+    .review-card__stars{
+      display: flex;
+      gap: 4px;
+      margin-bottom: 4px;
+    }
+    .review-card__star--filled{
+      color: $accentAmber;
+    }
+    .review-card__star--empty{
+      color: $line;
+    }
+    .review-card__comment{
+      margin-top: 12px;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+  }
+  .agency-detail__cta{
+    margin-top: 56px;
+    display: flex;
+    justify-content: flex-start;
+  }
+}

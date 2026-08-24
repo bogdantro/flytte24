@@ -1,0 +1,183 @@
+// static/scss/pages/blog/article.scss
+// Page-specific styles for /blogg/<slug>/ (apps/core/templates/pages/blog/article.html).
+// Loaded alongside static/scss/base.css — shared classes this page also
+// uses (.section, .content-width, .btn-primary) stay in base.scss.
+//
+// Compile after every edit with:
+//   sass static/scss/pages/blog/article.scss static/scss/pages/blog/article.css --style=expanded
+
+$ink: #1a1a1a;
+$inkMuted: #5c5c5c;
+$line: #e6e1d6;
+$fontSerif: "Crimson Pro", Georgia, "Times New Roman", serif;
+$radiusCard: 14px;
+
+@media (max-width: 1049px) {
+  .blog-article__inner{
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .blog-article__back{
+    display: inline-block;
+    margin-bottom: 24px;
+    font-size: 14px;
+    font-weight: 500;
+    color: $inkMuted;
+    &:hover{
+      color: $ink;
+    }
+  }
+  .blog-article__meta{
+    margin: 0;
+    font-size: 13px;
+    color: $inkMuted;
+  }
+  .blog-article__title{
+    margin: 8px 0 0;
+    font-family: $fontSerif;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 1.1;
+    color: $ink;
+  }
+  .blog-article__ingress{
+    margin: 16px 0 0;
+    font-size: 18px;
+    line-height: 1.6;
+    color: $inkMuted;
+  }
+  .blog-article__image-placeholder{
+    margin-top: 32px;
+    aspect-ratio: 16 / 9;
+    border-radius: $radiusCard;
+    background: $line;
+    &.blog-article__image-placeholder--inline{
+      margin-top: 0;
+    }
+  }
+  .blog-article__figure{
+    margin: 32px 0 0;
+  }
+  .blog-article__caption{
+    margin: 8px 0 0;
+    font-size: 13px;
+    text-align: center;
+    color: $inkMuted;
+  }
+  .blog-article__body{
+    margin-top: 32px;
+    h2{
+      margin: 40px 0 0;
+      font-size: 24px;
+      font-weight: 600;
+      line-height: 1.2;
+      color: $ink;
+    }
+    p{
+      margin: 16px 0 0;
+      font-size: 16px;
+      line-height: 1.7;
+      color: $inkMuted;
+    }
+    ul{
+      margin: 16px 0 0;
+      padding-left: 20px;
+    }
+    li{
+      margin-top: 8px;
+      font-size: 16px;
+      line-height: 1.6;
+      color: $inkMuted;
+    }
+  }
+  .blog-article__cta{
+    margin: 32px 0 0;
+    display: flex;
+    justify-content: center;
+  }
+}
+
+@media (min-width: 1050px) {
+  .blog-article__inner{
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .blog-article__back{
+    display: inline-block;
+    margin-bottom: 24px;
+    font-size: 14px;
+    font-weight: 500;
+    color: $inkMuted;
+    &:hover{
+      color: $ink;
+    }
+  }
+  .blog-article__meta{
+    margin: 0;
+    font-size: 13px;
+    color: $inkMuted;
+  }
+  .blog-article__title{
+    margin: 8px 0 0;
+    font-family: $fontSerif;
+    font-weight: 600;
+    font-size: 44px;
+    line-height: 1.1;
+    color: $ink;
+  }
+  .blog-article__ingress{
+    margin: 16px 0 0;
+    font-size: 19px;
+    line-height: 1.6;
+    color: $inkMuted;
+  }
+  .blog-article__image-placeholder{
+    margin-top: 40px;
+    aspect-ratio: 16 / 9;
+    border-radius: $radiusCard;
+    background: $line;
+    &.blog-article__image-placeholder--inline{
+      margin-top: 0;
+    }
+  }
+  .blog-article__figure{
+    margin: 40px 0 0;
+  }
+  .blog-article__caption{
+    margin: 8px 0 0;
+    font-size: 13px;
+    text-align: center;
+    color: $inkMuted;
+  }
+  .blog-article__body{
+    margin-top: 40px;
+    h2{
+      margin: 48px 0 0;
+      font-size: 28px;
+      font-weight: 600;
+      line-height: 1.2;
+      color: $ink;
+    }
+    p{
+      margin: 16px 0 0;
+      font-size: 17px;
+      line-height: 1.75;
+      color: $inkMuted;
+    }
+    ul{
+      margin: 16px 0 0;
+      padding-left: 20px;
+    }
+    li{
+      margin-top: 8px;
+      font-size: 17px;
+      line-height: 1.6;
+      color: $inkMuted;
+    }
+  }
+  .blog-article__cta{
+    margin: 40px 0 0;
+    display: flex;
+    justify-content: flex-start;
+  }
+}

@@ -1,0 +1,168 @@
+// static/scss/pages/blog/index.scss
+// Page-specific styles for /blogg/ (apps/core/templates/pages/blog/index.html).
+// Loaded alongside static/scss/base.css — shared classes this page also
+// uses (.section, .content-width, .btn-primary) stay in base.scss.
+//
+// Compile after every edit with:
+//   sass static/scss/pages/blog/index.scss static/scss/pages/blog/index.css --style=expanded
+
+$ink: #1a1a1a;
+$inkMuted: #5c5c5c;
+$line: #e6e1d6;
+$surfaceSoft: #faf9f6;
+$fontSerif: "Crimson Pro", Georgia, "Times New Roman", serif;
+$radiusCard: 14px;
+
+@media (max-width: 1049px) {
+  .blog-hero__title{
+    margin: 12px 0 0;
+    font-family: $fontSerif;
+    font-weight: 600;
+    font-size: 40px;
+    line-height: 1.05;
+    color: $ink;
+  }
+  .blog-hero__subline{
+    margin: 16px 0 0;
+    max-width: 576px;
+    font-size: 16px;
+    color: $inkMuted;
+  }
+
+  .blog-grid{
+    display: grid;
+    gap: 24px;
+  }
+  .blog-card{
+    border-radius: $radiusCard;
+    background: $surfaceSoft;
+    border: 1px solid $line;
+    overflow: hidden;
+    &:hover{
+      background: rgba(250, 249, 246, 0.7);
+    }
+    .blog-card__link{
+      display: block;
+    }
+    .blog-card__image-placeholder{
+      aspect-ratio: 16 / 9;
+      background: $line;
+    }
+    .blog-card__body{
+      padding: 24px;
+    }
+    .blog-card__meta{
+      margin: 0;
+      font-size: 13px;
+      color: $inkMuted;
+    }
+    .blog-card__title{
+      margin: 8px 0 0;
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 1.3;
+      color: $ink;
+    }
+    .blog-card__ingress{
+      margin: 8px 0 0;
+      font-size: 15px;
+      line-height: 1.6;
+      color: $inkMuted;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .blog-card__cta{
+      margin-top: 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      color: $ink;
+    }
+  }
+  .blog-index__empty{
+    font-size: 16px;
+    color: $inkMuted;
+  }
+}
+
+@media (min-width: 1050px) {
+  .blog-hero__title{
+    margin: 12px 0 0;
+    font-family: $fontSerif;
+    font-weight: 600;
+    font-size: 56px;
+    line-height: 1.05;
+    color: $ink;
+  }
+  .blog-hero__subline{
+    margin: 16px 0 0;
+    max-width: 576px;
+    font-size: 18px;
+    color: $inkMuted;
+  }
+
+  .blog-grid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .blog-card{
+    border-radius: $radiusCard;
+    background: $surfaceSoft;
+    border: 1px solid $line;
+    overflow: hidden;
+    transition: background-color 0.2s ease;
+    &:hover{
+      background: rgba(250, 249, 246, 0.7);
+    }
+    .blog-card__link{
+      display: block;
+    }
+    .blog-card__image-placeholder{
+      aspect-ratio: 16 / 9;
+      background: $line;
+    }
+    .blog-card__body{
+      padding: 24px;
+    }
+    .blog-card__meta{
+      margin: 0;
+      font-size: 13px;
+      color: $inkMuted;
+    }
+    .blog-card__title{
+      margin: 8px 0 0;
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 1.3;
+      color: $ink;
+    }
+    .blog-card__ingress{
+      margin: 8px 0 0;
+      font-size: 15px;
+      line-height: 1.6;
+      color: $inkMuted;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .blog-card__cta{
+      margin-top: 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      color: $ink;
+    }
+  }
+  .blog-index__empty{
+    font-size: 16px;
+    color: $inkMuted;
+  }
+}

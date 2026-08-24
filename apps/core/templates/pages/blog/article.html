@@ -7,6 +7,10 @@
   <meta name="description" content="{{ article.ingress }}">
 {% endblock %}
 
+{% block head %}
+  <link rel="stylesheet" href="{% static 'scss/pages/blog/article.css' %}">
+{% endblock %}
+
 {% block content %}
 
 <!-- ===================== ARTICLE HEADER ===================== -->

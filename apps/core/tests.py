@@ -164,6 +164,14 @@ class BlogPageTests(TestCase):
         response = self.client.get("/blogg/dette-finnes-ikke/")
         self.assertEqual(response.status_code, 404)
 
+    def test_blog_article_shows_wizard_cta_mid_article_and_again_at_the_end(self):
+        """Matches the reference site's WizardCTA: one {type:"cta"} block embedded
+        mid-article, plus a second, unconditional WizardCTA always appended at the
+        very end of every article (spec §10) — so the card should appear twice."""
+        response = self.client.get("/blogg/hva-er-viktig-a-tenke-pa-nar-du-skal-flytte/")
+        self.assertContains(response, "Skal du flytte?", count=2)
+        self.assertContains(response, "wizard-cta__button", count=2)
+
 
 class AgencyPageTests(TestCase):
     def setUp(self):

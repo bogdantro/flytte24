@@ -2,7 +2,7 @@
   .signup {
     display: flex;
     justify-content: center;
-    padding: 48px 20px;
+    padding: 24px 20px 48px;
   }
   .signup-card {
     width: 100%;
@@ -94,7 +94,7 @@
   .signup {
     display: flex;
     justify-content: center;
-    padding: 96px 20px;
+    padding: 40px 20px 96px;
   }
   .signup-card {
     width: 100%;

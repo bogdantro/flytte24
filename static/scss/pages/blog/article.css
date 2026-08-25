@@ -86,25 +86,25 @@
     color: #faf9f6;
     padding: 28px 24px;
   }
-  .wizard-cta__title {
+  .wizard-cta .wizard-cta__title {
     margin: 0;
     font-size: 22px;
     font-weight: 600;
     line-height: 1.15;
     color: #faf9f6;
   }
-  .wizard-cta__body {
+  .wizard-cta .wizard-cta__body {
     margin: 8px 0 0;
     font-size: 15px;
     line-height: 1.6;
     color: rgba(250, 249, 246, 0.7);
   }
-  .wizard-cta__button {
+  .wizard-cta .wizard-cta__button {
     align-self: flex-start;
     background: #faf9f6;
     color: #1a1a1a;
   }
-  .wizard-cta__button:hover {
+  .wizard-cta .wizard-cta__button:hover {
     background: rgba(250, 249, 246, 0.9);
   }
 }
@@ -198,28 +198,28 @@
     color: #faf9f6;
     padding: 36px 40px;
   }
-  .wizard-cta__text {
+  .wizard-cta .wizard-cta__text {
     max-width: 420px;
   }
-  .wizard-cta__title {
+  .wizard-cta .wizard-cta__title {
     margin: 0;
     font-size: 24px;
     font-weight: 600;
     line-height: 1.15;
     color: #faf9f6;
   }
-  .wizard-cta__body {
+  .wizard-cta .wizard-cta__body {
     margin: 8px 0 0;
     font-size: 15px;
     line-height: 1.6;
     color: rgba(250, 249, 246, 0.7);
   }
-  .wizard-cta__button {
+  .wizard-cta .wizard-cta__button {
     flex-shrink: 0;
     background: #faf9f6;
     color: #1a1a1a;
   }
-  .wizard-cta__button:hover {
+  .wizard-cta .wizard-cta__button:hover {
     background: rgba(250, 249, 246, 0.9);
   }
 }

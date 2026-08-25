@@ -92,9 +92,15 @@ $radiusCard: 14px;
       color: $inkMuted;
     }
   }
-  // WizardCTA (spec's name) — the inline brand-filled "Skal du flytte?"
-  // callout, embedded mid-article as a {type:"cta"} block plus once more,
-  // unconditionally, at the very end of every article.
+  // WizardCTA (spec's name) — the inline brand-filled lead-gen callout,
+  // embedded mid-article as a {type:"cta"} block plus once more,
+  // unconditionally, at the very end of every article. Nested under
+  // &.wizard-cta (not flat top-level selectors) so .wizard-cta__title's
+  // compiled specificity (.wizard-cta .wizard-cta__title, 2 classes) beats
+  // .blog-article__body h2's bare element selector (1 class + 1 element)
+  // — as flat selectors the two tie on class-count and the h2 rule's own
+  // near-black color was winning, making the title unreadable on the dark
+  // card.
   .wizard-cta{
     margin: 32px 0 0;
     display: flex;
@@ -104,26 +110,27 @@ $radiusCard: 14px;
     background: $brand;
     color: $brandInk;
     padding: 28px 24px;
-  }
-  .wizard-cta__title{
-    margin: 0;
-    font-size: 22px;
-    font-weight: 600;
-    line-height: 1.15;
-    color: $brandInk;
-  }
-  .wizard-cta__body{
-    margin: 8px 0 0;
-    font-size: 15px;
-    line-height: 1.6;
-    color: rgba(250, 249, 246, 0.7);
-  }
-  .wizard-cta__button{
-    align-self: flex-start;
-    background: $brandInk;
-    color: $ink;
-    &:hover{
-      background: rgba(250, 249, 246, 0.9);
+
+    .wizard-cta__title{
+      margin: 0;
+      font-size: 22px;
+      font-weight: 600;
+      line-height: 1.15;
+      color: $brandInk;
+    }
+    .wizard-cta__body{
+      margin: 8px 0 0;
+      font-size: 15px;
+      line-height: 1.6;
+      color: rgba(250, 249, 246, 0.7);
+    }
+    .wizard-cta__button{
+      align-self: flex-start;
+      background: $brandInk;
+      color: $ink;
+      &:hover{
+        background: rgba(250, 249, 246, 0.9);
+      }
     }
   }
 }
@@ -217,29 +224,30 @@ $radiusCard: 14px;
     background: $brand;
     color: $brandInk;
     padding: 36px 40px;
-  }
-  .wizard-cta__text{
-    max-width: 420px;
-  }
-  .wizard-cta__title{
-    margin: 0;
-    font-size: 24px;
-    font-weight: 600;
-    line-height: 1.15;
-    color: $brandInk;
-  }
-  .wizard-cta__body{
-    margin: 8px 0 0;
-    font-size: 15px;
-    line-height: 1.6;
-    color: rgba(250, 249, 246, 0.7);
-  }
-  .wizard-cta__button{
-    flex-shrink: 0;
-    background: $brandInk;
-    color: $ink;
-    &:hover{
-      background: rgba(250, 249, 246, 0.9);
+
+    .wizard-cta__text{
+      max-width: 420px;
+    }
+    .wizard-cta__title{
+      margin: 0;
+      font-size: 24px;
+      font-weight: 600;
+      line-height: 1.15;
+      color: $brandInk;
+    }
+    .wizard-cta__body{
+      margin: 8px 0 0;
+      font-size: 15px;
+      line-height: 1.6;
+      color: rgba(250, 249, 246, 0.7);
+    }
+    .wizard-cta__button{
+      flex-shrink: 0;
+      background: $brandInk;
+      color: $ink;
+      &:hover{
+        background: rgba(250, 249, 246, 0.9);
+      }
     }
   }
 }

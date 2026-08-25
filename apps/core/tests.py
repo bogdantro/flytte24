@@ -79,9 +79,23 @@ class HomePageRenderingTests(TestCase):
         self.assertContains(response, "<title>Egendefinert SEO-tittel</title>")
         self.assertContains(response, '<meta name="description" content="Egendefinert SEO-beskrivelse.">')
 
-    def test_title_falls_back_to_page_title_then_kobly(self):
+    def test_title_falls_back_to_kobly_when_no_page_exists(self):
         response = self.client.get("/")
         self.assertContains(response, "<title>Kobly</title>")
+
+    def test_title_falls_back_to_kobly_not_the_internal_page_title(self):
+        """page.title is the dashboard's "Tittel (internt navn)" field (see the
+        page-settings panel in this same template) — an internal admin label,
+        never meant to leak into the public <title> tag. A published home Page
+        with a real title but no meta_title must still show "Kobly", not the
+        internal title (this used to fall through to page.title and show
+        "Forside" — the internal name every home Page starts life with)."""
+        Page.objects.create(
+            title="Forside", slug="forside", path="/", template_key="home", status="published",
+        )
+        response = self.client.get("/")
+        self.assertContains(response, "<title>Kobly</title>")
+        self.assertNotContains(response, "<title>Forside</title>")
 
 
 class RenderPageViewTests(TestCase):
@@ -184,6 +198,48 @@ class SeedMarketingContentCommandTests(TestCase):
         call_command("seed_marketing_content", stdout=StringIO())
         self.assertEqual(Agency.objects.count(), 4)
         self.assertEqual(Article.objects.count(), 3)
+
+
+class CityPageTests(TestCase):
+    def test_all_5_cities_200_with_expected_title_and_h1(self):
+        expected = {
+            "oslo": "Oslo",
+            "bergen": "Bergen",
+            "trondheim": "Trondheim",
+            "stavanger": "Stavanger",
+            "tromso": "Tromsø",
+        }
+        for slug, name in expected.items():
+            response = self.client.get(f"/{slug}/")
+            self.assertEqual(response.status_code, 200, slug)
+            self.assertContains(response, f"<title>Flyttebyrå i {name} — Kobly</title>")
+            self.assertContains(response, f"Vi finner det beste flyttebyrået for deg i {name}")
+
+    def test_unknown_city_slug_404s(self):
+        response = self.client.get("/trondelag/")
+        self.assertEqual(response.status_code, 404)
+
+    def test_cta_links_carry_the_city_slug_into_the_wizard(self):
+        response = self.client.get("/oslo/")
+        self.assertContains(response, 'href="/flytteforesporsel/?by=oslo"')
+
+    def test_page_includes_shared_sections(self):
+        response = self.client.get("/bergen/")
+        self.assertContains(response, "Slik fungerer det")
+        self.assertContains(response, "Alt du trenger på ett sted")
+        self.assertContains(response, "Ofte stilte spørsmål")
+        self.assertContains(response, "Klar for å flytte?")
+
+    def test_an_unrelated_single_segment_cms_page_still_reaches_render_page(self):
+        """Guards against the city routes' explicit-literal-paths design regressing into a
+        catch-all <slug:city_slug>/ pattern, which would swallow any other single-segment
+        published Page path (e.g. a duplicated page) before it reaches render_page."""
+        Page.objects.create(
+            title="Forside (kopi)", slug="forside-kopi", path="/forside-kopi/",
+            template_key="home", status="published",
+        )
+        response = self.client.get("/forside-kopi/")
+        self.assertEqual(response.status_code, 200)
 
 
 class ForBusinessPageTests(TestCase):

@@ -428,4 +428,18 @@ def agency_list(request):
 def agency_detail(request, slug):
     from apps.core.models import Agency
     agency = get_object_or_404(Agency, slug=slug)
-    return render(request, "pages/agencies/detail.html", {"agency": agency})  
+    return render(request, "pages/agencies/detail.html", {"agency": agency})
+
+
+def city_detail(request, city_slug):
+    """SEO landing page for one of the 5 static cities (spec §7). Each of the
+    5 city URLs is wired to this same view with its own slug in urls.py —
+    unknown slugs never reach this view, but 404 defensively anyway.
+    Reuses apps.leads.cities.CITIES (the wizard's ?by= map-centering catalog)
+    rather than a second copy, per that module's own "reused later by the
+    city marketing pages" note."""
+    from apps.leads.cities import CITIES
+    city = CITIES.get(city_slug)
+    if not city:
+        raise Http404
+    return render(request, "pages/cities/detail.html", {"city": {"slug": city_slug, "name": city["name"]}})

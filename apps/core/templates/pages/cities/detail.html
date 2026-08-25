@@ -1,0 +1,206 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block page_title %}Flyttebyrå i {{ city.name }} — Kobly{% endblock %}
+
+{% block page_meta %}
+  <meta name="description" content="Få tre uforpliktende tilbud fra kvalitetssjekkede flyttebyråer i {{ city.name }}. Kobly kobler deg med de beste byråene i ditt område.">
+{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static 'scss/pages/cities/detail.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- ===================== CITY HERO ===================== -->
+<section class="hero">
+  <div class="hero__inner">
+    <div class="hero__left">
+      <p class="hero__eyebrow">Flytting i {{ city.name }}</p>
+      <h1 class="hero__title">Vi finner det beste flyttebyrået for deg i {{ city.name }}</h1>
+      <p class="hero__subline">Få tre uforpliktende tilbud fra kvalitetssjekkede byråer som jobber i {{ city.name }} og omegn.</p>
+      <div class="city-hero__ctas">
+        <a href="/flytteforesporsel/?by={{ city.slug }}" class="btn-primary">
+          Få 3 tilbud gratis
+          <span data-icon="arrow-right"></span>
+        </a>
+        <a href="/" class="btn-outline">Se andre byer</a>
+      </div>
+    </div>
+    <div class="hero__card">
+      <div class="hero-card">
+        <div class="hero-card__icons">
+          <span class="hero-card__mark">
+            <svg width="20" height="20" viewBox="0 0 27 27" fill="none" aria-hidden="true">
+              <circle cx="13.5" cy="13.5" r="11.625" stroke="currentColor" stroke-width="3.75" />
+              <path d="M16.5 1.875C12.7075 5.23556 10.5 9.26144 10.5 13.5887C10.5 17.8401 12.6307 21.8006 16.3019 25.125" stroke="currentColor" stroke-width="3.75" />
+            </svg>
+          </span>
+          <span class="hero-card__dots"><span></span><span></span><span></span></span>
+          <span class="hero-card__end">
+            <svg width="26" height="26" viewBox="0 0 42 42" fill="none" aria-hidden="true">
+              <path d="M20.6 33.27V20.74M20.6 20.74 9.69 14.48M20.6 20.74l10.91-6.26M14.96 11.06l11.27 6.45M19.35 32.93c.38.22.81.34 1.25.34s.87-.12 1.25-.34l8.77-5.01c.38-.22.7-.54.92-.92.22-.38.34-.81.34-1.25V15.73c0-.44-.12-.87-.34-1.25-.22-.38-.54-.7-.92-.92l-8.77-5.01c-.38-.22-.81-.34-1.25-.34s-.87.12-1.25.34l-8.77 5.01c-.38.22-.7.54-.92.92-.22.38-.34.81-.34 1.25v10.02c0 .44.12.87.34 1.25.22.38.54.7.92.92l8.77 5.01Z" stroke="#3D5507" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </div>
+        <h2 class="hero-card__title">La firmaene konkurrere om deg</h2>
+        <p class="hero-card__body">Vi kobler deg med 3 håndplukkede, kvalitetssjekkede byråer som jobber i {{ city.name }}.</p>
+        <a href="/flytteforesporsel/?by={{ city.slug }}" class="btn-primary hero-card__cta">
+          Få 3 tilbud gratis
+          <span data-icon="arrow-right"></span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== STATS (full, not compact) ===================== -->
+<section class="section">
+  <div class="content-width">
+    <div class="stats">
+      <div class="stat"><span class="stat__value">100%</span><span class="stat__label">Gratis og uforpliktende</span></div>
+      <div class="stat"><span class="stat__value">1 min</span><span class="stat__label">Å fylle ut skjema</span></div>
+      <div class="stat"><span class="stat__value">5 000+</span><span class="stat__label">Fornøyde kunder</span></div>
+      <div class="stat"><span class="stat__value">4.8/5</span><span class="stat__label">Gjennomsnittlig vurdering</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== HOW IT WORKS ===================== -->
+<section class="section how-it-works">
+  <div class="content-width">
+    <h2 class="how-it-works__title">Slik fungerer det</h2>
+    <ol class="how-it-works__grid">
+      <li class="step-card">
+        <span class="step-card__number">1</span>
+        <div class="step-card__art"><img src="{% static 'images/home/howitworks-1-skjema.png' %}" alt=""></div>
+        <h3 class="step-card__title">Fyll ut skjema</h3>
+        <p class="step-card__body">Svar på noen enkle spørsmål. Tar under to minutter.</p>
+      </li>
+      <li class="step-card">
+        <span class="step-card__number">2</span>
+        <div class="step-card__art"><img src="{% static 'images/home/howitworks-2-match.png' %}" alt=""></div>
+        <h3 class="step-card__title">Vi kobler deg med de beste</h3>
+        <p class="step-card__body">Tre kvalitetssjekkede byråer kobles med din flytting.</p>
+      </li>
+      <li class="step-card">
+        <span class="step-card__number">3</span>
+        <div class="step-card__art"><img src="{% static 'images/home/howitworks-3-velg.png' %}" alt=""></div>
+        <h3 class="step-card__title">Velg tilbud</h3>
+        <p class="step-card__body">Sammenlign, velg ditt byrå, og avtal resten direkte med dem.</p>
+      </li>
+    </ol>
+    <div class="how-it-works__cta">
+      <a href="/flytteforesporsel/?by={{ city.slug }}" class="btn-primary">
+        Få 3 tilbud gratis
+        <span data-icon="arrow-right"></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SERVICES ===================== -->
+<section class="section services">
+  <div class="content-width">
+    <div class="services__header">
+      <h2 class="services__title">Alt du trenger på ett sted</h2>
+      <span class="services__underline" aria-hidden="true"></span>
+    </div>
+    <div class="services__grid">
+      <article class="service-card">
+        <h3 class="service-card__title">Flyttehjelp</h3>
+        <p class="service-card__body">Pakking, bæring og transport, trygt fra dør til dør. Vi finner byråer som tar hele jobben. Du velger hvor mye hjelp du trenger.</p>
+      </article>
+      <article class="service-card">
+        <h3 class="service-card__title">Flyttevask</h3>
+        <p class="service-card__body">Godkjente vaskebyråer med garanti. Perfekt før innflytting eller når leiekontrakten krever en grundig sluttvask.</p>
+      </article>
+      <article class="service-card">
+        <h3 class="service-card__title">Lagring</h3>
+        <p class="service-card__body">Trygg kortsiktig eller langsiktig oppbevaring i ditt nærområde, med forsikring og fleksibel tilgang.</p>
+      </article>
+      <article class="service-card">
+        <h3 class="service-card__title">Utlandsflytting</h3>
+        <p class="service-card__body">Spesialiserte byråer som håndterer toll, containere og papirarbeid. Både flytting ut av Norge og hjem igjen.</p>
+      </article>
+      <article class="service-card">
+        <h3 class="service-card__title">Kontorflytting</h3>
+        <p class="service-card__body">Erfarne partnere som flytter kontor, lager og næringslokaler utenom arbeidstid. IT, møbler og arkiv håndtert profesjonelt.</p>
+      </article>
+      <article class="service-card">
+        <h3 class="service-card__title">Dødsbo</h3>
+        <p class="service-card__body">Tømming og ryddighet med respekt. Byråer med erfaring fra bobehandling av innbo.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FAQ ===================== -->
+<section class="section">
+  <div class="content-width">
+    <div class="faq" data-faq>
+      <h2 class="faq__title">Ofte stilte spørsmål</h2>
+      <ul class="faq__list">
+        <li class="faq-item" data-faq-item>
+          <button type="button" class="faq-item__trigger" data-faq-trigger aria-expanded="false">
+            <span class="faq-item__question">Hva koster det å bruke Kobly?</span>
+            <span class="faq-item__icon"><span class="faq-item__icon-plus" data-icon="plus"></span><span class="faq-item__icon-minus" data-icon="minus"></span></span>
+          </button>
+          <p class="faq-item__answer">Det er helt gratis og uforpliktende å få tilbud gjennom Kobly. Du betaler kun for selve flyttejobben — direkte til byrået du velger.</p>
+        </li>
+        <li class="faq-item" data-faq-item>
+          <button type="button" class="faq-item__trigger" data-faq-trigger aria-expanded="false">
+            <span class="faq-item__question">Hvor mange byråer kontaktes?</span>
+            <span class="faq-item__icon"><span class="faq-item__icon-plus" data-icon="plus"></span><span class="faq-item__icon-minus" data-icon="minus"></span></span>
+          </button>
+          <p class="faq-item__answer">Vi kobler deg med tre håndplukkede, kvalitetssjekkede byråer i ditt område. Slik kan du sammenligne pris og tjenester før du bestemmer deg.</p>
+        </li>
+        <li class="faq-item" data-faq-item>
+          <button type="button" class="faq-item__trigger" data-faq-trigger aria-expanded="false">
+            <span class="faq-item__question">Hvor lang tid tar det før jeg får tilbud?</span>
+            <span class="faq-item__icon"><span class="faq-item__icon-plus" data-icon="plus"></span><span class="faq-item__icon-minus" data-icon="minus"></span></span>
+          </button>
+          <p class="faq-item__answer">De fleste mottar tilbud på e-post innen 24 timer etter at forespørselen er sendt inn.</p>
+        </li>
+        <li class="faq-item" data-faq-item>
+          <button type="button" class="faq-item__trigger" data-faq-trigger aria-expanded="false">
+            <span class="faq-item__question">Hvordan velger Kobly hvilke byråer som passer for meg?</span>
+            <span class="faq-item__icon"><span class="faq-item__icon-plus" data-icon="plus"></span><span class="faq-item__icon-minus" data-icon="minus"></span></span>
+          </button>
+          <p class="faq-item__answer">Vi matcher basert på adresse, type flytting (privat, bedrift, internasjonal), boligtype og ønsket dato. Bare byråer med dokumentert erfaring og gode kundeanmeldelser blir koblet på.</p>
+        </li>
+        <li class="faq-item" data-faq-item>
+          <button type="button" class="faq-item__trigger" data-faq-trigger aria-expanded="false">
+            <span class="faq-item__question">Er jeg forpliktet til å velge ett av byråene?</span>
+            <span class="faq-item__icon"><span class="faq-item__icon-plus" data-icon="plus"></span><span class="faq-item__icon-minus" data-icon="minus"></span></span>
+          </button>
+          <p class="faq-item__answer">Nei. Du velger selv om du vil bruke et av byråene som tar kontakt, eller takke nei. Det er helt uforpliktende.</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER CTA ===================== -->
+<section class="section footer-cta">
+  <div class="content-width">
+    <div class="footer-cta__inner">
+      <h2 class="footer-cta__title">Klar for å flytte?</h2>
+      <form class="postnummer-form" data-postnummer-form novalidate>
+        <div class="postnummer-form__row">
+          <label class="postnummer-form__field">
+            <input type="text" inputmode="numeric" maxlength="4" placeholder="Ditt postnummer" aria-label="Postnummer" data-postnummer-input>
+          </label>
+          <button type="submit" class="btn-primary postnummer-form__submit">
+            Få 3 tilbud gratis
+            <span data-icon="arrow-right"></span>
+          </button>
+        </div>
+        <p class="postnummer-form__error" data-postnummer-error hidden>Skriv inn et gyldig postnummer (4 siffer).</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

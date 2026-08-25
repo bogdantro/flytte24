@@ -1,7 +1,7 @@
 {% extends 'core/base.html' %}
 {% load static %}
 
-{% block page_title %}{% if page.meta_title %}{{ page.meta_title }}{% elif page.title %}{{ page.title }}{% else %}Kobly{% endif %}{% endblock %}
+{% block page_title %}{% if page.meta_title %}{{ page.meta_title }}{% else %}Kobly{% endif %}{% endblock %}
 
 {% block page_meta %}
   {% if page.meta_description %}<meta name="description" content="{{ page.meta_description }}">{% endif %}

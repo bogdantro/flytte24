@@ -1,0 +1,14 @@
+@media (max-width: 1049px) {
+  .city-hero__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-top: 28px;
+  }
+}
+@media (min-width: 1050px) {
+  .city-hero__ctas {
+    display: none;
+  }
+}

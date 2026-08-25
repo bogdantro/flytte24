@@ -1,0 +1,30 @@
+// static/scss/pages/cities/detail.scss
+// Page-specific styles for /oslo/, /bergen/, /trondheim/, /stavanger/, /tromso/
+// (apps/core/templates/pages/cities/detail.html). Loaded alongside
+// static/scss/base.css (never instead of it) — this file only holds the one
+// thing city pages need that home.html doesn't already give shared: a
+// mobile-only two-CTA row inside the hero (home's .hero__cta is a single
+// button). Every other section on this page (.hero, .hero-card, .stats,
+// .how-it-works, .services, .faq, .footer-cta, .section, .content-width,
+// .btn-primary, .btn-outline) reuses base.scss's shared classes as-is,
+// since spec §7 explicitly reuses these same components on city pages.
+//
+// Compile after every edit with:
+//   sass static/scss/pages/cities/detail.scss static/scss/pages/cities/detail.css --style=expanded --no-source-map
+
+@media (max-width: 1049px) {
+  .city-hero__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-top: 28px;
+  }
+}
+
+@media (min-width: 1050px) {
+  // Mirrors .hero__cta's own desktop rule — the HeroCard takes over instead.
+  .city-hero__ctas {
+    display: none;
+  }
+}

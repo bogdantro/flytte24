@@ -62,6 +62,16 @@ urlpatterns = [
     path('byraer/', agency_list, name='agency_list'),
     path('byraer/<slug:slug>/', agency_detail, name='agency_detail'),
 
+    # City landing pages (spec §7) — 5 explicit literal paths rather than one
+    # <slug:city_slug>/ pattern, so an unrelated single-segment CMS page path
+    # (e.g. a duplicated page at /forside-kopi/) still falls through to the
+    # render_page catch-all below instead of being swallowed here.
+    path('oslo/', city_detail, {'city_slug': 'oslo'}, name='city_oslo'),
+    path('bergen/', city_detail, {'city_slug': 'bergen'}, name='city_bergen'),
+    path('trondheim/', city_detail, {'city_slug': 'trondheim'}, name='city_trondheim'),
+    path('stavanger/', city_detail, {'city_slug': 'stavanger'}, name='city_stavanger'),
+    path('tromso/', city_detail, {'city_slug': 'tromso'}, name='city_tromso'),
+
     # Catch-all for CMS pages (apps.pages) at any path other than "/" —
     # e.g. a duplicated page (dashboard:page_duplicate). Must stay LAST:
     # every route above is tried first, and this only matches paths

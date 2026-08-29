@@ -1,2 +1,53 @@
 {% extends 'core/base.html' %}
-{% block content %}{% endblock %}
+{% load static %}
+
+{% block page_title %}Mine leads{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static 'scss/pages/account/auth-forms.css' %}">
+  <link rel="stylesheet" href="{% static 'scss/pages/account/portal.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="portal-page">
+  <div class="portal-heading-row">
+    <h1 class="portal-heading">Mine leads</h1>
+  </div>
+
+  {% include "core/accountPages/_portal_nav.html" with active="leads" %}
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="portal-banner portal-banner--{{ message.tags|default:'success' }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+
+  <div class="portal-card">
+    <p class="portal-card__title">Ønsket antall leads</p>
+    <form method="post">
+      {% csrf_token %}
+      <div class="portal-form__group"><span class="field-label">Per dag</span><input type="text" name="leads_per_day" value="{{ business.leads_per_day|default:'' }}" placeholder="Ingen grense"></div>
+      <div class="portal-form__group"><span class="field-label">Per uke</span><input type="text" name="leads_per_week" value="{{ business.leads_per_week|default:'' }}" placeholder="Ingen grense"></div>
+      <div class="portal-form__group"><span class="field-label">Per måned</span><input type="text" name="leads_per_month" value="{{ business.leads_per_month|default:'' }}" placeholder="Ingen grense"></div>
+      <button type="submit" class="btn-primary">Lagre grenser</button>
+    </form>
+  </div>
+
+  <div class="portal-card">
+    <p class="portal-card__title">Alle leads ({{ lead_entries|length }}) · {{ total_received }} mottatt totalt</p>
+    {% if lead_entries %}
+      {% for entry in lead_entries %}
+        <div class="portal-row">
+          <span class="portal-row__label">{{ entry.created_at|date:"d.m.Y" }} · {{ entry.source }}</span>
+          <span class="portal-row__value">
+            {{ entry.label }}
+            {% if entry.status_display %}<span class="portal-badge portal-badge--{{ entry.status }}">{{ entry.status_display }}</span>{% endif %}
+          </span>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p class="portal-empty">Ingen leads mottatt ennå.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

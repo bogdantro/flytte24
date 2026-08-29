@@ -143,6 +143,16 @@ class WizardFormTest(TestCase):
         form = WizardForm(_valid_payload(flyttedato="", fleksibel="on"))
         self.assertTrue(form.is_valid(), form.errors)
 
+    def test_date_and_flexible_both_set_is_invalid(self):
+        """Regression test: clean() used to only reject "neither set", so a bypassed POST
+        sending both a real date and fleksibel=True passed validation — and
+        send_receipt_email would then silently discard the date and show "Fleksibel dato"
+        instead, since flyttedato/fleksibel are meant to be mutually exclusive (enforced
+        client-side by the step-2 JS, which this form is the only server-side backstop for)."""
+        form = WizardForm(_valid_payload(flyttedato="2026-09-12", fleksibel="on"))
+        self.assertFalse(form.is_valid())
+        self.assertIn("__all__", form.errors)
+
     def test_beskrivelse_is_always_optional(self):
         form = WizardForm(_valid_payload(beskrivelse=""))
         self.assertTrue(form.is_valid(), form.errors)
@@ -200,6 +210,14 @@ class WizardPostViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(MoveLead.objects.count(), 0)
         self.assertTrue(response.context["form"].errors)
+
+    def test_invalid_post_tags_the_failed_field_for_the_step_jump(self):
+        """Regression test: wizard.js used to always reopen on step 1 after a bypassed-
+        validation POST re-render, regardless of which step's field actually failed.
+        data-error-fields is what lets it jump to the right one — assert the failing
+        field name (navn, a step-5 field) actually appears there."""
+        response = self.client.post(reverse("leads:wizard"), _valid_payload(navn="O"))
+        self.assertContains(response, 'data-error-fields="navn"')
 
     def test_invalid_post_repopulates_step_2_3_and_coordinate_fields(self):
         # An otherwise-valid payload with one intentionally-invalid field

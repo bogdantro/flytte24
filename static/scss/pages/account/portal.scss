@@ -1,0 +1,251 @@
+// static/scss/pages/account/portal.scss
+// Shared layout for the logged-in partner portal: myaccount.html,
+// accountPages/business_edit_profile.html, accountPages/foresporsel_database.html,
+// password_change_form.html's "back to portal" nav. Loaded alongside
+// auth-forms.css (field-input/field-label/btn-primary) and base.css.
+//
+// Compile after every edit with:
+//   sass static/scss/pages/account/portal.scss static/scss/pages/account/portal.css --style=expanded --no-source-map
+
+$ink: #1a1a1a;
+$inkMuted: #5c5c5c;
+$line: #e6e1d6;
+$brand: #221814;
+$brandInk: #f4f1ea;
+$surface: #ffffff;
+$surfaceSoft: #faf9f6;
+
+$fontSans: "Moderat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+$fontSerif: "Crimson Pro", Georgia, serif;
+
+$radiusCard: 14px;
+$radiusPill: 9999px;
+
+.portal-page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 40px 20px 96px;
+}
+
+.portal-heading-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.portal-heading {
+  margin: 0;
+  font-family: $fontSerif;
+  font-size: 32px;
+  font-weight: 500;
+  color: $ink;
+}
+
+// Sub-nav between the portal's own pages (Oversikt / Bedriftsprofil / Leads)
+.portal-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 28px;
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    border: 1.5px solid $line;
+    border-radius: $radiusPill;
+    padding: 8px 18px;
+    font-size: 14px;
+    font-weight: 500;
+    color: $inkMuted;
+    background: $surface;
+    transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+
+    &:hover { border-color: rgba(26, 26, 26, 0.3); color: $ink; }
+
+    &.is-active {
+      border-color: $brand;
+      background: $brand;
+      color: $brandInk;
+    }
+  }
+}
+
+.portal-banner {
+  margin-bottom: 24px;
+  padding: 14px 18px;
+  border-radius: $radiusCard;
+  font-size: 14px;
+  line-height: 1.5;
+
+  &--pending { background: #fdf3e6; color: #8a4a1f; border: 1px solid rgba(138, 74, 31, 0.2); }
+  &--active { background: #eef3e6; color: #3d5507; border: 1px solid rgba(61, 85, 7, 0.2); }
+  &--success { background: #eef3e6; color: #3d5507; border: 1px solid rgba(61, 85, 7, 0.2); }
+  &--error { background: #fdeceb; color: #a33a2f; border: 1px solid rgba(163, 58, 47, 0.2); }
+}
+
+.portal-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.portal-stat {
+  border-radius: $radiusCard;
+  background: $surfaceSoft;
+  border: 1px solid $line;
+  padding: 18px 20px;
+
+  &__value { display: block; font-family: $fontSerif; font-size: 28px; font-weight: 500; color: $ink; }
+  &__label { display: block; margin-top: 4px; font-size: 13px; color: $inkMuted; }
+}
+
+.portal-card {
+  border-radius: $radiusCard;
+  background: $surfaceSoft;
+  border: 1px solid $line;
+  padding: 24px;
+  margin-bottom: 24px;
+
+  &__title {
+    margin: 0 0 16px;
+    font-family: $fontSerif;
+    font-size: 19px;
+    font-weight: 500;
+    color: $ink;
+  }
+}
+
+.portal-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid $line;
+  font-size: 14px;
+
+  &:last-child { border-bottom: none; }
+
+  &__label { color: $inkMuted; white-space: nowrap; }
+  &__value { color: $ink; text-align: right; }
+}
+
+.portal-empty {
+  padding: 16px 0;
+  font-size: 14px;
+  color: $inkMuted;
+}
+
+.portal-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: $radiusPill;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 600;
+
+  &::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+
+  &--active { background: rgba(214, 232, 168, 0.5); color: #3d5507; }
+  &--pending { background: rgba(232, 168, 124, 0.35); color: #8a4a1f; }
+  &--new { background: rgba(232, 168, 124, 0.35); color: #8a4a1f; }
+  &--contacted { background: rgba(124, 168, 232, 0.3); color: #1f4a8a; }
+  &--booked { background: rgba(214, 232, 168, 0.5); color: #3d5507; }
+}
+
+.portal-usage-bar {
+  margin-bottom: 14px;
+
+  &:last-child { margin-bottom: 0; }
+
+  &__label { display: block; margin-bottom: 4px; font-size: 13px; color: $inkMuted; }
+
+  &__track { height: 6px; border-radius: $radiusPill; background: rgba(26, 26, 26, 0.08); overflow: hidden; }
+  &__fill { height: 100%; background: $brand; border-radius: $radiusPill; }
+}
+
+.portal-form__group {
+  margin-bottom: 16px;
+
+  &:last-child { margin-bottom: 0; }
+
+  .field-label { display: block; margin-bottom: 6px; font-size: 14px; color: rgba(26, 26, 26, 0.5); }
+
+  // Bare Django-rendered widgets ({{ form.field }}) — no explicit CSS class
+  // needed on each one, same convention as apps/dashboard's .dashboard-form__group.
+  input[type="text"], input[type="email"], input[type="url"], input[type="tel"],
+  input[type="file"], textarea, select {
+    width: 100%;
+    border: 1.5px solid rgba(26, 26, 26, 0.1);
+    border-radius: $radiusCard;
+    background: #f7f5f1;
+    padding: 12px 14px;
+    font-size: 14px;
+    font-family: $fontSans;
+    color: $ink;
+    outline: none;
+    transition: border-color 0.2s ease;
+
+    &:focus { border-color: $brand; }
+  }
+
+  textarea { min-height: 90px; resize: vertical; }
+}
+
+.portal-photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+
+  img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid $line;
+  }
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1.5px solid $line;
+  border-radius: $radiusPill;
+  background: $surface;
+  color: $ink;
+  font-family: $fontSans;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+
+  &:hover { border-color: rgba(26, 26, 26, 0.3); background: $surfaceSoft; }
+}
+
+.btn-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1.5px solid #d9534f;
+  border-radius: $radiusPill;
+  background: $surface;
+  color: #b3261e;
+  font-family: $fontSans;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+
+  &:hover { background: #d9534f; color: white; }
+}

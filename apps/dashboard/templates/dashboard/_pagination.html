@@ -1,0 +1,23 @@
+<!-- apps/dashboard/templates/dashboard/_pagination.html -->
+{% comment %}
+Include with: {% include "dashboard/_pagination.html" with page_obj=leads %}
+(or businesses/pages) — page_qs must also be in context (see
+apps/dashboard/views.py _page_qs) so filters survive page changes.
+{% endcomment %}
+{% if page_obj.has_other_pages %}
+  <nav class="dashboard-pagination" aria-label="Sidenavigasjon">
+    {% if page_obj.has_previous %}
+      <a class="dashboard-pagination__link" href="?page={{ page_obj.previous_page_number }}{{ page_qs }}">‹</a>
+    {% else %}
+      <span class="dashboard-pagination__link is-disabled">‹</span>
+    {% endif %}
+
+    <span class="dashboard-pagination__info">Side {{ page_obj.number }} av {{ page_obj.paginator.num_pages }}</span>
+
+    {% if page_obj.has_next %}
+      <a class="dashboard-pagination__link" href="?page={{ page_obj.next_page_number }}{{ page_qs }}">›</a>
+    {% else %}
+      <span class="dashboard-pagination__link is-disabled">›</span>
+    {% endif %}
+  </nav>
+{% endif %}

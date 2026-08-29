@@ -1,0 +1,32 @@
+<!-- apps/dashboard/templates/dashboard/business_import.html -->
+{% extends "dashboard/_base.html" %}
+
+{% block title %}Importer bedrifter{% endblock %}
+
+{% block content %}
+  <div class="dashboard-heading-row">
+    <h1 class="dashboard-heading">Importer bedrifter</h1>
+    <a href="{% url 'dashboard:business_list' %}" class="btn-outline">← Tilbake til bedrifter</a>
+  </div>
+
+  <div class="lead-card" style="margin-bottom: 1.5rem;">
+    <p class="lead-card__title">CSV-format</p>
+    <p style="margin:0 0 0.75rem;">Første rad må være denne kolonneoverskriften, i denne rekkefølgen:</p>
+    <p class="lead-table__muted" style="word-break: break-word;">{{ columns|join:"," }}</p>
+    <p style="margin:0.75rem 0 0; font-size:0.8125rem; color:#8a8a8a;">
+      company_name, email, phone, address, postal_code, city, first_name og last_name er påkrevd for hver rad.
+      Nye bedrifter importeres som inaktive — aktiver dem fra bedriftslisten når de er verifisert.
+    </p>
+  </div>
+
+  <div class="lead-card">
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="dashboard-form__group">
+        <label class="dashboard-form__label">CSV-fil</label>
+        <input type="file" name="csv_file" accept=".csv,text/csv" required>
+      </div>
+      <button type="submit" class="btn-primary">Importer</button>
+    </form>
+  </div>
+{% endblock %}

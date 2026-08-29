@@ -45,17 +45,62 @@ urlpatterns = [
     path('reg/fullfor/lag-bruker/', signup, name='signup'),
     path('for-bedrifter/min-bruker/logg-ut/', views.LogoutView.as_view(), name='logout'),
 
+    # Password reset (anonymous — "Glemt passord?" on the login page) and
+    # password change (logged-in — from myaccount). Django's own built-in
+    # auth views; allauth is installed but its urls were never include()'d,
+    # so these are the actual auth flow rather than a second, unused one.
+    path(
+        'for-bedrifter/bruker/tilbakestill-passord/',
+        views.PasswordResetView.as_view(
+            template_name='core/password_reset_form.html',
+            email_template_name='core/password_reset_email.html',
+            subject_template_name='core/password_reset_subject.txt',
+            success_url='/for-bedrifter/bruker/tilbakestill-passord/sendt/',
+        ),
+        name='password_reset',
+    ),
+    path(
+        'for-bedrifter/bruker/tilbakestill-passord/sendt/',
+        views.PasswordResetDoneView.as_view(template_name='core/password_reset_done.html'),
+        name='password_reset_done',
+    ),
+    path(
+        'for-bedrifter/bruker/tilbakestill-passord/<uidb64>/<token>/',
+        views.PasswordResetConfirmView.as_view(
+            template_name='core/password_reset_confirm.html',
+            success_url='/for-bedrifter/bruker/tilbakestill-passord/fullfort/',
+        ),
+        name='password_reset_confirm',
+    ),
+    path(
+        'for-bedrifter/bruker/tilbakestill-passord/fullfort/',
+        views.PasswordResetCompleteView.as_view(template_name='core/password_reset_complete.html'),
+        name='password_reset_complete',
+    ),
+    path(
+        'for-bedrifter/min-bruker/bytt-passord/',
+        views.PasswordChangeView.as_view(
+            template_name='core/password_change_form.html',
+            success_url='/for-bedrifter/min-bruker/bytt-passord/fullfort/',
+        ),
+        name='password_change',
+    ),
+    path(
+        'for-bedrifter/min-bruker/bytt-passord/fullfort/',
+        views.PasswordChangeDoneView.as_view(template_name='core/password_change_done.html'),
+        name='password_change_done',
+    ),
+
     path('for-bedrifter/min-bruker/', myaccount, name='myaccount'),
     path('for-bedrifter/min-bruker/bedriftsinformasjon/', edit_public_profile, name='edit_public_profile'),
+    path('for-bedrifter/min-bruker/bilde/legg-til/', business_image_add, name='business_image_add'),
+    path('for-bedrifter/min-bruker/bilde/<int:image_pk>/slett/', business_image_delete, name='business_image_delete'),
     path("for-bedrifter/foresporsel-database/", foresporsel_database, name="foresporsel_database"),
 
     path('bedrift/<int:business_id>/', public_business_profile, name='public_business_profile'),
 
 
 
-
-    # API
-    path('api/check-user/', check_user_exists, name='check_user_exists'),
 
     path('blogg/', blog_index, name='blog_index'),
     path('blogg/<slug:slug>/', blog_article, name='blog_article'),

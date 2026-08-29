@@ -1,0 +1,46 @@
+// static/scss/pages/business/profile-extra.scss
+// Supplemental styles for core/public_business_profile.html — reuses
+// static/scss/pages/agencies/detail.css's .agency-detail__* system for the
+// header/stats/about/services/contact/reviews sections (a real business
+// profile is structurally the same "profile page" the agency pages already
+// are), and adds only what agencies don't have: a photo gallery and an
+// approval/pending notice.
+//
+// Compile after every edit with:
+//   sass static/scss/pages/business/profile-extra.scss static/scss/pages/business/profile-extra.css --style=expanded --no-source-map
+
+$ink: #1a1a1a;
+$inkMuted: #5c5c5c;
+$line: #e6e1d6;
+$radiusCard: 14px;
+
+.business-profile-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 14px;
+  margin: 0 0 40px;
+
+  img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: $radiusCard;
+    border: 1px solid $line;
+  }
+}
+
+.business-profile-pending {
+  margin: 0 0 32px;
+  padding: 16px 20px;
+  border-radius: $radiusCard;
+  background: #fdf3e6;
+  color: #8a4a1f;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid rgba(138, 74, 31, 0.2);
+}
+
+.business-profile-no-reviews {
+  color: $inkMuted;
+  font-size: 14px;
+}

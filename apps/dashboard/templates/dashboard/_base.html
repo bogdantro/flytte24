@@ -14,7 +14,7 @@
 
 <div class="dashboard-shell">
   <aside class="dashboard-sidebar">
-    <a href="{% url 'dashboard:lead_list' %}" class="dashboard-sidebar__logo">
+    <a href="{% url 'dashboard:dashboard_overview' %}" class="dashboard-sidebar__logo">
       <svg width="20" height="20" viewBox="0 0 27 27" fill="none" aria-hidden="true">
         <circle cx="13.5" cy="13.5" r="11.625" stroke="currentColor" stroke-width="3.75" />
         <path d="M16.5 1.875C12.7075 5.23556 10.5 9.26144 10.5 13.5887C10.5 17.8401 12.6307 21.8006 16.3019 25.125" stroke="currentColor" stroke-width="3.75" />
@@ -23,8 +23,17 @@
     </a>
     <span class="dashboard-sidebar__label">Dashbord</span>
 
+    <form method="get" action="{% url 'dashboard:global_search' %}" class="dashboard-sidebar__search">
+      <span class="dashboard-sidebar__icon" data-icon="search"></span>
+      <input type="text" name="q" placeholder="Søk …" aria-label="Søk i dashbordet">
+    </form>
+
     <nav class="dashboard-sidebar__nav">
-      <a href="{% url 'dashboard:lead_list' %}" class="dashboard-sidebar__link {% if request.path == '/dashboard/' or '/dashboard/lead/' in request.path %}is-active{% endif %}">
+      <a href="{% url 'dashboard:dashboard_overview' %}" class="dashboard-sidebar__link {% if request.path == '/dashboard/' %}is-active{% endif %}">
+        <span class="dashboard-sidebar__icon" data-icon="home"></span>
+        Oversikt
+      </a>
+      <a href="{% url 'dashboard:lead_list' %}" class="dashboard-sidebar__link {% if '/dashboard/leads/' in request.path or '/dashboard/lead/' in request.path or '/dashboard/papirkurv/' in request.path %}is-active{% endif %}">
         <span class="dashboard-sidebar__icon" data-icon="inbox"></span>
         Leads
       </a>
@@ -35,6 +44,10 @@
       <a href="{% url 'dashboard:business_list' %}" class="dashboard-sidebar__link {% if '/dashboard/bedrifter/' in request.path %}is-active{% endif %}">
         <span class="dashboard-sidebar__icon" data-icon="building"></span>
         Bedrifter
+      </a>
+      <a href="{% url 'dashboard:activity_log' %}" class="dashboard-sidebar__link {% if '/dashboard/aktivitetslogg/' in request.path %}is-active{% endif %}">
+        <span class="dashboard-sidebar__icon" data-icon="history"></span>
+        Aktivitetslogg
       </a>
     </nav>
 
@@ -51,6 +64,13 @@
   </aside>
 
   <main class="dashboard-main">
+    {% if messages %}
+      <ul class="dashboard-messages">
+        {% for message in messages %}
+          <li class="dashboard-message{% if message.tags %} dashboard-message--{{ message.tags }}{% endif %}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
     {% block content %}{% endblock %}
   </main>
 </div>

@@ -1,7 +1,9 @@
 import re
 
 from django import forms
+
 from .models import Flytteforesporsel
+from apps.store.models import Bedrift_info, phone_validator
 
 class FlytteforesporselForm(forms.ModelForm):
     class Meta:
@@ -72,6 +74,41 @@ class PartnerWizardForm(forms.Form):
         value = self.cleaned_data["postal_code"].strip()
         if not POSTNUMMER_PATTERN.match(value):
             raise forms.ValidationError("Postnummer må bestå av 4 siffer.")
+        return value
+
+    def clean_phone(self):
+        # Same pattern as Bedrift_info.phone's own model-level validator
+        # (apps.store.models.phone_validator) — checked here too since
+        # apps.core.views.for_business_partner saves via
+        # Bedrift_info.objects.create(**cleaned_data) directly rather than
+        # form.save()/full_clean(), so the model validator alone would
+        # never actually run.
+        value = self.cleaned_data["phone"].strip()
+        phone_validator(value)
+        return value
+
+    def clean_logo(self):
+        # apps.core.views.for_business_partner creates PublicBusinessInformation
+        # directly (Model.objects.create(...)) rather than via a ModelForm, so
+        # PublicBusinessInformation.logo's own model-level validate_max_file_size
+        # validator (apps.store.models) never runs for this one upload path —
+        # check it here too.
+        from apps.store.models import validate_max_file_size
+        value = self.cleaned_data.get("logo")
+        if value:
+            validate_max_file_size(value)
+        return value
+
+    def clean_email(self):
+        # Bedrift_info.email is unique at the DB level — checked here too
+        # so a duplicate submission (e.g. a double-click before the wizard's
+        # own submit-button-disable JS kicks in) surfaces as a normal form
+        # error instead of an IntegrityError, and so it can never silently
+        # create a second row for the same company that a later signup
+        # would then have to guess between.
+        value = self.cleaned_data["email"].strip()
+        if Bedrift_info.objects.filter(email__iexact=value).exists():
+            raise forms.ValidationError("Det finnes allerede en søknad med denne e-postadressen.")
         return value
 
 

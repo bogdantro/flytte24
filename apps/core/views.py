@@ -56,9 +56,15 @@ def _page_context(request, page):
 
 
 def home(request):
-    from apps.pages.models import Page
+    from apps.pages.models import Page, publish_due_pages
 
+    publish_due_pages()
     page = Page.objects.filter(template_key="home", status="published").first()
+    if not page and request.user.is_authenticated and request.user.is_staff:
+        # Same staff-preview allowance as render_page (see its docstring) —
+        # without this, a draft home page couldn't be previewed at all,
+        # unlike every other CMS page.
+        page = Page.objects.filter(template_key="home", status="draft", path="/").first()
     return render(request, 'core/home.html', _page_context(request, page))
 
 
@@ -72,8 +78,9 @@ def render_page(request, page_path):
     hardcoded — see apps/pages's design spec), so a Page using any other
     template_key 404s here rather than silently rendering the wrong
     markup."""
-    from apps.pages.models import Page
+    from apps.pages.models import Page, publish_due_pages
 
+    publish_due_pages()
     path = "/" + page_path.rstrip("/") + "/"
     page = Page.objects.filter(path=path).first()
     is_staff = request.user.is_authenticated and request.user.is_staff
@@ -199,19 +206,16 @@ def send_flytteforesporsel(request):
     # 🔢 Increment total leads received
     for business in [job_dist.business_1, job_dist.business_2, job_dist.business_3]:
         if business:
-            try:
-                current_total = int(business.total_leads_received or 0)
-            except ValueError:
-                current_total = 0
-            business.total_leads_received = str(current_total + 1)
+            business.total_leads_received = models.F("total_leads_received") + 1
             business.save(update_fields=["total_leads_received"])
 
-    # 🌐 Define separate webhook URLs for businesses
-    webhook_url_1 = "https://hooks.zapier.com/hooks/catch/16531899/uri7mol/"
-    webhook_url_2 = "https://hooks.zapier.com/hooks/catch/16531899/urs5di1/"
-    webhook_url_3 = "https://hooks.zapier.com/hooks/catch/16531899/urs5mfe/"
-
-    webhook_urls = [webhook_url_1, webhook_url_2, webhook_url_3]
+    # 🌐 Webhook URLs for businesses — configured in settings (env-var
+    # overridable), not hardcoded here.
+    webhook_urls = [
+        settings.ZAPIER_WEBHOOK_URL_BUSINESS_1,
+        settings.ZAPIER_WEBHOOK_URL_BUSINESS_2,
+        settings.ZAPIER_WEBHOOK_URL_BUSINESS_3,
+    ]
 
     # 📨 Send individual payloads to each business
     for idx, b in enumerate(selected):
@@ -252,7 +256,7 @@ def send_flytteforesporsel(request):
             print(f"⚠️ Webhook #{idx + 1} failed for {b.company_name}: {e}")
 
     # 📩 Send webhook to customer with full lead + all matched businesses
-    customer_webhook_url = "https://hooks.zapier.com/hooks/catch/16531899/urs5514/"  # bytt til riktig URL
+    customer_webhook_url = settings.ZAPIER_WEBHOOK_URL_CUSTOMER
 
     customer_payload = {
         "inquiry": {
@@ -396,10 +400,6 @@ def partner_wizard_thank_you(request):
     })
 
 
-def for_business(request):
-    return render(request, 'pages/about/for-business.html')
-
-
 def contact(request):
     return render(request, 'pages/contact/contact.html')  
 
@@ -426,8 +426,20 @@ def agency_list(request):
 
 
 def agency_detail(request, slug):
+    from datetime import datetime
     from apps.core.models import Agency
     agency = get_object_or_404(Agency, slug=slug)
+    # agency.reviews is a JSONField — each review's "date" is stored as a
+    # plain "YYYY-MM-DD" string, not a real date object, so the template's
+    # {{ review.date|date:"d.m.Y" }} silently rendered blank on every review
+    # (Django's date filter returns "" for non-date input rather than
+    # erroring). Parse it here, in memory only — never saved back — so the
+    # template's own filter works as written.
+    for review in agency.reviews:
+        try:
+            review["date"] = datetime.strptime(review["date"], "%Y-%m-%d").date()
+        except (KeyError, ValueError, TypeError):
+            pass
     return render(request, "pages/agencies/detail.html", {"agency": agency})
 
 

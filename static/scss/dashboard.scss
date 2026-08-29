@@ -103,9 +103,46 @@ a { color: inherit; text-decoration: none; }
     background: currentColor;
   }
 
-  &--new { background: rgba(214, 232, 168, 0.5); color: #3d5507; }
-  &--contacted { background: rgba(232, 168, 124, 0.35); color: #8a4a1f; }
-  &--booked { background: rgba(26, 26, 26, 0.08); color: $color-ink; }
+  // Lead pipeline (dashboard/list.html, detail.html). Colors read by
+  // urgency, not by "recency": new = needs a first response (warm/amber),
+  // contacted = in progress (neutral blue), booked = done (green) — the
+  // reverse of an earlier version where the untouched, most-urgent leads
+  // were the calm green and "handled" leads were the alarming orange.
+  &--new { background: rgba(232, 168, 124, 0.35); color: #8a4a1f; }
+  &--contacted { background: rgba(124, 168, 232, 0.3); color: #1f4a8a; }
+  &--booked { background: rgba(214, 232, 168, 0.5); color: #3d5507; }
+
+  // Business active/inactive (dashboard/business_list.html, business_detail.html)
+  // — its own pair, not borrowed from the lead-pipeline classes above.
+  &--active { background: rgba(214, 232, 168, 0.5); color: #3d5507; }
+  &--inactive { background: rgba(26, 26, 26, 0.08); color: $color-ink; }
+
+  // Page published/draft (dashboard/page_list.html) — likewise its own pair.
+  &--published { background: rgba(214, 232, 168, 0.5); color: #3d5507; }
+  &--draft { background: rgba(26, 26, 26, 0.08); color: $color-ink; }
+}
+
+// ---------------------------------------------------------------
+// FLASH MESSAGES (django.contrib.messages, all pages)
+// ---------------------------------------------------------------
+.dashboard-messages {
+  list-style: none;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.dashboard-message {
+  border-radius: $radius-card;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  border: 1px solid $color-line;
+  background: $color-surface;
+
+  &--error { border-color: #d9534f; color: #b3261e; background: rgba(217, 83, 79, 0.08); }
+  &--success { border-color: rgba(61, 85, 7, 0.3); color: #3d5507; background: rgba(214, 232, 168, 0.35); }
 }
 
 // ---------------------------------------------------------------
@@ -212,6 +249,32 @@ a { color: inherit; text-decoration: none; }
     color: $color-ink-muted;
   }
 
+  &__search {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0.5rem 1rem;
+    padding: 0.5rem 0.75rem;
+    border: 1.5px solid $color-line;
+    border-radius: $radius-pill;
+    background: $color-surface-soft;
+
+    .dashboard-sidebar__icon { color: $color-ink-muted; }
+
+    input {
+      flex: 1;
+      min-width: 0;
+      border: none;
+      background: transparent;
+      outline: none;
+      font-family: $font-sans;
+      font-size: 0.8125rem;
+      color: $color-ink;
+
+      &::placeholder { color: $color-ink-muted; }
+    }
+  }
+
   &__nav {
     display: flex;
     flex-direction: column;
@@ -301,6 +364,99 @@ a { color: inherit; text-decoration: none; }
   font-family: $font-serif;
   font-size: 1.75rem;
   font-weight: 500;
+}
+
+.dashboard-heading-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+
+  .dashboard-heading { margin-bottom: 0; }
+
+  &__actions { display: flex; gap: 0.5rem; }
+}
+
+// ---------------------------------------------------------------
+// SEARCH + BUSINESS + DATE-RANGE FILTERS (lead list)
+// ---------------------------------------------------------------
+.dashboard-search-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.625rem;
+  margin-bottom: 1.5rem;
+
+  &__text, &__select {
+    border: 1.5px solid rgba(26, 26, 26, 0.1);
+    border-radius: 10px;
+    background: #f7f5f1;
+    padding: 0.625rem 0.875rem;
+    font-size: 0.875rem;
+    font-family: $font-sans;
+    outline: none;
+
+    &:focus { border-color: $color-brand; }
+  }
+
+  &__text { flex: 1 1 240px; min-width: 180px; }
+  &__select { flex: 0 1 200px; }
+
+  &__date {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.8125rem;
+    color: $color-ink-muted;
+
+    input[type="date"] {
+      border: 1.5px solid rgba(26, 26, 26, 0.1);
+      border-radius: 10px;
+      background: #f7f5f1;
+      padding: 0.5rem 0.625rem;
+      font-size: 0.8125rem;
+      font-family: $font-sans;
+      outline: none;
+
+      &:focus { border-color: $color-brand; }
+    }
+  }
+}
+
+// ---------------------------------------------------------------
+// BULK ACTION BAR (lead list, checkboxes)
+// ---------------------------------------------------------------
+.dashboard-bulk-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-bottom: 1rem;
+
+  .dashboard-form__select { width: auto; min-width: 220px; }
+}
+
+// ---------------------------------------------------------------
+// COPY BUTTON (lead detail — phone/email)
+// ---------------------------------------------------------------
+.copy-btn {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid $color-line;
+  border-radius: $radius-pill;
+  background: $color-surface;
+  color: $color-ink-muted;
+  font-family: $font-sans;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  padding: 0.125rem 0.5rem;
+  margin-left: 0.375rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+
+  &:hover { border-color: $color-brand; color: $color-ink; }
+  &.is-copied { border-color: $color-brand; color: $color-ink; }
 }
 
 // ---------------------------------------------------------------
@@ -491,6 +647,26 @@ a { color: inherit; text-decoration: none; }
 }
 
 // ---------------------------------------------------------------
+// USAGE BAR (business_detail — leads used vs. leads_per_day/week/month)
+// ---------------------------------------------------------------
+.usage-bar {
+  margin-bottom: 0.625rem;
+
+  &:last-child { margin-bottom: 0; }
+
+  &__label { display: block; margin-bottom: 0.25rem; font-size: 0.8125rem; color: $color-ink-muted; }
+
+  &__track {
+    height: 0.375rem;
+    border-radius: $radius-pill;
+    background: rgba(26, 26, 26, 0.08);
+    overflow: hidden;
+  }
+
+  &__fill { height: 100%; background: $color-brand; border-radius: $radius-pill; }
+}
+
+// ---------------------------------------------------------------
 // DASHBOARD-FORM — labeled text/select/file fields, reused by the
 // page editor and the business editor
 // ---------------------------------------------------------------
@@ -511,6 +687,7 @@ a { color: inherit; text-decoration: none; }
 .dashboard-form__group input[type="email"],
 .dashboard-form__group input[type="url"],
 .dashboard-form__group input[type="tel"],
+.dashboard-form__group input[type="date"],
 .dashboard-form__group textarea,
 .dashboard-form__group select {
   width: 100%;
@@ -568,4 +745,50 @@ a { color: inherit; text-decoration: none; }
     grid-template-columns: 2fr 1fr;
     align-items: start;
   }
+}
+
+// ---------------------------------------------------------------
+// PAGINATION (list pages — dashboard/_pagination.html)
+// ---------------------------------------------------------------
+.dashboard-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.dashboard-pagination__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.25rem;
+  height: 2.25rem;
+  padding: 0 0.625rem;
+  border-radius: $radius-pill;
+  border: 1.5px solid $color-line;
+  background: $color-surface;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: $color-ink;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+
+  &:hover { border-color: rgba(26, 26, 26, 0.3); }
+
+  &.is-current {
+    border-color: $color-brand;
+    background: $color-brand;
+    color: $color-brand-ink;
+  }
+
+  &.is-disabled {
+    opacity: 0.35;
+    pointer-events: none;
+  }
+}
+
+.dashboard-pagination__info {
+  font-size: 0.8125rem;
+  color: $color-ink-muted;
+  margin-right: 0.5rem;
 }

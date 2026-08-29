@@ -1,2 +1,139 @@
 {% extends 'core/base.html' %}
-{% block content %}{% endblock %}
+{% load static %}
+
+{% block page_title %}{{ business.company_name }} — Kobly{% endblock %}
+
+{% block page_meta %}
+  {% if public_info.about_us %}<meta name="description" content="{{ public_info.about_us|truncatechars:160 }}">{% endif %}
+{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static 'scss/pages/agencies/detail.css' %}">
+  <link rel="stylesheet" href="{% static 'scss/pages/business/profile-extra.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<section class="section agency-detail">
+  <div class="content-width agency-detail__inner">
+    <a href="/byraer/" class="agency-detail__back">&larr; Tilbake til byråer</a>
+
+    {% if not business.active %}
+      <div class="business-profile-pending">
+        Denne profilen er ikke publisert ennå — bare du og Kobly kan se denne forhåndsvisningen.
+      </div>
+    {% endif %}
+
+    <div class="agency-detail__header">
+      <div class="agency-detail__logo">
+        {% if public_info.logo %}
+          <img src="{{ public_info.logo.url }}" alt="{{ business.company_name }}">
+        {% endif %}
+      </div>
+      <div class="agency-detail__header-text">
+        <h1 class="agency-detail__name">{{ business.company_name }}</h1>
+        <p class="agency-detail__tagline">{{ business.city }}</p>
+      </div>
+    </div>
+
+    <!-- ===================== STATS ROW ===================== -->
+    <div class="agency-detail__stats">
+      <div class="agency-detail__stat">
+        <span class="agency-detail__stat-value">
+          <span data-icon="star" class="agency-detail__stat-icon"></span>{% if average_rating %}{{ average_rating|floatformat:1 }}{% else %}—{% endif %}
+        </span>
+        <span class="agency-detail__stat-label">{{ reviews.count }} anmeldelser</span>
+      </div>
+      <div class="agency-detail__stat">
+        <span class="agency-detail__stat-value">{{ business.created_at|date:"Y" }}</span>
+        <span class="agency-detail__stat-label">Medlem i Kobly siden</span>
+      </div>
+    </div>
+
+    <!-- ===================== ABOUT ===================== -->
+    {% if public_info.about_us %}
+    <div class="agency-detail__about">
+      {% for paragraph in public_info.about_us.splitlines %}
+        {% if paragraph %}<p>{{ paragraph }}</p>{% endif %}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- ===================== SERVICES + AREAS ===================== -->
+    <div class="agency-detail__lists">
+      <div class="agency-detail__list-block">
+        <h2 class="agency-detail__list-title">Tjenester</h2>
+        <ul class="agency-detail__tags">
+          {% for move_type in move_types %}
+            <li>{{ move_type }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="agency-detail__list-block">
+        <h2 class="agency-detail__list-title">Dekningsområder</h2>
+        <ul class="agency-detail__tags">
+          {% for city in cities %}
+            <li>{{ city }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <!-- ===================== FAQ ===================== -->
+    {% if public_info.faq %}
+    <div class="agency-detail__about">
+      <h2 class="agency-detail__list-title">Ofte stilte spørsmål</h2>
+      {% for line in public_info.faq.splitlines %}
+        {% if line %}<p>{{ line }}</p>{% endif %}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- ===================== GALLERY ===================== -->
+    {% if images %}
+    <div class="business-profile-gallery">
+      {% for image in images %}
+        <img src="{{ image.image.url }}" alt="{{ business.company_name }}">
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- ===================== CONTACT ===================== -->
+    <div class="agency-detail__contact">
+      <p class="agency-detail__contact-name">{{ business.first_name }} {{ business.last_name }}</p>
+      <p class="agency-detail__contact-role">Kontaktperson</p>
+    </div>
+
+    <!-- ===================== REVIEWS ===================== -->
+    <div class="agency-detail__reviews">
+      <h2 class="agency-detail__reviews-title">Hva sier kundene?</h2>
+      {% if reviews %}
+        <div class="testimonials__grid agency-reviews-grid">
+          {% for review in reviews %}
+            <article class="testimonial-card review-card">
+              <div class="review-card__stars">
+                {% for i in "12345" %}
+                  <span data-icon="star" class="review-card__star{% if forloop.counter <= review.rating %} review-card__star--filled{% else %} review-card__star--empty{% endif %}"></span>
+                {% endfor %}
+              </div>
+              <p class="testimonial-card__quote review-card__comment">&ldquo;{{ review.comment }}&rdquo;</p>
+              <p class="testimonial-card__byline">{{ review.name }}<span> · {{ review.created_at|date:"d.m.Y" }}</span></p>
+            </article>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="business-profile-no-reviews">Ingen anmeldelser ennå.</p>
+      {% endif %}
+    </div>
+
+    <!-- ===================== CTA ===================== -->
+    <div class="agency-detail__cta">
+      <a href="/flytteforesporsel/" class="btn-primary">
+        Få tilbud fra {{ business.company_name }}
+        <span data-icon="arrow-right"></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

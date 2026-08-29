@@ -62,6 +62,16 @@ class MoveLead(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
 
+    # Staff-only fields — never part of WizardForm, never shown to the customer.
+    internal_notes = models.TextField(blank=True, default="")
+    follow_up_at = models.DateField(null=True, blank=True)
+
+    # Soft delete: "Slett" in the dashboard archives rather than removing the
+    # row outright, so a lead can be recovered from the trash view. A
+    # genuine, permanent delete is only available from there.
+    archived = models.BooleanField(default=False)
+    archived_at = models.DateTimeField(null=True, blank=True)
+
     # Manual staff assignment to up to 3 businesses (dashboard:lead_detail).
     # MoveLead is the live lead pipeline; store.JobDistribution's FK is
     # hard-typed to the separate, unreachable core.Flytteforesporsel model

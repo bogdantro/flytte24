@@ -200,8 +200,11 @@ order) clean instead of leaving invisible nav/footer content behind it.
         </section>
 
         {% if form.errors %}
-        <!-- Only reachable if a client bypasses the JS validation -->
-        <div class="wizard-step__server-errors" role="alert">
+        <!-- Only reachable if a client bypasses the JS validation.
+             data-error-fields lets partner-wizard.js jump to the step that actually failed
+             instead of always reopening on step 1 while the error text below describes a
+             different step. -->
+        <div class="wizard-step__server-errors" role="alert" data-error-fields="{% for field in form.errors %}{{ field }}{% if not forloop.last %},{% endif %}{% endfor %}">
           {{ form.non_field_errors }}
           {% for field in form %}{{ field.errors }}{% endfor %}
         </div>

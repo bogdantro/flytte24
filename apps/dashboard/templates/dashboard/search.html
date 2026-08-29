@@ -1,0 +1,51 @@
+<!-- apps/dashboard/templates/dashboard/search.html -->
+{% extends "dashboard/_base.html" %}
+
+{% block title %}Søk{% endblock %}
+
+{% block content %}
+  <h1 class="dashboard-heading">Søk{% if query %}: «{{ query }}»{% endif %}</h1>
+
+  <form method="get" class="dashboard-search-filters">
+    <input type="text" name="q" value="{{ query }}" placeholder="Søk i leads, bedrifter og sider …" class="dashboard-search-filters__text" autofocus>
+    <button type="submit" class="btn-outline">Søk</button>
+  </form>
+
+  {% if query %}
+    <div class="lead-card" style="margin-bottom: 1.5rem;">
+      <p class="lead-card__title">Leads ({{ leads|length }})</p>
+      {% for lead in leads %}
+        <div class="lead-row">
+          <span class="lead-row__label">{{ lead.created_at|date:"d.m.Y" }}{% if lead.archived %} · arkivert{% endif %}</span>
+          <span class="lead-row__value"><a href="{% url 'dashboard:lead_detail' lead.pk %}">{{ lead.reference }} — {{ lead.navn }}</a></span>
+        </div>
+      {% empty %}
+        <p class="dashboard-empty">Ingen treff.</p>
+      {% endfor %}
+    </div>
+
+    <div class="lead-card" style="margin-bottom: 1.5rem;">
+      <p class="lead-card__title">Bedrifter ({{ businesses|length }})</p>
+      {% for business in businesses %}
+        <div class="lead-row">
+          <span class="lead-row__label">{{ business.city }}</span>
+          <span class="lead-row__value"><a href="{% url 'dashboard:business_detail' business.pk %}">{{ business.company_name }}</a></span>
+        </div>
+      {% empty %}
+        <p class="dashboard-empty">Ingen treff.</p>
+      {% endfor %}
+    </div>
+
+    <div class="lead-card">
+      <p class="lead-card__title">Sider ({{ pages|length }})</p>
+      {% for page in pages %}
+        <div class="lead-row">
+          <span class="lead-row__label">{{ page.path }}</span>
+          <span class="lead-row__value"><a href="{% url 'dashboard:page_history' page.pk %}">{{ page.title }}</a></span>
+        </div>
+      {% empty %}
+        <p class="dashboard-empty">Ingen treff.</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endblock %}

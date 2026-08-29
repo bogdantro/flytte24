@@ -829,6 +829,26 @@ $radiusPill: 9999px;
     &--error{ background: #b3261e; }
   }
 
+  // Small pencil trigger next to a CTA whose href isn't contenteditable in
+  // place — see core/_inline_edit_link.html.
+  .inline-edit-link-btn{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    margin-left: 8px;
+    border: 1px dashed rgba(26, 26, 26, 0.25);
+    border-radius: 50%;
+    background: transparent;
+    color: $inkMuted;
+    cursor: pointer;
+
+    &:hover{ background: rgba(214, 232, 168, 0.25); color: $ink; }
+
+    svg{ width: 14px; height: 14px; }
+  }
+
   .page-settings-panel{
     position: fixed;
     inset: 0;
@@ -1149,6 +1169,22 @@ $radiusPill: 9999px;
         background: rgba(34, 24, 20, 0.9);
       }
     }
+  }
+
+  // Logged-in nav's "Logg ut" is a <form><button> (needs to POST, not just
+  // navigate) styled to read as a plain nav link like its <a> siblings —
+  // breakpoint-independent, so it lives outside both .site-header media
+  // queries above rather than duplicated in each.
+  .site-header__logout-form{
+    display: contents;
+  }
+  .site-header__logout-btn{
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    -webkit-appearance: none;
+    appearance: none;
   }
 
   // ---------------- hero ----------------
@@ -1802,6 +1838,26 @@ $radiusPill: 9999px;
 
     &.is-visible{ opacity: 1; transform: translateY(0); }
     &--error{ background: #b3261e; }
+  }
+
+  // Small pencil trigger next to a CTA whose href isn't contenteditable in
+  // place — see core/_inline_edit_link.html.
+  .inline-edit-link-btn{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    margin-left: 8px;
+    border: 1px dashed rgba(26, 26, 26, 0.25);
+    border-radius: 50%;
+    background: transparent;
+    color: $inkMuted;
+    cursor: pointer;
+
+    &:hover{ background: rgba(214, 232, 168, 0.25); color: $ink; }
+
+    svg{ width: 14px; height: 14px; }
   }
 
   .page-settings-panel{

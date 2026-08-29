@@ -422,6 +422,7 @@ button {
 .image-strip__track {
   display: flex;
   gap: 1rem;
+  width: -moz-max-content;
   width: max-content;
   animation: image-strip-scroll 100s linear infinite;
 }
@@ -436,7 +437,8 @@ button {
 .image-strip__tile img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 .image-strip__stats {
   margin-top: 2.5rem;
@@ -566,7 +568,8 @@ button {
 .testimonial-card__photo img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 .testimonial-card__quote {
   margin: 1.5rem 0 0;
@@ -626,7 +629,8 @@ button {
 .trust__logos img {
   height: 2.5rem;
   width: auto;
-  object-fit: contain;
+  -o-object-fit: contain;
+     object-fit: contain;
   opacity: 0.8;
   transition: opacity 0.2s ease;
 }
@@ -859,6 +863,9 @@ button {
   font-family: "Moderat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   color: #1a1a1a;
 }
+.postnummer-form__field input::-moz-placeholder {
+  color: rgba(26, 26, 26, 0.4);
+}
 .postnummer-form__field input::placeholder {
   color: rgba(26, 26, 26, 0.4);
 }
@@ -995,7 +1002,9 @@ button {
   line-height: 0.85;
   letter-spacing: -0.04em;
   color: rgba(250, 249, 246, 0.08);
-  user-select: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
 }
 
 @media (min-width: 1024px) {
@@ -1012,6 +1021,4 @@ button {
     width: 100%;
     max-width: 24rem;
   }
-}
-
-/*# sourceMappingURL=site.css.map */
+}/*# sourceMappingURL=site.css.map */

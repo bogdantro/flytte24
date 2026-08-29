@@ -4,7 +4,12 @@
 {% block title %}Bedrifter{% endblock %}
 
 {% block content %}
-  <h1 class="dashboard-heading">Bedrifter</h1>
+  <div class="dashboard-heading-row">
+    <h1 class="dashboard-heading">Bedrifter</h1>
+    <div class="dashboard-heading-row__actions">
+      <a href="{% url 'dashboard:business_import' %}" class="btn-outline">Importer bedrifter</a>
+    </div>
+  </div>
 
   <div class="dashboard-stats">
     <div class="dashboard-stat">
@@ -33,6 +38,7 @@
       <thead>
         <tr>
           <th>Bedrift</th>
+          <th>Tags</th>
           <th>By</th>
           <th>Dekker</th>
           <th>Type</th>
@@ -47,11 +53,12 @@
         {% for business in businesses %}
           <tr onclick="window.location='{% url 'dashboard:business_detail' business.pk %}'">
             <td>{{ business.company_name }}</td>
+            <td class="lead-table__muted">{{ business.tags|default:"—" }}</td>
             <td class="lead-table__muted">{{ business.city }}</td>
             <td class="lead-table__muted">{{ business.cities|default:"—" }}</td>
             <td class="lead-table__muted">{{ business.move_type|default:"—" }}</td>
-            <td><span class="status-badge status-badge--{% if business.active %}new{% else %}contacted{% endif %}">{% if business.active %}Aktiv{% else %}Inaktiv{% endif %}</span></td>
-            <td>{{ business.total_leads_received|default:"0" }}</td>
+            <td><span class="status-badge status-badge--{% if business.active %}active{% else %}inactive{% endif %}">{% if business.active %}Aktiv{% else %}Inaktiv{% endif %}</span></td>
+            <td>{{ business.total_leads_received|add:business.movelead_primary_count|add:business.movelead_secondary_count|add:business.movelead_tertiary_count }}</td>
             <td class="lead-table__muted">{{ business.priority_score|default:"—" }}</td>
             <td class="lead-table__muted">{{ business.created_at|date:"d.m.Y" }}</td>
             <td onclick="event.stopPropagation();">
@@ -65,6 +72,7 @@
         {% endfor %}
       </tbody>
     </table>
+    {% include "dashboard/_pagination.html" with page_obj=businesses %}
   {% else %}
     <p class="dashboard-empty">Ingen bedrifter {% if query or active_filter %}matcher søket{% else %}registrert ennå{% endif %}.</p>
   {% endif %}

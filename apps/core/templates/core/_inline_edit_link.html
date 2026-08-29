@@ -1,0 +1,21 @@
+<!-- apps/core/templates/core/_inline_edit_link.html -->
+{% comment %}
+Staff-only "edit link" trigger for a CTA's href — a button_href value can't
+be made contenteditable in place the way button_label's text can (there's
+nowhere visible to click into), so this is a small pencil icon next to the
+button that opens a prompt() instead. Wired up by
+static/js/inline-edit.js's initInlineEditLinks().
+
+Include with: {% include "core/_inline_edit_link.html" with section_id=sections.hero.id current_href=sections.hero.button_href|default:"/flytteforesporsel/" %}
+(or the equivalent for any other section with a button_href field).
+
+Docs showing the literal include tag MUST stay inside this {% comment %}
+block, never a bare HTML <!-- --> comment — Django parses template tags
+inside HTML comments too, so a self-referencing include tag written there
+as plain-text documentation makes this file include itself and recurse
+infinitely (this happened once already; {% comment %} is the one block
+Django's engine genuinely never parses the inside of).
+{% endcomment %}
+<button type="button" class="inline-edit-link-btn" data-inline-section="{{ section_id }}" data-inline-field="button_href" data-inline-current="{{ current_href }}" aria-label="Rediger lenke">
+  <span data-icon="pencil"></span>
+</button>

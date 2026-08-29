@@ -1,0 +1,62 @@
+<!-- apps/dashboard/templates/dashboard/overview.html -->
+{% extends "dashboard/_base.html" %}
+
+{% block title %}Oversikt{% endblock %}
+
+{% block content %}
+  <h1 class="dashboard-heading">Oversikt</h1>
+
+  <div class="dashboard-stats">
+    <div class="dashboard-stat">
+      <span class="dashboard-stat__value">{{ new_today }}</span>
+      <span class="dashboard-stat__label">Nye i dag</span>
+    </div>
+    <div class="dashboard-stat">
+      <span class="dashboard-stat__value">{{ new_not_contacted }}</span>
+      <span class="dashboard-stat__label">Ikke kontaktet</span>
+    </div>
+    <div class="dashboard-stat">
+      <span class="dashboard-stat__value">{{ follow_up_due }}</span>
+      <span class="dashboard-stat__label">Trenger oppfølging</span>
+    </div>
+    <div class="dashboard-stat">
+      <span class="dashboard-stat__value">{{ unassigned }}</span>
+      <span class="dashboard-stat__label">Ikke tildelt bedrift</span>
+    </div>
+    <div class="dashboard-stat">
+      <span class="dashboard-stat__value">{{ active_business_count }}</span>
+      <span class="dashboard-stat__label">Aktive bedrifter</span>
+    </div>
+  </div>
+
+  <div class="lead-detail">
+    <div class="lead-card" style="margin-bottom: 1.5rem;">
+      <p class="lead-card__title">Siste forespørsler</p>
+      {% if recent_leads %}
+        {% for lead in recent_leads %}
+          <div class="lead-row">
+            <span class="lead-row__label">{{ lead.created_at|date:"d.m.Y H:i" }}</span>
+            <span class="lead-row__value"><a href="{% url 'dashboard:lead_detail' lead.pk %}">{{ lead.reference }} — {{ lead.navn }}</a> <span class="status-badge status-badge--{{ lead.status }}">{{ lead.get_status_display }}</span></span>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="dashboard-empty">Ingen forespørsler ennå.</p>
+      {% endif %}
+      <p style="margin:1rem 0 0;"><a href="{% url 'dashboard:lead_list' %}" class="btn-outline">Se alle forespørsler</a></p>
+    </div>
+
+    <div class="lead-card" style="margin-bottom: 1.5rem;">
+      <p class="lead-card__title">Bedrifter nær dagsgrensen</p>
+      {% if businesses_near_cap %}
+        {% for entry in businesses_near_cap %}
+          <div class="lead-row">
+            <span class="lead-row__label"><a href="{% url 'dashboard:business_detail' entry.business.pk %}">{{ entry.business.company_name }}</a></span>
+            <span class="lead-row__value">{{ entry.count }} / {{ entry.cap }} i dag</span>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="dashboard-empty">Ingen bedrifter nær dagsgrensen akkurat nå.</p>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

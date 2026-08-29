@@ -35,6 +35,12 @@ class Page(models.Model):
     meta_description = models.CharField(
         max_length=160, blank=True, default="", help_text="Vises under tittelen i søkeresultater."
     )
+    # Set from the dashboard's "Planlegg publisering" control (page_list.html);
+    # publish_due_pages() below flips status to "published" once this passes —
+    # called from both the public views (home, render_page) and the
+    # dashboard's own page_list, so it takes effect however the page is next
+    # loaded rather than needing a separate scheduler process.
+    publish_at = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.ForeignKey(
@@ -46,6 +52,19 @@ class Page(models.Model):
 
     def __str__(self):
         return self.title
+
+
+def publish_due_pages():
+    """Flips any draft page whose scheduled publish_at has passed to
+    published. Called from the public render paths (apps/core/views.py
+    home, render_page) and from the dashboard's page_list — there's no
+    separate task scheduler in this project, so a page is only ever
+    "checked" the next time it's actually requested by someone."""
+    from django.utils import timezone
+
+    Page.objects.filter(status="draft", publish_at__isnull=False, publish_at__lte=timezone.now()).update(
+        status="published"
+    )
 
 
 class PageSection(models.Model):
@@ -88,3 +107,33 @@ class PageSection(models.Model):
 
     def __str__(self):
         return f"{self.page.title} — {self.get_section_type_display()}"
+
+
+class PageSectionRevision(models.Model):
+    """One prior value of one inline-editable field on a PageSection —
+    written by apps/dashboard/views.py section_inline_update just before it
+    overwrites the field, so an edit can be undone. Restoring a revision
+    (section_revision_restore) itself creates a new revision of the value it
+    just replaced, so reverts are themselves reversible."""
+
+    FIELD_CHOICES = [
+        ("heading", "Overskrift"),
+        ("subheading", "Underoverskrift"),
+        ("body_text", "Brødtekst"),
+        ("button_label", "Knappetekst"),
+        ("button_href", "Knapp-lenke"),
+    ]
+
+    section = models.ForeignKey(PageSection, related_name="revisions", on_delete=models.CASCADE)
+    field = models.CharField(max_length=30, choices=FIELD_CHOICES)
+    previous_value = models.TextField(blank=True, default="")
+    changed_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL
+    )
+    changed_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-changed_at"]
+
+    def __str__(self):
+        return f"{self.section} — {self.get_field_display()} @ {self.changed_at:%Y-%m-%d %H:%M}"

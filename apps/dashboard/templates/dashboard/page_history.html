@@ -1,0 +1,37 @@
+<!-- apps/dashboard/templates/dashboard/page_history.html -->
+{% extends "dashboard/_base.html" %}
+
+{% block title %}Historikk — {{ page.title }}{% endblock %}
+
+{% block content %}
+  <div class="dashboard-heading-row">
+    <h1 class="dashboard-heading">Historikk — {{ page.title }}</h1>
+    <a href="{% url 'dashboard:page_list' %}" class="btn-outline">← Tilbake til sider</a>
+  </div>
+
+  {% for section in sections %}
+    <div class="lead-card" style="margin-bottom: 1.5rem;">
+      <p class="lead-card__title">{{ section.get_section_type_display }}</p>
+      {% with revisions=section.revisions.all %}
+        {% if revisions %}
+          {% for revision in revisions %}
+            <div class="lead-row">
+              <span class="lead-row__label">{{ revision.changed_at|date:"d.m.Y H:i" }} · {{ revision.changed_by.get_username|default:"—" }} · {{ revision.get_field_display }}</span>
+              <span class="lead-row__value">
+                «{{ revision.previous_value|default:"(tom)"|truncatechars:80 }}»
+                <form method="post" action="{% url 'dashboard:section_revision_restore' revision.pk %}" style="display:inline;">
+                  {% csrf_token %}
+                  <button type="submit" class="btn-outline">Gjenopprett</button>
+                </form>
+              </span>
+            </div>
+          {% endfor %}
+        {% else %}
+          <p class="dashboard-empty">Ingen endringer registrert for denne seksjonen ennå.</p>
+        {% endif %}
+      {% endwith %}
+    </div>
+  {% empty %}
+    <p class="dashboard-empty">Denne siden har ingen seksjoner.</p>
+  {% endfor %}
+{% endblock %}

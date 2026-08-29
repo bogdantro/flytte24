@@ -79,6 +79,22 @@ class HomePageRenderingTests(TestCase):
         self.assertContains(response, "<title>Egendefinert SEO-tittel</title>")
         self.assertContains(response, '<meta name="description" content="Egendefinert SEO-beskrivelse.">')
 
+    def test_staff_sees_button_href_edit_link_next_to_the_hero_cta(self):
+        from django.contrib.auth.models import User
+
+        staff = User.objects.create_user("staffhref", password="pw", is_staff=True)
+        page = Page.objects.create(title="Forside", slug="forside", path="/", template_key="home", status="published")
+        section = PageSection.objects.create(page=page, order=1, section_type="hero", button_href="/spesialtilbud/")
+        self.client.force_login(staff)
+        response = self.client.get("/")
+        self.assertContains(response, f'data-inline-section="{section.id}"')
+        self.assertContains(response, 'data-inline-field="button_href"')
+        self.assertContains(response, 'data-inline-current="/spesialtilbud/"')
+
+    def test_anonymous_visitor_never_sees_the_edit_link_button(self):
+        response = self.client.get("/")
+        self.assertNotContains(response, "inline-edit-link-btn")
+
     def test_title_falls_back_to_kobly_when_no_page_exists(self):
         response = self.client.get("/")
         self.assertContains(response, "<title>Kobly</title>")
@@ -142,6 +158,26 @@ class RenderPageViewTests(TestCase):
         self.assertEqual(response.status_code, 404)
 
 
+class ContactAndAboutPageTests(TestCase):
+    """Regression tests: both pages/contact/contact.html and pages/about/about.html used to
+    be completely empty stubs — {% block content %}{% endblock %} with no title override and
+    no meta description, rendering as a blank page with a bare "Kobly" tab title."""
+
+    def test_contact_page_has_a_real_title_meta_description_and_content(self):
+        response = self.client.get("/contact-us/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "<title>Kontakt oss — Kobly</title>")
+        self.assertContains(response, '<meta name="description" content=')
+        self.assertContains(response, "hei@kobly.no")
+
+    def test_about_page_has_a_real_title_meta_description_and_content(self):
+        response = self.client.get("/about-us/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "<title>Om Kobly — Kobly</title>")
+        self.assertContains(response, '<meta name="description" content=')
+        self.assertContains(response, "Vi finner det beste flyttebyrået for deg")
+
+
 class BlogPageTests(TestCase):
     def setUp(self):
         call_command("seed_marketing_content", stdout=StringIO())
@@ -189,6 +225,13 @@ class AgencyPageTests(TestCase):
         self.assertContains(response, "Flytting med hodet, ikke bare ryggen")
         self.assertContains(response, "Piano og flygel")
         self.assertContains(response, "hele leiligheten var nede på tre timer")
+
+    def test_agency_detail_renders_a_real_review_date_not_blank(self):
+        """Regression test: review.date is a plain "YYYY-MM-DD" string inside a JSONField,
+        not a real date object, so Django's |date:"d.m.Y" filter used to silently render ''
+        instead of erroring — every review's date was blank on every agency page."""
+        response = self.client.get("/byraer/loft/")
+        self.assertContains(response, "18.07.2026")
 
     def test_agency_detail_404s_on_unknown_slug(self):
         response = self.client.get("/byraer/dette-finnes-ikke/")
@@ -337,6 +380,13 @@ class ForBusinessPartnerWizardTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Bedrift_info.objects.count(), 0)
 
+    def test_invalid_post_tags_the_failed_field_for_the_step_jump(self):
+        """Regression test: partner-wizard.js used to always reopen on step 1 after a
+        bypassed-validation POST re-render — data-error-fields is what lets it jump to
+        the step the failing field (company_name, a step-3 field) actually lives on."""
+        response = self.client.post("/for-bedrifter/bli-partner/", _valid_partner_payload(company_name=""))
+        self.assertContains(response, 'data-error-fields="company_name"')
+
     def test_valid_post_redirects_to_thank_you_page_with_company_email_and_name(self):
         response = self.client.post("/for-bedrifter/bli-partner/", _valid_partner_payload())
         company = Bedrift_info.objects.get()
@@ -345,6 +395,37 @@ class ForBusinessPartnerWizardTests(TestCase):
             f"/for-bedrifter/soknad-sendt/?email={company.email}&company=Nordisk%20Flyttebyr%C3%A5%20AS",
             fetch_redirect_response=False,
         )
+
+    def test_duplicate_email_is_rejected_instead_of_creating_a_second_row(self):
+        """Regression test: a double-submit (double-click, browser-back-resubmit) used to
+        silently create a second Bedrift_info with the same email, orphaning one of them
+        forever once a later signup could only link to one via .filter(email=...).last()."""
+        self.client.post("/for-bedrifter/bli-partner/", _valid_partner_payload())
+        response = self.client.post("/for-bedrifter/bli-partner/", _valid_partner_payload())
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Bedrift_info.objects.count(), 1)
+        self.assertContains(response, "Det finnes allerede en søknad med denne e-postadressen.")
+
+    def test_invalid_phone_is_rejected_server_side(self):
+        """Regression test: PartnerWizardForm had no clean_phone at all, and the view saves via
+        Bedrift_info.objects.create(**cleaned_data) rather than a ModelForm, so the model's own
+        phone_validator never ran either — a bypassed POST could save any garbage string."""
+        response = self.client.post("/for-bedrifter/bli-partner/", _valid_partner_payload(phone="x"))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Bedrift_info.objects.count(), 0)
+
+    def test_oversized_logo_is_rejected_server_side(self):
+        # A real, decodable image (uncompressed BMP so size is predictable:
+        # width*height*3 bytes) over the 5MB validate_max_file_size limit —
+        # not just a malformed upload, so this specifically exercises the
+        # size check rather than Pillow's separate "is this a real image" check.
+        buffer = io.BytesIO()
+        Image.new("RGB", (1500, 1500)).save(buffer, "BMP")
+        buffer.seek(0)
+        oversized = SimpleUploadedFile("big.bmp", buffer.read(), content_type="image/bmp")
+        response = self.client.post("/for-bedrifter/bli-partner/", {**_valid_partner_payload(), "logo": oversized})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Bedrift_info.objects.count(), 0)
 
 
 class PartnerWizardThankYouPageTests(TestCase):

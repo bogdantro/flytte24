@@ -13,6 +13,7 @@
           <th>Tittel</th>
           <th>Sti</th>
           <th>Status</th>
+          <th>Planlagt publisering</th>
           <th>Sist oppdatert</th>
           <th>Handlinger</th>
         </tr>
@@ -22,12 +23,33 @@
           <tr onclick="window.location='{{ page.path }}'">
             <td>{{ page.title }}</td>
             <td class="lead-table__muted">{{ page.path }}</td>
-            <td><span class="status-badge status-badge--{% if page.status == 'published' %}new{% else %}booked{% endif %}">{{ page.get_status_display }}</span></td>
+            <td><span class="status-badge status-badge--{% if page.status == 'published' %}published{% else %}draft{% endif %}">{{ page.get_status_display }}</span></td>
+            <td class="lead-table__muted" onclick="event.stopPropagation();">
+              {% if page.status == 'draft' %}
+                {% if page.publish_at %}
+                  <div>{{ page.publish_at|date:"d.m.Y H:i" }}</div>
+                  <form method="post" action="{% url 'dashboard:page_schedule_publish' page.pk %}" style="display:inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="publish_at" value="">
+                    <button type="submit" class="btn-outline">Avbryt</button>
+                  </form>
+                {% else %}
+                  <form method="post" action="{% url 'dashboard:page_schedule_publish' page.pk %}" style="display:flex; gap:0.375rem; align-items:center;">
+                    {% csrf_token %}
+                    <input type="datetime-local" name="publish_at" required>
+                    <button type="submit" class="btn-outline">Planlegg</button>
+                  </form>
+                {% endif %}
+              {% else %}
+                —
+              {% endif %}
+            </td>
             <td class="lead-table__muted">
               {{ page.updated_at|date:"d.m.Y H:i" }}{% if page.updated_by %} av {{ page.updated_by.get_username }}{% endif %}
             </td>
             <td onclick="event.stopPropagation();">
               <a href="{{ page.path }}" class="btn-outline">Rediger på siden</a>
+              <a href="{% url 'dashboard:page_history' page.pk %}" class="btn-outline">Historikk</a>
               <form method="post" action="{% url 'dashboard:page_toggle_status' page.pk %}" style="display:inline;">
                 {% csrf_token %}
                 <button type="submit" class="btn-outline">{% if page.status == 'published' %}Sett som utkast{% else %}Publiser{% endif %}</button>
@@ -36,15 +58,18 @@
                 {% csrf_token %}
                 <button type="submit" class="btn-outline">Dupliser</button>
               </form>
-              <form method="post" action="{% url 'dashboard:page_delete' page.pk %}" data-confirm-delete style="display:inline;">
-                {% csrf_token %}
-                <button type="submit" class="btn-danger">Slett</button>
-              </form>
+              {% if request.user.is_superuser %}
+                <form method="post" action="{% url 'dashboard:page_delete' page.pk %}" data-confirm-delete style="display:inline;">
+                  {% csrf_token %}
+                  <button type="submit" class="btn-danger">Slett</button>
+                </form>
+              {% endif %}
             </td>
           </tr>
         {% endfor %}
       </tbody>
     </table>
+    {% include "dashboard/_pagination.html" with page_obj=pages %}
   {% else %}
     <p class="dashboard-empty">Ingen sider ennå. Sider legges til ved å duplisere en eksisterende side.</p>
   {% endif %}

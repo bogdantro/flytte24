@@ -87,7 +87,7 @@
   /** Fills in the completed segments of the 5-part progress bar and the "Steg X av 5" label. */
   function updateProgressBar() {
     document.querySelectorAll(".wizard-progress__segment").forEach((segment, index) => {
-      segment.classList.toggle("is-complete", index < currentStep - 1);
+      segment.classList.toggle("is-complete", index < currentStep);
     });
     document.querySelector("[data-current-step-label]").textContent = String(currentStep);
   }
@@ -177,6 +177,27 @@
     document.querySelector(".wizard-card").addEventListener("change", updateNavButton);
   }
 
+  // Which step each server-validated field name lives on — only reachable
+  // if a client bypasses the wizard's own step-by-step JS validation
+  // (leads/templates/leads/wizard.html's data-error-fields).
+  const FIELD_TO_STEP = {
+    fra: 1, til: 1,
+    flytte_type: 2, boligtype: 2,
+    flyttedato: 3, fleksibel: 3,
+    beskrivelse: 4, bilder: 4,
+    navn: 5, telefon: 5, epost: 5,
+  };
+
+  /** On reload after a server-side validation failure, jumps to the earliest step that actually
+   * failed instead of always reopening on step 1 while the error text describes a later step. */
+  function jumpToStepWithServerError() {
+    const errorBlock = document.querySelector("[data-error-fields]");
+    if (!errorBlock) return;
+    const fields = errorBlock.dataset.errorFields.split(",").filter(Boolean);
+    const steps = fields.map((name) => FIELD_TO_STEP[name]).filter(Boolean);
+    if (steps.length) goToStep(Math.min(...steps));
+  }
+
   /**
    * Shared namespace so Tasks 11-13 (appended below in later commits) can
    * register step-change hooks and reuse goToStep without re-querying the DOM.
@@ -226,10 +247,31 @@
     }
   }
 
-  /** Renders the suggestion <li> list for one address field, wiring up click-to-select on each row. */
-  function renderSuggestions(listEl, suggestions, onSelect) {
+  /**
+   * Renders the suggestion <li> list for one address field, wiring up
+   * click-to-select on each row. `onLocate`, when given (the "fra" field
+   * only — spec/reference only offers this on the origin address, not the
+   * destination), is rendered as a leading "Bruk min plassering" row above
+   * the address matches — and, same as the reference's AdresseInput, is
+   * enough on its own to keep the list open even with zero suggestions.
+   */
+  function renderSuggestions(listEl, suggestions, onSelect, onLocate) {
     listEl.innerHTML = "";
-    if (suggestions.length === 0) {
+    if (onLocate) {
+      const li = document.createElement("li");
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "address-suggestions__locate";
+      button.innerHTML = `<span data-icon="map-pin"></span><span>Bruk min plassering</span>`;
+      button.addEventListener("mousedown", (event) => {
+        event.preventDefault();
+        onLocate();
+      });
+      li.appendChild(button);
+      listEl.appendChild(li);
+      initIconSprite();
+    }
+    if (suggestions.length === 0 && !onLocate) {
       listEl.hidden = true;
       return;
     }
@@ -273,6 +315,24 @@
     // dispatching it — only this field's own reactive logic is skipped.
     let isProgrammaticWrite = false;
 
+    // Reference (app/wizard/page.tsx StepAdresse.handleUseMyLocation) only
+    // wires this up for the origin address, not "til" — geolocates, reverse-
+    // geocodes to a readable address, and fills the field the same way a
+    // map pin placement does.
+    const onLocate = key === "fra" ? () => {
+      if (!navigator.geolocation) return;
+      navigator.geolocation.getCurrentPosition(
+        async (pos) => {
+          const { latitude, longitude } = pos.coords;
+          const address = await reverseGeocode(latitude, longitude, "Min posisjon");
+          fieldEl.setAddressFromCoord(latitude, longitude, address);
+          KoblyWizard.onCoordChange && KoblyWizard.onCoordChange(key, latitude, longitude, address);
+        },
+        () => {},
+        { enableHighAccuracy: true, timeout: 8000 },
+      );
+    } : null;
+
     const selectAddress = (address) => {
       const point = address.representasjonspunkt;
       // A suggestion clicked within 200ms of the last keystroke can otherwise
@@ -304,16 +364,34 @@
       abortController?.abort();
       const query = input.value.trim();
       if (query.length < 2) {
-        list.hidden = true;
+        // Reference keeps the dropdown open on an empty field when a locate
+        // option exists ("visForslag = focused && (results.length > 0 ||
+        // Boolean(onUseMyLocation))") — so "til" (no locate option) closes
+        // here same as before, but "fra" shows just the locate row.
+        if (onLocate) {
+          renderSuggestions(list, [], selectAddress, onLocate);
+        } else {
+          list.hidden = true;
+        }
         return;
       }
       debounceTimer = setTimeout(async () => {
         abortController = new AbortController();
         const results = await searchAddresses(query, abortController.signal);
         if (abortController.signal.aborted) return;
-        renderSuggestions(list, results, selectAddress);
+        renderSuggestions(list, results, selectAddress, onLocate);
       }, 200);
     });
+
+    if (onLocate) {
+      // Focusing an empty "fra" field has no query to search yet, but the
+      // locate row should still appear immediately, same as the reference.
+      input.addEventListener("focus", () => {
+        if (input.value.trim().length < 2) {
+          renderSuggestions(list, [], selectAddress, onLocate);
+        }
+      });
+    }
 
     input.addEventListener("blur", () => {
       // Cancel both a pending debounce (search hasn't fired yet) and an
@@ -952,6 +1030,7 @@
     initMobileMapPicker();
     initPhotoUpload();
     initDatePicker();
+    jumpToStepWithServerError();
     KoblyWizard.onStepChange.push((step) => { if (step === 5) updateSummaryPanel(); });
     document.querySelector(".wizard-card").addEventListener("input", updateSummaryPanel);
     document.querySelector(".wizard-card").addEventListener("change", updateSummaryPanel);

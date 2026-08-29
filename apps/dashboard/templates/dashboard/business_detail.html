@@ -8,7 +8,7 @@
 
   <div class="lead-detail__header">
     <h1 class="lead-detail__title">{{ business.company_name }}</h1>
-    <span class="status-badge status-badge--{% if business.active %}new{% else %}contacted{% endif %}">{% if business.active %}Aktiv{% else %}Inaktiv{% endif %}</span>
+    <span class="status-badge status-badge--{% if business.active %}active{% else %}inactive{% endif %}">{% if business.active %}Aktiv{% else %}Inaktiv{% endif %}</span>
   </div>
 
   <div class="lead-detail">
@@ -49,8 +49,29 @@
           </div>
           <div class="dashboard-form__group">
             <label class="dashboard-form__label">Totalt mottatte leads</label>
-            <p style="margin:0;">{{ business.total_leads_received|default:"0" }}</p>
+            <p style="margin:0;">{{ total_received }}</p>
           </div>
+          <div class="dashboard-form__group">
+            <label class="dashboard-form__label">Bruk mot grenser</label>
+            <div class="usage-bar">
+              <span class="usage-bar__label">I dag: {{ usage.today.count }}{% if usage.today.cap %} / {{ usage.today.cap }}{% else %} (ingen grense){% endif %}</span>
+              {% if usage.today.cap %}<div class="usage-bar__track"><div class="usage-bar__fill" style="width: {{ usage.today.percent }}%;"></div></div>{% endif %}
+            </div>
+            <div class="usage-bar">
+              <span class="usage-bar__label">Denne uken: {{ usage.week.count }}{% if usage.week.cap %} / {{ usage.week.cap }}{% else %} (ingen grense){% endif %}</span>
+              {% if usage.week.cap %}<div class="usage-bar__track"><div class="usage-bar__fill" style="width: {{ usage.week.percent }}%;"></div></div>{% endif %}
+            </div>
+            <div class="usage-bar">
+              <span class="usage-bar__label">Denne måneden: {{ usage.month.count }}{% if usage.month.cap %} / {{ usage.month.cap }}{% else %} (ingen grense){% endif %}</span>
+              {% if usage.month.cap %}<div class="usage-bar__track"><div class="usage-bar__fill" style="width: {{ usage.month.percent }}%;"></div></div>{% endif %}
+            </div>
+          </div>
+        </div>
+
+        <div class="lead-card" style="margin-bottom: 1.5rem;">
+          <p class="lead-card__title">Interne notater</p>
+          <div class="dashboard-form__group"><label class="dashboard-form__label">Tags (kommaseparert, f.eks. "VIP, treg respons")</label>{{ core_form.tags }}</div>
+          <div class="dashboard-form__group"><label class="dashboard-form__label">Notater (kun synlig for staben)</label>{{ core_form.internal_notes }}</div>
         </div>
 
         <div class="lead-card" style="margin-bottom: 1.5rem;">
@@ -81,18 +102,16 @@
       </div>
 
       <div class="lead-card" style="margin-bottom: 1.5rem;">
-        <!-- JobDistribution — see docs/superpowers/specs/2026-08-21-dashboard-cms-and-business-admin-design.md
-             "Resolved: which lead pipeline is live" — this list queries the
-             only model that actually links a lead to a business, but no
-             current template calls send_flytteforesporsel (the only view
-             that creates JobDistribution rows), so this is empty for every
-             business until that pipeline is wired into a live page. -->
-        <p class="lead-card__title">Mottatte leads ({{ jobs.count }})</p>
-        {% if jobs %}
-          {% for job in jobs %}
+        <!-- Combines both live lead pipelines: the direct-form flow
+             (JobDistribution, via send_flytteforesporsel) and the dashboard
+             wizard flow (MoveLead.business_1/2/3) — see
+             apps/dashboard/views.py _business_lead_entries. -->
+        <p class="lead-card__title">Mottatte leads ({{ lead_entries|length }})</p>
+        {% if lead_entries %}
+          {% for entry in lead_entries %}
             <div class="lead-row">
-              <span class="lead-row__label">{{ job.created_at|date:"d.m.Y" }}</span>
-              <span class="lead-row__value">{{ job.inquiry }}</span>
+              <span class="lead-row__label">{{ entry.created_at|date:"d.m.Y" }} · {{ entry.source }}{% if entry.status_display %} · <span class="status-badge status-badge--{{ entry.status }}">{{ entry.status_display }}</span>{% endif %}</span>
+              <span class="lead-row__value">{% if entry.url %}<a href="{{ entry.url }}">{{ entry.label }}</a>{% else %}{{ entry.label }}{% endif %}</span>
             </div>
           {% endfor %}
         {% else %}
@@ -108,10 +127,12 @@
       {% for image in images %}
         <div>
           <img src="{{ image.image.url }}" alt="">
-          <form method="post" action="{% url 'dashboard:business_image_delete' business.pk image.pk %}" data-confirm-delete>
-            {% csrf_token %}
-            <button type="submit" class="btn-danger" style="margin-top:0.5rem; width:100%;">Slett</button>
-          </form>
+          {% if request.user.is_superuser %}
+            <form method="post" action="{% url 'dashboard:business_image_delete' business.pk image.pk %}" data-confirm-delete>
+              {% csrf_token %}
+              <button type="submit" class="btn-danger" style="margin-top:0.5rem; width:100%;">Slett</button>
+            </form>
+          {% endif %}
         </div>
       {% endfor %}
     </div>
@@ -131,10 +152,12 @@
         <span class="lead-row__label">{{ review.rating }}⭐ {{ review.name }}</span>
         <span class="lead-row__value">
           {{ review.comment }}
-          <form method="post" action="{% url 'dashboard:review_delete' business.pk review.pk %}" data-confirm-delete style="display:inline;">
-            {% csrf_token %}
-            <button type="submit" class="btn-danger">Slett</button>
-          </form>
+          {% if request.user.is_superuser %}
+            <form method="post" action="{% url 'dashboard:review_delete' business.pk review.pk %}" data-confirm-delete style="display:inline;">
+              {% csrf_token %}
+              <button type="submit" class="btn-danger">Slett</button>
+            </form>
+          {% endif %}
         </span>
       </div>
     {% endfor %}

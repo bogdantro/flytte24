@@ -53,11 +53,11 @@
         </div>
         <div class="lead-row">
           <span class="lead-row__label">Telefon</span>
-          <span class="lead-row__value"><a href="tel:{{ lead.telefon }}">{{ lead.telefon }}</a></span>
+          <span class="lead-row__value"><a href="tel:{{ lead.telefon }}">{{ lead.telefon }}</a> <button type="button" class="copy-btn" data-copy="{{ lead.telefon }}" title="Kopier telefonnummer">Kopier</button></span>
         </div>
         <div class="lead-row">
           <span class="lead-row__label">E-post</span>
-          <span class="lead-row__value"><a href="mailto:{{ lead.epost }}">{{ lead.epost }}</a></span>
+          <span class="lead-row__value"><a href="mailto:{{ lead.epost }}">{{ lead.epost }}</a> <button type="button" class="copy-btn" data-copy="{{ lead.epost }}" title="Kopier e-post">Kopier</button></span>
         </div>
         <div class="lead-row">
           <span class="lead-row__label">Mottatt</span>
@@ -66,7 +66,7 @@
       </div>
 
       {% if lead.images.all %}
-      <div class="lead-card">
+      <div class="lead-card" style="margin-bottom: 1.5rem;">
         <p class="lead-card__title">Bilder ({{ lead.images.count }})</p>
         <div class="lead-photo-grid">
           {% for image in lead.images.all %}
@@ -77,9 +77,23 @@
         </div>
       </div>
       {% endif %}
+
+      <div class="lead-card">
+        <p class="lead-card__title">Aktivitet</p>
+        {% if activity %}
+          {% for entry in activity %}
+            <div class="lead-row">
+              <span class="lead-row__label">{{ entry.action_time|date:"d.m.Y H:i" }} · {{ entry.user.get_username|default:"—" }}</span>
+              <span class="lead-row__value">{{ entry.change_message|default:"Slettet" }}</span>
+            </div>
+          {% endfor %}
+        {% else %}
+          <p class="dashboard-empty">Ingen aktivitet registrert ennå.</p>
+        {% endif %}
+      </div>
     </div>
 
-    <!-- Right column: internal actions — status + delete -->
+    <!-- Right column: internal actions -->
     <div>
       <div class="lead-card" style="margin-bottom: 1.5rem;">
         <p class="lead-card__title">Status</p>
@@ -97,17 +111,42 @@
       </div>
 
       <div class="lead-card" style="margin-bottom: 1.5rem;">
+        <p class="lead-card__title">Interne notater</p>
+        <form method="post" action="{% url 'dashboard:lead_update_internal' lead.pk %}">
+          {% csrf_token %}
+          <div class="dashboard-form__group">
+            <label class="dashboard-form__label">Notater (kun synlig for staben)</label>
+            <textarea name="internal_notes" rows="4">{{ lead.internal_notes }}</textarea>
+          </div>
+          <div class="dashboard-form__group">
+            <label class="dashboard-form__label">Oppfølgingsdato</label>
+            <input type="date" name="follow_up_at" value="{{ lead.follow_up_at|date:'Y-m-d' }}">
+          </div>
+          <button type="submit" class="btn-primary">Lagre notater</button>
+        </form>
+      </div>
+
+      <div class="lead-card" style="margin-bottom: 1.5rem;">
         <p class="lead-card__title">Tildel til bedrifter</p>
         <form method="post" action="{% url 'dashboard:lead_assign_businesses' lead.pk %}">
           {% csrf_token %}
           {% for field, current in assign_fields %}
             <div class="dashboard-form__group">
               <label class="dashboard-form__label">Bedrift {{ forloop.counter }}</label>
-              <select name="{{ field }}" class="dashboard-form__select">
+              <select name="{{ field }}" class="dashboard-form__select" data-assign-select>
                 <option value="">— Ikke tildelt —</option>
-                {% for business in businesses %}
-                  <option value="{{ business.pk }}" {% if current.pk == business.pk %}selected{% endif %}>{{ business.company_name }}</option>
-                {% endfor %}
+                {% if matching_businesses %}
+                  <optgroup label="Anbefalte bedrifter (by/type matcher)">
+                    {% for business in matching_businesses %}
+                      <option value="{{ business.pk }}" {% if current.pk == business.pk %}selected{% endif %}>{{ business.company_name }} ({{ business.today_count }} i dag / {{ business.week_count }} denne uken)</option>
+                    {% endfor %}
+                  </optgroup>
+                {% endif %}
+                <optgroup label="Andre aktive bedrifter">
+                  {% for business in other_businesses %}
+                    <option value="{{ business.pk }}" {% if current.pk == business.pk %}selected{% endif %}>{{ business.company_name }} ({{ business.today_count }} i dag / {{ business.week_count }} denne uken)</option>
+                  {% endfor %}
+                </optgroup>
               </select>
             </div>
           {% endfor %}
@@ -117,10 +156,11 @@
 
       <div class="lead-card">
         <p class="lead-card__title">Farlig sone</p>
-        <form method="post" action="{% url 'dashboard:delete_lead' lead.pk %}" data-confirm-delete>
+        <form method="post" action="{% url 'dashboard:lead_archive' lead.pk %}">
           {% csrf_token %}
-          <button type="submit" class="btn-danger">Slett forespørsel</button>
+          <button type="submit" class="btn-danger">Arkiver forespørsel</button>
         </form>
+        <p style="margin:0.75rem 0 0; font-size:0.75rem; color:#8a8a8a;">Flytter forespørselen til papirkurven — kan gjenopprettes derfra.</p>
       </div>
     </div>
   </div>

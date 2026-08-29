@@ -1,2 +1,97 @@
 {% extends 'core/base.html' %}
-{% block content %}{% endblock %}
+{% load static %}
+
+{% block page_title %}Min side{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static 'scss/pages/account/auth-forms.css' %}">
+  <link rel="stylesheet" href="{% static 'scss/pages/account/portal.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="portal-page">
+  {% if not business %}
+    <div class="account-card">
+      <h1 class="account-card__title">Ingen bedrift knyttet til denne kontoen</h1>
+      <p class="account-card__subtitle">
+        Denne brukeren er ikke koblet til en bedriftsprofil. Ta kontakt med Kobly hvis dette er feil.
+      </p>
+    </div>
+  {% else %}
+    <div class="portal-heading-row">
+      <h1 class="portal-heading">{{ business.company_name }}</h1>
+      {% if business.active %}
+        <span class="portal-badge portal-badge--active">Aktiv</span>
+      {% else %}
+        <span class="portal-badge portal-badge--pending">Venter på godkjenning</span>
+      {% endif %}
+    </div>
+
+    {% include "core/accountPages/_portal_nav.html" with active="overview" %}
+
+    {% if not business.active %}
+      <div class="portal-banner portal-banner--pending">
+        Profilen din er under vurdering hos Kobly. Du kan fylle ut bedriftsprofilen din i mellomtiden —
+        du blir synlig for kunder og begynner å motta leads så snart profilen er godkjent.
+      </div>
+    {% endif %}
+
+    <div class="portal-stats">
+      <div class="portal-stat">
+        <span class="portal-stat__value">{{ total_received }}</span>
+        <span class="portal-stat__label">Leads mottatt totalt</span>
+      </div>
+      <div class="portal-stat">
+        <span class="portal-stat__value">{{ usage.today.count }}</span>
+        <span class="portal-stat__label">Leads i dag</span>
+      </div>
+      <div class="portal-stat">
+        <span class="portal-stat__value">{{ review_count }}</span>
+        <span class="portal-stat__label">Anmeldelser</span>
+      </div>
+    </div>
+
+    <div class="portal-card">
+      <p class="portal-card__title">Bruk mot dine egne grenser</p>
+      <div class="portal-usage-bar">
+        <span class="portal-usage-bar__label">I dag: {{ usage.today.count }}{% if usage.today.cap %} / {{ usage.today.cap }}{% else %} (ingen grense satt){% endif %}</span>
+        {% if usage.today.cap %}<div class="portal-usage-bar__track"><div class="portal-usage-bar__fill" style="width: {{ usage.today.percent }}%;"></div></div>{% endif %}
+      </div>
+      <div class="portal-usage-bar">
+        <span class="portal-usage-bar__label">Denne uken: {{ usage.week.count }}{% if usage.week.cap %} / {{ usage.week.cap }}{% else %} (ingen grense satt){% endif %}</span>
+        {% if usage.week.cap %}<div class="portal-usage-bar__track"><div class="portal-usage-bar__fill" style="width: {{ usage.week.percent }}%;"></div></div>{% endif %}
+      </div>
+      <div class="portal-usage-bar">
+        <span class="portal-usage-bar__label">Denne måneden: {{ usage.month.count }}{% if usage.month.cap %} / {{ usage.month.cap }}{% else %} (ingen grense satt){% endif %}</span>
+        {% if usage.month.cap %}<div class="portal-usage-bar__track"><div class="portal-usage-bar__fill" style="width: {{ usage.month.percent }}%;"></div></div>{% endif %}
+      </div>
+      <p style="margin:14px 0 0; font-size:13px;"><a href="{% url 'foresporsel_database' %}">Endre grensene dine →</a></p>
+    </div>
+
+    <div class="portal-card">
+      <p class="portal-card__title">Siste leads</p>
+      {% if recent_leads %}
+        {% for entry in recent_leads %}
+          <div class="portal-row">
+            <span class="portal-row__label">{{ entry.created_at|date:"d.m.Y" }} · {{ entry.source }}</span>
+            <span class="portal-row__value">
+              {{ entry.label }}
+              {% if entry.status_display %}<span class="portal-badge portal-badge--{{ entry.status }}">{{ entry.status_display }}</span>{% endif %}
+            </span>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="portal-empty">Ingen leads mottatt ennå.</p>
+      {% endif %}
+      <p style="margin:14px 0 0; font-size:13px;"><a href="{% url 'foresporsel_database' %}">Se alle leads →</a></p>
+    </div>
+
+    <div class="portal-card">
+      <p class="portal-card__title">Offentlig profil</p>
+      <p style="margin:0 0 16px; font-size:14px; color:#5c5c5c;">Slik ser kunder profilen din når de blir matchet med bedriften din.</p>
+      <a href="{% url 'public_business_profile' business.id %}" target="_blank" rel="noopener" class="btn-outline">Vis offentlig profil</a>
+      <a href="{% url 'edit_public_profile' %}" class="btn-outline">Rediger profil</a>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

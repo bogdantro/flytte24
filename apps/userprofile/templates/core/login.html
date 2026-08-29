@@ -1,2 +1,44 @@
 {% extends 'core/base.html' %}
-{% block content %}{% endblock %}
+{% load static %}
+
+{% block page_title %}Logg inn{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static 'scss/pages/account/auth-forms.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="account-page">
+  <div class="account-card">
+    <h1 class="account-card__title">Logg inn</h1>
+    <p class="account-card__subtitle">Logg inn for å administrere bedriften din på Kobly.</p>
+
+    {% if form.errors %}
+    <div class="account-card__errors" role="alert">
+      {{ form.non_field_errors }}
+      <p>Feil brukernavn eller passord. Prøv igjen.</p>
+    </div>
+    {% endif %}
+
+    <form method="post" class="account-form" action="{% url 'login' %}">
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ next }}">
+      <label class="text-field">
+        <span class="field-label">E-post</span>
+        <input type="text" name="username" class="field-input" value="{{ form.username.value|default:'' }}" autofocus required>
+      </label>
+      <label class="text-field">
+        <span class="field-label">Passord</span>
+        <input type="password" name="password" class="field-input" required>
+      </label>
+
+      <button type="submit" class="btn-primary">Logg inn</button>
+    </form>
+
+    <p class="account-card__footer">
+      <a href="{% url 'password_reset' %}">Glemt passord?</a><br>
+      Har du ikke bruker ennå? <a href="/for-bedrifter/bli-partner/">Bli partner</a>
+    </p>
+  </div>
+</section>
+{% endblock %}

@@ -45,10 +45,28 @@ from django.shortcuts import render, get_object_or_404
 from apps.store.models import Bedrift_info, PublicBusinessInformation
 
 def public_business_profile(request, business_id):
+    """Customer-facing profile — what the wizard-matched businesses look
+    like from the outside. Inactive businesses (not yet approved, or
+    deactivated) still resolve so a business can preview their own profile
+    from myaccount before/without being live, but staff/the business are
+    the only ones expected to actually reach an inactive profile's URL."""
     business = get_object_or_404(Bedrift_info, id=business_id)
     public_info = getattr(business, "public_info", None)
-    
+    reviews = business.reviews.all().order_by("-created_at")
+    average_rating = reviews.aggregate(Avg("rating"))["rating__avg"]
+
+    # move_type/cities are comma-separated free text (see
+    # apps.core.forms.MOVE_TYPE_CHOICES — already human-readable values
+    # like "Flyttehjelp", not slugs needing a label lookup).
+    cities = [c.strip() for c in (business.cities or "").split(",") if c.strip()]
+    move_types = [m.strip() for m in (business.move_type or "").split(",") if m.strip()]
+
     return render(request, "core/public_business_profile.html", {
         "business": business,
         "public_info": public_info,
+        "reviews": reviews,
+        "average_rating": average_rating,
+        "cities": cities,
+        "move_types": move_types,
+        "images": public_info.images.all() if public_info else [],
     })

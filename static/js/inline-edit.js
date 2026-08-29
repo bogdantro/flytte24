@@ -17,10 +17,10 @@
   }
 
   /** Briefly shows a small "Lagret"/"Kunne ikke lagre" pill next to the edited element. */
-  function showSaveFeedback(el, ok) {
+  function showSaveFeedback(el, ok, message) {
     const pill = document.createElement("span");
     pill.className = "inline-edit-feedback" + (ok ? "" : " inline-edit-feedback--error");
-    pill.textContent = ok ? "Lagret" : "Kunne ikke lagre";
+    pill.textContent = message || (ok ? "Lagret" : "Kunne ikke lagre");
     el.insertAdjacentElement("afterend", pill);
     requestAnimationFrame(() => pill.classList.add("is-visible"));
     setTimeout(() => {
@@ -36,7 +36,13 @@
     const value = el.innerText.trim();
 
     if (!sectionId) {
-      showSaveFeedback(el, false);
+      // data-inline-section renders empty when this section_type has no
+      // matching PageSection row for the current page (a dict-key miss
+      // resolves to "" in the template) — distinct from a real save
+      // failure, so say so plainly instead of the generic error, which
+      // used to contradict the page's own "lagres automatisk" banner with
+      // no explanation of why this one field never actually saved.
+      showSaveFeedback(el, false, "Denne seksjonen finnes ikke ennå");
       return;
     }
 
@@ -76,6 +82,46 @@
           }
         });
       }
+    });
+  }
+
+  /** Wires up each CTA's small pencil "edit link" button — button_href can't be made
+   * contenteditable in place the way a label's text can, so this prompts for the new
+   * URL instead and saves it through the same per-field endpoint as saveField(). */
+  function initInlineEditLinks() {
+    document.querySelectorAll(".inline-edit-link-btn").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const sectionId = btn.dataset.inlineSection;
+        const field = btn.dataset.inlineField;
+        const current = btn.dataset.inlineCurrent || "";
+        const next = window.prompt("Lenke (f.eks. /flytteforesporsel/):", current);
+        if (next === null || next.trim() === current) return; // cancelled or unchanged
+
+        try {
+          const response = await fetch(`/dashboard/sider/seksjon/${sectionId}/felt/`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRFToken": getCsrfToken(),
+            },
+            body: JSON.stringify({ field, value: next.trim() }),
+          });
+          const data = response.ok ? await response.json() : { ok: false };
+          if (data.ok) {
+            btn.dataset.inlineCurrent = next.trim();
+            // home.html always renders this button as the <a>'s immediate next
+            // sibling (see _inline_edit_link.html's call sites), so update that
+            // one anchor's href live rather than waiting for a page reload.
+            const anchor = btn.previousElementSibling;
+            if (anchor && anchor.tagName === "A") anchor.setAttribute("href", next.trim());
+            showSaveFeedback(btn, true);
+          } else {
+            showSaveFeedback(btn, false);
+          }
+        } catch {
+          showSaveFeedback(btn, false);
+        }
+      });
     });
   }
 
@@ -119,6 +165,7 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     initInlineEdit();
+    initInlineEditLinks();
     initPageSettingsPanel();
   });
 })();

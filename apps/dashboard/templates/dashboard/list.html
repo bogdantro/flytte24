@@ -4,9 +4,15 @@
 {% block title %}Forespørsler{% endblock %}
 
 {% block content %}
-  <h1 class="dashboard-heading">Flytteforespørsler</h1>
+  <div class="dashboard-heading-row">
+    <h1 class="dashboard-heading">Flytteforespørsler</h1>
+    <div class="dashboard-heading-row__actions">
+      <a href="{% url 'dashboard:lead_trash' %}" class="btn-outline">Papirkurv</a>
+      <a href="{% url 'dashboard:lead_export_csv' %}?{{ full_qs }}" class="btn-outline">Eksporter CSV</a>
+    </div>
+  </div>
 
-  <!-- Quick stats: total + how many still need a first response -->
+  <!-- Quick stats: total, how many still need a first response, how many are due for follow-up -->
   <div class="dashboard-stats">
     <div class="dashboard-stat">
       <span class="dashboard-stat__value">{{ total_count }}</span>
@@ -16,42 +22,84 @@
       <span class="dashboard-stat__value">{{ new_count }}</span>
       <span class="dashboard-stat__label">Nye, ikke kontaktet</span>
     </div>
+    <div class="dashboard-stat">
+      <span class="dashboard-stat__value">{{ follow_up_count }}</span>
+      <span class="dashboard-stat__label">Trenger oppfølging</span>
+    </div>
   </div>
 
   <!-- Status filter pills -->
   <div class="dashboard-filters">
-    <a href="{% url 'dashboard:lead_list' %}" class="filter-pill {% if not status_filter %}is-active{% endif %}">Alle</a>
+    <a href="?{{ status_pill_qs|slice:'1:' }}" class="filter-pill {% if not status_filter %}is-active{% endif %}">Alle</a>
     {% for value, display in status_choices %}
-      <a href="?status={{ value }}" class="filter-pill {% if status_filter == value %}is-active{% endif %}">{{ display }}</a>
+      <a href="?status={{ value }}{{ status_pill_qs }}" class="filter-pill {% if status_filter == value %}is-active{% endif %}">{{ display }}</a>
     {% endfor %}
+    <a href="?follow_up=1{{ status_pill_qs }}{% if status_filter %}&status={{ status_filter }}{% endif %}" class="filter-pill {% if follow_up_filter == '1' %}is-active{% endif %}">Trenger oppfølging</a>
   </div>
 
+  <!-- Search + business + date-range filters -->
+  <form method="get" class="dashboard-search-filters">
+    {% if status_filter %}<input type="hidden" name="status" value="{{ status_filter }}">{% endif %}
+    <input type="text" name="q" value="{{ query }}" placeholder="Søk på navn, telefon, e-post eller referanse …" class="dashboard-search-filters__text">
+    <select name="business" class="dashboard-search-filters__select">
+      <option value="">Alle bedrifter</option>
+      {% for business in businesses %}
+        <option value="{{ business.pk }}" {% if business_filter == business.pk|stringformat:"s" %}selected{% endif %}>{{ business.company_name }}</option>
+      {% endfor %}
+    </select>
+    <label class="dashboard-search-filters__date">Fra <input type="date" name="from" value="{{ date_from }}"></label>
+    <label class="dashboard-search-filters__date">Til <input type="date" name="to" value="{{ date_to }}"></label>
+    <button type="submit" class="btn-outline">Filtrer</button>
+    <a href="{% url 'dashboard:lead_list' %}" class="btn-outline">Nullstill</a>
+  </form>
+
   {% if leads %}
-    <table class="lead-table">
-      <thead>
-        <tr>
-          <th>Referanse</th>
-          <th>Navn</th>
-          <th>Type</th>
-          <th>Fra → Til</th>
-          <th>Status</th>
-          <th>Mottatt</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for lead in leads %}
-          <tr onclick="window.location='{% url 'dashboard:lead_detail' lead.pk %}'">
-            <td class="lead-table__reference">{{ lead.reference }}</td>
-            <td>{{ lead.navn }}</td>
-            <td>{{ lead.get_flytte_type_display }}</td>
-            <td class="lead-table__muted">{{ lead.fra }} → {{ lead.til }}</td>
-            <td><span class="status-badge status-badge--{{ lead.status }}">{{ lead.get_status_display }}</span></td>
-            <td class="lead-table__muted">{{ lead.created_at|date:"d.m.Y H:i" }}</td>
+    <form method="post" action="{% url 'dashboard:lead_bulk_action' %}" id="bulk-lead-form">
+      {% csrf_token %}
+      <input type="hidden" name="redirect_qs" value="{{ full_qs }}">
+
+      <div class="dashboard-bulk-bar">
+        <select name="action" class="dashboard-form__select">
+          {% for value, display in status_choices %}
+            <option value="{{ value }}">Sett status: {{ display }}</option>
+          {% endfor %}
+          <option value="archive">Arkiver valgte</option>
+          <option value="export_csv">Eksporter valgte til CSV</option>
+        </select>
+        <button type="submit" class="btn-outline">Bruk på valgte</button>
+      </div>
+
+      <table class="lead-table">
+        <thead>
+          <tr>
+            <th><input type="checkbox" data-select-all></th>
+            <th>Referanse</th>
+            <th>Navn</th>
+            <th>Type</th>
+            <th>Fra → Til</th>
+            <th>Status</th>
+            <th>Oppfølging</th>
+            <th>Mottatt</th>
           </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {% for lead in leads %}
+            <tr onclick="window.location='{% url 'dashboard:lead_detail' lead.pk %}'">
+              <td onclick="event.stopPropagation();"><input type="checkbox" name="lead_ids" value="{{ lead.pk }}"></td>
+              <td class="lead-table__reference">{{ lead.reference }}</td>
+              <td>{{ lead.navn }}</td>
+              <td>{{ lead.get_flytte_type_display }}</td>
+              <td class="lead-table__muted">{{ lead.fra }} → {{ lead.til }}</td>
+              <td><span class="status-badge status-badge--{{ lead.status }}">{{ lead.get_status_display }}</span></td>
+              <td class="lead-table__muted">{% if lead.follow_up_at %}{{ lead.follow_up_at|date:"d.m.Y" }}{% else %}—{% endif %}</td>
+              <td class="lead-table__muted">{{ lead.created_at|date:"d.m.Y H:i" }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </form>
+    {% include "dashboard/_pagination.html" with page_obj=leads %}
   {% else %}
-    <p class="dashboard-empty">Ingen forespørsler {% if status_filter %}med denne statusen{% endif %} ennå.</p>
+    <p class="dashboard-empty">Ingen forespørsler {% if status_filter or query or business_filter or date_from or date_to or follow_up_filter %}matcher filteret{% else %}ennå{% endif %}.</p>
   {% endif %}
 {% endblock %}

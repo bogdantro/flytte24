@@ -1,0 +1,50 @@
+<!-- apps/dashboard/templates/dashboard/trash.html -->
+{% extends "dashboard/_base.html" %}
+
+{% block title %}Papirkurv{% endblock %}
+
+{% block content %}
+  <div class="dashboard-heading-row">
+    <h1 class="dashboard-heading">Papirkurv</h1>
+    <a href="{% url 'dashboard:lead_list' %}" class="btn-outline">← Tilbake til forespørsler</a>
+  </div>
+
+  {% if leads %}
+    <table class="lead-table">
+      <thead>
+        <tr>
+          <th>Referanse</th>
+          <th>Navn</th>
+          <th>Status</th>
+          <th>Arkivert</th>
+          <th>Handling</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for lead in leads %}
+          <tr>
+            <td class="lead-table__reference">{{ lead.reference }}</td>
+            <td>{{ lead.navn }}</td>
+            <td><span class="status-badge status-badge--{{ lead.status }}">{{ lead.get_status_display }}</span></td>
+            <td class="lead-table__muted">{{ lead.archived_at|date:"d.m.Y H:i" }}</td>
+            <td>
+              <form method="post" action="{% url 'dashboard:lead_restore' lead.pk %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn-outline">Gjenopprett</button>
+              </form>
+              {% if request.user.is_superuser %}
+                <form method="post" action="{% url 'dashboard:lead_permanent_delete' lead.pk %}" data-confirm-delete style="display:inline;">
+                  {% csrf_token %}
+                  <button type="submit" class="btn-danger">Slett permanent</button>
+                </form>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% include "dashboard/_pagination.html" with page_obj=leads %}
+  {% else %}
+    <p class="dashboard-empty">Papirkurven er tom.</p>
+  {% endif %}
+{% endblock %}

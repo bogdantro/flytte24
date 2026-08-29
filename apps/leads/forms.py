@@ -75,9 +75,23 @@ class WizardForm(forms.Form):
 
     def clean(self):
         cleaned = super().clean()
-        # Spec §5.7: valid iff a date is set OR the user is flexible.
-        if not cleaned.get("flyttedato") and not cleaned.get("fleksibel"):
+        # Spec §5.7: date and "flexible" are mutually exclusive — the
+        # wizard's own step-2 JS enforces this (picking a date clears
+        # flexible and vice versa), so a normal submission can never send
+        # both. But this form is the only thing standing between a bypassed
+        # POST and MoveLead.objects.create(), and previously only rejected
+        # "neither set" — letting both through meant send_receipt_email
+        # would silently discard the submitted date and print "Fleksibel
+        # dato" instead (its `if lead.flyttedato and not lead.fleksibel`
+        # guard). Reject both directions explicitly.
+        has_date = bool(cleaned.get("flyttedato"))
+        is_flexible = bool(cleaned.get("fleksibel"))
+        if not has_date and not is_flexible:
             raise forms.ValidationError(
                 "Velg en flyttedato eller merk av at du er fleksibel."
+            )
+        if has_date and is_flexible:
+            raise forms.ValidationError(
+                "Velg enten en flyttedato eller merk av at du er fleksibel, ikke begge."
             )
         return cleaned

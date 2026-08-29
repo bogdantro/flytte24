@@ -151,6 +151,27 @@
     document.querySelector(".wizard-card").addEventListener("change", updateNavButton);
   }
 
+  // Which step each server-validated field name lives on — only reachable
+  // if a client bypasses this wizard's own step-by-step JS validation
+  // (for-business-partner.html's data-error-fields).
+  const FIELD_TO_STEP = {
+    move_type: 1,
+    cities: 2,
+    company_name: 3, company_number: 3, employees: 3, website: 3,
+    address: 3, postal_code: 3, city: 3,
+    first_name: 4, last_name: 4, email: 4, phone: 4, logo: 4,
+  };
+
+  /** On reload after a server-side validation failure, jumps to the earliest step that actually
+   * failed instead of always reopening on step 1 while the error text describes a later step. */
+  function jumpToStepWithServerError() {
+    const errorBlock = document.querySelector("[data-error-fields]");
+    if (!errorBlock) return;
+    const fields = errorBlock.dataset.errorFields.split(",").filter(Boolean);
+    const steps = fields.map((name) => FIELD_TO_STEP[name]).filter(Boolean);
+    if (steps.length) goToStep(Math.min(...steps));
+  }
+
   // ---------------------------------------------------------------
   // Postnummer -> By autofill (step 3) — same free, keyless Norwegian
   // lookup pattern used elsewhere in this codebase for address autofill
@@ -262,6 +283,7 @@
     updateNavButton();
     initLogoUpload();
     initPostalCodeLookup();
+    jumpToStepWithServerError();
   }
 
   document.addEventListener("DOMContentLoaded", initWizard);

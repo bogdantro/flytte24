@@ -7,6 +7,10 @@
   {% if page.meta_description %}<meta name="description" content="{{ page.meta_description }}">{% endif %}
 {% endblock %}
 
+{% block head %}
+  {% if is_editable %}<link rel="stylesheet" href="{% static 'scss/staff-preview-banner.css' %}">{% endif %}
+{% endblock %}
+
 {% block content %}
 
 {% if is_editable %}
@@ -15,6 +19,9 @@
        csrftoken cookie because apps/core/views.py:home() forces it via
        get_token() — this page has no <form> of its own to trigger that). -->
   <div class="inline-edit-banner" data-inline-edit-banner>
+    {% if page.status == "draft" %}
+      <span class="inline-edit-banner__draft-tag">UTKAST — ikke publisert</span>
+    {% endif %}
     <span>Redigeringsmodus — klikk på en tekst for å endre den. Endringer lagres automatisk.</span>
     <button type="button" class="inline-edit-banner__settings" data-page-settings-open>Sideinnstillinger</button>
   </div>
@@ -56,6 +63,7 @@
         <span {% if is_editable %}contenteditable="true" data-inline-section="{{ sections.hero.id }}" data-inline-field="button_label"{% endif %}>{{ sections.hero.button_label|default:"Få 3 tilbud gratis" }}</span>
         <span data-icon="arrow-right"></span>
       </a>
+      {% if is_editable %}{% include "core/_inline_edit_link.html" with section_id=sections.hero.id current_href=sections.hero.button_href|default:"/flytteforesporsel/" %}{% endif %}
     </div>
     <div class="hero__card">
       <!-- Desktop-only HeroCard: same 3-icon -> CTA card used across the site -->
@@ -80,6 +88,7 @@
           {{ sections.hero.button_label|default:"Få 3 tilbud gratis" }}
           <span data-icon="arrow-right"></span>
         </a>
+        {% if is_editable %}{% include "core/_inline_edit_link.html" with section_id=sections.hero.id current_href=sections.hero.button_href|default:"/flytteforesporsel/" %}{% endif %}
       </div>
     </div>
   </div>
@@ -159,6 +168,7 @@
         <span {% if is_editable %}contenteditable="true" data-inline-section="{{ sections.how_it_works.id }}" data-inline-field="button_label"{% endif %}>{{ sections.how_it_works.button_label|default:"Få 3 tilbud gratis" }}</span>
         <span data-icon="arrow-right"></span>
       </a>
+      {% if is_editable %}{% include "core/_inline_edit_link.html" with section_id=sections.how_it_works.id current_href=sections.how_it_works.button_href|default:"/flytteforesporsel/" %}{% endif %}
     </div>
   </div>
 </section>
@@ -207,6 +217,7 @@
         <span {% if is_editable %}contenteditable="true" data-inline-section="{{ sections.trust.id }}" data-inline-field="button_label"{% endif %}>{{ sections.trust.button_label|default:"Få 3 tilbud gratis" }}</span>
         <span data-icon="arrow-right"></span>
       </a>
+      {% if is_editable %}{% include "core/_inline_edit_link.html" with section_id=sections.trust.id current_href=sections.trust.button_href|default:"/flytteforesporsel/" %}{% endif %}
       <a href="{{ sections.trust.extra_json.secondary_href|default:"/byraer/" }}" class="btn-outline">{{ sections.trust.extra_json.secondary_label|default:"Møt byråene" }}</a>
     </div>
     <!-- Partner agency logos are brand marks, not copy — never editable here. -->

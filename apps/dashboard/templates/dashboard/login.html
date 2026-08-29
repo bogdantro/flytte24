@@ -31,6 +31,7 @@
 
     <form method="post">
       {% csrf_token %}
+      <input type="hidden" name="next" value="{{ next }}">
       <label class="dashboard-login__field">
         <span>Brukernavn</span>
         <input type="text" name="username" autocomplete="username" required autofocus>

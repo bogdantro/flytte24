@@ -1,2 +1,30 @@
 {% extends 'core/base.html' %}
-{% block content %}{% endblock %}
+
+{% block page_title %}Kontakt oss — Kobly{% endblock %}
+
+{% block page_meta %}
+  <meta name="description" content="Har du spørsmål om Kobly? Send oss en e-post på hei@kobly.no, så svarer vi så raskt vi kan.">
+{% endblock %}
+
+{% block content %}
+
+<!-- Minimal, honest placeholder — was a completely blank stub (no title,
+     no meta description) before this fix. Uses only the one contact
+     channel already established site-wide (hei@kobly.no, same address as
+     core/footer.html and the receipt email), not fabricated contact
+     details like a phone number or office address. -->
+<section class="hero">
+  <div class="hero__inner">
+    <div class="hero__left">
+      <p class="hero__eyebrow">Kontakt oss</p>
+      <h1 class="hero__title">Vi hører gjerne fra deg</h1>
+      <p class="hero__subline">Har du spørsmål om en forespørsel, et byrå, eller noe annet? Send oss en e-post, så svarer vi så raskt vi kan.</p>
+      <a href="mailto:hei@kobly.no" class="btn-primary hero__cta">
+        <span data-icon="mail"></span>
+        hei@kobly.no
+      </a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

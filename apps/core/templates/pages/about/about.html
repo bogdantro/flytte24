@@ -1,2 +1,43 @@
 {% extends 'core/base.html' %}
-{% block content %}{% endblock %}
+
+{% block page_title %}Om Kobly — Kobly{% endblock %}
+
+{% block page_meta %}
+  <meta name="description" content="Kobly kobler privatpersoner med kvalitetssjekkede flyttebyråer i hele Norge — gratis og uforpliktende.">
+{% endblock %}
+
+{% block content %}
+
+<!-- Minimal, honest placeholder — was a completely blank stub (no title,
+     no meta description) before this fix. Copy is deliberately limited to
+     facts already established elsewhere on the site (core/footer.html's
+     own blurb) rather than fabricated company history/team/office details
+     this project has no source for. -->
+<section class="hero">
+  <div class="hero__inner">
+    <div class="hero__left">
+      <p class="hero__eyebrow">Om Kobly</p>
+      <h1 class="hero__title">Vi finner det beste flyttebyrået for deg</h1>
+      <p class="hero__subline">Kobly kobler privatpersoner med kvalitetssjekkede byråer i hele Norge. Du fyller ut ett skjema, vi sender det videre til tre byråer som passer din flytting, og du velger selv hvem du vil bruke — helt gratis og uforpliktende.</p>
+      <a href="/flytteforesporsel/" class="btn-primary hero__cta">
+        Få 3 tilbud gratis
+        <span data-icon="arrow-right"></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="content-width">
+    <h2 class="trust__title">Er du et flyttebyrå?</h2>
+    <p class="trust__body">Vi tar gjerne imot flere dyktige byråer som partnere. Les mer om hvordan det fungerer, og søk om partnerskap.</p>
+    <div class="trust__ctas">
+      <a href="/for-bedrifter/" class="btn-primary">
+        For flyttebyråer
+        <span data-icon="arrow-right"></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

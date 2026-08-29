@@ -103,8 +103,10 @@ body {
 .wizard__background img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
 }
 .wizard__background--desktop {
   display: none;
@@ -546,7 +548,8 @@ textarea.field-input {
 .photo-thumb img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
   display: block;
 }
 .photo-thumb__remove {
@@ -649,7 +652,8 @@ textarea.field-input {
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 .map-panel__map {
@@ -1071,7 +1075,8 @@ textarea.field-input {
 .thankyou__background img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 .thankyou__background-scrim {
   position: absolute;

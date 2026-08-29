@@ -1,0 +1,118 @@
+// static/scss/pages/account/auth-forms.scss
+// Shared card/form styling for the simple single-card account pages: login,
+// password reset (request/done/confirm/complete), password change. A
+// generalized version of core/signup.html's own .signup-card system
+// (static/scss/pages/account/signup.scss) — kept as its own file rather
+// than folded into signup.scss since signup.scss's own header comment
+// scopes it to that one page, and rather than duplicated across every one
+// of these pages since they're otherwise identical layouts.
+//
+// Loaded alongside static/scss/base.css (never instead of it).
+//
+// Compile after every edit with:
+//   sass static/scss/pages/account/auth-forms.scss static/scss/pages/account/auth-forms.css --style=expanded --no-source-map
+
+$ink: #1a1a1a;
+$inkMuted: #5c5c5c;
+$line: #e6e1d6;
+$brand: #221814;
+$surfaceSoft: #faf9f6;
+
+$fontSans: "Moderat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+$fontSerif: "Crimson Pro", Georgia, serif;
+
+$radiusCard: 14px;
+
+.account-page {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px 96px;
+}
+
+.account-card {
+  width: 100%;
+  max-width: 440px;
+  background: $surfaceSoft;
+  border: 1px solid $line;
+  border-radius: $radiusCard;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03), 0 12px 32px -16px rgba(0, 0, 0, 0.1);
+  padding: 36px 32px;
+
+  &__title {
+    margin: 0;
+    font-family: $fontSerif;
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 1.15;
+    color: $ink;
+  }
+
+  &__subtitle {
+    margin: 10px 0 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: $inkMuted;
+  }
+
+  &__errors {
+    margin: 20px 0 0;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: #fdeceb;
+    color: #a33a2f;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  &__success {
+    margin: 20px 0 0;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: #eef3e6;
+    color: #3d5507;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  &__footer {
+    margin: 20px 0 0;
+    text-align: center;
+    font-size: 14px;
+    color: $inkMuted;
+
+    a { color: $ink; text-decoration: underline; }
+  }
+}
+
+.account-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
+
+  .btn-primary { width: 100%; justify-content: center; margin-top: 4px; }
+}
+
+.text-field { display: block; }
+
+.field-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: rgba(26, 26, 26, 0.5);
+}
+
+.field-input {
+  width: 100%;
+  border: 1.5px solid rgba(26, 26, 26, 0.1);
+  border-radius: $radiusCard;
+  background: #f7f5f1;
+  padding: 14px 16px;
+  font-size: 14px;
+  font-family: $fontSans;
+  color: $ink;
+  outline: none;
+  transition: border-color 0.2s ease;
+
+  &:focus { border-color: $brand; }
+}

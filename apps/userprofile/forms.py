@@ -17,6 +17,11 @@ class UserprofileForm(forms.ModelForm):
         exclude = ('user',)
 
 class SignUpForm(UserCreationForm):
+    """The "E-post" field on core/signup.html is bound to `username` (login
+    is by email address), but User.email was previously never populated at
+    all — nothing (password reset, notifications) could ever rely on it.
+    save() now mirrors the submitted username into email too."""
+
     def __init__(self, *args, **kwargs):
         super(SignUpForm, self).__init__(*args, **kwargs)
 
@@ -27,6 +32,13 @@ class SignUpForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'password1', 'password2']
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.email = self.cleaned_data['username']
+        if commit:
+            user.save()
+        return user
 
 
 
@@ -70,7 +82,32 @@ class SetPasswordForm(SetPasswordForm):
 
 
 from django import forms
-from apps.store.models import PublicBusinessInformation, BusinessImage
+from apps.store.models import Bedrift_info, PublicBusinessInformation, BusinessImage
+
+
+class BusinessSelfEditForm(forms.ModelForm):
+    """Core business info a partner can edit about themselves — the
+    account-side equivalent of apps.dashboard.forms.BusinessCoreForm.
+    Deliberately excludes: `email` (also their login username; changing it
+    would need its own re-verification flow, out of scope here — contact
+    staff to change it), `active`/`total_leads_received` (system-managed),
+    `priority_score`/`tags`/`internal_notes` (staff-only, the model's own
+    docstring says internal_notes/tags are "never shown on the business's
+    own... account pages"), and `leads_per_day/week/month` (edited from the
+    leads page instead — apps.userprofile.views.foresporsel_database)."""
+
+    class Meta:
+        model = Bedrift_info
+        fields = [
+            "company_name", "company_number", "employees", "phone", "website",
+            "address", "postal_code", "city", "tiltaleform", "first_name", "last_name",
+            "cities", "move_type",
+        ]
+        widgets = {
+            "cities": forms.TextInput(attrs={"placeholder": "Oslo, Bergen, Trondheim"}),
+            "move_type": forms.TextInput(attrs={"placeholder": "Flyttehjelp, Pakking"}),
+        }
+
 
 class PublicBusinessInformationForm(forms.ModelForm):
     class Meta:

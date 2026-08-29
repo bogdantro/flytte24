@@ -1,2 +1,108 @@
 {% extends 'core/base.html' %}
-{% block content %}{% endblock %}
+{% load static %}
+
+{% block page_title %}Bedriftsprofil{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static 'scss/pages/account/auth-forms.css' %}">
+  <link rel="stylesheet" href="{% static 'scss/pages/account/portal.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="portal-page">
+  <div class="portal-heading-row">
+    <h1 class="portal-heading">Bedriftsprofil</h1>
+  </div>
+
+  {% include "core/accountPages/_portal_nav.html" with active="profile" %}
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="portal-banner portal-banner--{{ message.tags|default:'success' }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="portal-card">
+      <p class="portal-card__title">Firmainformasjon</p>
+      {% if core_form.errors %}<div class="account-card__errors">{{ core_form.non_field_errors }}{% for field in core_form %}{{ field.errors }}{% endfor %}</div>{% endif %}
+      <div class="portal-form__group"><span class="field-label">Firmanavn</span>{{ core_form.company_name }}</div>
+      <div class="portal-form__group"><span class="field-label">Org.nr.</span>{{ core_form.company_number }}</div>
+      <div class="portal-form__group"><span class="field-label">Antall ansatte</span>{{ core_form.employees }}</div>
+      <div class="portal-form__group"><span class="field-label">Telefon</span>{{ core_form.phone }}</div>
+      <div class="portal-form__group"><span class="field-label">Nettside</span>{{ core_form.website }}</div>
+      <div class="portal-form__group"><span class="field-label">Adresse</span>{{ core_form.address }}</div>
+      <div class="portal-form__group"><span class="field-label">Postnummer</span>{{ core_form.postal_code }}</div>
+      <div class="portal-form__group"><span class="field-label">By</span>{{ core_form.city }}</div>
+      <div class="portal-form__group"><span class="field-label">Tiltaleform</span>{{ core_form.tiltaleform }}</div>
+      <div class="portal-form__group"><span class="field-label">Fornavn</span>{{ core_form.first_name }}</div>
+      <div class="portal-form__group"><span class="field-label">Etternavn</span>{{ core_form.last_name }}</div>
+      <p style="margin:0; font-size:12px; color:#8a8a8a;">Vil du endre e-postadressen din? Ta kontakt med Kobly.</p>
+    </div>
+
+    <div class="portal-card">
+      <p class="portal-card__title">Dekning</p>
+      <div class="portal-form__group"><span class="field-label">Byer (kommaseparert)</span>{{ core_form.cities }}</div>
+      <div class="portal-form__group"><span class="field-label">Flyttetype (kommaseparert)</span>{{ core_form.move_type }}</div>
+      <p style="margin:0; font-size:12px; color:#8a8a8a;">
+        Vil du endre hvor mange leads du mottar per dag/uke/måned? Det gjør du på <a href="{% url 'foresporsel_database' %}">Mine leads</a>.
+      </p>
+    </div>
+
+    <div class="portal-card">
+      <p class="portal-card__title">Offentlig profil</p>
+      {% if public_form.errors %}<div class="account-card__errors">{{ public_form.non_field_errors }}{% for field in public_form %}{{ field.errors }}{% endfor %}</div>{% endif %}
+      <div class="portal-form__group">
+        <span class="field-label">Logo</span>
+        {% if public_info.logo %}<img src="{{ public_info.logo.url }}" alt="" style="max-width:120px; display:block; margin-bottom:8px; border-radius:10px;">{% endif %}
+        {{ public_form.logo }}
+      </div>
+      <div class="portal-form__group"><span class="field-label">Om oss</span>{{ public_form.about_us }}</div>
+      <div class="portal-form__group"><span class="field-label">Ofte stilte spørsmål</span>{{ public_form.faq }}</div>
+    </div>
+
+    <button type="submit" class="btn-primary">Lagre</button>
+  </form>
+
+  <div class="portal-card">
+    <p class="portal-card__title">Bildegalleri ({{ images.count }}/6)</p>
+    <div class="portal-photo-grid">
+      {% for image in images %}
+        <div>
+          <img src="{{ image.image.url }}" alt="">
+          <form method="post" action="{% url 'business_image_delete' image.pk %}" style="margin-top:6px;">
+            {% csrf_token %}
+            <button type="submit" class="btn-danger" style="width:100%;">Slett</button>
+          </form>
+        </div>
+      {% endfor %}
+    </div>
+    {% if images.count < 6 %}
+      <form method="post" action="{% url 'business_image_add' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="image" accept="image/*" required>
+        <button type="submit" class="btn-outline">Legg til bilde</button>
+      </form>
+    {% endif %}
+  </div>
+
+  <div class="portal-card">
+    <p class="portal-card__title">Anmeldelser ({{ reviews.count }})</p>
+    {% if reviews %}
+      {% for review in reviews %}
+        <div class="portal-row">
+          <span class="portal-row__label">{{ review.rating }}⭐ {{ review.name }}</span>
+          <span class="portal-row__value">{{ review.comment }}</span>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p class="portal-empty">Ingen anmeldelser ennå.</p>
+    {% endif %}
+    <p style="margin:14px 0 0; font-size:12px; color:#8a8a8a;">Anmeldelser administreres av Kobly.</p>
+  </div>
+
+  <a href="{{ public_url }}" target="_blank" rel="noopener" class="btn-outline">Vis offentlig profil</a>
+</section>
+{% endblock %}

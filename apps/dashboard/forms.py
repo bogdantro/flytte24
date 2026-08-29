@@ -15,6 +15,7 @@ class BusinessCoreForm(forms.ModelForm):
             "address", "postal_code", "city", "tiltaleform", "first_name", "last_name",
             "cities", "move_type",
             "leads_per_day", "leads_per_week", "leads_per_month", "priority_score",
+            "tags", "internal_notes",
         ]
 
 

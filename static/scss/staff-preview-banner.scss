@@ -1,0 +1,25 @@
+// static/scss/staff-preview-banner.scss
+//
+// One small addition to the public site's .inline-edit-banner (defined in
+// base.scss, loaded on every page): a "UTKAST — ikke publisert" tag shown
+// only to staff previewing a draft page. Kept in its own file/stylesheet
+// rather than folded into base.scss, since it's dashboard/staff-tooling
+// styling riding on a public-site template, not part of the public design
+// system itself.
+//
+// Compile after every edit with:
+//   sass static/scss/staff-preview-banner.scss static/scss/staff-preview-banner.css --style=expanded
+//
+$ink: #1a1a1a;
+$accent-amber: #e8a87c;
+
+.inline-edit-banner__draft-tag {
+  flex-shrink: 0;
+  border-radius: 9999px;
+  background: $ink;
+  color: $accent-amber;
+  padding: 2px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}

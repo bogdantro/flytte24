@@ -45,6 +45,10 @@
         <span class="dashboard-sidebar__icon" data-icon="building"></span>
         Bedrifter
       </a>
+      <a href="{% url 'dashboard:article_list' %}" class="dashboard-sidebar__link {% if '/dashboard/blogg/' in request.path %}is-active{% endif %}">
+        <span class="dashboard-sidebar__icon" data-icon="newspaper"></span>
+        Blogg
+      </a>
       <a href="{% url 'dashboard:activity_log' %}" class="dashboard-sidebar__link {% if '/dashboard/aktivitetslogg/' in request.path %}is-active{% endif %}">
         <span class="dashboard-sidebar__icon" data-icon="history"></span>
         Aktivitetslogg

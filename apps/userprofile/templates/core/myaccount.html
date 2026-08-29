@@ -75,7 +75,7 @@
           <div class="portal-row">
             <span class="portal-row__label">{{ entry.created_at|date:"d.m.Y" }} · {{ entry.source }}</span>
             <span class="portal-row__value">
-              {{ entry.label }}
+              {% if entry.url %}<a href="{{ entry.url }}">{{ entry.label }}</a>{% else %}{{ entry.label }}{% endif %}
               {% if entry.status_display %}<span class="portal-badge portal-badge--{{ entry.status }}">{{ entry.status_display }}</span>{% endif %}
             </span>
           </div>

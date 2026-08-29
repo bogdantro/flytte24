@@ -26,9 +26,9 @@
     <p class="portal-card__title">Ønsket antall leads</p>
     <form method="post">
       {% csrf_token %}
-      <div class="portal-form__group"><span class="field-label">Per dag</span><input type="text" name="leads_per_day" value="{{ business.leads_per_day|default:'' }}" placeholder="Ingen grense"></div>
-      <div class="portal-form__group"><span class="field-label">Per uke</span><input type="text" name="leads_per_week" value="{{ business.leads_per_week|default:'' }}" placeholder="Ingen grense"></div>
-      <div class="portal-form__group"><span class="field-label">Per måned</span><input type="text" name="leads_per_month" value="{{ business.leads_per_month|default:'' }}" placeholder="Ingen grense"></div>
+      <label class="portal-form__group"><span class="field-label">Per dag</span><input type="text" name="leads_per_day" value="{{ business.leads_per_day|default:'' }}" placeholder="Ingen grense"></label>
+      <label class="portal-form__group"><span class="field-label">Per uke</span><input type="text" name="leads_per_week" value="{{ business.leads_per_week|default:'' }}" placeholder="Ingen grense"></label>
+      <label class="portal-form__group"><span class="field-label">Per måned</span><input type="text" name="leads_per_month" value="{{ business.leads_per_month|default:'' }}" placeholder="Ingen grense"></label>
       <button type="submit" class="btn-primary">Lagre grenser</button>
     </form>
   </div>
@@ -40,7 +40,7 @@
         <div class="portal-row">
           <span class="portal-row__label">{{ entry.created_at|date:"d.m.Y" }} · {{ entry.source }}</span>
           <span class="portal-row__value">
-            {{ entry.label }}
+            {% if entry.url %}<a href="{{ entry.url }}">{{ entry.label }}</a>{% else %}{{ entry.label }}{% endif %}
             {% if entry.status_display %}<span class="portal-badge portal-badge--{{ entry.status }}">{{ entry.status_display }}</span>{% endif %}
           </span>
         </div>

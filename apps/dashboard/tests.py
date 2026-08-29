@@ -7,6 +7,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.urls import reverse
 
+from apps.core.models import Article
 from apps.leads.models import MoveLead
 from apps.pages.models import Page, PageSection, PageSectionRevision, publish_due_pages
 from apps.store.models import Bedrift_info, BusinessImage, PublicBusinessInformation, Review
@@ -1787,3 +1788,107 @@ class LoginRateLimitTests(TestCase):
             reverse("dashboard:login"), {"username": "otherstaff", "password": "other-pw-123"}
         )
         self.assertRedirects(response, reverse("dashboard:dashboard_overview"))
+
+
+class ArticleAdminTests(TestCase):
+    """Blog articles previously had no dashboard screen at all — only editable via the
+    seed_marketing_content management command."""
+
+    def setUp(self):
+        self.staff = User.objects.create_user("staff-blog", password="pw", is_staff=True)
+        self.superuser = User.objects.create_user("superuser-blog", password="pw", is_staff=True, is_superuser=True)
+        self.article = Article.objects.create(
+            slug="test-artikkel", title="Test Artikkel", ingress="En kort ingress.",
+            date="2026-01-01", read_minutes=5,
+            blocks=[{"type": "h2", "text": "Overskrift"}, {"type": "p", "text": "Brødtekst."}],
+        )
+
+    def test_list_requires_staff_login(self):
+        response = self.client.get(reverse("dashboard:article_list"))
+        self.assertEqual(response.status_code, 302)
+
+    def test_list_shows_existing_articles(self):
+        self.client.force_login(self.staff)
+        response = self.client.get(reverse("dashboard:article_list"))
+        self.assertContains(response, "Test Artikkel")
+
+    def test_add_form_renders(self):
+        self.client.force_login(self.staff)
+        response = self.client.get(reverse("dashboard:article_add"))
+        self.assertEqual(response.status_code, 200)
+
+    def test_valid_post_creates_an_article(self):
+        self.client.force_login(self.staff)
+        response = self.client.post(reverse("dashboard:article_add"), {
+            "title": "Ny Artikkel", "slug": "ny-artikkel", "ingress": "Ingress her.",
+            "header_image": "", "date": "2026-02-01", "read_minutes": "3",
+            "blocks_json": json.dumps([{"type": "p", "text": "Hei."}]),
+        })
+        article = Article.objects.get(slug="ny-artikkel")
+        self.assertRedirects(response, reverse("dashboard:article_edit", args=[article.pk]))
+        self.assertEqual(article.title, "Ny Artikkel")
+        self.assertEqual(article.blocks, [{"type": "p", "text": "Hei."}])
+
+    def test_invalid_json_in_blocks_is_rejected(self):
+        self.client.force_login(self.staff)
+        response = self.client.post(reverse("dashboard:article_add"), {
+            "title": "Ny Artikkel", "slug": "ny-artikkel-2", "ingress": "Ingress her.",
+            "header_image": "", "date": "2026-02-01", "read_minutes": "3",
+            "blocks_json": "not valid json{{{",
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(Article.objects.filter(slug="ny-artikkel-2").exists())
+
+    def test_blocks_json_must_be_a_list(self):
+        self.client.force_login(self.staff)
+        response = self.client.post(reverse("dashboard:article_add"), {
+            "title": "Ny Artikkel", "slug": "ny-artikkel-3", "ingress": "Ingress her.",
+            "header_image": "", "date": "2026-02-01", "read_minutes": "3",
+            "blocks_json": json.dumps({"type": "p", "text": "Hei."}),
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(Article.objects.filter(slug="ny-artikkel-3").exists())
+
+    def test_unknown_block_type_is_rejected(self):
+        self.client.force_login(self.staff)
+        response = self.client.post(reverse("dashboard:article_add"), {
+            "title": "Ny Artikkel", "slug": "ny-artikkel-4", "ingress": "Ingress her.",
+            "header_image": "", "date": "2026-02-01", "read_minutes": "3",
+            "blocks_json": json.dumps([{"type": "not-a-real-type", "text": "Hei."}]),
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(Article.objects.filter(slug="ny-artikkel-4").exists())
+
+    def test_edit_form_shows_current_blocks_as_json(self):
+        self.client.force_login(self.staff)
+        response = self.client.get(reverse("dashboard:article_edit", args=[self.article.pk]))
+        self.assertContains(response, "Overskrift")
+
+    def test_valid_edit_updates_the_article(self):
+        self.client.force_login(self.staff)
+        response = self.client.post(reverse("dashboard:article_edit", args=[self.article.pk]), {
+            "title": "Oppdatert Tittel", "slug": "test-artikkel", "ingress": "En kort ingress.",
+            "header_image": "", "date": "2026-01-01", "read_minutes": "5",
+            "blocks_json": json.dumps([{"type": "p", "text": "Ny tekst."}]),
+        })
+        self.assertRedirects(response, reverse("dashboard:article_edit", args=[self.article.pk]))
+        self.article.refresh_from_db()
+        self.assertEqual(self.article.title, "Oppdatert Tittel")
+        self.assertEqual(self.article.blocks, [{"type": "p", "text": "Ny tekst."}])
+
+    def test_delete_requires_superuser(self):
+        self.client.force_login(self.staff)
+        response = self.client.post(reverse("dashboard:article_delete", args=[self.article.pk]))
+        self.assertEqual(response.status_code, 403)
+        self.assertTrue(Article.objects.filter(pk=self.article.pk).exists())
+
+    def test_superuser_can_delete(self):
+        self.client.force_login(self.superuser)
+        response = self.client.post(reverse("dashboard:article_delete", args=[self.article.pk]))
+        self.assertRedirects(response, reverse("dashboard:article_list"))
+        self.assertFalse(Article.objects.filter(pk=self.article.pk).exists())
+
+    def test_delete_requires_post(self):
+        self.client.force_login(self.superuser)
+        response = self.client.get(reverse("dashboard:article_delete", args=[self.article.pk]))
+        self.assertEqual(response.status_code, 405)

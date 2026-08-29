@@ -170,6 +170,11 @@ $radiusPill: 9999px;
 }
 
 .portal-form__group {
+  // Wraps each field as a real <label> now (for screen-reader/click-to-focus
+  // association with the input inside), not a <div> — display:block was
+  // previously just inherited from <div>'s browser default, which a <label>
+  // doesn't get for free (it defaults to inline).
+  display: block;
   margin-bottom: 16px;
 
   &:last-child { margin-bottom: 0; }

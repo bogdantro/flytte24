@@ -688,6 +688,7 @@ a { color: inherit; text-decoration: none; }
 .dashboard-form__group input[type="url"],
 .dashboard-form__group input[type="tel"],
 .dashboard-form__group input[type="date"],
+.dashboard-form__group input[type="number"],
 .dashboard-form__group textarea,
 .dashboard-form__group select {
   width: 100%;
@@ -704,6 +705,14 @@ a { color: inherit; text-decoration: none; }
 }
 
 .dashboard-form__group textarea { min-height: 100px; resize: vertical; }
+
+// The article-content JSON editor (apps.dashboard.forms.ArticleForm) —
+// monospace so bracket/quote structure is actually readable.
+.dashboard-form__textarea-mono {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace !important;
+  font-size: 0.8125rem !important;
+  min-height: 320px !important;
+}
 
 // Custom select — replaces the native OS dropdown chrome with a plain
 // chevron drawn in CSS, matching this project's "no native browser

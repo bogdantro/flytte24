@@ -303,9 +303,6 @@ a {
   font-size: 0.8125rem;
   color: #1a1a1a;
 }
-.dashboard-sidebar__search input::-moz-placeholder {
-  color: #5c5c5c;
-}
 .dashboard-sidebar__search input::placeholder {
   color: #5c5c5c;
 }
@@ -728,6 +725,7 @@ a {
 .dashboard-form__group input[type=url],
 .dashboard-form__group input[type=tel],
 .dashboard-form__group input[type=date],
+.dashboard-form__group input[type=number],
 .dashboard-form__group textarea,
 .dashboard-form__group select {
   width: 100%;
@@ -745,6 +743,7 @@ a {
 .dashboard-form__group input[type=url]:focus,
 .dashboard-form__group input[type=tel]:focus,
 .dashboard-form__group input[type=date]:focus,
+.dashboard-form__group input[type=number]:focus,
 .dashboard-form__group textarea:focus,
 .dashboard-form__group select:focus {
   border-color: #221814;
@@ -755,11 +754,15 @@ a {
   resize: vertical;
 }
 
+.dashboard-form__textarea-mono {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace !important;
+  font-size: 0.8125rem !important;
+  min-height: 320px !important;
+}
+
 .dashboard-form__select {
   width: 100%;
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
+  appearance: none;
   border: 1.5px solid rgba(26, 26, 26, 0.1);
   border-radius: 10px;
   background: #f7f5f1 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%235c5c5c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 0.875rem center;
@@ -784,8 +787,7 @@ a {
 .lead-photo-grid img {
   width: 100%;
   aspect-ratio: 1/1;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   border-radius: 10px;
   border: 1px solid #e6e1d6;
 }

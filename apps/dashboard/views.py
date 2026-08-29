@@ -23,7 +23,8 @@ from django.utils.dateparse import parse_date, parse_datetime
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
 
-from apps.dashboard.forms import BusinessCoreForm, BusinessPublicInfoForm
+from apps.core.models import Article
+from apps.dashboard.forms import ArticleForm, BusinessCoreForm, BusinessPublicInfoForm
 from apps.leads.models import MoveLead
 from apps.pages.models import Page, PageSection, PageSectionRevision, publish_due_pages
 from apps.store.models import Bedrift_info, BusinessImage, PublicBusinessInformation, Review
@@ -756,6 +757,53 @@ def page_delete(request, pk):
     _log_deletion(request, page)
     page.delete()
     return redirect("dashboard:page_list")
+
+
+# ---------------------------------------------------------------------------
+# Blog articles — previously only editable via the seed_marketing_content
+# management command; no dashboard screen at all let staff add or change one.
+@staff_required
+def article_list(request):
+    """Every blog article, newest-published first."""
+    articles = Article.objects.all().order_by("-date")
+    context = {"articles": _paginate(request, articles), "page_qs": _page_qs(request)}
+    return render(request, "dashboard/article_list.html", context)
+
+
+@staff_required
+def article_add(request):
+    if request.method == "POST":
+        form = ArticleForm(request.POST)
+        if form.is_valid():
+            article = form.save()
+            messages.success(request, f'Artikkelen "{article.title}" er opprettet.')
+            return redirect("dashboard:article_edit", pk=article.pk)
+    else:
+        form = ArticleForm()
+    return render(request, "dashboard/article_form.html", {"form": form, "article": None})
+
+
+@staff_required
+def article_edit(request, pk):
+    article = get_object_or_404(Article, pk=pk)
+    if request.method == "POST":
+        form = ArticleForm(request.POST, instance=article)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Endringene er lagret.")
+            return redirect("dashboard:article_edit", pk=article.pk)
+    else:
+        form = ArticleForm(instance=article)
+    return render(request, "dashboard/article_form.html", {"form": form, "article": article})
+
+
+@superuser_required
+@require_POST
+def article_delete(request, pk):
+    article = get_object_or_404(Article, pk=pk)
+    _log_deletion(request, article)
+    article.delete()
+    return redirect("dashboard:article_list")
 
 
 @staff_required

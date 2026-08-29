@@ -1,0 +1,75 @@
+<!-- apps/dashboard/templates/dashboard/article_form.html -->
+{% extends "dashboard/_base.html" %}
+
+{% block title %}{% if article %}{{ article.title }}{% else %}Ny artikkel{% endif %}{% endblock %}
+
+{% block content %}
+  <a href="{% url 'dashboard:article_list' %}" class="lead-detail__back">← Blogg</a>
+
+  <div class="lead-detail__header">
+    <h1 class="lead-detail__title">{% if article %}{{ article.title }}{% else %}Ny artikkel{% endif %}</h1>
+    {% if article %}
+      <a href="/blogg/{{ article.slug }}/" target="_blank" rel="noopener" class="btn-outline">Vis på siden</a>
+    {% endif %}
+  </div>
+
+  {% if form.non_field_errors %}
+    <div class="account-card__errors">{{ form.non_field_errors }}</div>
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="lead-card" style="margin-bottom: 1.5rem;">
+      <p class="lead-card__title">Artikkelinfo</p>
+      <div class="dashboard-form__group">
+        <label class="dashboard-form__label">Tittel</label>
+        {{ form.title }}
+        {{ form.title.errors }}
+      </div>
+      <div class="dashboard-form__group">
+        <label class="dashboard-form__label">Slug (URL: /blogg/&lt;slug&gt;/)</label>
+        {{ form.slug }}
+        {{ form.slug.errors }}
+      </div>
+      <div class="dashboard-form__group">
+        <label class="dashboard-form__label">Ingress</label>
+        {{ form.ingress }}
+        {{ form.ingress.errors }}
+      </div>
+      <div class="dashboard-form__group">
+        <label class="dashboard-form__label">Toppbilde (URL, valgfritt)</label>
+        {{ form.header_image }}
+        {{ form.header_image.errors }}
+      </div>
+      <div class="dashboard-form__group">
+        <label class="dashboard-form__label">Dato</label>
+        {{ form.date }}
+        {{ form.date.errors }}
+      </div>
+      <div class="dashboard-form__group">
+        <label class="dashboard-form__label">Lesetid (minutter)</label>
+        {{ form.read_minutes }}
+        {{ form.read_minutes.errors }}
+      </div>
+    </div>
+
+    <div class="lead-card" style="margin-bottom: 1.5rem;">
+      <p class="lead-card__title">Innhold</p>
+      <div class="dashboard-form__group">
+        <label class="dashboard-form__label">{{ form.blocks_json.label }}</label>
+        {{ form.blocks_json }}
+        <p class="lead-table__muted" style="margin-top:0.5rem;">{{ form.blocks_json.help_text }}</p>
+        {{ form.blocks_json.errors }}
+      </div>
+    </div>
+
+    <button type="submit" class="btn-primary">{% if article %}Lagre{% else %}Opprett artikkel{% endif %}</button>
+  </form>
+  {% if article and request.user.is_superuser %}
+    <form method="post" action="{% url 'dashboard:article_delete' article.pk %}" data-confirm-delete style="display:inline; margin-top: 0.75rem;">
+      {% csrf_token %}
+      <button type="submit" class="btn-danger">Slett artikkel</button>
+    </form>
+  {% endif %}
+{% endblock %}

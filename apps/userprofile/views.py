@@ -73,7 +73,7 @@ def myaccount(request):
     context = {"business": business}
 
     if business:
-        lead_entries, movelead_count = business_lead_entries(business)
+        lead_entries, movelead_count = business_lead_entries(business, lead_url_resolver=_business_lead_url)
         context.update({
             "usage": business_usage(business, lead_entries),
             "recent_leads": lead_entries[:5],
@@ -185,9 +185,38 @@ def foresporsel_database(request):
         messages.success(request, "Grensene er lagret.")
         return redirect("foresporsel_database")
 
-    lead_entries, movelead_count = business_lead_entries(business)
+    lead_entries, movelead_count = business_lead_entries(business, lead_url_resolver=_business_lead_url)
     return render(request, "core/accountPages/foresporsel_database.html", {
         "business": business,
         "lead_entries": lead_entries,
         "total_received": business.total_leads_received + movelead_count,
     })
+
+
+def _business_lead_url(lead):
+    """lead_url_resolver for business_lead_entries — where a business's own
+    myaccount/foresporsel_database "recent leads" rows link to, so they can
+    see the customer's contact details/description/photos rather than just
+    a reference number and status badge (previously nowhere on the account
+    side actually showed that information at all)."""
+    return reverse("business_lead_detail", args=[lead.pk])
+
+
+@login_required(login_url="/for-bedrifter/bruker/logg-inn/")
+def business_lead_detail(request, pk):
+    """Full detail of one lead assigned to the logged-in business — the
+    account-side counterpart of apps.dashboard.views.lead_detail, but
+    read-only and scoped strictly to leads actually assigned to this
+    business (never staff-only fields like internal_notes/follow_up_at/
+    other businesses' assignments)."""
+    from apps.leads.models import MoveLead
+
+    business = getattr(request.user, "bedrift_info", None)
+    if not business:
+        return redirect("myaccount")
+
+    lead = get_object_or_404(
+        MoveLead.objects.filter(Q(business_1=business) | Q(business_2=business) | Q(business_3=business)),
+        pk=pk, archived=False,
+    )
+    return render(request, "core/accountPages/lead_detail.html", {"business": business, "lead": lead})

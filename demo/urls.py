@@ -96,6 +96,7 @@ urlpatterns = [
     path('for-bedrifter/min-bruker/bilde/legg-til/', business_image_add, name='business_image_add'),
     path('for-bedrifter/min-bruker/bilde/<int:image_pk>/slett/', business_image_delete, name='business_image_delete'),
     path("for-bedrifter/foresporsel-database/", foresporsel_database, name="foresporsel_database"),
+    path("for-bedrifter/min-bruker/lead/<int:pk>/", business_lead_detail, name="business_lead_detail"),
 
     path('bedrift/<int:business_id>/', public_business_profile, name='public_business_profile'),
 

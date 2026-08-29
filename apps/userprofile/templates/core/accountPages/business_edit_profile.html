@@ -28,24 +28,24 @@
     <div class="portal-card">
       <p class="portal-card__title">Firmainformasjon</p>
       {% if core_form.errors %}<div class="account-card__errors">{{ core_form.non_field_errors }}{% for field in core_form %}{{ field.errors }}{% endfor %}</div>{% endif %}
-      <div class="portal-form__group"><span class="field-label">Firmanavn</span>{{ core_form.company_name }}</div>
-      <div class="portal-form__group"><span class="field-label">Org.nr.</span>{{ core_form.company_number }}</div>
-      <div class="portal-form__group"><span class="field-label">Antall ansatte</span>{{ core_form.employees }}</div>
-      <div class="portal-form__group"><span class="field-label">Telefon</span>{{ core_form.phone }}</div>
-      <div class="portal-form__group"><span class="field-label">Nettside</span>{{ core_form.website }}</div>
-      <div class="portal-form__group"><span class="field-label">Adresse</span>{{ core_form.address }}</div>
-      <div class="portal-form__group"><span class="field-label">Postnummer</span>{{ core_form.postal_code }}</div>
-      <div class="portal-form__group"><span class="field-label">By</span>{{ core_form.city }}</div>
-      <div class="portal-form__group"><span class="field-label">Tiltaleform</span>{{ core_form.tiltaleform }}</div>
-      <div class="portal-form__group"><span class="field-label">Fornavn</span>{{ core_form.first_name }}</div>
-      <div class="portal-form__group"><span class="field-label">Etternavn</span>{{ core_form.last_name }}</div>
+      <label class="portal-form__group"><span class="field-label">Firmanavn</span>{{ core_form.company_name }}</label>
+      <label class="portal-form__group"><span class="field-label">Org.nr.</span>{{ core_form.company_number }}</label>
+      <label class="portal-form__group"><span class="field-label">Antall ansatte</span>{{ core_form.employees }}</label>
+      <label class="portal-form__group"><span class="field-label">Telefon</span>{{ core_form.phone }}</label>
+      <label class="portal-form__group"><span class="field-label">Nettside</span>{{ core_form.website }}</label>
+      <label class="portal-form__group"><span class="field-label">Adresse</span>{{ core_form.address }}</label>
+      <label class="portal-form__group"><span class="field-label">Postnummer</span>{{ core_form.postal_code }}</label>
+      <label class="portal-form__group"><span class="field-label">By</span>{{ core_form.city }}</label>
+      <label class="portal-form__group"><span class="field-label">Tiltaleform</span>{{ core_form.tiltaleform }}</label>
+      <label class="portal-form__group"><span class="field-label">Fornavn</span>{{ core_form.first_name }}</label>
+      <label class="portal-form__group"><span class="field-label">Etternavn</span>{{ core_form.last_name }}</label>
       <p style="margin:0; font-size:12px; color:#8a8a8a;">Vil du endre e-postadressen din? Ta kontakt med Kobly.</p>
     </div>
 
     <div class="portal-card">
       <p class="portal-card__title">Dekning</p>
-      <div class="portal-form__group"><span class="field-label">Byer (kommaseparert)</span>{{ core_form.cities }}</div>
-      <div class="portal-form__group"><span class="field-label">Flyttetype (kommaseparert)</span>{{ core_form.move_type }}</div>
+      <label class="portal-form__group"><span class="field-label">Byer (kommaseparert)</span>{{ core_form.cities }}</label>
+      <label class="portal-form__group"><span class="field-label">Flyttetype (kommaseparert)</span>{{ core_form.move_type }}</label>
       <p style="margin:0; font-size:12px; color:#8a8a8a;">
         Vil du endre hvor mange leads du mottar per dag/uke/måned? Det gjør du på <a href="{% url 'foresporsel_database' %}">Mine leads</a>.
       </p>
@@ -54,13 +54,13 @@
     <div class="portal-card">
       <p class="portal-card__title">Offentlig profil</p>
       {% if public_form.errors %}<div class="account-card__errors">{{ public_form.non_field_errors }}{% for field in public_form %}{{ field.errors }}{% endfor %}</div>{% endif %}
-      <div class="portal-form__group">
+      <label class="portal-form__group">
         <span class="field-label">Logo</span>
         {% if public_info.logo %}<img src="{{ public_info.logo.url }}" alt="" style="max-width:120px; display:block; margin-bottom:8px; border-radius:10px;">{% endif %}
         {{ public_form.logo }}
-      </div>
-      <div class="portal-form__group"><span class="field-label">Om oss</span>{{ public_form.about_us }}</div>
-      <div class="portal-form__group"><span class="field-label">Ofte stilte spørsmål</span>{{ public_form.faq }}</div>
+      </label>
+      <label class="portal-form__group"><span class="field-label">Om oss</span>{{ public_form.about_us }}</label>
+      <label class="portal-form__group"><span class="field-label">Ofte stilte spørsmål</span>{{ public_form.faq }}</label>
     </div>
 
     <button type="submit" class="btn-primary">Lagre</button>

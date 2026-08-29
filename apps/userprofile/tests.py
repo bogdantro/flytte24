@@ -340,6 +340,59 @@ class ForesporselDatabaseViewTests(TestCase):
         self.assertEqual(business.leads_per_day, "5")
         self.assertEqual(business.leads_per_week, "20")
 
+    def test_lead_row_links_to_the_lead_detail_page(self):
+        """Regression test: business_lead_entries always accepted a lead_url_resolver,
+        but neither account view ever passed one and the templates never rendered
+        entry.url even when it was there — a business could see a lead's reference and
+        status but never its actual contact details, address, or description."""
+        user, business = _make_business_user()
+        lead = MoveLead.objects.create(
+            flytte_type="privat", fra="A", til="B", boligtype="leilighet",
+            navn="Per Hansen", telefon="1", epost="p@example.com", business_1=business,
+        )
+        self.client.force_login(user)
+        response = self.client.get("/for-bedrifter/foresporsel-database/")
+        self.assertContains(response, f'href="/for-bedrifter/min-bruker/lead/{lead.pk}/"')
+
+
+class BusinessLeadDetailViewTests(TestCase):
+    def setUp(self):
+        self.user, self.business = _make_business_user()
+        self.lead = MoveLead.objects.create(
+            flytte_type="privat", fra="Storgata 1, Oslo", til="Kirkegata 2, Bergen",
+            boligtype="leilighet", navn="Per Hansen", telefon="90000000",
+            epost="per@example.com", beskrivelse="3 esker og en sofa",
+            business_1=self.business,
+        )
+
+    def test_requires_login(self):
+        response = self.client.get(f"/for-bedrifter/min-bruker/lead/{self.lead.pk}/")
+        self.assertEqual(response.status_code, 302)
+
+    def test_shows_full_lead_details(self):
+        self.client.force_login(self.user)
+        response = self.client.get(f"/for-bedrifter/min-bruker/lead/{self.lead.pk}/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Storgata 1, Oslo")
+        self.assertContains(response, "Kirkegata 2, Bergen")
+        self.assertContains(response, "Per Hansen")
+        self.assertContains(response, "90000000")
+        self.assertContains(response, "per@example.com")
+        self.assertContains(response, "3 esker og en sofa")
+
+    def test_a_different_businesss_user_gets_404(self):
+        other_user, _other_business = _make_business_user(username="annen-bedrift", email="annen@example.com")
+        self.client.force_login(other_user)
+        response = self.client.get(f"/for-bedrifter/min-bruker/lead/{self.lead.pk}/")
+        self.assertEqual(response.status_code, 404)
+
+    def test_an_archived_lead_is_not_visible(self):
+        self.lead.archived = True
+        self.lead.save(update_fields=["archived"])
+        self.client.force_login(self.user)
+        response = self.client.get(f"/for-bedrifter/min-bruker/lead/{self.lead.pk}/")
+        self.assertEqual(response.status_code, 404)
+
 
 class PublicBusinessProfileTests(TestCase):
     def test_shows_about_us_and_reviews(self):

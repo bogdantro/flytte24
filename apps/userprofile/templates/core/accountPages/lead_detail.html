@@ -1,0 +1,82 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block page_title %}{{ lead.reference }} — Mine leads{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static 'scss/pages/account/auth-forms.css' %}">
+  <link rel="stylesheet" href="{% static 'scss/pages/account/portal.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="portal-page">
+  <div class="portal-heading-row">
+    <h1 class="portal-heading">{{ lead.reference }} — {{ lead.navn }}</h1>
+  </div>
+
+  {% include "core/accountPages/_portal_nav.html" with active="leads" %}
+
+  <p style="margin:0 0 20px;"><a href="{% url 'foresporsel_database' %}">&larr; Tilbake til mine leads</a></p>
+
+  <div class="portal-card">
+    <p class="portal-card__title">Flyttedetaljer</p>
+    <div class="portal-row">
+      <span class="portal-row__label">Fra</span>
+      <span class="portal-row__value">{{ lead.fra }}</span>
+    </div>
+    <div class="portal-row">
+      <span class="portal-row__label">Til</span>
+      <span class="portal-row__value">{{ lead.til }}</span>
+    </div>
+    <div class="portal-row">
+      <span class="portal-row__label">Type</span>
+      <span class="portal-row__value">{{ lead.get_flytte_type_display }}</span>
+    </div>
+    <div class="portal-row">
+      <span class="portal-row__label">Boligtype</span>
+      <span class="portal-row__value">{{ lead.get_boligtype_display }}</span>
+    </div>
+    <div class="portal-row">
+      <span class="portal-row__label">Dato</span>
+      <span class="portal-row__value">{% if lead.fleksibel %}Fleksibel dato{% elif lead.flyttedato %}{{ lead.flyttedato|date:"d.m.Y" }}{% else %}—{% endif %}</span>
+    </div>
+    {% if lead.beskrivelse %}
+      <div class="portal-row">
+        <span class="portal-row__label">Beskrivelse</span>
+        <span class="portal-row__value">{{ lead.beskrivelse }}</span>
+      </div>
+    {% endif %}
+    <div class="portal-row">
+      <span class="portal-row__label">Mottatt</span>
+      <span class="portal-row__value">{{ lead.created_at|date:"d.m.Y H:i" }}</span>
+    </div>
+  </div>
+
+  <div class="portal-card">
+    <p class="portal-card__title">Kontaktperson</p>
+    <div class="portal-row">
+      <span class="portal-row__label">Navn</span>
+      <span class="portal-row__value">{{ lead.navn }}</span>
+    </div>
+    <div class="portal-row">
+      <span class="portal-row__label">Telefon</span>
+      <span class="portal-row__value"><a href="tel:{{ lead.telefon }}">{{ lead.telefon }}</a></span>
+    </div>
+    <div class="portal-row">
+      <span class="portal-row__label">E-post</span>
+      <span class="portal-row__value"><a href="mailto:{{ lead.epost }}">{{ lead.epost }}</a></span>
+    </div>
+  </div>
+
+  {% if lead.images.all %}
+    <div class="portal-card">
+      <p class="portal-card__title">Bilder</p>
+      <div class="portal-photo-grid">
+        {% for image in lead.images.all %}
+          <div><img src="{{ image.image.url }}" alt=""></div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,48 @@
+<!-- apps/dashboard/templates/dashboard/article_list.html -->
+{% extends "dashboard/_base.html" %}
+
+{% block title %}Blogg{% endblock %}
+
+{% block content %}
+  <div class="dashboard-heading-row">
+    <h1 class="dashboard-heading">Blogg</h1>
+    <a href="{% url 'dashboard:article_add' %}" class="btn-primary">Ny artikkel</a>
+  </div>
+
+  {% if articles %}
+    <table class="lead-table">
+      <thead>
+        <tr>
+          <th>Tittel</th>
+          <th>Slug</th>
+          <th>Dato</th>
+          <th>Lesetid</th>
+          <th>Handlinger</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for article in articles %}
+          <tr onclick="window.location='{% url 'dashboard:article_edit' article.pk %}'">
+            <td>{{ article.title }}</td>
+            <td class="lead-table__muted">{{ article.slug }}</td>
+            <td class="lead-table__muted">{{ article.date|date:"d.m.Y" }}</td>
+            <td class="lead-table__muted">{{ article.read_minutes }} min</td>
+            <td onclick="event.stopPropagation();">
+              <a href="/blogg/{{ article.slug }}/" target="_blank" rel="noopener" class="btn-outline">Vis på siden</a>
+              <a href="{% url 'dashboard:article_edit' article.pk %}" class="btn-outline">Rediger</a>
+              {% if request.user.is_superuser %}
+                <form method="post" action="{% url 'dashboard:article_delete' article.pk %}" data-confirm-delete style="display:inline;">
+                  {% csrf_token %}
+                  <button type="submit" class="btn-danger">Slett</button>
+                </form>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% include "dashboard/_pagination.html" with page_obj=articles %}
+  {% else %}
+    <p class="dashboard-empty">Ingen artikler ennå. Klikk "Ny artikkel" for å legge til den første.</p>
+  {% endif %}
+{% endblock %}

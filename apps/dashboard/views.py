@@ -1,4 +1,5 @@
 import csv
+import io
 import json
 from datetime import timedelta
 from functools import wraps
@@ -160,7 +161,14 @@ def dashboard_login(request):
                 cache.delete(attempts_key)
                 login(request, user)
                 return redirect(post_next)
-            cache.set(attempts_key, cache.get(attempts_key, 0) + 1, LOGIN_LOCKOUT_SECONDS)
+            # cache.add() + cache.incr() instead of get()-then-set(count+1):
+            # that was a read-modify-write with no atomicity, so concurrent
+            # failed logins for the same username could race and under-count
+            # attempts, weakening the lockout. add() only seeds the key if
+            # it's not already there (a no-op otherwise), then incr() is a
+            # single atomic increment.
+            cache.add(attempts_key, 0, LOGIN_LOCKOUT_SECONDS)
+            cache.incr(attempts_key)
             error = "Feil brukernavn eller passord, eller ingen tilgang til dashbordet."
 
     return render(request, "dashboard/login.html", {"error": error, "next": next_url})
@@ -214,9 +222,27 @@ def _apply_lead_filters(queryset, filters):
     return queryset
 
 
+def _csv_safe(value):
+    """Neutralizes CSV/Excel formula injection: navn/fra/til are free text
+    submitted by the public wizard (only length-validated, not character-
+    restricted — unlike telefon/epost), so a value starting with =/+/-/@
+    would otherwise be interpreted as a formula by Excel/LibreOffice the
+    moment staff opens an exported leads.csv. Prefixing with a single quote
+    is the standard mitigation — spreadsheet apps treat the cell as text
+    and don't display the quote."""
+    text = str(value)
+    if text and text[0] in ("=", "+", "-", "@"):
+        return "'" + text
+    return text
+
+
 def _leads_csv_response(leads):
-    response = HttpResponse(content_type="text/csv")
+    response = HttpResponse(content_type="text/csv; charset=utf-8")
     response["Content-Disposition"] = 'attachment; filename="leads.csv"'
+    # utf-8-sig (a leading BOM) so Excel — the normal way staff actually
+    # open a downloaded leads.csv — detects UTF-8 instead of falling back
+    # to the system codepage and mangling æ/ø/å.
+    response.write("\ufeff")
     writer = csv.writer(response)
     writer.writerow([
         "Referanse", "Navn", "Telefon", "E-post", "Type", "Fra", "Til",
@@ -225,8 +251,8 @@ def _leads_csv_response(leads):
     ])
     for lead in leads:
         writer.writerow([
-            lead.reference, lead.navn, lead.telefon, lead.epost,
-            lead.get_flytte_type_display(), lead.fra, lead.til,
+            lead.reference, _csv_safe(lead.navn), lead.telefon, lead.epost,
+            lead.get_flytte_type_display(), _csv_safe(lead.fra), _csv_safe(lead.til),
             lead.get_boligtype_display(),
             lead.flyttedato.isoformat() if lead.flyttedato else "",
             "Ja" if lead.fleksibel else "Nei",
@@ -269,7 +295,13 @@ def _lead_counts_by_business(queryset):
     slots (business_1/2/3 are separate nullable FKs, not a reverse relation
     a single .annotate(Count(...)) could group by directly) in 3 fixed
     GROUP BY queries total, regardless of how many businesses exist —
-    replaces what used to be one .count() query per business per metric."""
+    replaces what used to be one .count() query per business per metric.
+    Always excludes archived leads (every current and foreseeable caller
+    wants "how many leads is this business actively dealing with", and a
+    caller forgetting to filter archived=False itself is exactly how the
+    dashboard overview's "near cap" figure and lead_detail's today/week
+    counts used to keep counting a lead after it was archived)."""
+    queryset = queryset.filter(archived=False)
     counts = {}
     for field in ("business_1", "business_2", "business_3"):
         rows = queryset.exclude(**{f"{field}__isnull": True}).values(field).annotate(n=Count("id"))
@@ -528,6 +560,13 @@ def lead_permanent_delete(request, pk):
     can't be undone."""
     lead = get_object_or_404(MoveLead, pk=pk, archived=True)
     _log_deletion(request, lead)
+    # LeadImage.lead is on_delete=CASCADE, so lead.delete() removes the
+    # LeadImage *rows* — but Django never deletes the underlying file from
+    # storage on cascade (no post_delete signal/django-cleanup anywhere in
+    # this project). Without this, a "permanent" deletion leaves the
+    # customer's uploaded photos readable on disk indefinitely.
+    for image in lead.images.all():
+        image.image.delete(save=False)
     lead.delete()
     return redirect("dashboard:lead_trash")
 
@@ -728,11 +767,20 @@ def business_list(request):
     # Annotate with MoveLead-pipeline counts so "Leads mottatt" reflects both
     # live pipelines (see _business_lead_entries) without an N+1 query per
     # row — each relation is counted with distinct=True so joining all three
-    # doesn't inflate the total via row fan-out.
+    # doesn't inflate the total via row fan-out. filter=Q(...archived=False)
+    # excludes archived leads, matching _lead_counts_by_business/
+    # business_lead_entries — without it, archiving a lead never actually
+    # lowered this column.
     businesses = Bedrift_info.objects.all().order_by("-created_at").annotate(
-        movelead_primary_count=Count("assigned_leads_primary", distinct=True),
-        movelead_secondary_count=Count("assigned_leads_secondary", distinct=True),
-        movelead_tertiary_count=Count("assigned_leads_tertiary", distinct=True),
+        movelead_primary_count=Count(
+            "assigned_leads_primary", filter=Q(assigned_leads_primary__archived=False), distinct=True
+        ),
+        movelead_secondary_count=Count(
+            "assigned_leads_secondary", filter=Q(assigned_leads_secondary__archived=False), distinct=True
+        ),
+        movelead_tertiary_count=Count(
+            "assigned_leads_tertiary", filter=Q(assigned_leads_tertiary__archived=False), distinct=True
+        ),
     )
     if active_filter == "1":
         businesses = businesses.filter(active=True)
@@ -763,6 +811,7 @@ BUSINESS_IMPORT_COLUMNS = [
     "address", "postal_code", "city", "tiltaleform", "first_name", "last_name",
     "cities", "move_type", "leads_per_day", "leads_per_week", "leads_per_month",
 ]
+MAX_IMPORT_CSV_SIZE_BYTES = 5 * 1024 * 1024  # the whole file is read into memory as a string, unlike a streamed upload
 
 
 @staff_required
@@ -778,13 +827,23 @@ def business_import(request):
             messages.error(request, "Ingen fil valgt.")
             return redirect("dashboard:business_import")
 
+        if csv_file.size > MAX_IMPORT_CSV_SIZE_BYTES:
+            messages.error(request, f"Filen er for stor. Maks {MAX_IMPORT_CSV_SIZE_BYTES // (1024 * 1024)} MB.")
+            return redirect("dashboard:business_import")
+
         try:
             decoded = csv_file.read().decode("utf-8-sig")
         except UnicodeDecodeError:
             messages.error(request, "Filen må være UTF-8-kodet CSV.")
             return redirect("dashboard:business_import")
 
-        reader = csv.DictReader(decoded.splitlines())
+        # csv.DictReader(decoded.splitlines()) used to pre-split the text on
+        # every \n/\r *and* less obvious separators (\x0b, \x0c, U+2028,
+        # U+2029) before the csv module ever saw it — so a quoted
+        # multi-line cell (e.g. an address copied from a spreadsheet as a
+        # wrapped cell) silently lost its embedded newline. io.StringIO
+        # lets csv's own quoting-aware line reader handle that correctly.
+        reader = csv.DictReader(io.StringIO(decoded))
         created = 0
         errors = []
         for row_number, row in enumerate(reader, start=2):  # row 1 is the header
@@ -951,6 +1010,17 @@ def review_delete(request, pk, review_pk):
 # write to a field outside this set (e.g. section_type, page, extra_json).
 INLINE_EDITABLE_FIELDS = {"heading", "subheading", "body_text", "button_label", "button_href"}
 
+# Scalar (non-list) extra_json keys that are also inline-editable, per
+# section_type — e.g. the hero's eyebrow/HeroCard text and trust's secondary
+# CTA, which live in extra_json rather than one of PageSection's own flat
+# fields but are still single strings, not list items. Posted as
+# field="extra_json.<key>" to tell them apart from INLINE_EDITABLE_FIELDS.
+EXTRA_JSON_SCALAR_FIELDS = {
+    "hero": {"eyebrow", "card_title", "card_body"},
+    "trust": {"secondary_label", "secondary_href"},
+}
+MAX_EXTRA_JSON_SCALAR_LENGTH = 300
+
 
 @staff_required
 @require_POST
@@ -966,6 +1036,19 @@ def section_inline_update(request, pk):
 
     field = data.get("field")
     value = data.get("value", "")
+
+    if isinstance(field, str) and field.startswith("extra_json."):
+        key = field[len("extra_json."):]
+        if key not in EXTRA_JSON_SCALAR_FIELDS.get(section.section_type, set()):
+            return JsonResponse({"ok": False, "error": "invalid_field"}, status=400)
+        if not isinstance(value, str) or len(value) > MAX_EXTRA_JSON_SCALAR_LENGTH:
+            return JsonResponse({"ok": False, "error": "invalid_value"}, status=400)
+        section.extra_json[key] = value
+        section.save(update_fields=["extra_json"])
+        section.page.updated_by = request.user
+        section.page.save(update_fields=["updated_by", "updated_at"])
+        return JsonResponse({"ok": True})
+
     if field not in INLINE_EDITABLE_FIELDS:
         return JsonResponse({"ok": False, "error": "invalid_field"}, status=400)
 
@@ -982,6 +1065,10 @@ def section_inline_update(request, pk):
         setattr(section, field, previous_value)
         return JsonResponse({"ok": False, "error": "validation", "details": exc.message_dict}, status=400)
 
+    if field == "button_href" and value and not (value.startswith("/") or value.startswith("http://") or value.startswith("https://")):
+        setattr(section, field, previous_value)
+        return JsonResponse({"ok": False, "error": "validation", "details": {"button_href": ["Lenken må starte med / eller http(s)://."]}}, status=400)
+
     if previous_value != value:
         PageSectionRevision.objects.create(
             section=section, field=field, previous_value=previous_value, changed_by=request.user,
@@ -990,6 +1077,176 @@ def section_inline_update(request, pk):
     section.page.updated_by = request.user
     section.page.save(update_fields=["updated_by", "updated_at"])
     return JsonResponse({"ok": True})
+
+
+# ---------------------------------------------------------------------------
+# Per-item editing for a section's extra_json list content (stats tiles, how-
+# it-works steps, testimonial cards, service cards, city links, FAQ pairs) —
+# section_inline_update above only ever covered the section's own flat
+# heading/subheading/body_text/button_* fields, never the list items inside
+# extra_json, so e.g. an individual FAQ question or testimonial photo had no
+# edit path at all. Every list-shaped section_type gets a field spec (which
+# keys are editable and what kind of input they need) and a default row
+# (for "legg til") — the container key ("items" vs "steps") is the one
+# inconsistency inherited from how apps/pages seed_home_page_sections.py and
+# core/home.html already named these two differently.
+LIST_ITEM_CONTAINER_KEY = {
+    "stats": "items",
+    "how_it_works": "steps",
+    "testimonials": "items",
+    "services": "items",
+    "cities": "items",
+    "faq": "items",
+}
+
+LIST_ITEM_FIELD_SPECS = {
+    "stats": [("value", "text", "Verdi"), ("label", "text", "Etikett")],
+    "how_it_works": [("title", "text", "Tittel"), ("body", "textarea", "Tekst"), ("image", "image", "Illustrasjon")],
+    "testimonials": [("quote", "textarea", "Sitat"), ("name", "text", "Navn"), ("meta", "text", "Undertekst"), ("image", "image", "Bilde")],
+    "services": [("title", "text", "Tittel"), ("body", "textarea", "Tekst")],
+    "cities": [("name", "text", "Bynavn"), ("href", "text", "Lenke")],
+    "faq": [("question", "text", "Spørsmål"), ("answer", "textarea", "Svar")],
+}
+
+DEFAULT_LIST_ITEM = {
+    "stats": {"value": "0", "label": "Ny statistikk"},
+    "how_it_works": {"title": "Nytt steg", "body": "", "image": ""},
+    "testimonials": {"quote": "", "name": "Nytt navn", "meta": "", "image": ""},
+    "services": {"title": "Ny tjeneste", "body": ""},
+    "cities": {"name": "Ny by", "href": "/"},
+    "faq": {"question": "Nytt spørsmål?", "answer": ""},
+}
+
+MAX_LIST_ITEMS = 12  # sanity cap so a mis-clicked "legg til" can't be spammed into an unbounded list
+MAX_ITEM_FIELD_LENGTH = 500  # generous but bounded — these are JSON strings with no model max_length to lean on
+
+
+def _list_items(section):
+    """The mutable list this section_type's extra_json list content lives
+    under (see LIST_ITEM_CONTAINER_KEY) — creates it if missing rather than
+    erroring, since a freshly-created section legitimately starts with {}."""
+    key = LIST_ITEM_CONTAINER_KEY[section.section_type]
+    return section.extra_json.setdefault(key, [])
+
+
+def _touch_page(section, user):
+    section.page.updated_by = user
+    section.page.save(update_fields=["updated_by", "updated_at"])
+
+
+@staff_required
+@require_POST
+def section_list_item_update(request, pk, index):
+    """Saves one or more fields of one item inside a list-shaped section's
+    extra_json (e.g. one FAQ pair's question+answer, one testimonial's
+    quote/name/meta) — the per-item counterpart to section_inline_update,
+    which only ever reached the section's own flat fields."""
+    section = get_object_or_404(PageSection, pk=pk)
+    spec = LIST_ITEM_FIELD_SPECS.get(section.section_type)
+    if not spec:
+        return JsonResponse({"ok": False, "error": "not_a_list_section"}, status=400)
+
+    items = _list_items(section)
+    if not (0 <= index < len(items)):
+        return JsonResponse({"ok": False, "error": "index_out_of_range"}, status=404)
+
+    try:
+        data = json.loads(request.body.decode("utf-8"))
+    except (json.JSONDecodeError, UnicodeDecodeError):
+        return JsonResponse({"ok": False, "error": "invalid_json"}, status=400)
+
+    allowed_fields = {name for name, kind, label in spec if kind != "image"}  # image fields go through section_list_item_image instead
+    updates = {k: v for k, v in data.items() if k in allowed_fields}
+    if not updates:
+        return JsonResponse({"ok": False, "error": "no_fields"}, status=400)
+    for value in updates.values():
+        if not isinstance(value, str) or len(value) > MAX_ITEM_FIELD_LENGTH:
+            return JsonResponse({"ok": False, "error": "invalid_value"}, status=400)
+
+    items[index].update(updates)
+    section.save(update_fields=["extra_json"])
+    _touch_page(section, request.user)
+    return JsonResponse({"ok": True})
+
+
+@staff_required
+@require_POST
+def section_list_item_add(request, pk):
+    """Appends one default row to a list-shaped section — the admin edits
+    its real content afterward via section_list_item_update."""
+    section = get_object_or_404(PageSection, pk=pk)
+    if section.section_type not in LIST_ITEM_FIELD_SPECS:
+        return JsonResponse({"ok": False, "error": "not_a_list_section"}, status=400)
+
+    items = _list_items(section)
+    if len(items) >= MAX_LIST_ITEMS:
+        return JsonResponse({"ok": False, "error": "max_items_reached"}, status=400)
+
+    items.append(dict(DEFAULT_LIST_ITEM[section.section_type]))
+    section.save(update_fields=["extra_json"])
+    _touch_page(section, request.user)
+    return JsonResponse({"ok": True, "index": len(items) - 1})
+
+
+@staff_required
+@require_POST
+def section_list_item_delete(request, pk, index):
+    """Removes one item from a list-shaped section. Deliberately not
+    revision-tracked (PageSectionRevision only models the section's own flat
+    fields) — deleting the wrong item just means adding it back by hand."""
+    section = get_object_or_404(PageSection, pk=pk)
+    if section.section_type not in LIST_ITEM_FIELD_SPECS:
+        return JsonResponse({"ok": False, "error": "not_a_list_section"}, status=400)
+
+    items = _list_items(section)
+    if not (0 <= index < len(items)):
+        return JsonResponse({"ok": False, "error": "index_out_of_range"}, status=404)
+
+    items.pop(index)
+    section.save(update_fields=["extra_json"])
+    _touch_page(section, request.user)
+    return JsonResponse({"ok": True})
+
+
+@staff_required
+@require_POST
+def section_list_item_image(request, pk, index):
+    """Uploads/replaces one list item's image — stored as a real media file
+    (unlike the hardcoded step/testimonial photos this project ships with,
+    which are static/ filenames referenced by extra_json.image as a bare
+    filename). core/home.html tells the two apart at render time by whether
+    the value starts with "/" (a real upload's media URL) or not (one of
+    the shipped static/images/home/ filenames)."""
+    section = get_object_or_404(PageSection, pk=pk)
+    spec = LIST_ITEM_FIELD_SPECS.get(section.section_type, [])
+    if not any(kind == "image" for _, kind, _ in spec):
+        return JsonResponse({"ok": False, "error": "not_an_image_section"}, status=400)
+
+    items = _list_items(section)
+    if not (0 <= index < len(items)):
+        return JsonResponse({"ok": False, "error": "index_out_of_range"}, status=404)
+
+    image_file = request.FILES.get("image")
+    if not image_file:
+        return JsonResponse({"ok": False, "error": "no_file"}, status=400)
+
+    from django.core.files.storage import default_storage
+    from apps.store.models import validate_max_file_size
+    from django.core.files.images import get_image_dimensions
+
+    try:
+        validate_max_file_size(image_file)
+        get_image_dimensions(image_file)  # raises/returns None on a non-image — cheap "is this real" check, same idea as ImageField's own validation
+    except ValidationError as exc:
+        return JsonResponse({"ok": False, "error": "validation", "details": exc.messages}, status=400)
+    if get_image_dimensions(image_file) is None:
+        return JsonResponse({"ok": False, "error": "not_an_image"}, status=400)
+
+    saved_path = default_storage.save(f"pages/section-items/{image_file.name}", image_file)
+    items[index]["image"] = default_storage.url(saved_path)
+    section.save(update_fields=["extra_json"])
+    _touch_page(section, request.user)
+    return JsonResponse({"ok": True, "url": items[index]["image"]})
 
 
 @staff_required

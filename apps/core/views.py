@@ -4,6 +4,7 @@ import requests
 import json
 from urllib.parse import quote
 
+from django.db import IntegrityError
 from urllib import *
 from django.shortcuts import *
 
@@ -359,26 +360,38 @@ def for_business_partner(request):
     if request.method == "POST":
         form = PartnerWizardForm(request.POST, request.FILES)
         if form.is_valid():
-            company = Bedrift_info.objects.create(
-                move_type=", ".join(form.cleaned_data["move_type"]),
-                cities=", ".join(form.cleaned_data["cities"]),
-                company_name=form.cleaned_data["company_name"],
-                company_number=form.cleaned_data["company_number"],
-                employees=form.cleaned_data["employees"],
-                email=form.cleaned_data["email"],
-                phone=form.cleaned_data["phone"],
-                website=form.cleaned_data["website"],
-                address=form.cleaned_data["address"],
-                postal_code=form.cleaned_data["postal_code"],
-                city=form.cleaned_data["city"],
-                first_name=form.cleaned_data["first_name"],
-                last_name=form.cleaned_data["last_name"],
-            )
-            PublicBusinessInformation.objects.create(
-                business=company,
-                logo=form.cleaned_data["logo"],
-            )
-            return redirect(f"/for-bedrifter/soknad-sendt/?email={quote(company.email)}&company={quote(company.company_name)}")
+            # clean_email already rejected an existing duplicate, but that's a
+            # check-then-create with no locking — two genuinely concurrent
+            # submissions of the same email (not just a slow double-click,
+            # which partner-wizard.js's own submit-button-disable already
+            # prevents) can both pass that check before either row commits.
+            # Catch the resulting IntegrityError here so the second request
+            # still gets the friendly "already exists" message instead of an
+            # uncaught 500.
+            try:
+                company = Bedrift_info.objects.create(
+                    move_type=", ".join(form.cleaned_data["move_type"]),
+                    cities=", ".join(form.cleaned_data["cities"]),
+                    company_name=form.cleaned_data["company_name"],
+                    company_number=form.cleaned_data["company_number"],
+                    employees=form.cleaned_data["employees"],
+                    email=form.cleaned_data["email"],
+                    phone=form.cleaned_data["phone"],
+                    website=form.cleaned_data["website"],
+                    address=form.cleaned_data["address"],
+                    postal_code=form.cleaned_data["postal_code"],
+                    city=form.cleaned_data["city"],
+                    first_name=form.cleaned_data["first_name"],
+                    last_name=form.cleaned_data["last_name"],
+                )
+            except IntegrityError:
+                form.add_error("email", "Det finnes allerede en søknad med denne e-postadressen.")
+            else:
+                PublicBusinessInformation.objects.create(
+                    business=company,
+                    logo=form.cleaned_data["logo"],
+                )
+                return redirect(f"/for-bedrifter/soknad-sendt/?email={quote(company.email)}&company={quote(company.company_name)}")
         # Invalid: fall through and re-render with errors attached (only
         # reachable if a client bypasses partner-wizard.js's own validation).
     else:

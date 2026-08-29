@@ -186,6 +186,13 @@
     flyttedato: 3, fleksibel: 3,
     beskrivelse: 4, bilder: 4,
     navn: 5, telefon: 5, epost: 5,
+    // WizardForm.clean()'s two cross-field checks (flyttedato/fleksibel
+    // both set, or neither set) attach to Django's NON_FIELD_ERRORS key
+    // ("__all__"), not either field name — without this entry,
+    // FIELD_TO_STEP["__all__"] was undefined, .filter(Boolean) silently
+    // dropped it, and the wizard reopened on step 1 while the actual
+    // problem was always on step 3.
+    __all__: 3,
   };
 
   /** On reload after a server-side validation failure, jumps to the earliest step that actually

@@ -1,5 +1,6 @@
 import uuid
 
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
 
@@ -94,6 +95,23 @@ class MoveLead(models.Model):
 
     def __str__(self):
         return f"{self.reference} — {self.navn}"
+
+    def clean(self):
+        # apps.dashboard.views.lead_assign_businesses already blocks
+        # assigning the same business to two of the three slots, but that
+        # guard lives only in that one view — Django's own /admin/ (a plain
+        # ModelAdmin, no equivalent check) can still save a MoveLead with,
+        # say, business_1 == business_2. That's not just redundant: every
+        # per-business lead count in the dashboard (_lead_counts_by_business,
+        # business_list's annotations) tallies business_1/2/3 as three
+        # independent GROUP BYs summed together, so a lead in two slots for
+        # the same business is counted twice. ModelForm.is_valid() (which
+        # the admin's own form uses) calls full_clean(), so this is
+        # enforced there automatically, not just in the dashboard.
+        super().clean()
+        assigned = [b for b in (self.business_1_id, self.business_2_id, self.business_3_id) if b]
+        if len(assigned) != len(set(assigned)):
+            raise ValidationError("Samme bedrift kan ikke tildeles flere ganger på samme forespørsel.")
 
     def save(self, *args, **kwargs):
         # Generated before the first (and only) save, using a random component

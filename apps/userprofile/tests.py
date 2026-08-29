@@ -239,6 +239,17 @@ class EditPublicProfileViewTests(TestCase):
         response = self.client.get("/for-bedrifter/min-bruker/bedriftsinformasjon/")
         self.assertContains(response, "Flytt AS")
 
+    def test_main_form_has_multipart_enctype(self):
+        """Regression test: the form has always contained the logo file input
+        (public_form.logo), but was missing enctype="multipart/form-data" — a real
+        browser silently omits file bytes from a non-multipart POST, so uploading a
+        new logo through this form appeared to succeed ("Endringene er lagret") but
+        the logo never actually changed."""
+        user, _business = _make_business_user()
+        self.client.force_login(user)
+        response = self.client.get("/for-bedrifter/min-bruker/bedriftsinformasjon/")
+        self.assertContains(response, '<form method="post" enctype="multipart/form-data">')
+
     def test_post_updates_core_and_public_fields(self):
         user, business = _make_business_user()
         self.client.force_login(user)
@@ -343,9 +354,19 @@ class PublicBusinessProfileTests(TestCase):
         self.assertContains(response, "Utmerket service!")
 
     def test_shows_pending_notice_for_inactive_business(self):
-        _user, business = _make_business_user(active=False)
+        # Logged in as the business's own user — an inactive profile is only
+        # visible to its owner or staff (see PublicBusinessProfilePrivacyTests
+        # in apps.store.tests for the access-control regression tests this
+        # view's own docstring now describes).
+        user, business = _make_business_user(active=False)
+        self.client.force_login(user)
         response = self.client.get(f"/bedrift/{business.pk}/")
         self.assertContains(response, "ikke publisert")
+
+    def test_anonymous_visitor_cannot_see_an_inactive_business(self):
+        _user, business = _make_business_user(active=False)
+        response = self.client.get(f"/bedrift/{business.pk}/")
+        self.assertEqual(response.status_code, 404)
 
     def test_404s_for_unknown_business(self):
         response = self.client.get("/bedrift/999999/")

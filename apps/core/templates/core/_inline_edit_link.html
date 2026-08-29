@@ -7,7 +7,9 @@ button that opens a prompt() instead. Wired up by
 static/js/inline-edit.js's initInlineEditLinks().
 
 Include with: {% include "core/_inline_edit_link.html" with section_id=sections.hero.id current_href=sections.hero.button_href|default:"/flytteforesporsel/" %}
-(or the equivalent for any other section with a button_href field).
+(or the equivalent for any other section with a button_href field — pass
+field=... too when it's not that same section's own button_href, e.g.
+field="extra_json.secondary_href" for trust's secondary CTA).
 
 Docs showing the literal include tag MUST stay inside this {% comment %}
 block, never a bare HTML <!-- --> comment — Django parses template tags
@@ -16,6 +18,6 @@ as plain-text documentation makes this file include itself and recurse
 infinitely (this happened once already; {% comment %} is the one block
 Django's engine genuinely never parses the inside of).
 {% endcomment %}
-<button type="button" class="inline-edit-link-btn" data-inline-section="{{ section_id }}" data-inline-field="button_href" data-inline-current="{{ current_href }}" aria-label="Rediger lenke">
+<button type="button" class="inline-edit-link-btn" data-inline-section="{{ section_id }}" data-inline-field="{{ field|default:"button_href" }}" data-inline-current="{{ current_href }}" aria-label="Rediger lenke">
   <span data-icon="pencil"></span>
 </button>

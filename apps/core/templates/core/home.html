@@ -56,7 +56,7 @@
 <section class="hero">
   <div class="hero__inner">
     <div class="hero__left">
-      <p class="hero__eyebrow">{{ sections.hero.extra_json.eyebrow|default:"Norges smarteste tilbudstjeneste" }}</p>
+      <p class="hero__eyebrow" {% if is_editable %}contenteditable="true" data-inline-section="{{ sections.hero.id }}" data-inline-field="extra_json.eyebrow"{% endif %}>{{ sections.hero.extra_json.eyebrow|default:"Norges smarteste tilbudstjeneste" }}</p>
       <h1 class="hero__title" {% if is_editable %}contenteditable="true" data-inline-section="{{ sections.hero.id }}" data-inline-field="heading"{% endif %}>{{ sections.hero.heading|default:"Vi finner det beste flyttebyrået for deg" }}</h1>
       <p class="hero__subline" {% if is_editable %}contenteditable="true" data-inline-section="{{ sections.hero.id }}" data-inline-field="subheading"{% endif %}>{{ sections.hero.subheading|default:"Kobly kobler deg med kvalitetssjekkede byråer i ditt område" }}</p>
       <a href="{{ sections.hero.button_href|default:"/flytteforesporsel/" }}" class="btn-primary hero__cta">
@@ -82,8 +82,8 @@
             </svg>
           </span>
         </div>
-        <h2 class="hero-card__title">{{ sections.hero.extra_json.card_title|default:"La firmaene konkurrere om deg" }}</h2>
-        <p class="hero-card__body">{{ sections.hero.extra_json.card_body|default:"Vi kobler deg med 3 håndplukkede, kvalitetssjekkede byråer i ditt område." }}</p>
+        <h2 class="hero-card__title" {% if is_editable %}contenteditable="true" data-inline-section="{{ sections.hero.id }}" data-inline-field="extra_json.card_title"{% endif %}>{{ sections.hero.extra_json.card_title|default:"La firmaene konkurrere om deg" }}</h2>
+        <p class="hero-card__body" {% if is_editable %}contenteditable="true" data-inline-section="{{ sections.hero.id }}" data-inline-field="extra_json.card_body"{% endif %}>{{ sections.hero.extra_json.card_body|default:"Vi kobler deg med 3 håndplukkede, kvalitetssjekkede byråer i ditt område." }}</p>
         <a href="{{ sections.hero.button_href|default:"/flytteforesporsel/" }}" class="btn-primary hero-card__cta">
           {{ sections.hero.button_label|default:"Få 3 tilbud gratis" }}
           <span data-icon="arrow-right"></span>
@@ -115,8 +115,14 @@
       <div class="stats stats--compact">
         {% if sections.stats.extra_json.items %}
           {% for stat in sections.stats.extra_json.items %}
-            <div class="stat"><span class="stat__value">{{ stat.value }}</span><span class="stat__label">{{ stat.label }}</span></div>
+            <div class="stat"{% if is_editable %} data-list-item data-inline-section="{{ sections.stats.id }}" data-section-type="stats" data-item-index="{{ forloop.counter0 }}" data-field-value="{{ stat.value }}" data-field-label="{{ stat.label }}"{% endif %}>
+              <span class="stat__value">{{ stat.value }}</span><span class="stat__label">{{ stat.label }}</span>
+              {% if is_editable %}{% include "core/_list_item_controls.html" %}{% endif %}
+            </div>
           {% endfor %}
+          {% if is_editable %}
+            <button type="button" class="list-item-add" data-list-item-add data-inline-section="{{ sections.stats.id }}"><span data-icon="plus"></span>Legg til</button>
+          {% endif %}
         {% else %}
           <div class="stat"><span class="stat__value">100%</span><span class="stat__label">Gratis og uforpliktende</span></div>
           <div class="stat"><span class="stat__value">1 min</span><span class="stat__label">Å fylle ut skjema</span></div>
@@ -135,13 +141,28 @@
     <ol class="how-it-works__grid">
       {% if sections.how_it_works.extra_json.steps %}
         {% for step in sections.how_it_works.extra_json.steps %}
-          <li class="step-card">
+          <li class="step-card"{% if is_editable %} data-list-item data-inline-section="{{ sections.how_it_works.id }}" data-section-type="how_it_works" data-item-index="{{ forloop.counter0 }}" data-field-title="{{ step.title }}" data-field-body="{{ step.body }}" data-field-image="{{ step.image }}"{% endif %}>
             <span class="step-card__number">{{ forloop.counter }}</span>
-            <div class="step-card__art"><img src="{% static 'images/home/'|add:step.image %}" alt=""></div>
+            <!-- step.image is either one of this project's shipped static/images/home/
+                 filenames (the seeded default) or a real /media/… URL from an admin
+                 upload (see apps/dashboard/views.py section_list_item_image) — told
+                 apart by a leading "/", same rule static/js/inline-edit.js's own
+                 popover preview uses. -->
+            <div class="step-card__art">
+              {% if step.image|slice:":1" == "/" %}
+                <img src="{{ step.image }}" alt="">
+              {% else %}
+                <img src="{% static 'images/home/'|add:step.image %}" alt="">
+              {% endif %}
+            </div>
             <h3 class="step-card__title">{{ step.title }}</h3>
             <p class="step-card__body">{{ step.body }}</p>
+            {% if is_editable %}{% include "core/_list_item_controls.html" %}{% endif %}
           </li>
         {% endfor %}
+        {% if is_editable %}
+          <li><button type="button" class="list-item-add" data-list-item-add data-inline-section="{{ sections.how_it_works.id }}"><span data-icon="plus"></span>Legg til steg</button></li>
+        {% endif %}
       {% else %}
         <li class="step-card">
           <span class="step-card__number">1</span>
@@ -180,12 +201,22 @@
     <div class="testimonials__grid">
       {% if sections.testimonials.extra_json.items %}
         {% for item in sections.testimonials.extra_json.items %}
-          <article class="testimonial-card">
-            <div class="testimonial-card__photo"><img src="{% static 'images/home/'|add:item.image %}" alt=""></div>
+          <article class="testimonial-card"{% if is_editable %} data-list-item data-inline-section="{{ sections.testimonials.id }}" data-section-type="testimonials" data-item-index="{{ forloop.counter0 }}" data-field-quote="{{ item.quote }}" data-field-name="{{ item.name }}" data-field-meta="{{ item.meta }}" data-field-image="{{ item.image }}"{% endif %}>
+            <div class="testimonial-card__photo">
+              {% if item.image|slice:":1" == "/" %}
+                <img src="{{ item.image }}" alt="">
+              {% else %}
+                <img src="{% static 'images/home/'|add:item.image %}" alt="">
+              {% endif %}
+            </div>
             <p class="testimonial-card__quote">"{{ item.quote }}"</p>
             <p class="testimonial-card__byline">{{ item.name }}<span> · {{ item.meta }}</span></p>
+            {% if is_editable %}{% include "core/_list_item_controls.html" %}{% endif %}
           </article>
         {% endfor %}
+        {% if is_editable %}
+          <button type="button" class="list-item-add" data-list-item-add data-inline-section="{{ sections.testimonials.id }}"><span data-icon="plus"></span>Legg til uttalelse</button>
+        {% endif %}
       {% else %}
         <article class="testimonial-card">
           <div class="testimonial-card__photo"><img src="{% static 'images/home/ciocan-ciprian-_Z2eTqGL7dg-unsplash.jpg' %}" alt=""></div>
@@ -218,7 +249,10 @@
         <span data-icon="arrow-right"></span>
       </a>
       {% if is_editable %}{% include "core/_inline_edit_link.html" with section_id=sections.trust.id current_href=sections.trust.button_href|default:"/flytteforesporsel/" %}{% endif %}
-      <a href="{{ sections.trust.extra_json.secondary_href|default:"/byraer/" }}" class="btn-outline">{{ sections.trust.extra_json.secondary_label|default:"Møt byråene" }}</a>
+      <a href="{{ sections.trust.extra_json.secondary_href|default:"/byraer/" }}" class="btn-outline">
+        <span {% if is_editable %}contenteditable="true" data-inline-section="{{ sections.trust.id }}" data-inline-field="extra_json.secondary_label"{% endif %}>{{ sections.trust.extra_json.secondary_label|default:"Møt byråene" }}</span>
+      </a>
+      {% if is_editable %}{% include "core/_inline_edit_link.html" with section_id=sections.trust.id current_href=sections.trust.extra_json.secondary_href|default:"/byraer/" field="extra_json.secondary_href" %}{% endif %}
     </div>
     <!-- Partner agency logos are brand marks, not copy — never editable here. -->
     <div class="trust__logos">
@@ -240,11 +274,15 @@
     <div class="services__grid">
       {% if sections.services.extra_json.items %}
         {% for item in sections.services.extra_json.items %}
-          <article class="service-card">
+          <article class="service-card"{% if is_editable %} data-list-item data-inline-section="{{ sections.services.id }}" data-section-type="services" data-item-index="{{ forloop.counter0 }}" data-field-title="{{ item.title }}" data-field-body="{{ item.body }}"{% endif %}>
             <h3 class="service-card__title">{{ item.title }}</h3>
             <p class="service-card__body">{{ item.body }}</p>
+            {% if is_editable %}{% include "core/_list_item_controls.html" %}{% endif %}
           </article>
         {% endfor %}
+        {% if is_editable %}
+          <button type="button" class="list-item-add" data-list-item-add data-inline-section="{{ sections.services.id }}"><span data-icon="plus"></span>Legg til tjeneste</button>
+        {% endif %}
       {% else %}
         <article class="service-card">
           <h3 class="service-card__title">Flyttehjelp</h3>
@@ -283,8 +321,14 @@
     <ul class="cities__grid">
       {% if sections.cities.extra_json.items %}
         {% for city in sections.cities.extra_json.items %}
-          <li><a href="{{ city.href }}" class="city-card"><span class="city-card__name">{{ city.name }}</span><span class="city-card__arrow" data-icon="arrow-up-right"></span></a></li>
+          <li{% if is_editable %} data-list-item data-inline-section="{{ sections.cities.id }}" data-section-type="cities" data-item-index="{{ forloop.counter0 }}" data-field-name="{{ city.name }}" data-field-href="{{ city.href }}"{% endif %}>
+            <a href="{{ city.href }}" class="city-card"><span class="city-card__name">{{ city.name }}</span><span class="city-card__arrow" data-icon="arrow-up-right"></span></a>
+            {% if is_editable %}{% include "core/_list_item_controls.html" %}{% endif %}
+          </li>
         {% endfor %}
+        {% if is_editable %}
+          <li><button type="button" class="list-item-add" data-list-item-add data-inline-section="{{ sections.cities.id }}"><span data-icon="plus"></span>Legg til by</button></li>
+        {% endif %}
       {% else %}
         <li><a href="/oslo/" class="city-card"><span class="city-card__name">Oslo</span><span class="city-card__arrow" data-icon="arrow-up-right"></span></a></li>
         <li><a href="/bergen/" class="city-card"><span class="city-card__name">Bergen</span><span class="city-card__arrow" data-icon="arrow-up-right"></span></a></li>
@@ -304,14 +348,18 @@
       <ul class="faq__list">
         {% if sections.faq.extra_json.items %}
           {% for item in sections.faq.extra_json.items %}
-            <li class="faq-item" data-faq-item>
+            <li class="faq-item" data-faq-item{% if is_editable %} data-list-item data-inline-section="{{ sections.faq.id }}" data-section-type="faq" data-item-index="{{ forloop.counter0 }}" data-field-question="{{ item.question }}" data-field-answer="{{ item.answer }}"{% endif %}>
               <button type="button" class="faq-item__trigger" data-faq-trigger aria-expanded="false">
                 <span class="faq-item__question">{{ item.question }}</span>
                 <span class="faq-item__icon"><span class="faq-item__icon-plus" data-icon="plus"></span><span class="faq-item__icon-minus" data-icon="minus"></span></span>
               </button>
               <p class="faq-item__answer">{{ item.answer }}</p>
+              {% if is_editable %}{% include "core/_list_item_controls.html" %}{% endif %}
             </li>
           {% endfor %}
+          {% if is_editable %}
+            <li><button type="button" class="list-item-add" data-list-item-add data-inline-section="{{ sections.faq.id }}"><span data-icon="plus"></span>Legg til spørsmål</button></li>
+          {% endif %}
         {% else %}
           <li class="faq-item" data-faq-item>
             <button type="button" class="faq-item__trigger" data-faq-trigger aria-expanded="false">

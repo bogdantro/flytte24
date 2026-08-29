@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import IntegrityError, transaction
 from django.test import TestCase
 
@@ -53,3 +54,45 @@ class BusinessLeadEntriesArchivedTests(TestCase):
         labels = [e["label"] for e in entries]
         self.assertIn(f"{active_lead.reference} — Aktiv Kunde", labels)
         self.assertNotIn(f"{archived_lead.reference} — Arkivert Kunde", labels)
+
+
+class PublicBusinessProfilePrivacyTests(TestCase):
+    """Regression tests: the page's own copy claims "bare du og Kobly kan se denne
+    forhåndsvisningen" (only you and Kobly can see this preview) for an inactive
+    business, but the view had no auth/ownership check at all — anyone who
+    guessed/enumerated a business_id could view an unapproved business's full profile."""
+
+    def setUp(self):
+        self.business = _make_business(active=False)
+
+    def test_anonymous_visitor_gets_404_on_an_inactive_profile(self):
+        response = self.client.get(f"/bedrift/{self.business.id}/")
+        self.assertEqual(response.status_code, 404)
+
+    def test_unrelated_logged_in_user_gets_404_on_an_inactive_profile(self):
+        other_business = _make_business(email="other@example.com")
+        other_user = User.objects.create_user("annen-bruker", password="pw")
+        other_business.user = other_user
+        other_business.save(update_fields=["user"])
+        self.client.force_login(other_user)
+        response = self.client.get(f"/bedrift/{self.business.id}/")
+        self.assertEqual(response.status_code, 404)
+
+    def test_the_businesss_own_user_can_preview_it(self):
+        owner = User.objects.create_user("eier", password="pw")
+        self.business.user = owner
+        self.business.save(update_fields=["user"])
+        self.client.force_login(owner)
+        response = self.client.get(f"/bedrift/{self.business.id}/")
+        self.assertEqual(response.status_code, 200)
+
+    def test_staff_can_view_any_inactive_profile(self):
+        staff = User.objects.create_user("staff-viewer", password="pw", is_staff=True)
+        self.client.force_login(staff)
+        response = self.client.get(f"/bedrift/{self.business.id}/")
+        self.assertEqual(response.status_code, 200)
+
+    def test_active_business_is_publicly_visible_to_anyone(self):
+        active_business = _make_business(email="active@example.com", active=True)
+        response = self.client.get(f"/bedrift/{active_business.id}/")
+        self.assertEqual(response.status_code, 200)

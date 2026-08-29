@@ -3,6 +3,30 @@
 from django.db import migrations, models
 
 
+def dedupe_emails(apps, schema_editor):
+    """Renames every duplicate Bedrift_info.email (keeping the first row of
+    each duplicate group untouched) before the AlterField below adds a
+    unique constraint — without this, the AlterField fails outright with an
+    IntegrityError on any database that already has two rows sharing an
+    email (exactly the bug this migration exists to close off; this dev
+    database's own duplicates were cleaned up by hand before this migration
+    was first written, but that one-time manual cleanup doesn't protect any
+    other environment running this same migration for the first time)."""
+    Bedrift_info = apps.get_model("store", "Bedrift_info")
+    seen = set()
+    for business in Bedrift_info.objects.order_by("id"):
+        email = (business.email or "").lower()
+        if email in seen:
+            business.email = f"duplicate-{business.pk}-{business.email}"
+            business.save(update_fields=["email"])
+        else:
+            seen.add(email)
+
+
+def noop_reverse(apps, schema_editor):
+    pass
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -10,6 +34,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        migrations.RunPython(dedupe_emails, noop_reverse),
         migrations.AlterField(
             model_name='bedrift_info',
             name='email',

@@ -48,9 +48,16 @@ def public_business_profile(request, business_id):
     """Customer-facing profile — what the wizard-matched businesses look
     like from the outside. Inactive businesses (not yet approved, or
     deactivated) still resolve so a business can preview their own profile
-    from myaccount before/without being live, but staff/the business are
-    the only ones expected to actually reach an inactive profile's URL."""
+    from myaccount, but only for staff or that business's own logged-in
+    user — the template's own "bare du og Kobly kan se denne
+    forhåndsvisningen" (only you and Kobly can see this preview) claim was
+    previously unenforced, so anyone who guessed/enumerated a business_id
+    could view an unapproved business's full profile."""
     business = get_object_or_404(Bedrift_info, id=business_id)
+    if not business.active:
+        is_owner = request.user.is_authenticated and getattr(business, "user_id", None) == request.user.id
+        if not (request.user.is_authenticated and request.user.is_staff) and not is_owner:
+            raise Http404
     public_info = getattr(business, "public_info", None)
     reviews = business.reviews.all().order_by("-created_at")
     average_rating = reviews.aggregate(Avg("rating"))["rating__avg"]

@@ -849,6 +849,155 @@ $radiusPill: 9999px;
     svg{ width: 14px; height: 14px; }
   }
 
+  // Hover overlay on a list-item card (a FAQ pair, testimonial, service
+  // card, stat tile, city link, how-it-works step) — see
+  // static/js/inline-edit.js initListItemEditing(). Every card this
+  // applies to gets position:relative from [data-list-item] so the overlay
+  // can sit absolutely in its corner.
+  [data-list-item]{
+    position: relative;
+    outline: 1px dashed transparent;
+    outline-offset: 4px;
+    border-radius: 8px;
+    transition: outline-color 0.15s ease;
+
+    &:hover{ outline-color: rgba(26, 26, 26, 0.15); }
+    &:hover .list-item-controls{ opacity: 1; pointer-events: auto; }
+  }
+
+  .list-item-controls{
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    gap: 4px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
+    z-index: 5;
+
+    button{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border: 1px solid rgba(26, 26, 26, 0.1);
+      border-radius: 50%;
+      background: $surface;
+      color: $inkMuted;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+
+      &:hover{ background: rgba(214, 232, 168, 0.4); color: $ink; }
+      svg{ width: 14px; height: 14px; }
+    }
+  }
+
+  .list-item-add{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    padding: 10px 18px;
+    border: 1px dashed rgba(26, 26, 26, 0.25);
+    border-radius: $radiusPill;
+    background: transparent;
+    color: $inkMuted;
+    font-family: $fontSans;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+
+    &:hover{ background: rgba(214, 232, 168, 0.25); color: $ink; }
+    svg{ width: 16px; height: 16px; }
+  }
+
+  // The custom edit-form popover (static/js/inline-edit.js openEditPopover)
+  // — every list-item edit and the CTA-link edit both use this one
+  // component instead of a native prompt()/alert()/confirm().
+  .inline-edit-popover{
+    position: absolute;
+    z-index: 60;
+    width: min(360px, calc(100vw - 24px));
+    background: $surface;
+    border: 1px solid $line;
+    border-radius: $radiusCard;
+    box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.25);
+    padding: 20px;
+
+    &[hidden]{ display: none; }
+  }
+
+  .inline-edit-popover__title{
+    margin: 0 0 14px;
+    font-size: 14px;
+    font-weight: 600;
+    color: $ink;
+  }
+
+  .inline-edit-popover__form{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .inline-edit-popover__field{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 13px;
+    color: $inkMuted;
+
+    input, textarea{
+      border: 1px solid $line;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-family: $fontSans;
+      font-size: 14px;
+      color: $ink;
+      background: $bg;
+      resize: vertical;
+
+      &:focus{ outline: none; border-color: $ink; }
+    }
+  }
+
+  .inline-edit-popover__preview{
+    width: 100%;
+    max-height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 6px;
+  }
+
+  .inline-edit-popover__actions{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 4px;
+
+    .btn-primary, .btn-outline{
+      padding: 8px 16px;
+      font-size: 13px;
+    }
+  }
+
+  .inline-edit-popover__delete{
+    margin-right: auto;
+    border: none;
+    background: transparent;
+    color: #b3261e;
+    font-family: $fontSans;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 8px 4px;
+
+    &:hover{ text-decoration: underline; }
+  }
+
   .page-settings-panel{
     position: fixed;
     inset: 0;
@@ -1858,6 +2007,155 @@ $radiusPill: 9999px;
     &:hover{ background: rgba(214, 232, 168, 0.25); color: $ink; }
 
     svg{ width: 14px; height: 14px; }
+  }
+
+  // Hover overlay on a list-item card (a FAQ pair, testimonial, service
+  // card, stat tile, city link, how-it-works step) — see
+  // static/js/inline-edit.js initListItemEditing(). Every card this
+  // applies to gets position:relative from [data-list-item] so the overlay
+  // can sit absolutely in its corner.
+  [data-list-item]{
+    position: relative;
+    outline: 1px dashed transparent;
+    outline-offset: 4px;
+    border-radius: 8px;
+    transition: outline-color 0.15s ease;
+
+    &:hover{ outline-color: rgba(26, 26, 26, 0.15); }
+    &:hover .list-item-controls{ opacity: 1; pointer-events: auto; }
+  }
+
+  .list-item-controls{
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    gap: 4px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
+    z-index: 5;
+
+    button{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border: 1px solid rgba(26, 26, 26, 0.1);
+      border-radius: 50%;
+      background: $surface;
+      color: $inkMuted;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+
+      &:hover{ background: rgba(214, 232, 168, 0.4); color: $ink; }
+      svg{ width: 14px; height: 14px; }
+    }
+  }
+
+  .list-item-add{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    padding: 10px 18px;
+    border: 1px dashed rgba(26, 26, 26, 0.25);
+    border-radius: $radiusPill;
+    background: transparent;
+    color: $inkMuted;
+    font-family: $fontSans;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+
+    &:hover{ background: rgba(214, 232, 168, 0.25); color: $ink; }
+    svg{ width: 16px; height: 16px; }
+  }
+
+  // The custom edit-form popover (static/js/inline-edit.js openEditPopover)
+  // — every list-item edit and the CTA-link edit both use this one
+  // component instead of a native prompt()/alert()/confirm().
+  .inline-edit-popover{
+    position: absolute;
+    z-index: 60;
+    width: min(360px, calc(100vw - 24px));
+    background: $surface;
+    border: 1px solid $line;
+    border-radius: $radiusCard;
+    box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.25);
+    padding: 20px;
+
+    &[hidden]{ display: none; }
+  }
+
+  .inline-edit-popover__title{
+    margin: 0 0 14px;
+    font-size: 14px;
+    font-weight: 600;
+    color: $ink;
+  }
+
+  .inline-edit-popover__form{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .inline-edit-popover__field{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 13px;
+    color: $inkMuted;
+
+    input, textarea{
+      border: 1px solid $line;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-family: $fontSans;
+      font-size: 14px;
+      color: $ink;
+      background: $bg;
+      resize: vertical;
+
+      &:focus{ outline: none; border-color: $ink; }
+    }
+  }
+
+  .inline-edit-popover__preview{
+    width: 100%;
+    max-height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 6px;
+  }
+
+  .inline-edit-popover__actions{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 4px;
+
+    .btn-primary, .btn-outline{
+      padding: 8px 16px;
+      font-size: 13px;
+    }
+  }
+
+  .inline-edit-popover__delete{
+    margin-right: auto;
+    border: none;
+    background: transparent;
+    color: #b3261e;
+    font-family: $fontSans;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 8px 4px;
+
+    &:hover{ text-decoration: underline; }
   }
 
   .page-settings-panel{

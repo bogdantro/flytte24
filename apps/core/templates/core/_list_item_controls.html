@@ -1,0 +1,15 @@
+<!-- apps/core/templates/core/_list_item_controls.html -->
+{% comment %}
+Staff-only edit overlay for one card inside a list-shaped section (a FAQ
+pair, testimonial, service card, stat tile, city link, how-it-works step).
+Purely static markup — the surrounding [data-list-item] element carries
+all the data-* attributes static/js/inline-edit.js's initListItemEditing()
+actually reads (data-inline-section/data-section-type/data-item-index/
+data-field-<key>), so this partial needs no template variables of its own.
+Include from inside that element with: {% include "core/_list_item_controls.html" %}
+{% endcomment %}
+<div class="list-item-controls">
+  <button type="button" data-list-item-edit aria-label="Rediger">
+    <span data-icon="pencil"></span>
+  </button>
+</div>

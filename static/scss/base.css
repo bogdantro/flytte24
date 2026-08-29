@@ -782,6 +782,152 @@
     width: 14px;
     height: 14px;
   }
+  [data-list-item] {
+    position: relative;
+    outline: 1px dashed transparent;
+    outline-offset: 4px;
+    border-radius: 8px;
+    transition: outline-color 0.15s ease;
+  }
+  [data-list-item]:hover {
+    outline-color: rgba(26, 26, 26, 0.15);
+  }
+  [data-list-item]:hover .list-item-controls {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .list-item-controls {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    gap: 4px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
+    z-index: 5;
+  }
+  .list-item-controls button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: 1px solid rgba(26, 26, 26, 0.1);
+    border-radius: 50%;
+    background: #ffffff;
+    color: #5c5c5c;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  }
+  .list-item-controls button:hover {
+    background: rgba(214, 232, 168, 0.4);
+    color: #1a1a1a;
+  }
+  .list-item-controls button svg {
+    width: 14px;
+    height: 14px;
+  }
+  .list-item-add {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    padding: 10px 18px;
+    border: 1px dashed rgba(26, 26, 26, 0.25);
+    border-radius: 9999px;
+    background: transparent;
+    color: #5c5c5c;
+    font-family: "Moderat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .list-item-add:hover {
+    background: rgba(214, 232, 168, 0.25);
+    color: #1a1a1a;
+  }
+  .list-item-add svg {
+    width: 16px;
+    height: 16px;
+  }
+  .inline-edit-popover {
+    position: absolute;
+    z-index: 60;
+    width: min(360px, 100vw - 24px);
+    background: #ffffff;
+    border: 1px solid #e6e1d6;
+    border-radius: 14px;
+    box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.25);
+    padding: 20px;
+  }
+  .inline-edit-popover[hidden] {
+    display: none;
+  }
+  .inline-edit-popover__title {
+    margin: 0 0 14px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+  .inline-edit-popover__form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .inline-edit-popover__field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 13px;
+    color: #5c5c5c;
+  }
+  .inline-edit-popover__field input, .inline-edit-popover__field textarea {
+    border: 1px solid #e6e1d6;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-family: "Moderat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 14px;
+    color: #1a1a1a;
+    background: #f4f1ea;
+    resize: vertical;
+  }
+  .inline-edit-popover__field input:focus, .inline-edit-popover__field textarea:focus {
+    outline: none;
+    border-color: #1a1a1a;
+  }
+  .inline-edit-popover__preview {
+    width: 100%;
+    max-height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 6px;
+  }
+  .inline-edit-popover__actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .inline-edit-popover__actions .btn-primary, .inline-edit-popover__actions .btn-outline {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+  .inline-edit-popover__delete {
+    margin-right: auto;
+    border: none;
+    background: transparent;
+    color: #b3261e;
+    font-family: "Moderat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 8px 4px;
+  }
+  .inline-edit-popover__delete:hover {
+    text-decoration: underline;
+  }
   .page-settings-panel {
     position: fixed;
     inset: 0;
@@ -1727,6 +1873,152 @@
   .inline-edit-link-btn svg {
     width: 14px;
     height: 14px;
+  }
+  [data-list-item] {
+    position: relative;
+    outline: 1px dashed transparent;
+    outline-offset: 4px;
+    border-radius: 8px;
+    transition: outline-color 0.15s ease;
+  }
+  [data-list-item]:hover {
+    outline-color: rgba(26, 26, 26, 0.15);
+  }
+  [data-list-item]:hover .list-item-controls {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .list-item-controls {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    gap: 4px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
+    z-index: 5;
+  }
+  .list-item-controls button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: 1px solid rgba(26, 26, 26, 0.1);
+    border-radius: 50%;
+    background: #ffffff;
+    color: #5c5c5c;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  }
+  .list-item-controls button:hover {
+    background: rgba(214, 232, 168, 0.4);
+    color: #1a1a1a;
+  }
+  .list-item-controls button svg {
+    width: 14px;
+    height: 14px;
+  }
+  .list-item-add {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    padding: 10px 18px;
+    border: 1px dashed rgba(26, 26, 26, 0.25);
+    border-radius: 9999px;
+    background: transparent;
+    color: #5c5c5c;
+    font-family: "Moderat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .list-item-add:hover {
+    background: rgba(214, 232, 168, 0.25);
+    color: #1a1a1a;
+  }
+  .list-item-add svg {
+    width: 16px;
+    height: 16px;
+  }
+  .inline-edit-popover {
+    position: absolute;
+    z-index: 60;
+    width: min(360px, 100vw - 24px);
+    background: #ffffff;
+    border: 1px solid #e6e1d6;
+    border-radius: 14px;
+    box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.25);
+    padding: 20px;
+  }
+  .inline-edit-popover[hidden] {
+    display: none;
+  }
+  .inline-edit-popover__title {
+    margin: 0 0 14px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+  .inline-edit-popover__form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .inline-edit-popover__field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 13px;
+    color: #5c5c5c;
+  }
+  .inline-edit-popover__field input, .inline-edit-popover__field textarea {
+    border: 1px solid #e6e1d6;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-family: "Moderat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 14px;
+    color: #1a1a1a;
+    background: #f4f1ea;
+    resize: vertical;
+  }
+  .inline-edit-popover__field input:focus, .inline-edit-popover__field textarea:focus {
+    outline: none;
+    border-color: #1a1a1a;
+  }
+  .inline-edit-popover__preview {
+    width: 100%;
+    max-height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 6px;
+  }
+  .inline-edit-popover__actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .inline-edit-popover__actions .btn-primary, .inline-edit-popover__actions .btn-outline {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+  .inline-edit-popover__delete {
+    margin-right: auto;
+    border: none;
+    background: transparent;
+    color: #b3261e;
+    font-family: "Moderat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 8px 4px;
+  }
+  .inline-edit-popover__delete:hover {
+    text-decoration: underline;
   }
   .page-settings-panel {
     position: fixed;

@@ -3,6 +3,7 @@ import json
 import tempfile
 
 from django.core import mail
+from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, override_settings
 from django.urls import reverse
@@ -82,6 +83,35 @@ class MoveLeadModelTest(TestCase):
         )
         self.assertEqual(lead.images.count(), 1)
         self.assertEqual(lead.images.first(), image)
+
+    def test_clean_rejects_the_same_business_in_two_slots(self):
+        """Regression test: apps.dashboard.views.lead_assign_businesses already blocks
+        this, but that guard lives only in that one view — Django's own /admin/ (a
+        plain ModelAdmin with no equivalent check) could still save a MoveLead with the
+        same business in two of the three slots, silently double-counting that lead in
+        every per-business count the dashboard computes."""
+        from apps.store.models import Bedrift_info
+
+        business = Bedrift_info.objects.create(
+            company_name="Flytt AS", email="flytt-clean-test@example.com", phone="1",
+            address="A", postal_code="0001", city="Oslo", first_name="A", last_name="B",
+        )
+        lead = self._make_lead(business_1=business, business_2=business)
+        with self.assertRaises(ValidationError):
+            lead.full_clean()
+
+    def test_clean_allows_three_distinct_businesses(self):
+        from apps.store.models import Bedrift_info
+
+        businesses = [
+            Bedrift_info.objects.create(
+                company_name=f"Flytt {i} AS", email=f"flytt{i}@example.com", phone="1",
+                address="A", postal_code="0001", city="Oslo", first_name="A", last_name="B",
+            )
+            for i in range(3)
+        ]
+        lead = self._make_lead(business_1=businesses[0], business_2=businesses[1], business_3=businesses[2])
+        lead.full_clean()  # must not raise
 
 
 def _valid_payload(**overrides):
@@ -218,6 +248,14 @@ class WizardPostViewTest(TestCase):
         field name (navn, a step-5 field) actually appears there."""
         response = self.client.post(reverse("leads:wizard"), _valid_payload(navn="O"))
         self.assertContains(response, 'data-error-fields="navn"')
+
+    def test_date_and_flexible_both_set_tags_all_for_the_step_jump(self):
+        """Regression test: WizardForm.clean()'s cross-field errors attach to Django's
+        NON_FIELD_ERRORS key ("__all__"), not a real field name — wizard.js's
+        FIELD_TO_STEP map used to have no entry for it at all, so the step-jump
+        silently no-opped and the wizard reopened on step 1 instead of step 3."""
+        response = self.client.post(reverse("leads:wizard"), _valid_payload(flyttedato="2026-09-12", fleksibel="on"))
+        self.assertContains(response, 'data-error-fields="__all__"')
 
     def test_invalid_post_repopulates_step_2_3_and_coordinate_fields(self):
         # An otherwise-valid payload with one intentionally-invalid field

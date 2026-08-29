@@ -219,6 +219,21 @@ class DashboardLeadDetailTest(TestCase):
         self.assertNotContains(response, "Per Hansen")
         self.assertNotContains(response, "Ola Hansen")
 
+    def test_today_and_week_counts_exclude_archived_leads(self):
+        """Regression test: lead_detail's today_counts/week_counts fed _lead_counts_by_
+        business on a queryset with no archived=False — archiving a lead never actually
+        lowered the today/week figure shown next to a business in the assignment list."""
+        business = _make_business(active=True)
+        other_lead = _make_lead(business_1=business)
+        archived_lead = _make_lead(business_1=business)
+        self.client.post(reverse("dashboard:lead_archive", args=[archived_lead.pk]))
+
+        response = self.client.get(reverse("dashboard:lead_detail", args=[other_lead.pk]))
+        all_shown = list(response.context["matching_businesses"]) + list(response.context["other_businesses"])
+        shown = next(b for b in all_shown if b.pk == business.pk)
+        self.assertEqual(shown.today_count, 1)
+        self.assertEqual(shown.week_count, 1)
+
     def test_updating_internal_notes_and_follow_up(self):
         lead = _make_lead()
         response = self.client.post(
@@ -419,6 +434,203 @@ class SectionInlineUpdateViewTests(TestCase):
         self.section.refresh_from_db()
         self.assertEqual(self.section.heading, "Original overskrift")
 
+    def test_extra_json_scalar_field_is_editable(self):
+        """hero's eyebrow/HeroCard text and trust's secondary CTA live in extra_json
+        rather than one of PageSection's own flat fields — field="extra_json.<key>"
+        is how the live page's contenteditable spans reach them."""
+        self.client.force_login(self.staff)
+        url = reverse("dashboard:section_inline_update", args=[self.section.pk])
+        response = self.client.post(
+            url,
+            data=json.dumps({"field": "extra_json.eyebrow", "value": "Ny eyebrow"}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.section.refresh_from_db()
+        self.assertEqual(self.section.extra_json["eyebrow"], "Ny eyebrow")
+
+    def test_extra_json_scalar_field_rejects_a_key_outside_the_whitelist(self):
+        self.client.force_login(self.staff)
+        url = reverse("dashboard:section_inline_update", args=[self.section.pk])
+        response = self.client.post(
+            url,
+            data=json.dumps({"field": "extra_json.not_a_real_key", "value": "x"}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 400)
+
+    def test_button_href_must_start_with_a_slash_or_scheme(self):
+        """Regression test: button_href had no shape/scheme validation at all — a staff
+        editor could type javascript:... into the edit-link popover and have it saved
+        straight into a public <a href>."""
+        self.client.force_login(self.staff)
+        url = reverse("dashboard:section_inline_update", args=[self.section.pk])
+        response = self.client.post(
+            url,
+            data=json.dumps({"field": "button_href", "value": "javascript:alert(1)"}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 400)
+        self.section.refresh_from_db()
+        self.assertEqual(self.section.button_href, "")
+
+    def test_button_href_accepts_a_relative_path(self):
+        self.client.force_login(self.staff)
+        url = reverse("dashboard:section_inline_update", args=[self.section.pk])
+        response = self.client.post(
+            url,
+            data=json.dumps({"field": "button_href", "value": "/flytteforesporsel/"}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 200)
+
+
+def _make_list_section(section_type, items, key="items"):
+    page = Page.objects.create(
+        title="Forside", slug=f"forside-{section_type}", path=f"/forside-{section_type}/",
+        template_key="home", status="published",
+    )
+    return PageSection.objects.create(page=page, order=1, section_type=section_type, extra_json={key: items})
+
+
+class SectionListItemUpdateViewTests(TestCase):
+    def setUp(self):
+        self.staff = User.objects.create_user("staff-li1", password="pw", is_staff=True)
+        self.section = _make_list_section("faq", [
+            {"question": "Opprinnelig spørsmål?", "answer": "Opprinnelig svar."},
+        ])
+
+    def test_requires_staff_login(self):
+        url = reverse("dashboard:section_list_item_update", args=[self.section.pk, 0])
+        response = self.client.post(url, data="{}", content_type="application/json")
+        self.assertEqual(response.status_code, 302)
+
+    def test_updates_one_items_field(self):
+        self.client.force_login(self.staff)
+        url = reverse("dashboard:section_list_item_update", args=[self.section.pk, 0])
+        response = self.client.post(
+            url, data=json.dumps({"question": "Nytt spørsmål?"}), content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.section.refresh_from_db()
+        self.assertEqual(self.section.extra_json["items"][0]["question"], "Nytt spørsmål?")
+        self.assertEqual(self.section.extra_json["items"][0]["answer"], "Opprinnelig svar.")
+
+    def test_index_out_of_range_404s(self):
+        self.client.force_login(self.staff)
+        url = reverse("dashboard:section_list_item_update", args=[self.section.pk, 5])
+        response = self.client.post(url, data=json.dumps({"question": "x"}), content_type="application/json")
+        self.assertEqual(response.status_code, 404)
+
+    def test_rejects_a_field_outside_the_section_types_spec(self):
+        self.client.force_login(self.staff)
+        url = reverse("dashboard:section_list_item_update", args=[self.section.pk, 0])
+        response = self.client.post(
+            url, data=json.dumps({"not_a_real_field": "x"}), content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 400)
+
+    def test_a_non_list_section_type_is_rejected(self):
+        contact_section = PageSection.objects.create(
+            page=self.section.page, order=2, section_type="hero", heading="x",
+        )
+        self.client.force_login(self.staff)
+        url = reverse("dashboard:section_list_item_update", args=[contact_section.pk, 0])
+        response = self.client.post(url, data=json.dumps({"heading": "x"}), content_type="application/json")
+        self.assertEqual(response.status_code, 400)
+
+
+class SectionListItemAddViewTests(TestCase):
+    def setUp(self):
+        self.staff = User.objects.create_user("staff-li2", password="pw", is_staff=True)
+        self.section = _make_list_section("services", [{"title": "Flyttehjelp", "body": "..."}])
+
+    def test_appends_a_default_row(self):
+        self.client.force_login(self.staff)
+        url = reverse("dashboard:section_list_item_add", args=[self.section.pk])
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["index"], 1)
+        self.section.refresh_from_db()
+        self.assertEqual(len(self.section.extra_json["items"]), 2)
+
+    def test_stops_at_the_max_item_cap(self):
+        self.client.force_login(self.staff)
+        self.section.extra_json["items"] = [{"title": "x", "body": "x"}] * 12
+        self.section.save(update_fields=["extra_json"])
+        url = reverse("dashboard:section_list_item_add", args=[self.section.pk])
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 400)
+
+
+class SectionListItemDeleteViewTests(TestCase):
+    def setUp(self):
+        self.staff = User.objects.create_user("staff-li3", password="pw", is_staff=True)
+        self.section = _make_list_section("cities", [
+            {"name": "Oslo", "href": "/oslo/"}, {"name": "Bergen", "href": "/bergen/"},
+        ])
+
+    def test_deletes_the_item_at_index(self):
+        self.client.force_login(self.staff)
+        url = reverse("dashboard:section_list_item_delete", args=[self.section.pk, 0])
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 200)
+        self.section.refresh_from_db()
+        self.assertEqual(len(self.section.extra_json["items"]), 1)
+        self.assertEqual(self.section.extra_json["items"][0]["name"], "Bergen")
+
+    def test_index_out_of_range_404s(self):
+        self.client.force_login(self.staff)
+        url = reverse("dashboard:section_list_item_delete", args=[self.section.pk, 9])
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 404)
+
+
+class SectionListItemImageViewTests(TestCase):
+    def setUp(self):
+        self.staff = User.objects.create_user("staff-li4", password="pw", is_staff=True)
+        self.section = _make_list_section(
+            "testimonials", [{"quote": "x", "name": "x", "meta": "x", "image": "old.jpg"}]
+        )
+
+    def _valid_upload(self, name="new.jpg"):
+        import io
+        from django.core.files.uploadedfile import SimpleUploadedFile
+        from PIL import Image
+        buffer = io.BytesIO()
+        Image.new("RGB", (10, 10)).save(buffer, "JPEG")
+        buffer.seek(0)
+        return SimpleUploadedFile(name, buffer.read(), content_type="image/jpeg")
+
+    def test_uploads_and_sets_a_real_media_url(self):
+        self.client.force_login(self.staff)
+        url = reverse("dashboard:section_list_item_image", args=[self.section.pk, 0])
+        response = self.client.post(url, {"image": self._valid_upload()})
+        self.assertEqual(response.status_code, 200)
+        self.section.refresh_from_db()
+        from django.conf import settings
+        self.assertTrue(self.section.extra_json["items"][0]["image"].startswith(settings.MEDIA_URL))
+
+    def test_a_section_type_with_no_image_field_is_rejected(self):
+        section = _make_list_section("faq", [{"question": "x", "answer": "x"}])
+        self.client.force_login(self.staff)
+        url = reverse("dashboard:section_list_item_image", args=[section.pk, 0])
+        response = self.client.post(url, {"image": self._valid_upload()})
+        self.assertEqual(response.status_code, 400)
+
+    def test_oversized_image_is_rejected(self):
+        import io
+        from django.core.files.uploadedfile import SimpleUploadedFile
+        from PIL import Image
+        buffer = io.BytesIO()
+        Image.new("RGB", (1500, 1500)).save(buffer, "BMP")
+        buffer.seek(0)
+        oversized = SimpleUploadedFile("big.bmp", buffer.read(), content_type="image/bmp")
+        self.client.force_login(self.staff)
+        url = reverse("dashboard:section_list_item_image", args=[self.section.pk, 0])
+        response = self.client.post(url, {"image": oversized})
+        self.assertEqual(response.status_code, 400)
+
 
 class PageUpdateMetaViewTests(TestCase):
     def setUp(self):
@@ -598,6 +810,21 @@ class BusinessListViewTests(TestCase):
         response = self.client.get(reverse("dashboard:business_list"), {"q": "Bergen"})
         self.assertContains(response, "Inaktiv Flytt AS")
         self.assertNotContains(response, "Aktiv Flytt AS")
+
+    def test_movelead_count_excludes_archived_leads(self):
+        """Regression test: these Count() annotations had no archived=False filter,
+        unlike every other MoveLead listing in the dashboard — archiving a lead never
+        actually lowered a business's "Leads mottatt" count."""
+        lead = _make_lead(business_1=self.active_biz)
+        self.client.force_login(self.staff)
+        response = self.client.get(reverse("dashboard:business_list"))
+        business = next(b for b in response.context["businesses"] if b.pk == self.active_biz.pk)
+        self.assertEqual(business.movelead_primary_count, 1)
+
+        self.client.post(reverse("dashboard:lead_archive", args=[lead.pk]))
+        response = self.client.get(reverse("dashboard:business_list"))
+        business = next(b for b in response.context["businesses"] if b.pk == self.active_biz.pk)
+        self.assertEqual(business.movelead_primary_count, 0)
 
 
 class BusinessDetailViewTests(TestCase):
@@ -960,6 +1187,29 @@ class LeadTrashTests(TestCase):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(MoveLead.objects.filter(pk=live_lead.pk).count(), 1)
 
+    def test_permanent_delete_also_removes_the_uploaded_image_files(self):
+        """Regression test: LeadImage.lead is on_delete=CASCADE, which only ever
+        deleted the LeadImage *rows* — Django never deletes the underlying file from
+        storage on cascade — so a "permanent" deletion used to leave the customer's
+        uploaded photos readable on disk forever."""
+        import io
+        from django.core.files.storage import default_storage
+        from django.core.files.uploadedfile import SimpleUploadedFile
+        from apps.leads.models import LeadImage
+        from PIL import Image
+
+        buffer = io.BytesIO()
+        Image.new("RGB", (5, 5)).save(buffer, "JPEG")
+        buffer.seek(0)
+        image = LeadImage.objects.create(
+            lead=self.lead, image=SimpleUploadedFile("bilde.jpg", buffer.read(), content_type="image/jpeg"),
+        )
+        file_path = image.image.name
+        self.assertTrue(default_storage.exists(file_path))
+
+        self.client.post(reverse("dashboard:lead_permanent_delete", args=[self.lead.pk]))
+        self.assertFalse(default_storage.exists(file_path))
+
 
 class LeadBulkActionTests(TestCase):
     def setUp(self):
@@ -998,8 +1248,8 @@ class LeadBulkActionTests(TestCase):
             "action": "export_csv",
             "lead_ids": [self.lead1.pk],
         })
-        self.assertEqual(response["Content-Type"], "text/csv")
-        content = response.content.decode("utf-8")
+        self.assertEqual(response["Content-Type"], "text/csv; charset=utf-8")
+        content = response.content.decode("utf-8-sig")  # a leading BOM is now written for Excel's sake
         self.assertIn("Kari Nordmann", content)
         self.assertNotIn("Per Hansen", content)
 
@@ -1383,6 +1633,18 @@ class DashboardOverviewTests(TestCase):
         response = self.client.get(reverse("dashboard:dashboard_overview"))
         names = [entry["business"].company_name for entry in response.context["businesses_near_cap"]]
         self.assertIn(business.company_name, names)
+
+    def test_an_archived_lead_no_longer_counts_toward_near_cap(self):
+        """Regression test: _businesses_near_cap fed on a plain MoveLead.objects.filter(...)
+        with no archived=False, unlike every other MoveLead listing in the dashboard —
+        archiving a lead that had put a business near its cap never actually cleared it
+        from this list."""
+        business = _make_business(leads_per_day="1", active=True)
+        lead = _make_lead(business_1=business)
+        self.client.post(reverse("dashboard:lead_archive", args=[lead.pk]))
+        response = self.client.get(reverse("dashboard:dashboard_overview"))
+        names = [entry["business"].company_name for entry in response.context["businesses_near_cap"]]
+        self.assertNotIn(business.company_name, names)
 
     def test_recent_leads_shown(self):
         _make_lead(navn="Kari Nordmann")

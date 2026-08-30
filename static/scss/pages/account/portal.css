@@ -425,6 +425,7 @@
   color: rgba(26, 26, 26, 0.5);
 }
 .portal-form__group input[type=text], .portal-form__group input[type=email], .portal-form__group input[type=url], .portal-form__group input[type=tel],
+.portal-form__group input[type=password], .portal-form__group input[type=number], .portal-form__group input[type=date],
 .portal-form__group textarea, .portal-form__group select {
   width: 100%;
   border: 1.5px solid rgba(26, 26, 26, 0.1);
@@ -438,6 +439,7 @@
   transition: border-color 0.2s ease;
 }
 .portal-form__group input[type=text]:focus, .portal-form__group input[type=email]:focus, .portal-form__group input[type=url]:focus, .portal-form__group input[type=tel]:focus,
+.portal-form__group input[type=password]:focus, .portal-form__group input[type=number]:focus, .portal-form__group input[type=date]:focus,
 .portal-form__group textarea:focus, .portal-form__group select:focus {
   border-color: #221814;
 }

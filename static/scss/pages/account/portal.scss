@@ -403,6 +403,7 @@ $radiusPill: 9999px;
   // internal "Choose File"/"Browse" button can't be restyled with CSS at
   // all, regardless of border/padding/background applied to it).
   input[type="text"], input[type="email"], input[type="url"], input[type="tel"],
+  input[type="password"], input[type="number"], input[type="date"],
   textarea, select {
     width: 100%;
     border: 1.5px solid rgba(26, 26, 26, 0.1);

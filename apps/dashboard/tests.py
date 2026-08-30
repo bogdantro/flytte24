@@ -1463,6 +1463,45 @@ class LeadAssignmentNotificationTests(TestCase):
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].to, ["rask@example.com"])
 
+    def test_newly_assigned_business_gets_total_leads_received_incremented(self):
+        """Regression test: nothing incremented this counter for either live
+        assignment path, so find_matching_businesses' own "spread fairly"
+        tiebreak never actually engaged. Manual dashboard assignment must bump
+        it exactly like the wizard's automatic assignment does."""
+        lead = _make_lead()
+        self.client.post(reverse("dashboard:lead_assign_businesses", args=[lead.pk]), {
+            "business_1": self.biz1.pk, "business_2": "", "business_3": "",
+        })
+        self.biz1.refresh_from_db()
+        self.assertEqual(self.biz1.total_leads_received, 1)
+
+    def test_reassigning_the_same_business_does_not_double_increment(self):
+        lead = _make_lead(business_1=self.biz1)
+        self.biz1.refresh_from_db()
+        before = self.biz1.total_leads_received
+        self.client.post(reverse("dashboard:lead_assign_businesses", args=[lead.pk]), {
+            "business_1": self.biz1.pk, "business_2": "", "business_3": "",
+        })
+        self.biz1.refresh_from_db()
+        self.assertEqual(self.biz1.total_leads_received, before)
+
+    def test_a_notification_failure_does_not_500_or_lose_the_assignment(self):
+        """Regression test: notify_business_of_assignment used to be called with
+        no try/except in this view (unlike the wizard's automatic path, which
+        always wrapped it) — a bad/blank business email could turn an
+        already-saved assignment into an unhandled 500 with no confirmation it
+        actually happened."""
+        from unittest.mock import patch
+
+        lead = _make_lead()
+        with patch("apps.dashboard.views.notify_business_of_assignment", side_effect=ValueError("bad address")):
+            response = self.client.post(reverse("dashboard:lead_assign_businesses", args=[lead.pk]), {
+                "business_1": self.biz1.pk, "business_2": "", "business_3": "",
+            })
+        self.assertEqual(response.status_code, 302)
+        lead.refresh_from_db()
+        self.assertEqual(lead.business_1_id, self.biz1.pk)
+
 
 class SectionRevisionHistoryTests(TestCase):
     def setUp(self):
@@ -1858,6 +1897,30 @@ class ArticleAdminTests(TestCase):
         })
         self.assertEqual(response.status_code, 200)
         self.assertFalse(Article.objects.filter(slug="ny-artikkel-4").exists())
+
+    def test_list_block_with_non_string_items_is_rejected(self):
+        """Regression test: only "type" was validated, so {"type": "list",
+        "items": "not a list"} passed straight through — since a string is
+        itself iterable, home.html's {% for item in block.items %} would
+        then render each individual character as its own <li>."""
+        self.client.force_login(self.staff)
+        response = self.client.post(reverse("dashboard:article_add"), {
+            "title": "Ny Artikkel", "slug": "ny-artikkel-5", "ingress": "Ingress her.",
+            "header_image": "", "date": "2026-02-01", "read_minutes": "3",
+            "blocks_json": json.dumps([{"type": "list", "items": "not a list"}]),
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(Article.objects.filter(slug="ny-artikkel-5").exists())
+
+    def test_image_block_missing_src_or_alt_is_rejected(self):
+        self.client.force_login(self.staff)
+        response = self.client.post(reverse("dashboard:article_add"), {
+            "title": "Ny Artikkel", "slug": "ny-artikkel-6", "ingress": "Ingress her.",
+            "header_image": "", "date": "2026-02-01", "read_minutes": "3",
+            "blocks_json": json.dumps([{"type": "image", "src": "foo.jpg"}]),
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(Article.objects.filter(slug="ny-artikkel-6").exists())
 
     def test_edit_form_shows_current_blocks_as_json(self):
         self.client.force_login(self.staff)

@@ -312,7 +312,6 @@
   .image-strip .image-strip__track {
     display: flex;
     gap: 16px;
-    width: -moz-max-content;
     width: max-content;
     animation: image-strip-scroll 100s linear infinite;
   }
@@ -327,8 +326,7 @@
   .image-strip .image-strip__tile img {
     width: 100%;
     height: 100%;
-    -o-object-fit: cover;
-       object-fit: cover;
+    object-fit: cover;
   }
   .image-strip .image-strip__stats {
     margin-top: 40px;
@@ -423,8 +421,7 @@
   .testimonial-card .testimonial-card__photo img {
     width: 100%;
     height: 100%;
-    -o-object-fit: cover;
-       object-fit: cover;
+    object-fit: cover;
   }
   .testimonial-card .testimonial-card__quote {
     margin: 24px 0 0;
@@ -473,8 +470,7 @@
   .trust__logos img {
     height: 40px;
     width: auto;
-    -o-object-fit: contain;
-       object-fit: contain;
+    object-fit: contain;
     opacity: 0.8;
   }
   .trust__logos img:hover {
@@ -669,9 +665,6 @@
     font-family: "Moderat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     color: #1a1a1a;
   }
-  .postnummer-form .postnummer-form__field input::-moz-placeholder {
-    color: rgba(26, 26, 26, 0.4);
-  }
   .postnummer-form .postnummer-form__field input::placeholder {
     color: rgba(26, 26, 26, 0.4);
   }
@@ -858,6 +851,11 @@
     width: 16px;
     height: 16px;
   }
+  .list-item-empty-state {
+    color: rgba(26, 26, 26, 0.4);
+    font-size: 14px;
+    font-style: italic;
+  }
   .inline-edit-popover {
     position: absolute;
     z-index: 60;
@@ -906,8 +904,7 @@
   .inline-edit-popover__preview {
     width: 100%;
     max-height: 100px;
-    -o-object-fit: cover;
-       object-fit: cover;
+    object-fit: cover;
     border-radius: 8px;
     margin-bottom: 6px;
   }
@@ -1103,9 +1100,7 @@
     line-height: 0.85;
     letter-spacing: -0.04em;
     color: rgba(250, 249, 246, 0.08);
-    -webkit-user-select: none;
-       -moz-user-select: none;
-            user-select: none;
+    user-select: none;
   }
 }
 @media (min-width: 1050px) {
@@ -1244,8 +1239,7 @@
     cursor: pointer;
     font-family: inherit;
     -webkit-appearance: none;
-    -moz-appearance: none;
-         appearance: none;
+    appearance: none;
   }
   .hero {
     padding: 80px 40px;
@@ -1405,7 +1399,6 @@
   .image-strip .image-strip__track {
     display: flex;
     gap: 16px;
-    width: -moz-max-content;
     width: max-content;
     animation: image-strip-scroll 100s linear infinite;
   }
@@ -1420,8 +1413,7 @@
   .image-strip .image-strip__tile img {
     width: 100%;
     height: 100%;
-    -o-object-fit: cover;
-       object-fit: cover;
+    object-fit: cover;
   }
   .image-strip .image-strip__stats {
     margin-top: 40px;
@@ -1518,8 +1510,7 @@
   .testimonial-card .testimonial-card__photo img {
     width: 100%;
     height: 100%;
-    -o-object-fit: cover;
-       object-fit: cover;
+    object-fit: cover;
   }
   .testimonial-card .testimonial-card__quote {
     margin: 24px 0 0;
@@ -1568,8 +1559,7 @@
   .trust__logos img {
     height: 44px;
     width: auto;
-    -o-object-fit: contain;
-       object-fit: contain;
+    object-fit: contain;
     opacity: 0.8;
   }
   .trust__logos img:hover {
@@ -1772,9 +1762,6 @@
     font-family: "Moderat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     color: #1a1a1a;
   }
-  .postnummer-form .postnummer-form__field input::-moz-placeholder {
-    color: rgba(26, 26, 26, 0.4);
-  }
   .postnummer-form .postnummer-form__field input::placeholder {
     color: rgba(26, 26, 26, 0.4);
   }
@@ -1961,6 +1948,11 @@
     width: 16px;
     height: 16px;
   }
+  .list-item-empty-state {
+    color: rgba(26, 26, 26, 0.4);
+    font-size: 14px;
+    font-style: italic;
+  }
   .inline-edit-popover {
     position: absolute;
     z-index: 60;
@@ -2009,8 +2001,7 @@
   .inline-edit-popover__preview {
     width: 100%;
     max-height: 100px;
-    -o-object-fit: cover;
-       object-fit: cover;
+    object-fit: cover;
     border-radius: 8px;
     margin-bottom: 6px;
   }
@@ -2210,8 +2201,6 @@
     line-height: 0.85;
     letter-spacing: -0.04em;
     color: rgba(250, 249, 246, 0.08);
-    -webkit-user-select: none;
-       -moz-user-select: none;
-            user-select: none;
+    user-select: none;
   }
 }

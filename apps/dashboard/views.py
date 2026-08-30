@@ -1,6 +1,7 @@
 import csv
 import io
 import json
+import logging
 from datetime import timedelta
 from functools import wraps
 
@@ -13,6 +14,7 @@ from django.core.cache import cache
 from django.core.exceptions import ValidationError
 from django.core.files.base import ContentFile
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.db import transaction
 from django.db.models import Count, Q
 from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -29,8 +31,10 @@ from apps.pages.models import Page, PageSection, PageSectionRevision, publish_du
 from apps.store.models import Bedrift_info, BusinessImage, PublicBusinessInformation, Review
 from apps.store.services import (
     business_lead_entries, business_matches_move, business_usage,
-    notify_business_of_assignment, parse_cap, usage_stat,
+    notify_business_of_assignment, parse_cap, record_business_assignment, usage_stat,
 )
+
+logger = logging.getLogger(__name__)
 
 
 def staff_required(view_func):
@@ -594,7 +598,15 @@ def lead_assign_businesses(request, pk):
         if b and b.pk not in previously_assigned
     ]
     for business in newly_assigned:
-        notify_business_of_assignment(business, lead)
+        record_business_assignment(business)
+        try:
+            notify_business_of_assignment(business, lead)
+        except Exception:
+            # A bad/blank business email (e.g. a hand-edited record) must
+            # never turn an already-saved assignment into a 500 with no
+            # confirmation it happened — same defensive pattern as the
+            # wizard's automatic assignment path.
+            logger.exception("Failed to notify business %s of lead %s", business.pk, lead.reference)
 
     names = [b.company_name for b in [lead.business_1, lead.business_2, lead.business_3] if b]
     _log_change(request, lead, f"Tildelt til {', '.join(names)}" if names else "Tildeling fjernet")
@@ -1062,10 +1074,15 @@ def section_inline_update(request, pk):
             return JsonResponse({"ok": False, "error": "invalid_field"}, status=400)
         if not isinstance(value, str) or len(value) > MAX_EXTRA_JSON_SCALAR_LENGTH:
             return JsonResponse({"ok": False, "error": "invalid_value"}, status=400)
-        section.extra_json[key] = value
-        section.save(update_fields=["extra_json"])
-        section.page.updated_by = request.user
-        section.page.save(update_fields=["updated_by", "updated_at"])
+        # Row-locked read-modify-write — see _locked_section docstring: two
+        # concurrent edits to this section's extra_json (a scalar field here,
+        # a list item elsewhere) must not let one save silently clobber the
+        # other's, since both start from an in-memory copy of the whole blob.
+        with transaction.atomic():
+            section = _locked_section(pk)
+            section.extra_json[key] = value
+            section.save(update_fields=["extra_json"])
+        _touch_page(section, request.user)
         return JsonResponse({"ok": True})
 
     if field not in INLINE_EDITABLE_FIELDS:
@@ -1148,6 +1165,31 @@ def _list_items(section):
     return section.extra_json.setdefault(key, [])
 
 
+def _locked_section(pk):
+    """Fetches a PageSection row-locked for the rest of the current
+    transaction.atomic() block — call this immediately before reading the
+    extra_json you're about to read-modify-write, not the earlier,
+    unlocked fetch used for upfront validation (section_type lookups, etc).
+
+    Regression note: every extra_json edit endpoint (scalar fields here,
+    and every per-item list endpoint below) used to fetch a section,
+    mutate a Python dict in memory, then save(update_fields=["extra_json"])
+    with no locking at all. Two concurrent edits to the same section (two
+    staff tabs open on the same page, or two rapid clicks) each start from
+    their own in-memory copy of the *whole* extra_json blob — whichever
+    save() lands second silently overwrites whatever the first one added,
+    with no error and no conflict indication.
+
+    select_for_update() gives real row-level locking on Postgres/MySQL. On
+    SQLite (this project's dev/test backend) it's a documented no-op, but
+    SQLite only allows one writer at a time file-wide, so a write inside
+    transaction.atomic() here still serializes against another concurrent
+    write to the same row in practice — this fix holds on both backends,
+    just via a coarser lock on SQLite.
+    """
+    return get_object_or_404(PageSection.objects.select_for_update(), pk=pk)
+
+
 def _touch_page(section, user):
     section.page.updated_by = user
     section.page.save(update_fields=["updated_by", "updated_at"])
@@ -1165,10 +1207,6 @@ def section_list_item_update(request, pk, index):
     if not spec:
         return JsonResponse({"ok": False, "error": "not_a_list_section"}, status=400)
 
-    items = _list_items(section)
-    if not (0 <= index < len(items)):
-        return JsonResponse({"ok": False, "error": "index_out_of_range"}, status=404)
-
     try:
         data = json.loads(request.body.decode("utf-8"))
     except (json.JSONDecodeError, UnicodeDecodeError):
@@ -1182,8 +1220,13 @@ def section_list_item_update(request, pk, index):
         if not isinstance(value, str) or len(value) > MAX_ITEM_FIELD_LENGTH:
             return JsonResponse({"ok": False, "error": "invalid_value"}, status=400)
 
-    items[index].update(updates)
-    section.save(update_fields=["extra_json"])
+    with transaction.atomic():
+        section = _locked_section(pk)
+        items = _list_items(section)
+        if not (0 <= index < len(items)):
+            return JsonResponse({"ok": False, "error": "index_out_of_range"}, status=404)
+        items[index].update(updates)
+        section.save(update_fields=["extra_json"])
     _touch_page(section, request.user)
     return JsonResponse({"ok": True})
 
@@ -1197,14 +1240,16 @@ def section_list_item_add(request, pk):
     if section.section_type not in LIST_ITEM_FIELD_SPECS:
         return JsonResponse({"ok": False, "error": "not_a_list_section"}, status=400)
 
-    items = _list_items(section)
-    if len(items) >= MAX_LIST_ITEMS:
-        return JsonResponse({"ok": False, "error": "max_items_reached"}, status=400)
-
-    items.append(dict(DEFAULT_LIST_ITEM[section.section_type]))
-    section.save(update_fields=["extra_json"])
+    with transaction.atomic():
+        section = _locked_section(pk)
+        items = _list_items(section)
+        if len(items) >= MAX_LIST_ITEMS:
+            return JsonResponse({"ok": False, "error": "max_items_reached"}, status=400)
+        items.append(dict(DEFAULT_LIST_ITEM[section.section_type]))
+        new_index = len(items) - 1
+        section.save(update_fields=["extra_json"])
     _touch_page(section, request.user)
-    return JsonResponse({"ok": True, "index": len(items) - 1})
+    return JsonResponse({"ok": True, "index": new_index})
 
 
 @staff_required
@@ -1217,12 +1262,13 @@ def section_list_item_delete(request, pk, index):
     if section.section_type not in LIST_ITEM_FIELD_SPECS:
         return JsonResponse({"ok": False, "error": "not_a_list_section"}, status=400)
 
-    items = _list_items(section)
-    if not (0 <= index < len(items)):
-        return JsonResponse({"ok": False, "error": "index_out_of_range"}, status=404)
-
-    items.pop(index)
-    section.save(update_fields=["extra_json"])
+    with transaction.atomic():
+        section = _locked_section(pk)
+        items = _list_items(section)
+        if not (0 <= index < len(items)):
+            return JsonResponse({"ok": False, "error": "index_out_of_range"}, status=404)
+        items.pop(index)
+        section.save(update_fields=["extra_json"])
     _touch_page(section, request.user)
     return JsonResponse({"ok": True})
 
@@ -1261,11 +1307,21 @@ def section_list_item_image(request, pk, index):
     if get_image_dimensions(image_file) is None:
         return JsonResponse({"ok": False, "error": "not_an_image"}, status=400)
 
+    # File I/O happens above, outside any DB lock — only the final
+    # read-modify-write of extra_json (the part actually racy against a
+    # concurrent edit) needs one, and holding a row lock across a file
+    # upload would only widen the contention window pointlessly.
     saved_path = default_storage.save(f"pages/section-items/{image_file.name}", image_file)
-    items[index]["image"] = default_storage.url(saved_path)
-    section.save(update_fields=["extra_json"])
+    saved_url = default_storage.url(saved_path)
+    with transaction.atomic():
+        section = _locked_section(pk)
+        items = _list_items(section)
+        if not (0 <= index < len(items)):
+            return JsonResponse({"ok": False, "error": "index_out_of_range"}, status=404)
+        items[index]["image"] = saved_url
+        section.save(update_fields=["extra_json"])
     _touch_page(section, request.user)
-    return JsonResponse({"ok": True, "url": items[index]["image"]})
+    return JsonResponse({"ok": True, "url": saved_url})
 
 
 @staff_required

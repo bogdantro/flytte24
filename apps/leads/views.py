@@ -9,7 +9,9 @@ from .cities import CITIES
 from .emails import send_receipt_email
 from .forms import WizardForm
 from .models import LeadImage, MoveLead
-from apps.store.services import find_matching_businesses, notify_business_of_assignment
+from apps.store.services import (
+    find_matching_businesses, notify_business_of_assignment, record_business_assignment,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -93,16 +95,25 @@ def wizard(request):
             # (apps.store.services.business_matches_move) — fewer than 3
             # matches just means fewer than 3 assigned; staff can still fill
             # in the rest manually from the lead's detail page.
-            matched_businesses = find_matching_businesses(lead.fra, lead.til, lead.flytte_type)
-            if matched_businesses:
-                for field, business in zip(("business_1", "business_2", "business_3"), matched_businesses):
-                    setattr(lead, field, business)
-                lead.save(update_fields=["business_1", "business_2", "business_3"][: len(matched_businesses)])
-                for business in matched_businesses:
-                    try:
-                        notify_business_of_assignment(business, lead)
-                    except Exception:
-                        logger.exception("Failed to notify business %s of lead %s", business.pk, lead.reference)
+            #
+            # The whole block is defensive: the MoveLead row above is already
+            # committed by this point, so a bug in matching/notification must
+            # never turn an already-saved lead into a 500 for the customer
+            # (who'd then likely resubmit, creating a duplicate MoveLead).
+            try:
+                matched_businesses = find_matching_businesses(lead.fra, lead.til, lead.flytte_type)
+                if matched_businesses:
+                    for field, business in zip(("business_1", "business_2", "business_3"), matched_businesses):
+                        setattr(lead, field, business)
+                    lead.save(update_fields=["business_1", "business_2", "business_3"][: len(matched_businesses)])
+                    for business in matched_businesses:
+                        record_business_assignment(business)
+                        try:
+                            notify_business_of_assignment(business, lead)
+                        except Exception:
+                            logger.exception("Failed to notify business %s of lead %s", business.pk, lead.reference)
+            except Exception:
+                logger.exception("Failed to auto-assign lead %s to matching businesses", lead.reference)
 
             for uploaded_file in photo_files:
                 # Re-detect format (cheap, and avoids trusting anything cached

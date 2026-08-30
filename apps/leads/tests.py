@@ -248,6 +248,22 @@ class WizardPostViewTest(TestCase):
         notification = next(m for m in mail.outbox if m.to == [business.email])
         self.assertIn(lead.reference, notification.subject)
 
+    def test_valid_post_increments_the_assigned_businesss_total_leads_received(self):
+        """Regression test: nothing incremented total_leads_received for this
+        pipeline, so find_matching_businesses' own "spread fairly" tiebreak
+        (fewest total_leads_received first, among equal priority_score) never
+        actually engaged for real wizard submissions."""
+        from apps.store.models import Bedrift_info
+
+        business = Bedrift_info.objects.create(
+            company_name="Oslo Flytt AS", email="oslo-flytt2@example.com", phone="12345678",
+            address="Gate 1", postal_code="0001", city="Oslo", first_name="Ola", last_name="Nordmann",
+            active=True, cities="Oslo", move_type="Flyttehjelp", total_leads_received=4,
+        )
+        self.client.post(reverse("leads:wizard"), _valid_payload())
+        business.refresh_from_db()
+        self.assertEqual(business.total_leads_received, 5)
+
     def test_valid_post_with_no_matching_business_stays_unassigned(self):
         from apps.store.models import Bedrift_info
 

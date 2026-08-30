@@ -913,6 +913,17 @@ $radiusPill: 9999px;
     svg{ width: 16px; height: 16px; }
   }
 
+  // Shown only to staff (is_editable) when a list-shaped CMS section has
+  // been emptied out via the per-item editor — an anonymous visitor sees
+  // nothing at all (an empty section), never this hint or the shipped
+  // placeholder content the section used to fall back to before it was
+  // ever customized.
+  .list-item-empty-state{
+    color: rgba(26, 26, 26, 0.4);
+    font-size: 14px;
+    font-style: italic;
+  }
+
   // The custom edit-form popover (static/js/inline-edit.js openEditPopover)
   // — every list-item edit and the CTA-link edit both use this one
   // component instead of a native prompt()/alert()/confirm().
@@ -2071,6 +2082,17 @@ $radiusPill: 9999px;
 
     &:hover{ background: rgba(214, 232, 168, 0.25); color: $ink; }
     svg{ width: 16px; height: 16px; }
+  }
+
+  // Shown only to staff (is_editable) when a list-shaped CMS section has
+  // been emptied out via the per-item editor — an anonymous visitor sees
+  // nothing at all (an empty section), never this hint or the shipped
+  // placeholder content the section used to fall back to before it was
+  // ever customized.
+  .list-item-empty-state{
+    color: rgba(26, 26, 26, 0.4);
+    font-size: 14px;
+    font-style: italic;
   }
 
   // The custom edit-form popover (static/js/inline-edit.js openEditPopover)

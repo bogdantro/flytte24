@@ -1,10 +1,23 @@
+import io
+
 from django.contrib.auth.models import User
 from django.core import mail
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
+from PIL import Image
 
 from apps.leads.models import MoveLead
 from apps.store.models import Bedrift_info, BusinessImage, PublicBusinessInformation, Review
+
+
+def _valid_image_upload(name="test.gif"):
+    """Builds a real, tiny decodable GIF wrapped in a SimpleUploadedFile — for
+    tests that need a file that passes Pillow's Image.open().verify(),
+    which forms.ImageField (used by BusinessImageForm) actually runs."""
+    buffer = io.BytesIO()
+    Image.new("RGB", (1, 1)).save(buffer, "GIF")
+    buffer.seek(0)
+    return SimpleUploadedFile(name, buffer.read(), content_type="image/gif")
 
 
 def _valid_signup_payload(**overrides):
@@ -402,9 +415,20 @@ class BusinessImageSelfServiceTests(TestCase):
     def test_add_saves_an_image(self):
         user, business = _make_business_user()
         self.client.force_login(user)
-        upload = SimpleUploadedFile("test.gif", b"GIF87a", content_type="image/gif")
-        self.client.post("/for-bedrifter/min-bruker/bilde/legg-til/", {"image": upload})
+        self.client.post("/for-bedrifter/min-bruker/bilde/legg-til/", {"image": _valid_image_upload()})
         self.assertEqual(business.public_info.images.count(), 1)
+
+    def test_add_rejects_a_non_image_file(self):
+        """Regression test: this view used to build a bare BusinessImage and call
+        .full_clean() on it directly, which only runs the model field's own
+        validators (a size check) — never Pillow's "is this actually a decodable
+        image" check, which lives exclusively on forms.ImageField. Any file under
+        the size cap (an .svg, .html, or arbitrary blob) used to save successfully."""
+        user, business = _make_business_user()
+        self.client.force_login(user)
+        upload = SimpleUploadedFile("not-an-image.gif", b"not actually a gif", content_type="image/gif")
+        self.client.post("/for-bedrifter/min-bruker/bilde/legg-til/", {"image": upload})
+        self.assertEqual(business.public_info.images.count(), 0)
 
     def test_cannot_delete_another_businesss_image(self):
         _user1, business1 = _make_business_user()
@@ -414,7 +438,7 @@ class BusinessImageSelfServiceTests(TestCase):
         public_info1, _ = PublicBusinessInformation.objects.get_or_create(business=business1)
         image = BusinessImage.objects.create(
             public_info=public_info1,
-            image=SimpleUploadedFile("test.gif", b"GIF87a", content_type="image/gif"),
+            image=_valid_image_upload(),
         )
         self.client.force_login(user2)
         response = self.client.post(f"/for-bedrifter/min-bruker/bilde/{image.pk}/slett/")

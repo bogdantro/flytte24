@@ -60,6 +60,44 @@ class HomePageRenderingTests(TestCase):
         self.assertContains(response, "Egendefinert spørsmål?")
         self.assertNotContains(response, "Hva koster det å bruke Kobly?")
 
+    def test_emptying_a_list_section_does_not_revert_to_hardcoded_placeholder(self):
+        """Regression test: every list-shaped section used to fall back to the
+        shipped hardcoded placeholder content whenever extra_json's list was
+        falsy — which an empty list [] also is. Deleting every FAQ item down
+        to none (a legitimate, intentional staff action via the per-item CMS
+        editor) used to instantly make the old, unreviewed placeholder
+        questions go live again with no warning, because {"items": []} and
+        "never customized" (no items key at all) were indistinguishable. The
+        fix keys off "items" being present at all, not its truthiness."""
+        page = Page.objects.create(
+            title="Forside", slug="forside", path="/", template_key="home", status="published"
+        )
+        PageSection.objects.create(
+            page=page, order=8, section_type="faq", heading="Ofte stilte spørsmål",
+            extra_json={"items": []},
+        )
+        response = self.client.get("/")
+        self.assertNotContains(response, "Hva koster det å bruke Kobly?")
+
+    def test_staff_sees_an_empty_state_hint_and_add_button_on_an_emptied_list_section(self):
+        """The anonymous case above proves visitors see no placeholder leak — this
+        proves staff still see something actionable (not a silently blank section)
+        so they can add real content back via the per-item editor."""
+        from django.contrib.auth.models import User
+
+        staff = User.objects.create_user("staff-empty-faq", password="pw", is_staff=True)
+        page = Page.objects.create(
+            title="Forside", slug="forside", path="/", template_key="home", status="published"
+        )
+        section = PageSection.objects.create(
+            page=page, order=8, section_type="faq", heading="Ofte stilte spørsmål",
+            extra_json={"items": []},
+        )
+        self.client.force_login(staff)
+        response = self.client.get("/")
+        self.assertContains(response, "Ingen spørsmål lagt til ennå.")
+        self.assertContains(response, f'data-list-item-add data-inline-section="{section.id}"')
+
     def test_seeded_how_it_works_steps_still_show_illustrations(self):
         call_command("seed_home_page_sections", stdout=StringIO())
         response = self.client.get("/")

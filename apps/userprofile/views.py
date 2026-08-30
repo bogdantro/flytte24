@@ -1,7 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ValidationError
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -171,15 +170,22 @@ def business_image_add(request):
         return redirect("myaccount")
 
     public_info, _ = PublicBusinessInformation.objects.get_or_create(business=business)
-    image_file = request.FILES.get("image")
-    if image_file:
-        image = BusinessImage(public_info=public_info, image=image_file)
-        try:
-            image.full_clean()
-        except ValidationError as exc:
-            messages.error(request, " ".join(exc.messages))
+    if request.FILES.get("image"):
+        # Regression note: this used to build a bare BusinessImage and call
+        # .full_clean() on it directly, which only runs the model field's
+        # own validators (just a size check — validate_max_file_size).
+        # Plain django.db.models.ImageField has no Pillow-based "is this
+        # actually a decodable image" check at all; that check lives only
+        # on forms.ImageField (django.forms.fields.ImageField.to_python).
+        # Going through BusinessImageForm — a real ModelForm — means the
+        # bound form field actually verifies the upload decodes as an
+        # image before it's ever saved, instead of accepting any file
+        # under the size cap (an .svg, .html, or arbitrary blob).
+        form = BusinessImageForm(request.POST, request.FILES, instance=BusinessImage(public_info=public_info))
+        if form.is_valid():
+            form.save()
         else:
-            image.save()
+            messages.error(request, " ".join(msg for errors in form.errors.values() for msg in errors))
     return redirect("edit_public_profile")
 
 

@@ -7,7 +7,7 @@ from apps.leads.models import MoveLead
 from apps.store.models import Bedrift_info
 from apps.store.services import (
     business_lead_entries, business_matches_move, find_matching_businesses,
-    notify_business_of_assignment,
+    notify_business_of_assignment, record_business_assignment,
 )
 
 
@@ -138,6 +138,40 @@ class BusinessMatchesMoveTests(TestCase):
     def test_no_match_with_no_coverage_set(self):
         business = _make_business(active=True)
         self.assertFalse(business_matches_move(business, "A, Oslo", "B, Oslo", "privat"))
+
+    def test_short_city_name_does_not_false_positive_on_a_longer_unrelated_city(self):
+        """Regression test: a plain `city in destination` substring check used to
+        false-positive on short Norwegian place names that are substrings of
+        unrelated ones — a business covering "Ski" (a real town near Oslo) matched
+        every address containing "Skien" (a different town 100km away), and "Os"
+        matched every "Oslo" address."""
+        ski_business = _make_business(email="ski@example.com", active=True, cities="Ski", move_type="Flyttehjelp")
+        self.assertFalse(business_matches_move(ski_business, "A, Bergen", "B, Skien", "privat"))
+        self.assertTrue(business_matches_move(ski_business, "A, Ski", "B, Ski", "privat"))
+
+        os_business = _make_business(email="os@example.com", active=True, cities="Os", move_type="Flyttehjelp")
+        self.assertFalse(business_matches_move(os_business, "A, Bergen", "B, Oslo", "privat"))
+        self.assertTrue(business_matches_move(os_business, "A, Os", "B, Os", "privat"))
+
+
+class RecordBusinessAssignmentTests(TestCase):
+    def test_increments_total_leads_received(self):
+        """Regression test: nothing incremented this counter for either live
+        assignment path (automatic or manual), so find_matching_businesses' own
+        "fewest total_leads_received" tiebreak never actually engaged — two
+        equally-ranked businesses ranked identically forever."""
+        business = _make_business(total_leads_received=2)
+        record_business_assignment(business)
+        business.refresh_from_db()
+        self.assertEqual(business.total_leads_received, 3)
+
+    def test_updates_the_passed_in_instance_too(self):
+        """The caller often re-ranks or re-uses the same in-memory instance
+        afterward (e.g. notify_business_of_assignment) — it must see the bump
+        without an explicit refresh_from_db()."""
+        business = _make_business(total_leads_received=0)
+        record_business_assignment(business)
+        self.assertEqual(business.total_leads_received, 1)
 
 
 class FindMatchingBusinessesTests(TestCase):

@@ -113,12 +113,14 @@
   <div class="image-strip__stats">
     <div class="image-strip__stats-inner">
       <div class="stats stats--compact">
-        {% if sections.stats.extra_json.items %}
+        {% if "items" in sections.stats.extra_json %}
           {% for stat in sections.stats.extra_json.items %}
             <div class="stat"{% if is_editable %} data-list-item data-inline-section="{{ sections.stats.id }}" data-section-type="stats" data-item-index="{{ forloop.counter0 }}" data-field-value="{{ stat.value }}" data-field-label="{{ stat.label }}"{% endif %}>
               <span class="stat__value">{{ stat.value }}</span><span class="stat__label">{{ stat.label }}</span>
               {% if is_editable %}{% include "core/_list_item_controls.html" %}{% endif %}
             </div>
+          {% empty %}
+            {% if is_editable %}<p class="list-item-empty-state">Ingen elementer lagt til ennå.</p>{% endif %}
           {% endfor %}
           {% if is_editable %}
             <button type="button" class="list-item-add" data-list-item-add data-inline-section="{{ sections.stats.id }}"><span data-icon="plus"></span>Legg til</button>
@@ -139,7 +141,7 @@
   <div class="content-width">
     <h2 class="how-it-works__title" {% if is_editable %}contenteditable="true" data-inline-section="{{ sections.how_it_works.id }}" data-inline-field="heading"{% endif %}>{{ sections.how_it_works.heading|default:"Slik fungerer det" }}</h2>
     <ol class="how-it-works__grid">
-      {% if sections.how_it_works.extra_json.steps %}
+      {% if "steps" in sections.how_it_works.extra_json %}
         {% for step in sections.how_it_works.extra_json.steps %}
           <li class="step-card"{% if is_editable %} data-list-item data-inline-section="{{ sections.how_it_works.id }}" data-section-type="how_it_works" data-item-index="{{ forloop.counter0 }}" data-field-title="{{ step.title }}" data-field-body="{{ step.body }}" data-field-image="{{ step.image }}"{% endif %}>
             <span class="step-card__number">{{ forloop.counter }}</span>
@@ -159,6 +161,8 @@
             <p class="step-card__body">{{ step.body }}</p>
             {% if is_editable %}{% include "core/_list_item_controls.html" %}{% endif %}
           </li>
+        {% empty %}
+          {% if is_editable %}<li class="list-item-empty-state">Ingen steg lagt til ennå.</li>{% endif %}
         {% endfor %}
         {% if is_editable %}
           <li><button type="button" class="list-item-add" data-list-item-add data-inline-section="{{ sections.how_it_works.id }}"><span data-icon="plus"></span>Legg til steg</button></li>
@@ -199,7 +203,7 @@
   <div class="content-width">
     <h2 class="testimonials__title" {% if is_editable %}contenteditable="true" data-inline-section="{{ sections.testimonials.id }}" data-inline-field="heading"{% endif %}>{{ sections.testimonials.heading|default:"Hva sier kundene våre?" }}</h2>
     <div class="testimonials__grid">
-      {% if sections.testimonials.extra_json.items %}
+      {% if "items" in sections.testimonials.extra_json %}
         {% for item in sections.testimonials.extra_json.items %}
           <article class="testimonial-card"{% if is_editable %} data-list-item data-inline-section="{{ sections.testimonials.id }}" data-section-type="testimonials" data-item-index="{{ forloop.counter0 }}" data-field-quote="{{ item.quote }}" data-field-name="{{ item.name }}" data-field-meta="{{ item.meta }}" data-field-image="{{ item.image }}"{% endif %}>
             <div class="testimonial-card__photo">
@@ -213,6 +217,8 @@
             <p class="testimonial-card__byline">{{ item.name }}<span> · {{ item.meta }}</span></p>
             {% if is_editable %}{% include "core/_list_item_controls.html" %}{% endif %}
           </article>
+        {% empty %}
+          {% if is_editable %}<p class="list-item-empty-state">Ingen uttalelser lagt til ennå.</p>{% endif %}
         {% endfor %}
         {% if is_editable %}
           <button type="button" class="list-item-add" data-list-item-add data-inline-section="{{ sections.testimonials.id }}"><span data-icon="plus"></span>Legg til uttalelse</button>
@@ -272,13 +278,15 @@
       <span class="services__underline" aria-hidden="true"></span>
     </div>
     <div class="services__grid">
-      {% if sections.services.extra_json.items %}
+      {% if "items" in sections.services.extra_json %}
         {% for item in sections.services.extra_json.items %}
           <article class="service-card"{% if is_editable %} data-list-item data-inline-section="{{ sections.services.id }}" data-section-type="services" data-item-index="{{ forloop.counter0 }}" data-field-title="{{ item.title }}" data-field-body="{{ item.body }}"{% endif %}>
             <h3 class="service-card__title">{{ item.title }}</h3>
             <p class="service-card__body">{{ item.body }}</p>
             {% if is_editable %}{% include "core/_list_item_controls.html" %}{% endif %}
           </article>
+        {% empty %}
+          {% if is_editable %}<p class="list-item-empty-state">Ingen tjenester lagt til ennå.</p>{% endif %}
         {% endfor %}
         {% if is_editable %}
           <button type="button" class="list-item-add" data-list-item-add data-inline-section="{{ sections.services.id }}"><span data-icon="plus"></span>Legg til tjeneste</button>
@@ -319,12 +327,14 @@
     <h2 class="cities__title" {% if is_editable %}contenteditable="true" data-inline-section="{{ sections.cities.id }}" data-inline-field="heading"{% endif %}>{{ sections.cities.heading|default:"Flytter du i en av disse byene?" }}</h2>
     <p class="cities__body" {% if is_editable %}contenteditable="true" data-inline-section="{{ sections.cities.id }}" data-inline-field="body_text"{% endif %}>{{ sections.cities.body_text|default:"Vi har kvalitetssjekkede byråer som tar oppdrag i hele landet. Velg byen din for å komme raskere i gang." }}</p>
     <ul class="cities__grid">
-      {% if sections.cities.extra_json.items %}
+      {% if "items" in sections.cities.extra_json %}
         {% for city in sections.cities.extra_json.items %}
           <li{% if is_editable %} data-list-item data-inline-section="{{ sections.cities.id }}" data-section-type="cities" data-item-index="{{ forloop.counter0 }}" data-field-name="{{ city.name }}" data-field-href="{{ city.href }}"{% endif %}>
             <a href="{{ city.href }}" class="city-card"><span class="city-card__name">{{ city.name }}</span><span class="city-card__arrow" data-icon="arrow-up-right"></span></a>
             {% if is_editable %}{% include "core/_list_item_controls.html" %}{% endif %}
           </li>
+        {% empty %}
+          {% if is_editable %}<li class="list-item-empty-state">Ingen byer lagt til ennå.</li>{% endif %}
         {% endfor %}
         {% if is_editable %}
           <li><button type="button" class="list-item-add" data-list-item-add data-inline-section="{{ sections.cities.id }}"><span data-icon="plus"></span>Legg til by</button></li>
@@ -346,7 +356,7 @@
     <div class="faq" data-faq>
       <h2 class="faq__title" {% if is_editable %}contenteditable="true" data-inline-section="{{ sections.faq.id }}" data-inline-field="heading"{% endif %}>{{ sections.faq.heading|default:"Ofte stilte spørsmål" }}</h2>
       <ul class="faq__list">
-        {% if sections.faq.extra_json.items %}
+        {% if "items" in sections.faq.extra_json %}
           {% for item in sections.faq.extra_json.items %}
             <li class="faq-item" data-faq-item{% if is_editable %} data-list-item data-inline-section="{{ sections.faq.id }}" data-section-type="faq" data-item-index="{{ forloop.counter0 }}" data-field-question="{{ item.question }}" data-field-answer="{{ item.answer }}"{% endif %}>
               <button type="button" class="faq-item__trigger" data-faq-trigger aria-expanded="false">
@@ -356,6 +366,8 @@
               <p class="faq-item__answer">{{ item.answer }}</p>
               {% if is_editable %}{% include "core/_list_item_controls.html" %}{% endif %}
             </li>
+          {% empty %}
+            {% if is_editable %}<li class="list-item-empty-state">Ingen spørsmål lagt til ennå.</li>{% endif %}
           {% endfor %}
           {% if is_editable %}
             <li><button type="button" class="list-item-add" data-list-item-add data-inline-section="{{ sections.faq.id }}"><span data-icon="plus"></span>Legg til spørsmål</button></li>

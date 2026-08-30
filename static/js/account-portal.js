@@ -62,8 +62,22 @@
     if (!form) return;
     const feedbackAnchor = form.querySelector("[data-coverage-feedback-anchor]");
 
+    // Regression note: rapid pill toggles used to fire one fetch() per
+    // change with no sequencing — two overlapping requests (snapshot {A},
+    // then snapshot {A, B}) had no guaranteed resolution order, so the
+    // earlier request landing *after* the later one silently overwrote the
+    // business's coverage back down to the stale, smaller snapshot even
+    // though the UI already showed both boxes checked and "saved". Aborting
+    // any still-in-flight request before firing the next one means only
+    // the latest snapshot can ever actually complete and reach the server.
+    let inFlightController = null;
+
     form.addEventListener("change", async (event) => {
       if (!event.target.matches('input[type="checkbox"]')) return;
+
+      if (inFlightController) inFlightController.abort();
+      const controller = new AbortController();
+      inFlightController = controller;
 
       const formData = new FormData(form);
       try {
@@ -71,11 +85,15 @@
           method: "POST",
           headers: { "X-CSRFToken": getCsrfToken() },
           body: formData,
+          signal: controller.signal,
         });
         const data = response.ok ? await response.json() : { ok: false };
         showSaveFeedback(feedbackAnchor, Boolean(data.ok));
-      } catch {
+      } catch (err) {
+        if (err.name === "AbortError") return; // superseded by a newer toggle — not a real failure
         showSaveFeedback(feedbackAnchor, false);
+      } finally {
+        if (inFlightController === controller) inFlightController = null;
       }
     });
   }

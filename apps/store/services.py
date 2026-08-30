@@ -7,6 +7,8 @@
 # daily/weekly/monthly cap has it used", instead of each maintaining its
 # own copy that could quietly drift apart.
 
+import re
+
 from django.db.models import Q
 from django.utils import timezone
 from datetime import timedelta
@@ -122,15 +124,29 @@ def business_matches_move(business, fra, til, flytte_type):
     """True if this business's self-declared coverage (cities/move_type,
     comma-separated free text) matches a move's origin/destination and
     customer type (via FLYTTE_TYPE_TO_SERVICE). City matching is
-    substring-based since MoveLead stores full addresses (fra/til), not a
-    separate city field."""
+    word-boundary based, not raw substring, since MoveLead stores full
+    addresses (fra/til), not a separate city field.
+
+    Regression note: a plain `city in destination` substring check used to
+    false-positive on short Norwegian place names that are substrings of
+    unrelated ones — a business covering "Ski" (a real town near Oslo)
+    matched every address containing "Skien" (a different town), and "Os"
+    matched every "Oslo" address. \\b...\\b requires a real word boundary on
+    both sides, so "ski" no longer matches inside "skien" (no boundary
+    between the shared "i" and "e"), while "oslo" itself still matches "oslo"
+    exactly.
+    """
     business_cities = [c.strip().lower() for c in (business.cities or "").split(",") if c.strip()]
     business_move_types = [m.strip().lower() for m in (business.move_type or "").split(",") if m.strip()]
     if not business_cities or not business_move_types:
         return False
     destination = (til or "").lower()
     origin = (fra or "").lower()
-    city_match = any(city in destination or city in origin for city in business_cities)
+    city_match = any(
+        re.search(r"\b" + re.escape(city) + r"\b", destination)
+        or re.search(r"\b" + re.escape(city) + r"\b", origin)
+        for city in business_cities
+    )
     wanted_service = FLYTTE_TYPE_TO_SERVICE.get((flytte_type or "").lower())
     type_match = wanted_service is not None and wanted_service in business_move_types
     return city_match and type_match
@@ -150,6 +166,29 @@ def find_matching_businesses(fra, til, flytte_type, limit=3):
     ]
     candidates.sort(key=lambda business: (-business.priority_score, business.total_leads_received))
     return candidates[:limit]
+
+
+def record_business_assignment(business):
+    """Bumps total_leads_received — the counter find_matching_businesses'
+    own tiebreak ranks by, to spread leads across equally-ranked businesses.
+
+    Regression note: nothing incremented this counter for either live
+    assignment path (the wizard's automatic matching, or the dashboard's
+    manual "Tildel til bedrifter"), so two businesses tied on priority_score
+    ranked identically forever — the "spread fairly" tiebreak never actually
+    engaged. Only the older, separate JobDistribution pipeline
+    (apps.core.views.send_flytteforesporsel) ever touched this field.
+    Uses F() so concurrent assignments to the same business (two leads
+    landing at once) both land instead of one clobbering the other via a
+    stale in-memory read."""
+    from django.db.models import F
+
+    from apps.store.models import Bedrift_info
+
+    Bedrift_info.objects.filter(pk=business.pk).update(
+        total_leads_received=F("total_leads_received") + 1
+    )
+    business.total_leads_received += 1
 
 
 def notify_business_of_assignment(business, lead):

@@ -76,8 +76,29 @@ class ArticleForm(forms.ModelForm):
         for i, block in enumerate(blocks, start=1):
             if not isinstance(block, dict) or "type" not in block:
                 raise forms.ValidationError(f"Blokk {i} mangler \"type\".")
-            if block["type"] not in ARTICLE_BLOCK_TYPES:
-                raise forms.ValidationError(f"Blokk {i} har ukjent type \"{block['type']}\".")
+            block_type = block["type"]
+            if block_type not in ARTICLE_BLOCK_TYPES:
+                raise forms.ValidationError(f"Blokk {i} har ukjent type \"{block_type}\".")
+            # Regression note: only "type" itself used to be validated — a
+            # block like {"type": "list", "items": "not a list"} passed
+            # straight through. Django's {% for %} tag silently coerces a
+            # non-iterable to an empty loop, but a *string* is itself
+            # iterable, so pages/blog/article.html's `{% for item in
+            # block.items %}` would render each individual character as its
+            # own <li> instead of erroring — confusing, non-crashing content
+            # corruption rather than a real security issue (auto-escaping
+            # still applies), but silent enough to ship unnoticed.
+            if block_type in ("h2", "p") and not isinstance(block.get("text"), str):
+                raise forms.ValidationError(f"Blokk {i} (\"{block_type}\") mangler tekst.")
+            if block_type == "list":
+                items = block.get("items")
+                if not isinstance(items, list) or not all(isinstance(item, str) for item in items):
+                    raise forms.ValidationError(f"Blokk {i} (\"list\") må ha \"items\" som en liste med tekst.")
+            if block_type == "image":
+                if not isinstance(block.get("src"), str) or not isinstance(block.get("alt"), str):
+                    raise forms.ValidationError(f"Blokk {i} (\"image\") mangler \"src\" eller \"alt\".")
+                if "caption" in block and not isinstance(block["caption"], str):
+                    raise forms.ValidationError(f"Blokk {i} (\"image\") har ugyldig \"caption\".")
         return blocks
 
     def save(self, commit=True):

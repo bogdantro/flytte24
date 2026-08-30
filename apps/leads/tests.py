@@ -227,6 +227,60 @@ class WizardPostViewTest(TestCase):
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].to, ["ola@eksempel.no"])
 
+    def test_valid_post_auto_assigns_a_matching_business_and_notifies_it(self):
+        """Regression test: the receipt email promises "vi matcher deg med 3
+        kvalitetssjekkede byråer" (we're matching you with 3 quality-checked
+        agencies), but nothing actually did that — a lead just sat unassigned
+        until a staff member picked it up by hand from the dashboard."""
+        from apps.store.models import Bedrift_info
+
+        business = Bedrift_info.objects.create(
+            company_name="Oslo Flytt AS", email="oslo-flytt@example.com", phone="12345678",
+            address="Gate 1", postal_code="0001", city="Oslo", first_name="Ola", last_name="Nordmann",
+            active=True, cities="Oslo", move_type="Flyttehjelp",
+        )
+        response = self.client.post(reverse("leads:wizard"), _valid_payload())
+        self.assertRedirects(response, reverse("leads:wizard_thank_you"))
+        lead = MoveLead.objects.get()
+        self.assertEqual(lead.business_1_id, business.pk)
+        # Receipt email (to the customer) + assignment notification (to the business).
+        self.assertEqual(len(mail.outbox), 2)
+        notification = next(m for m in mail.outbox if m.to == [business.email])
+        self.assertIn(lead.reference, notification.subject)
+
+    def test_valid_post_with_no_matching_business_stays_unassigned(self):
+        from apps.store.models import Bedrift_info
+
+        Bedrift_info.objects.create(
+            company_name="Tromsø Flytt AS", email="tromso-flytt@example.com", phone="12345678",
+            address="Gate 1", postal_code="9000", city="Tromsø", first_name="Ola", last_name="Nordmann",
+            active=True, cities="Tromsø", move_type="Flyttehjelp",
+        )
+        self.client.post(reverse("leads:wizard"), _valid_payload())
+        lead = MoveLead.objects.get()
+        self.assertIsNone(lead.business_1_id)
+        self.assertIsNone(lead.business_2_id)
+        self.assertIsNone(lead.business_3_id)
+        # Only the receipt email — no business to notify.
+        self.assertEqual(len(mail.outbox), 1)
+
+    def test_valid_post_assigns_up_to_three_matching_businesses(self):
+        from apps.store.models import Bedrift_info
+
+        businesses = [
+            Bedrift_info.objects.create(
+                company_name=f"Oslo Flytt {i} AS", email=f"oslo-flytt-{i}@example.com", phone="1",
+                address="Gate 1", postal_code="0001", city="Oslo", first_name="Ola", last_name="Nordmann",
+                active=True, cities="Oslo", move_type="Flyttehjelp",
+            )
+            for i in range(4)
+        ]
+        self.client.post(reverse("leads:wizard"), _valid_payload())
+        lead = MoveLead.objects.get()
+        assigned = {lead.business_1_id, lead.business_2_id, lead.business_3_id}
+        self.assertEqual(len(assigned), 3)
+        self.assertTrue(assigned.issubset({b.pk for b in businesses}))
+
     def test_valid_post_with_photos_creates_lead_images(self):
         payload = _valid_payload()
         photo = _make_valid_image_upload("sofa.jpg")

@@ -12,7 +12,6 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.cache import cache
 from django.core.exceptions import ValidationError
 from django.core.files.base import ContentFile
-from django.core.mail import send_mail
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import Count, Q
 from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
@@ -28,7 +27,10 @@ from apps.dashboard.forms import ArticleForm, BusinessCoreForm, BusinessPublicIn
 from apps.leads.models import MoveLead
 from apps.pages.models import Page, PageSection, PageSectionRevision, publish_due_pages
 from apps.store.models import Bedrift_info, BusinessImage, PublicBusinessInformation, Review
-from apps.store.services import business_lead_entries, business_usage, parse_cap, usage_stat
+from apps.store.services import (
+    business_lead_entries, business_matches_move, business_usage,
+    notify_business_of_assignment, parse_cap, usage_stat,
+)
 
 
 def staff_required(view_func):
@@ -438,21 +440,12 @@ def lead_bulk_action(request):
 
 
 def _business_matches_lead(business, lead):
-    """Heuristic used only to sort the "Tildel til bedrifter" dropdown —
-    does NOT touch the live matching algorithm in
-    apps/core/views.py send_flytteforesporsel. MoveLead stores full
-    addresses (fra/til), not a separate city field like the old pipeline's
-    Flytteforesporsel, so city matching is substring- rather than
-    equality-based."""
-    business_cities = [c.strip().lower() for c in (business.cities or "").split(",") if c.strip()]
-    business_move_types = [m.strip().lower() for m in (business.move_type or "").split(",") if m.strip()]
-    if not business_cities or not business_move_types:
-        return False
-    destination = (lead.til or "").lower()
-    origin = (lead.fra or "").lower()
-    city_match = any(city in destination or city in origin for city in business_cities)
-    type_match = lead.flytte_type.lower() in business_move_types
-    return city_match and type_match
+    """Sorts the "Tildel til bedrifter" dropdown into recommended/other —
+    thin wrapper around apps.store.services.business_matches_move, the same
+    heuristic apps.leads.views.wizard now uses to auto-assign a lead the
+    moment it's submitted, so staff see the same "would this match?" answer
+    here as whatever already ran automatically."""
+    return business_matches_move(business, lead.fra, lead.til, lead.flytte_type)
 
 
 @staff_required
@@ -572,28 +565,6 @@ def lead_permanent_delete(request, pk):
     return redirect("dashboard:lead_trash")
 
 
-def _notify_business_of_assignment(business, lead):
-    """Emails a business when it's newly assigned a lead — previously the
-    only way a business found out was logging into their own account and
-    checking. fail_silently=True: a broken SMTP config shouldn't block the
-    assignment itself, only the notification. SMS is not implemented (no
-    SMS provider is configured anywhere in this project)."""
-    subject = f"Ny flytteforespørsel tildelt — {lead.reference}"
-    message = (
-        f"Hei {business.company_name},\n\n"
-        "Dere har blitt tildelt en ny flytteforespørsel via Kobly.\n\n"
-        f"Referanse: {lead.reference}\n"
-        f"Navn: {lead.navn}\n"
-        f"Telefon: {lead.telefon}\n"
-        f"E-post: {lead.epost}\n"
-        f"Fra: {lead.fra}\n"
-        f"Til: {lead.til}\n"
-        f"Type: {lead.get_flytte_type_display()}\n\n"
-        "Logg inn på Kobly for mer informasjon."
-    )
-    send_mail(subject, message, None, [business.email], fail_silently=True)
-
-
 @staff_required
 @require_POST
 def lead_assign_businesses(request, pk):
@@ -623,7 +594,7 @@ def lead_assign_businesses(request, pk):
         if b and b.pk not in previously_assigned
     ]
     for business in newly_assigned:
-        _notify_business_of_assignment(business, lead)
+        notify_business_of_assignment(business, lead)
 
     names = [b.company_name for b in [lead.business_1, lead.business_2, lead.business_3] if b]
     _log_change(request, lead, f"Tildelt til {', '.join(names)}" if names else "Tildeling fjernet")

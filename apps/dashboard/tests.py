@@ -1302,7 +1302,7 @@ class LeadAssignmentSuggestionTests(TestCase):
         Bedrift_info.objects.create(
             company_name="Oslo Flytt AS", email="oslo@example.com", phone="1",
             address="A", postal_code="0001", city="Oslo", first_name="A", last_name="B",
-            active=True, cities="Oslo", move_type="privat",
+            active=True, cities="Oslo", move_type="Flyttehjelp",
         )
         lead = _make_lead(flytte_type="privat", til="Storgata 14, 0184 Oslo")
         response = self.client.get(reverse("dashboard:lead_detail", args=[lead.pk]))
@@ -1312,7 +1312,7 @@ class LeadAssignmentSuggestionTests(TestCase):
         Bedrift_info.objects.create(
             company_name="Bergen Flytt AS", email="bergen@example.com", phone="1",
             address="A", postal_code="0001", city="Bergen", first_name="A", last_name="B",
-            active=True, cities="Bergen", move_type="bedrift",
+            active=True, cities="Bergen", move_type="Kontorflytting",
         )
         lead = _make_lead(flytte_type="privat", til="Storgata 14, 0184 Oslo")
         response = self.client.get(reverse("dashboard:lead_detail", args=[lead.pk]))

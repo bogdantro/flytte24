@@ -9,6 +9,7 @@ from .cities import CITIES
 from .emails import send_receipt_email
 from .forms import WizardForm
 from .models import LeadImage, MoveLead
+from apps.store.services import find_matching_businesses, notify_business_of_assignment
 
 logger = logging.getLogger(__name__)
 
@@ -82,6 +83,27 @@ def wizard(request):
         photo_errors = _validate_photos(photo_files)
         if form.is_valid() and not photo_errors:
             lead = MoveLead.objects.create(**form.cleaned_data)
+
+            # Automatic assignment — matches the receipt email's own promise
+            # ("vi matcher deg med 3 kvalitetssjekkede byråer") which, before
+            # this, wasn't backed by anything: a lead just sat unassigned
+            # until a staff member picked it up by hand from the dashboard.
+            # Same city/service-type heuristic the dashboard's manual
+            # "Tildel til bedrifter" screen uses for its own recommendations
+            # (apps.store.services.business_matches_move) — fewer than 3
+            # matches just means fewer than 3 assigned; staff can still fill
+            # in the rest manually from the lead's detail page.
+            matched_businesses = find_matching_businesses(lead.fra, lead.til, lead.flytte_type)
+            if matched_businesses:
+                for field, business in zip(("business_1", "business_2", "business_3"), matched_businesses):
+                    setattr(lead, field, business)
+                lead.save(update_fields=["business_1", "business_2", "business_3"][: len(matched_businesses)])
+                for business in matched_businesses:
+                    try:
+                        notify_business_of_assignment(business, lead)
+                    except Exception:
+                        logger.exception("Failed to notify business %s of lead %s", business.pk, lead.reference)
+
             for uploaded_file in photo_files:
                 # Re-detect format (cheap, and avoids trusting anything cached
                 # from validation) and rename to a random filename with a

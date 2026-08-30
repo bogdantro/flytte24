@@ -1,10 +1,14 @@
 from django.contrib.auth.models import User
+from django.core import mail
 from django.db import IntegrityError, transaction
 from django.test import TestCase
 
 from apps.leads.models import MoveLead
 from apps.store.models import Bedrift_info
-from apps.store.services import business_lead_entries
+from apps.store.services import (
+    business_lead_entries, business_matches_move, find_matching_businesses,
+    notify_business_of_assignment,
+)
 
 
 def _make_business(**overrides):
@@ -96,3 +100,79 @@ class PublicBusinessProfilePrivacyTests(TestCase):
         active_business = _make_business(email="active@example.com", active=True)
         response = self.client.get(f"/bedrift/{active_business.id}/")
         self.assertEqual(response.status_code, 200)
+
+
+class BusinessMatchesMoveTests(TestCase):
+    """business_matches_move is the heuristic apps.leads.views.wizard uses to
+    auto-assign a lead the instant it's submitted, and apps.dashboard.views
+    _business_matches_lead reuses for its "recommended" sort — one heuristic,
+    not two that could drift apart."""
+
+    def test_matches_on_city_substring_and_mapped_service(self):
+        business = _make_business(active=True, cities="Oslo, Bergen", move_type="Flyttehjelp, Pakking")
+        self.assertTrue(business_matches_move(business, "Kongens gate 1, Oslo", "Storgata 2, Oslo", "privat"))
+
+    def test_city_match_checks_both_fra_and_til(self):
+        business = _make_business(active=True, cities="Bergen", move_type="Flyttehjelp")
+        self.assertTrue(business_matches_move(business, "Storgata 2, Bergen", "Et sted, Trondheim", "privat"))
+
+    def test_no_match_when_city_does_not_overlap(self):
+        business = _make_business(active=True, cities="Tromsø", move_type="Flyttehjelp")
+        self.assertFalse(business_matches_move(business, "Storgata 2, Oslo", "Et sted, Oslo", "privat"))
+
+    def test_flytte_type_vocabulary_is_bridged_to_move_type_vocabulary(self):
+        """Regression test: MoveLead.flytte_type ("privat"/"bedrift"/"internasjonal") and
+        Bedrift_info.move_type ("Flyttehjelp"/"Kontorflytting"/"Utlandsflytting"/...) are
+        two different vocabularies that never literally overlap — comparing flytte_type
+        against move_type directly (the original version of this function) could only
+        ever match by accident, since no business's move_type can contain the literal
+        string "privat"/"bedrift"/"internasjonal"."""
+        business = _make_business(active=True, cities="Oslo", move_type="Kontorflytting")
+        self.assertFalse(business_matches_move(business, "A, Oslo", "B, Oslo", "privat"))
+        self.assertTrue(business_matches_move(business, "A, Oslo", "B, Oslo", "bedrift"))
+
+    def test_international_move_maps_to_utlandsflytting(self):
+        business = _make_business(active=True, cities="Oslo", move_type="Utlandsflytting")
+        self.assertTrue(business_matches_move(business, "A, Oslo", "B, Oslo", "internasjonal"))
+
+    def test_no_match_with_no_coverage_set(self):
+        business = _make_business(active=True)
+        self.assertFalse(business_matches_move(business, "A, Oslo", "B, Oslo", "privat"))
+
+
+class FindMatchingBusinessesTests(TestCase):
+    def test_only_active_businesses_are_candidates(self):
+        _make_business(email="a@example.com", active=False, cities="Oslo", move_type="Flyttehjelp")
+        matches = find_matching_businesses("A, Oslo", "B, Oslo", "privat")
+        self.assertEqual(matches, [])
+
+    def test_ranked_by_priority_score_descending(self):
+        low = _make_business(email="low@example.com", active=True, cities="Oslo", move_type="Flyttehjelp", priority_score=1)
+        high = _make_business(email="high@example.com", active=True, cities="Oslo", move_type="Flyttehjelp", priority_score=9)
+        matches = find_matching_businesses("A, Oslo", "B, Oslo", "privat")
+        self.assertEqual(matches, [high, low])
+
+    def test_ties_broken_by_fewest_total_leads_received(self):
+        busy = _make_business(email="busy@example.com", active=True, cities="Oslo", move_type="Flyttehjelp", total_leads_received=50)
+        quiet = _make_business(email="quiet@example.com", active=True, cities="Oslo", move_type="Flyttehjelp", total_leads_received=2)
+        matches = find_matching_businesses("A, Oslo", "B, Oslo", "privat")
+        self.assertEqual(matches, [quiet, busy])
+
+    def test_limit_caps_the_result_at_three_by_default(self):
+        for i in range(5):
+            _make_business(email=f"biz{i}@example.com", active=True, cities="Oslo", move_type="Flyttehjelp")
+        matches = find_matching_businesses("A, Oslo", "B, Oslo", "privat")
+        self.assertEqual(len(matches), 3)
+
+
+class NotifyBusinessOfAssignmentTests(TestCase):
+    def test_sends_an_email_with_lead_details(self):
+        business = _make_business(active=True)
+        lead = _make_lead(business, navn="Kari Nordmann", telefon="90000000", fra="A, Oslo", til="B, Oslo")
+        notify_business_of_assignment(business, lead)
+        self.assertEqual(len(mail.outbox), 1)
+        sent = mail.outbox[0]
+        self.assertEqual(sent.to, [business.email])
+        self.assertIn(lead.reference, sent.subject)
+        self.assertIn("Kari Nordmann", sent.body)
+        self.assertIn("90000000", sent.body)

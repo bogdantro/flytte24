@@ -292,6 +292,87 @@ class CityPageTests(TestCase):
         response = self.client.get("/forside-kopi/")
         self.assertEqual(response.status_code, 200)
 
+    def test_oslo_page_lists_all_14_districts_other_cities_do_not(self):
+        """Spec §7: Oslo is the only city with sub-pages — its own page additionally
+        renders a DistrictList between Services and FAQ."""
+        from apps.core.districts import OSLO_DISTRICTS
+
+        response = self.client.get("/oslo/")
+        self.assertContains(response, "Bydeler i Oslo")
+        for data in OSLO_DISTRICTS.values():
+            self.assertContains(response, data["name"])
+
+        response = self.client.get("/bergen/")
+        self.assertNotContains(response, "Bydeler i Oslo")
+
+
+class DistrictPageTests(TestCase):
+    """Regression tests: spec §8's 14 Oslo district pages (/oslo/<bydel>/) were never
+    built — only the 5 city pages existed. Also guards the earlier-fixed
+    NoReverseMatch-riddled sitemap, which is what surfaced this gap."""
+
+    def test_all_districts_200_with_expected_title_and_h1(self):
+        from apps.core.districts import OSLO_DISTRICTS
+
+        for slug, data in OSLO_DISTRICTS.items():
+            response = self.client.get(f"/oslo/{slug}/")
+            self.assertEqual(response.status_code, 200, slug)
+            self.assertContains(response, f"Flyttebyrå i {data['name']} – få 3 tilbud gratis")
+
+    def test_unknown_district_slug_404s(self):
+        response = self.client.get("/oslo/ikke-en-bydel/")
+        self.assertEqual(response.status_code, 404)
+
+    def test_cta_links_to_oslo_centered_wizard_not_a_per_district_center(self):
+        """Spec §8: the wizard has no per-district map center, so every district CTA
+        funnels into the same Oslo-centered wizard, not a district-specific ?by=."""
+        response = self.client.get("/oslo/grunerlokka/")
+        self.assertContains(response, 'href="/flytteforesporsel/?by=oslo"')
+
+    def test_breadcrumb_shows_kobly_oslo_and_the_district_name(self):
+        response = self.client.get("/oslo/frogner/")
+        self.assertContains(response, "Oslo")
+        self.assertContains(response, "Frogner")
+
+    def test_other_districts_list_excludes_the_current_district(self):
+        response = self.client.get("/oslo/frogner/")
+        self.assertContains(response, "Bjerke")
+        self.assertNotContains(response, 'href="/oslo/frogner/" class="district-list__item"')
+
+    def test_each_districts_body_paragraph_is_genuinely_unique(self):
+        """Guards against the 14 pages reading as thin/duplicate SEO content — each
+        district's descriptive paragraph must differ from every other district's."""
+        from apps.core.districts import OSLO_DISTRICTS
+
+        bodies = [data["body"] for data in OSLO_DISTRICTS.values()]
+        self.assertEqual(len(bodies), len(set(bodies)))
+
+
+class SitemapTests(TestCase):
+    """Regression tests: apps/core/sitemaps.py's StaticViewsSitemap previously listed
+    URL names from an unrelated car-dealership template ('sell', 'buy_car', 'verksted',
+    'forsikring', etc.) that never existed in this project — every reverse() call in
+    it raised NoReverseMatch, so GET /sitemap.xml 500'd unconditionally."""
+
+    def test_sitemap_200s_instead_of_500ing(self):
+        response = self.client.get("/sitemap.xml")
+        self.assertEqual(response.status_code, 200)
+
+    def test_sitemap_lists_static_pages_cities_districts_agencies_and_articles(self):
+        # Domain-agnostic on purpose: the <loc> host comes from Django's Sites
+        # framework (still the framework's default "example.com" — a separate,
+        # known issue, spec §15's own "hardcoded domain" flag — not something
+        # this test should hardcode a guess for either).
+        call_command("seed_marketing_content", stdout=StringIO())
+        response = self.client.get("/sitemap.xml")
+        content = response.content.decode()
+        self.assertIn("<loc>http://", content)
+        self.assertIn("/</loc>", content)
+        self.assertIn("/oslo/</loc>", content)
+        self.assertIn("/oslo/frogner/</loc>", content)
+        self.assertIn("/byraer/loft/</loc>", content)
+        self.assertIn("/blogg/hva-koster-det-a-bruke-flyttebyra-i-2026/</loc>", content)
+
 
 class ForBusinessPageTests(TestCase):
     def test_page_200_with_h1(self):

@@ -18,6 +18,10 @@ from django.conf.urls.i18n import i18n_patterns
 
 sitemaps = {
     'static': StaticViewsSitemap,
+    'cities': CitySitemap,
+    'districts': DistrictSitemap,
+    'agencies': AgencySitemap,
+    'articles': ArticleSitemap,
 }
 
 
@@ -122,6 +126,12 @@ urlpatterns = [
     path('trondheim/', city_detail, {'city_slug': 'trondheim'}, name='city_trondheim'),
     path('stavanger/', city_detail, {'city_slug': 'stavanger'}, name='city_stavanger'),
     path('tromso/', city_detail, {'city_slug': 'tromso'}, name='city_tromso'),
+
+    # Oslo district pages (spec §8) — the only city with sub-pages. Must come
+    # after 'oslo/' above: Django tries patterns in order, and 'oslo/' only
+    # matches the bare path (no further segment), so there's no ambiguity —
+    # this just needs to exist before the catch-all below.
+    path('oslo/<slug:district_slug>/', district_detail, name='district_detail'),
 
     # Catch-all for CMS pages (apps.pages) at any path other than "/" —
     # e.g. a duplicated page (dashboard:page_duplicate). Must stay LAST:

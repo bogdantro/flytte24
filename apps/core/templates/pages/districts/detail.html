@@ -1,34 +1,43 @@
 {% extends 'core/base.html' %}
 {% load static %}
 
-{% block page_title %}Flyttebyrå i {{ city.name }} — Kobly{% endblock %}
+{% block page_title %}Flyttebyrå i {{ district.name }} – få 3 tilbud gratis | Kobly{% endblock %}
 
 {% block page_meta %}
-  <meta name="description" content="Få tre uforpliktende tilbud fra kvalitetssjekkede flyttebyråer i {{ city.name }}. Kobly kobler deg med de beste byråene i ditt område.">
+  <meta name="description" content="{{ district.meta_description }}">
 {% endblock %}
 
 {% block head %}
   <link rel="stylesheet" href="{% static 'scss/pages/cities/detail.css' %}">
-  {% if districts %}
-    <link rel="stylesheet" href="{% static 'scss/pages/districts/detail.css' %}">
-  {% endif %}
+  <link rel="stylesheet" href="{% static 'scss/pages/districts/detail.css' %}">
 {% endblock %}
 
 {% block content %}
 
-<!-- ===================== CITY HERO ===================== -->
+<!-- ===================== BREADCRUMB ===================== -->
+<div class="content-width district-breadcrumb__wrap">
+  <nav class="district-breadcrumb" aria-label="Brødsmulesti">
+    <a href="{% url 'home' %}" class="district-breadcrumb__link">Kobly</a>
+    <span class="district-breadcrumb__sep" aria-hidden="true">/</span>
+    <a href="{% url 'city_oslo' %}" class="district-breadcrumb__link">Oslo</a>
+    <span class="district-breadcrumb__sep" aria-hidden="true">/</span>
+    <span class="district-breadcrumb__current">{{ district.name }}</span>
+  </nav>
+</div>
+
+<!-- ===================== DISTRICT HERO ===================== -->
 <section class="hero">
   <div class="hero__inner">
     <div class="hero__left">
-      <p class="hero__eyebrow">Flytting i {{ city.name }}</p>
-      <h1 class="hero__title">Vi finner det beste flyttebyrået for deg i {{ city.name }}</h1>
-      <p class="hero__subline">Få tre uforpliktende tilbud fra kvalitetssjekkede byråer som jobber i {{ city.name }} og omegn.</p>
+      <p class="hero__eyebrow">Flytting i {{ district.name }}</p>
+      <h1 class="hero__title">Flyttebyrå i {{ district.name }} – få 3 tilbud gratis</h1>
+      <p class="hero__subline">{{ district.lead }}</p>
       <div class="city-hero__ctas">
-        <a href="/flytteforesporsel/?by={{ city.slug }}" class="btn-primary">
+        <a href="/flytteforesporsel/?by=oslo" class="btn-primary">
           Få 3 tilbud gratis
           <span data-icon="arrow-right"></span>
         </a>
-        <a href="/" class="btn-outline">Se andre byer</a>
+        <a href="{% url 'city_oslo' %}" class="btn-outline">Se hele Oslo</a>
       </div>
     </div>
     <div class="hero__card">
@@ -48,8 +57,8 @@
           </span>
         </div>
         <h2 class="hero-card__title">La firmaene konkurrere om deg</h2>
-        <p class="hero-card__body">Vi kobler deg med 3 håndplukkede, kvalitetssjekkede byråer som jobber i {{ city.name }}.</p>
-        <a href="/flytteforesporsel/?by={{ city.slug }}" class="btn-primary hero-card__cta">
+        <p class="hero-card__body">Vi kobler deg med 3 håndplukkede, kvalitetssjekkede byråer som jobber i {{ district.name }}.</p>
+        <a href="/flytteforesporsel/?by=oslo" class="btn-primary hero-card__cta">
           Få 3 tilbud gratis
           <span data-icon="arrow-right"></span>
         </a>
@@ -58,7 +67,14 @@
   </div>
 </section>
 
-<!-- ===================== STATS (full, not compact) ===================== -->
+<!-- ===================== UNIQUE DISTRICT PARAGRAPH ===================== -->
+<section class="section">
+  <div class="content-width district-intro">
+    <p class="district-intro__text">{{ district.body }}</p>
+  </div>
+</section>
+
+<!-- ===================== STATS ===================== -->
 <section class="section">
   <div class="content-width">
     <div class="stats">
@@ -95,7 +111,7 @@
       </li>
     </ol>
     <div class="how-it-works__cta">
-      <a href="/flytteforesporsel/?by={{ city.slug }}" class="btn-primary">
+      <a href="/flytteforesporsel/?by=oslo" class="btn-primary">
         Få 3 tilbud gratis
         <span data-icon="arrow-right"></span>
       </a>
@@ -139,17 +155,16 @@
   </div>
 </section>
 
-{% if districts %}
-<!-- ===================== DISTRICT LIST (Oslo only, spec §7) ===================== -->
+<!-- ===================== OTHER DISTRICTS ===================== -->
 <section class="section">
   <div class="content-width">
     <div class="district-list">
-      <h2 class="district-list__title">Bydeler i Oslo</h2>
+      <h2 class="district-list__title">Andre bydeler i Oslo</h2>
       <ul class="district-list__grid">
-        {% for district in districts %}
+        {% for other in other_districts %}
           <li>
-            <a href="{% url 'district_detail' district.slug %}" class="district-list__item">
-              <span>{{ district.name }}</span>
+            <a href="{% url 'district_detail' other.slug %}" class="district-list__item">
+              <span>{{ other.name }}</span>
               <span data-icon="arrow-up-right" class="district-list__icon"></span>
             </a>
           </li>
@@ -158,7 +173,6 @@
     </div>
   </div>
 </section>
-{% endif %}
 
 <!-- ===================== FAQ ===================== -->
 <section class="section">

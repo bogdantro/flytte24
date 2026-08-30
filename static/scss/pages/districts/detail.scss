@@ -1,0 +1,112 @@
+// static/scss/pages/districts/detail.scss
+// Page-specific styles for /oslo/<bydel>/ (apps/core/templates/pages/districts/detail.html).
+// Loaded alongside base.css AND static/scss/pages/cities/detail.css (this
+// page reuses the city page's mobile hero CTA row) — this file only adds
+// the three things a district page needs that neither of those already
+// give it: the breadcrumb, the unique-paragraph intro block, and the
+// "Andre bydeler i Oslo" list (styled to match base.scss's .city-card
+// hover-lift pattern, spec §3.3 "Hover lift").
+//
+// Compile after every edit with:
+//   sass static/scss/pages/districts/detail.scss static/scss/pages/districts/detail.css --style=expanded --no-source-map
+
+$ink: #1a1a1a;
+$inkMuted: #5c5c5c;
+$surfaceSoft: #faf9f6;
+$line: #e6e1d6;
+$radiusCard: 14px;
+
+.district-breadcrumb__wrap {
+  padding-top: 24px;
+}
+
+.district-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: rgba(26, 26, 26, 0.5);
+}
+
+.district-breadcrumb__link {
+  color: rgba(26, 26, 26, 0.5);
+  text-decoration: none;
+  &:hover {
+    color: $ink;
+    text-decoration: underline;
+  }
+}
+
+.district-breadcrumb__sep {
+  color: rgba(26, 26, 26, 0.3);
+}
+
+.district-breadcrumb__current {
+  color: $ink;
+  font-weight: 500;
+}
+
+.district-intro {
+  max-width: 680px;
+}
+
+.district-intro__text {
+  font-size: 17px;
+  line-height: 1.6;
+  color: $inkMuted;
+}
+
+.district-list__title {
+  font-size: 28px;
+  font-weight: 500;
+  color: $ink;
+  margin-bottom: 24px;
+}
+
+.district-list__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.district-list__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-radius: $radiusCard;
+  background: $surfaceSoft;
+  border: 1px solid $line;
+  padding: 16px 18px;
+  text-decoration: none;
+  color: $ink;
+  font-size: 15px;
+  font-weight: 500;
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: rgba(250, 249, 246, 0.7);
+    .district-list__icon {
+      transform: translate(2px, -2px);
+      color: $ink;
+    }
+  }
+}
+
+.district-list__icon {
+  color: rgba(26, 26, 26, 0.4);
+  flex-shrink: 0;
+  transition: transform 0.15s ease, color 0.15s ease;
+  width: 16px;
+  height: 16px;
+}

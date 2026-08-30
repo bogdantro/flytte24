@@ -467,4 +467,32 @@ def city_detail(request, city_slug):
     city = CITIES.get(city_slug)
     if not city:
         raise Http404
-    return render(request, "pages/cities/detail.html", {"city": {"slug": city_slug, "name": city["name"]}})
+    from apps.core.districts import OSLO_DISTRICTS
+    context = {"city": {"slug": city_slug, "name": city["name"]}}
+    if city_slug == "oslo":
+        # Oslo is the only city with district sub-pages (spec §7) — its own
+        # page additionally lists all of them between Services and FAQ.
+        context["districts"] = [
+            {"slug": slug, "name": data["name"]} for slug, data in OSLO_DISTRICTS.items()
+        ]
+    return render(request, "pages/cities/detail.html", context)
+
+
+def district_detail(request, district_slug):
+    """SEO landing page for one of the 14 Oslo districts (spec §8). Every CTA
+    on this page points at /flytteforesporsel/?by=oslo rather than a
+    per-district center, since the wizard only knows city-level map centers
+    (spec §8's own note) — Oslo is the only city with sub-pages at all."""
+    from apps.core.districts import OSLO_DISTRICTS
+    district = OSLO_DISTRICTS.get(district_slug)
+    if not district:
+        raise Http404
+    other_districts = [
+        {"slug": slug, "name": data["name"]}
+        for slug, data in OSLO_DISTRICTS.items()
+        if slug != district_slug
+    ]
+    return render(request, "pages/districts/detail.html", {
+        "district": {"slug": district_slug, **district},
+        "other_districts": other_districts,
+    })

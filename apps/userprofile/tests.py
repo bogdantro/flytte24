@@ -180,6 +180,17 @@ class PasswordChangeTests(TestCase):
         response = self.client.get("/for-bedrifter/min-bruker/bytt-passord/")
         self.assertEqual(response.status_code, 302)
 
+    def test_page_presents_as_innstillinger(self):
+        """Regression test: "Bytt passord" moved into its own page called
+        "Innstillinger" — same URL/view, new heading and sidebar section name."""
+        user, _business = _make_business_user()
+        self.client.force_login(user)
+        response = self.client.get("/for-bedrifter/min-bruker/bytt-passord/")
+        self.assertContains(response, "<h1 class=\"portal-heading\">Innstillinger</h1>")
+        content = response.content.decode()
+        settings_link_start = content.index('href="/for-bedrifter/min-bruker/bytt-passord/"')
+        self.assertIn("is-active", content[settings_link_start:settings_link_start + 200])
+
     def test_valid_change_updates_the_password(self):
         user, _business = _make_business_user()
         self.client.force_login(user)
@@ -221,6 +232,27 @@ class MyAccountViewTests(TestCase):
         self.assertEqual(response.context["total_received"], 3)
         self.assertContains(response, "Kari Nordmann")
 
+    def test_no_leads_cap_ui_anywhere_on_the_page(self):
+        user, _business = _make_business_user(active=True)
+        self.client.force_login(user)
+        response = self.client.get("/for-bedrifter/min-bruker/")
+        self.assertNotContains(response, "Bruk mot dine egne grenser")
+        self.assertNotContains(response, "leads_per_day")
+
+    def test_sidebar_shows_all_four_sections_and_highlights_the_current_one(self):
+        user, _business = _make_business_user(active=True)
+        self.client.force_login(user)
+        response = self.client.get("/for-bedrifter/min-bruker/")
+        self.assertContains(response, "Oversikt")
+        self.assertContains(response, "Bedriftsprofil")
+        self.assertContains(response, "Mine leads")
+        self.assertContains(response, "Innstillinger")
+        self.assertContains(response, 'href="/for-bedrifter/min-bruker/bytt-passord/"')
+        # The "Oversikt" link is the one carrying is-active on this page.
+        content = response.content.decode()
+        overview_link_start = content.index('href="/for-bedrifter/min-bruker/"')
+        self.assertIn("is-active", content[overview_link_start:overview_link_start + 200])
+
     def test_user_with_no_linked_business_sees_a_friendly_message(self):
         user = User.objects.create_user("no-business-user", password="pw")
         self.client.force_login(user)
@@ -257,7 +289,6 @@ class EditPublicProfileViewTests(TestCase):
             "company_name": "Nytt Navn AS", "company_number": "", "employees": "",
             "phone": "87654321", "website": "", "address": "Ny gate 2", "postal_code": "0002",
             "city": "Bergen", "tiltaleform": "", "first_name": "Kari", "last_name": "Hansen",
-            "cities": "Oslo, Bergen", "move_type": "Flyttehjelp",
             "about_us": "Vi flytter deg trygt.", "faq": "Spørsmål? Ring oss.",
         })
         self.assertRedirects(response, "/for-bedrifter/min-bruker/bedriftsinformasjon/")
@@ -273,11 +304,88 @@ class EditPublicProfileViewTests(TestCase):
             "company_name": "Flytt AS", "company_number": "", "employees": "",
             "phone": "12345678", "website": "", "address": "Gate 1", "postal_code": "0001",
             "city": "Oslo", "tiltaleform": "", "first_name": "Ola", "last_name": "Nordmann",
-            "cities": "", "move_type": "", "about_us": "", "faq": "",
+            "about_us": "", "faq": "",
             "email": "noe-annet@example.com",  # should be ignored — not a form field
         })
         business.refresh_from_db()
         self.assertEqual(business.email, "flytt@example.com")
+
+    def test_cities_and_move_type_are_not_editable_from_this_form(self):
+        """Regression test: "Dekning" (cities/move_type) moved to its own pill-button
+        AJAX-saved section (update_business_coverage) — BusinessSelfEditForm no longer
+        has these fields at all, so posting them here must be silently ignored."""
+        user, business = _make_business_user(cities="Oslo", move_type="Flyttehjelp")
+        self.client.force_login(user)
+        self.client.post("/for-bedrifter/min-bruker/bedriftsinformasjon/", {
+            "company_name": "Flytt AS", "company_number": "", "employees": "",
+            "phone": "12345678", "website": "", "address": "Gate 1", "postal_code": "0001",
+            "city": "Oslo", "tiltaleform": "", "first_name": "Ola", "last_name": "Nordmann",
+            "about_us": "", "faq": "",
+            "cities": "Bergen, Trondheim", "move_type": "Dødsbo",
+        })
+        business.refresh_from_db()
+        self.assertEqual(business.cities, "Oslo")
+        self.assertEqual(business.move_type, "Flyttehjelp")
+
+    def test_page_shows_the_pill_button_coverage_grid_not_free_text_inputs(self):
+        user, _business = _make_business_user()
+        self.client.force_login(user)
+        response = self.client.get("/for-bedrifter/min-bruker/bedriftsinformasjon/")
+        self.assertContains(response, 'data-pill-group="move_type"')
+        self.assertContains(response, 'data-pill-group="cities"')
+        self.assertContains(response, 'name="move_type" value="Flyttehjelp"')
+        self.assertContains(response, 'name="cities" value="Oslo"')
+
+    def test_file_inputs_use_the_custom_upload_tile_not_a_bare_input(self):
+        """Regression test: a native <input type="file"> can't be restyled — its
+        internal "Choose File"/"Browse" button stays native browser chrome no
+        matter what CSS is applied to the input itself."""
+        user, _business = _make_business_user()
+        self.client.force_login(user)
+        response = self.client.get("/for-bedrifter/min-bruker/bedriftsinformasjon/")
+        self.assertContains(response, "portal-upload-tile")
+
+
+class BusinessCoverageAjaxSaveTests(TestCase):
+    def test_requires_login(self):
+        response = self.client.post("/for-bedrifter/min-bruker/dekning/", {"move_type": ["Flyttehjelp"]})
+        self.assertEqual(response.status_code, 302)
+
+    def test_requires_post(self):
+        user, _business = _make_business_user()
+        self.client.force_login(user)
+        response = self.client.get("/for-bedrifter/min-bruker/dekning/")
+        self.assertEqual(response.status_code, 405)
+
+    def test_valid_post_saves_and_returns_json(self):
+        user, business = _make_business_user()
+        self.client.force_login(user)
+        response = self.client.post("/for-bedrifter/min-bruker/dekning/", {
+            "move_type": ["Flyttehjelp", "Pakking"], "cities": ["Oslo", "Bergen"],
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"ok": True})
+        business.refresh_from_db()
+        self.assertEqual(business.move_type, "Flyttehjelp, Pakking")
+        self.assertEqual(business.cities, "Oslo, Bergen")
+
+    def test_empty_selection_clears_the_fields(self):
+        user, business = _make_business_user(move_type="Flyttehjelp", cities="Oslo")
+        self.client.force_login(user)
+        self.client.post("/for-bedrifter/min-bruker/dekning/", {})
+        business.refresh_from_db()
+        self.assertEqual(business.move_type, "")
+        self.assertEqual(business.cities, "")
+
+    def test_rejects_a_value_outside_the_known_choices(self):
+        user, business = _make_business_user(move_type="Flyttehjelp")
+        self.client.force_login(user)
+        response = self.client.post("/for-bedrifter/min-bruker/dekning/", {
+            "move_type": ["Flyttehjelp", "<script>alert(1)</script>"],
+        })
+        self.assertEqual(response.status_code, 400)
+        business.refresh_from_db()
+        self.assertEqual(business.move_type, "Flyttehjelp")
 
 
 class BusinessImageSelfServiceTests(TestCase):
@@ -329,16 +437,20 @@ class ForesporselDatabaseViewTests(TestCase):
         response = self.client.get("/for-bedrifter/foresporsel-database/")
         self.assertContains(response, "Per Hansen")
 
-    def test_post_updates_caps_and_redirects(self):
-        user, business = _make_business_user()
+    def test_leads_cap_form_is_gone(self):
+        """Regression test: the whole "leads grense" (leads_per_day/week/month
+        self-set cap) feature was removed from the account portal — this view is
+        GET-only now, with no cap-setting UI anywhere on the page."""
+        user, _business = _make_business_user()
         self.client.force_login(user)
-        response = self.client.post("/for-bedrifter/foresporsel-database/", {
-            "leads_per_day": "5", "leads_per_week": "20", "leads_per_month": "",
-        })
-        self.assertRedirects(response, "/for-bedrifter/foresporsel-database/")
-        business.refresh_from_db()
-        self.assertEqual(business.leads_per_day, "5")
-        self.assertEqual(business.leads_per_week, "20")
+        response = self.client.get("/for-bedrifter/foresporsel-database/")
+        self.assertNotContains(response, "leads_per_day")
+        self.assertNotContains(response, "Ønsket antall leads")
+        # POST is simply not handled — GET-only view, method not restricted
+        # at the decorator level, so it just falls through to the same GET
+        # response body rather than a 405 (no separate POST branch exists).
+        response = self.client.post("/for-bedrifter/foresporsel-database/", {"leads_per_day": "5"})
+        self.assertEqual(response.status_code, 200)
 
     def test_lead_row_links_to_the_lead_detail_page(self):
         """Regression test: business_lead_entries always accepted a lead_url_resolver,

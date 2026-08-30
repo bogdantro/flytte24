@@ -1,0 +1,92 @@
+<!-- apps/userprofile/templates/core/accountPages/_account_base.html -->
+{% load static %}
+{% comment %}
+Sidebar-shell layout for every logged-in business-account page — mirrors
+the staff dashboard's own shell (apps/dashboard/templates/dashboard/_base.html
+.dashboard-shell) rather than the public site's nav+content+footer chrome.
+Every account page extends this instead of core/base.html, and passes
+`active_nav` in its context (one of "overview"/"profile"/"leads"/
+"settings") to highlight the right sidebar link.
+{% endcomment %}
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block page_title %}Min side{% endblock %} — Kobly</title>
+  <link rel="icon" type="image/svg+xml" href="{% static 'images/favicon.svg' %}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- base.css for the genuinely site-wide chrome it carries (.btn-primary/
+       .btn-outline/.content-width/etc.) — this shell doesn't extend
+       core/base.html the way every other page does (same reason the
+       dashboard's own shell doesn't either: a completely different
+       sidebar layout, not the public nav+content+footer chrome), so it
+       has to pull that stylesheet in explicitly instead of inheriting it
+       automatically. -->
+  <link rel="stylesheet" href="{% static 'scss/base.css' %}">
+  <link rel="stylesheet" href="{% static 'scss/pages/account/portal.css' %}">
+  {% block head %}{% endblock %}
+</head>
+<body>
+
+<div class="portal-shell">
+  <aside class="portal-sidebar">
+    <a href="/" class="portal-sidebar__logo">
+      <svg width="20" height="20" viewBox="0 0 27 27" fill="none" aria-hidden="true">
+        <circle cx="13.5" cy="13.5" r="11.625" stroke="currentColor" stroke-width="3.75" />
+        <path d="M16.5 1.875C12.7075 5.23556 10.5 9.26144 10.5 13.5887C10.5 17.8401 12.6307 21.8006 16.3019 25.125" stroke="currentColor" stroke-width="3.75" />
+      </svg>
+      <span class="portal-sidebar__wordmark">Kobly</span>
+    </a>
+    <span class="portal-sidebar__label">Min side</span>
+
+    <nav class="portal-sidebar__nav">
+      <a href="{% url 'myaccount' %}" class="portal-sidebar__link {% if active_nav == 'overview' %}is-active{% endif %}">
+        <span class="portal-sidebar__icon" data-icon="home"></span>
+        Oversikt
+      </a>
+      <a href="{% url 'edit_public_profile' %}" class="portal-sidebar__link {% if active_nav == 'profile' %}is-active{% endif %}">
+        <span class="portal-sidebar__icon" data-icon="building"></span>
+        Bedriftsprofil
+      </a>
+      <a href="{% url 'foresporsel_database' %}" class="portal-sidebar__link {% if active_nav == 'leads' %}is-active{% endif %}">
+        <span class="portal-sidebar__icon" data-icon="inbox"></span>
+        Mine leads
+      </a>
+      <a href="{% url 'account_settings' %}" class="portal-sidebar__link {% if active_nav == 'settings' %}is-active{% endif %}">
+        <span class="portal-sidebar__icon" data-icon="settings"></span>
+        Innstillinger
+      </a>
+    </nav>
+
+    <div class="portal-sidebar__footer">
+      <span class="portal-sidebar__user">{{ request.user.get_username }}</span>
+      <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="portal-sidebar__logout">
+          <span class="portal-sidebar__icon" data-icon="log-out"></span>
+          Logg ut
+        </button>
+      </form>
+    </div>
+  </aside>
+
+  <main class="portal-main">
+    {% if messages %}
+      <ul class="portal-messages">
+        {% for message in messages %}
+          <li class="portal-message{% if message.tags %} portal-message--{{ message.tags }}{% endif %}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+</div>
+
+{% include "core/_icon_sprite.html" %}
+<script src="{% static 'js/site.js' %}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

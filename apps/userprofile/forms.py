@@ -93,20 +93,19 @@ class BusinessSelfEditForm(forms.ModelForm):
     staff to change it), `active`/`total_leads_received` (system-managed),
     `priority_score`/`tags`/`internal_notes` (staff-only, the model's own
     docstring says internal_notes/tags are "never shown on the business's
-    own... account pages"), and `leads_per_day/week/month` (edited from the
-    leads page instead — apps.userprofile.views.foresporsel_database)."""
+    own... account pages"), `leads_per_day/week/month` (the "leads grense"
+    feature was removed from the account portal entirely), and
+    `cities`/`move_type` — the "Dekning" section on business_edit_profile.html
+    edits those as pill-button checkboxes (matching the become-a-partner
+    wizard exactly, per that page's own requirement) saved instantly via
+    apps.userprofile.views.update_business_coverage, not through this form."""
 
     class Meta:
         model = Bedrift_info
         fields = [
             "company_name", "company_number", "employees", "phone", "website",
             "address", "postal_code", "city", "tiltaleform", "first_name", "last_name",
-            "cities", "move_type",
         ]
-        widgets = {
-            "cities": forms.TextInput(attrs={"placeholder": "Oslo, Bergen, Trondheim"}),
-            "move_type": forms.TextInput(attrs={"placeholder": "Flyttehjelp, Pakking"}),
-        }
 
 
 class PublicBusinessInformationForm(forms.ModelForm):

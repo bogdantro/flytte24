@@ -82,17 +82,22 @@ urlpatterns = [
         views.PasswordChangeView.as_view(
             template_name='core/password_change_form.html',
             success_url='/for-bedrifter/min-bruker/bytt-passord/fullfort/',
+            extra_context={'active_nav': 'settings'},
         ),
-        name='password_change',
+        name='account_settings',
     ),
     path(
         'for-bedrifter/min-bruker/bytt-passord/fullfort/',
-        views.PasswordChangeDoneView.as_view(template_name='core/password_change_done.html'),
+        views.PasswordChangeDoneView.as_view(
+            template_name='core/password_change_done.html',
+            extra_context={'active_nav': 'settings'},
+        ),
         name='password_change_done',
     ),
 
     path('for-bedrifter/min-bruker/', myaccount, name='myaccount'),
     path('for-bedrifter/min-bruker/bedriftsinformasjon/', edit_public_profile, name='edit_public_profile'),
+    path('for-bedrifter/min-bruker/dekning/', update_business_coverage, name='update_business_coverage'),
     path('for-bedrifter/min-bruker/bilde/legg-til/', business_image_add, name='business_image_add'),
     path('for-bedrifter/min-bruker/bilde/<int:image_pk>/slett/', business_image_delete, name='business_image_delete'),
     path("for-bedrifter/foresporsel-database/", foresporsel_database, name="foresporsel_database"),

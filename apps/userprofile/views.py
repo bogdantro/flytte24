@@ -3,10 +3,12 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.db.models import Q
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_POST
 
+from apps.core.forms import CITY_CHOICES, MOVE_TYPE_CHOICES
 from apps.store.models import Bedrift_info, BusinessImage, PublicBusinessInformation
 from apps.store.services import business_lead_entries, business_usage
 from apps.userprofile.models import Profile
@@ -65,17 +67,21 @@ def signup(request, backend='django.contrib.auth.backends.ModelBackend'):
 
 @login_required(login_url="/for-bedrifter/bruker/logg-inn/")
 def myaccount(request):
-    """Account overview — status, usage against the business's own daily/
-    weekly/monthly caps, and its most recent leads. Combines both lead
-    pipelines the same way the staff dashboard does (apps.store.services),
-    so a partner's own numbers always match what staff see for them."""
+    """Account overview — status and its most recent leads. Combines both
+    lead pipelines the same way the staff dashboard does
+    (apps.store.services), so a partner's own numbers always match what
+    staff see for them. No self-set daily/weekly/monthly cap UI here
+    anymore — that whole "leads grense" feature was removed from the
+    account portal (still exists as a staff-only field/dashboard concept,
+    apps.store.services.business_usage, just no longer business-editable
+    or business-visible)."""
     business = getattr(request.user, "bedrift_info", None)
-    context = {"business": business}
+    context = {"business": business, "active_nav": "overview"}
 
     if business:
         lead_entries, movelead_count = business_lead_entries(business, lead_url_resolver=_business_lead_url)
         context.update({
-            "usage": business_usage(business, lead_entries),
+            "leads_today": business_usage(business, lead_entries)["today"]["count"],
             "recent_leads": lead_entries[:5],
             "total_received": business.total_leads_received + movelead_count,
             "review_count": business.reviews.count(),
@@ -112,6 +118,9 @@ def edit_public_profile(request):
     public_path = reverse('public_business_profile', args=[business.id])
     public_url = request.build_absolute_uri(public_path)
 
+    current_move_types = {v.strip() for v in (business.move_type or "").split(",") if v.strip()}
+    current_cities = {v.strip() for v in (business.cities or "").split(",") if v.strip()}
+
     return render(request, "core/accountPages/business_edit_profile.html", {
         "core_form": core_form,
         "public_form": public_form,
@@ -120,7 +129,38 @@ def edit_public_profile(request):
         "public_url": public_url,
         "images": public_info.images.all(),
         "reviews": business.reviews.all(),
+        "move_type_choices": MOVE_TYPE_CHOICES,
+        "city_choices": CITY_CHOICES,
+        "current_move_types": current_move_types,
+        "current_cities": current_cities,
+        "active_nav": "profile",
     })
+
+
+@login_required(login_url="/for-bedrifter/bruker/logg-inn/")
+@require_POST
+def update_business_coverage(request):
+    """AJAX-only save for the Bedriftsprofil page's "Dekning" (coverage)
+    section — services offered + cities covered, as the exact same
+    pill-button checkboxes as the become-a-partner wizard's step 1/2
+    (apps.core.forms MOVE_TYPE_CHOICES/CITY_CHOICES — reused directly
+    rather than a second copy of the same lists), saved the instant a pill
+    is toggled instead of needing the page's main form submit/reload."""
+    business = getattr(request.user, "bedrift_info", None)
+    if not business:
+        return JsonResponse({"ok": False}, status=403)
+
+    move_type = request.POST.getlist("move_type")
+    cities = request.POST.getlist("cities")
+    valid_move_types = {value for value, _label in MOVE_TYPE_CHOICES}
+    valid_cities = {value for value, _label in CITY_CHOICES}
+    if not set(move_type) <= valid_move_types or not set(cities) <= valid_cities:
+        return JsonResponse({"ok": False, "error": "invalid_choice"}, status=400)
+
+    business.move_type = ", ".join(move_type)
+    business.cities = ", ".join(cities)
+    business.save(update_fields=["move_type", "cities"])
+    return JsonResponse({"ok": True})
 
 
 @login_required(login_url="/for-bedrifter/bruker/logg-inn/")
@@ -160,36 +200,20 @@ def foresporsel_database(request):
     """The business's own leads list — combines both pipelines (see
     apps.store.services.business_lead_entries) so a lead assigned via
     either the old direct-form flow or the dashboard's wizard flow shows up
-    here, not just one of them. POST still updates the self-reported daily/
-    weekly/monthly capacity, unchanged from before."""
+    here, not just one of them. Used to also handle a POST updating the
+    business's self-reported daily/weekly/monthly lead cap — that whole
+    "leads grense" feature was removed from the account portal, so this is
+    a GET-only view now."""
     business = getattr(request.user, "bedrift_info", None)
     if not business:
         return redirect("login")
-
-    if request.method == "POST":
-        # A plain form POST + redirect — no JS on this page ever called the
-        # JsonResponse this used to return, so there was nothing to actually
-        # show the "success" to.
-        leads_per_day = request.POST.get("leads_per_day")
-        leads_per_week = request.POST.get("leads_per_week")
-        leads_per_month = request.POST.get("leads_per_month")
-
-        if leads_per_day is not None:
-            business.leads_per_day = leads_per_day or None
-        if leads_per_week is not None:
-            business.leads_per_week = leads_per_week or None
-        if leads_per_month is not None:
-            business.leads_per_month = leads_per_month or None
-
-        business.save(update_fields=["leads_per_day", "leads_per_week", "leads_per_month"])
-        messages.success(request, "Grensene er lagret.")
-        return redirect("foresporsel_database")
 
     lead_entries, movelead_count = business_lead_entries(business, lead_url_resolver=_business_lead_url)
     return render(request, "core/accountPages/foresporsel_database.html", {
         "business": business,
         "lead_entries": lead_entries,
         "total_received": business.total_leads_received + movelead_count,
+        "active_nav": "leads",
     })
 
 
@@ -219,4 +243,6 @@ def business_lead_detail(request, pk):
         MoveLead.objects.filter(Q(business_1=business) | Q(business_2=business) | Q(business_3=business)),
         pk=pk, archived=False,
     )
-    return render(request, "core/accountPages/lead_detail.html", {"business": business, "lead": lead})
+    return render(request, "core/accountPages/lead_detail.html", {
+        "business": business, "lead": lead, "active_nav": "leads",
+    })

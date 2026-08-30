@@ -1,12 +1,6 @@
-{% extends 'core/base.html' %}
-{% load static %}
+{% extends 'core/accountPages/_account_base.html' %}
 
 {% block page_title %}Min side{% endblock %}
-
-{% block head %}
-  <link rel="stylesheet" href="{% static 'scss/pages/account/auth-forms.css' %}">
-  <link rel="stylesheet" href="{% static 'scss/pages/account/portal.css' %}">
-{% endblock %}
 
 {% block content %}
 <section class="portal-page">
@@ -27,8 +21,6 @@
       {% endif %}
     </div>
 
-    {% include "core/accountPages/_portal_nav.html" with active="overview" %}
-
     {% if not business.active %}
       <div class="portal-banner portal-banner--pending">
         Profilen din er under vurdering hos Kobly. Du kan fylle ut bedriftsprofilen din i mellomtiden —
@@ -42,30 +34,13 @@
         <span class="portal-stat__label">Leads mottatt totalt</span>
       </div>
       <div class="portal-stat">
-        <span class="portal-stat__value">{{ usage.today.count }}</span>
+        <span class="portal-stat__value">{{ leads_today }}</span>
         <span class="portal-stat__label">Leads i dag</span>
       </div>
       <div class="portal-stat">
         <span class="portal-stat__value">{{ review_count }}</span>
         <span class="portal-stat__label">Anmeldelser</span>
       </div>
-    </div>
-
-    <div class="portal-card">
-      <p class="portal-card__title">Bruk mot dine egne grenser</p>
-      <div class="portal-usage-bar">
-        <span class="portal-usage-bar__label">I dag: {{ usage.today.count }}{% if usage.today.cap %} / {{ usage.today.cap }}{% else %} (ingen grense satt){% endif %}</span>
-        {% if usage.today.cap %}<div class="portal-usage-bar__track"><div class="portal-usage-bar__fill" style="width: {{ usage.today.percent }}%;"></div></div>{% endif %}
-      </div>
-      <div class="portal-usage-bar">
-        <span class="portal-usage-bar__label">Denne uken: {{ usage.week.count }}{% if usage.week.cap %} / {{ usage.week.cap }}{% else %} (ingen grense satt){% endif %}</span>
-        {% if usage.week.cap %}<div class="portal-usage-bar__track"><div class="portal-usage-bar__fill" style="width: {{ usage.week.percent }}%;"></div></div>{% endif %}
-      </div>
-      <div class="portal-usage-bar">
-        <span class="portal-usage-bar__label">Denne måneden: {{ usage.month.count }}{% if usage.month.cap %} / {{ usage.month.cap }}{% else %} (ingen grense satt){% endif %}</span>
-        {% if usage.month.cap %}<div class="portal-usage-bar__track"><div class="portal-usage-bar__fill" style="width: {{ usage.month.percent }}%;"></div></div>{% endif %}
-      </div>
-      <p style="margin:14px 0 0; font-size:13px;"><a href="{% url 'foresporsel_database' %}">Endre grensene dine →</a></p>
     </div>
 
     <div class="portal-card">

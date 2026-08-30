@@ -1,20 +1,12 @@
-{% extends 'core/base.html' %}
-{% load static %}
+{% extends 'core/accountPages/_account_base.html' %}
 
 {% block page_title %}{{ lead.reference }} — Mine leads{% endblock %}
-
-{% block head %}
-  <link rel="stylesheet" href="{% static 'scss/pages/account/auth-forms.css' %}">
-  <link rel="stylesheet" href="{% static 'scss/pages/account/portal.css' %}">
-{% endblock %}
 
 {% block content %}
 <section class="portal-page">
   <div class="portal-heading-row">
     <h1 class="portal-heading">{{ lead.reference }} — {{ lead.navn }}</h1>
   </div>
-
-  {% include "core/accountPages/_portal_nav.html" with active="leads" %}
 
   <p style="margin:0 0 20px;"><a href="{% url 'foresporsel_database' %}">&larr; Tilbake til mine leads</a></p>
 

@@ -1,8 +1,19 @@
 // static/scss/pages/account/portal.scss
-// Shared layout for the logged-in partner portal: myaccount.html,
-// accountPages/business_edit_profile.html, accountPages/foresporsel_database.html,
-// password_change_form.html's "back to portal" nav. Loaded alongside
-// auth-forms.css (field-input/field-label/btn-primary) and base.css.
+// Shared layout for the logged-in business account portal — the sidebar
+// shell (accountPages/_account_base.html) plus every page inside it:
+// myaccount.html, accountPages/business_edit_profile.html,
+// accountPages/foresporsel_database.html, accountPages/lead_detail.html,
+// password_change_form.html/password_change_done.html ("Innstillinger").
+// This is a self-contained stylesheet for that section — it does NOT rely
+// on auth-forms.scss (that one's for the separate pre-login pages: login,
+// signup, password reset), even though a couple of its class names
+// (.account-card and friends, for myaccount.html's "no business linked"
+// empty state) are deliberately duplicated here rather than shared, same
+// reasoning as every other page-specific SCSS file in this project.
+// Loaded alongside base.css (.btn-primary/.btn-outline/.content-width —
+// never instead of it) via _account_base.html's own <head>, and
+// static/scss/wizard.css on business_edit_profile.html specifically, for
+// its "Dekning" section's pill-button grid (see that template).
 //
 // Compile after every edit with:
 //   sass static/scss/pages/account/portal.scss static/scss/pages/account/portal.css --style=expanded --no-source-map
@@ -21,10 +32,216 @@ $fontSerif: "Crimson Pro", Georgia, serif;
 $radiusCard: 14px;
 $radiusPill: 9999px;
 
+// Empty-state card (myaccount.html's "no business linked on this account")
+// and the inline form-error block reused on business_edit_profile.html/
+// password_change_form.html — same look as auth-forms.scss's own
+// .account-card family, duplicated here rather than shared (see header).
+.account-card {
+  width: 100%;
+  max-width: 440px;
+  background: $surfaceSoft;
+  border: 1px solid $line;
+  border-radius: $radiusCard;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03), 0 12px 32px -16px rgba(0, 0, 0, 0.1);
+  padding: 36px 32px;
+
+  &__title {
+    margin: 0;
+    font-family: $fontSerif;
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 1.15;
+    color: $ink;
+  }
+
+  &__subtitle {
+    margin: 10px 0 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: $inkMuted;
+  }
+
+  &__errors {
+    margin: 0 0 20px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: #fdeceb;
+    color: #a33a2f;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+}
+
+// ---------------------------------------------------------------
+// .portal-shell — sidebar + main content, present on every logged-in
+// business-account page (myaccount.html and everything under
+// accountPages/). Mirrors the staff dashboard's own sidebar shell
+// (static/scss/dashboard.scss .dashboard-shell) in structure and spacing
+// — same nav-link/icon/footer proportions — using this file's own
+// $ink/$brand/etc. tokens instead of dashboard.scss's separate
+// kobly-tokens module, since these are two independent per-section
+// stylesheets that happen to draw from the same brand palette, not one
+// shared component library.
+// ---------------------------------------------------------------
+.portal-shell {
+  display: flex;
+  align-items: flex-start;
+  min-height: 100vh;
+}
+
+.portal-sidebar {
+  position: sticky;
+  top: 0;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  width: 240px;
+  height: 100vh;
+  padding: 24px 16px;
+  background: $surface;
+  border-right: 1px solid $line;
+
+  &__logo { display: inline-flex; align-items: center; gap: 8px; color: $ink; padding: 0 8px; }
+  &__wordmark { font-size: 17px; font-weight: 700; }
+  &__label {
+    margin: 6px 0 24px;
+    padding: 0 8px;
+    font-size: 13px;
+    color: $inkMuted;
+  }
+
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: $inkMuted;
+    transition: background-color 0.2s ease, color 0.2s ease;
+
+    &:hover { background: $surfaceSoft; color: $ink; }
+
+    &.is-active {
+      background: $brand;
+      color: $brandInk;
+
+      .portal-sidebar__icon { color: $brandInk; }
+    }
+  }
+
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    color: $inkMuted;
+  }
+
+  &__footer {
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid $line;
+  }
+
+  &__user {
+    display: block;
+    padding: 0 12px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: $inkMuted;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__logout {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 12px;
+    background: transparent;
+    color: $inkMuted;
+    font-family: $fontSans;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+
+    &:hover { background: $surfaceSoft; color: $ink; }
+  }
+}
+
+.portal-main {
+  flex: 1;
+  min-width: 0;
+  max-width: 1000px;
+  padding: 32px 40px 96px;
+}
+
+.portal-messages {
+  list-style: none;
+  margin: 0 0 24px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.portal-message {
+  padding: 14px 18px;
+  border-radius: $radiusCard;
+  font-size: 14px;
+  background: #eef3e6;
+  color: #3d5507;
+  border: 1px solid rgba(61, 85, 7, 0.2);
+
+  &--error { background: #fdeceb; color: #a33a2f; border-color: rgba(163, 58, 47, 0.2); }
+}
+
+@media (max-width: 1049px) {
+  .portal-shell {
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .portal-sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+
+    &__label { display: none; }
+    &__nav { flex-direction: row; flex-wrap: wrap; flex: 1; }
+    &__footer { margin: 0; padding: 0; border: none; }
+    &__user { display: none; }
+    &__logout { width: auto; padding: 10px 12px; }
+  }
+
+  .portal-main { padding: 24px 20px 72px; max-width: 100%; }
+}
+
+// Semantic wrapper only now — .portal-main (above) owns the actual
+// max-width/padding/centering since every account page sits inside the
+// sidebar shell's <main> rather than being centered on its own.
 .portal-page {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 40px 20px 96px;
+  display: block;
 }
 
 .portal-heading-row {
@@ -44,34 +261,6 @@ $radiusPill: 9999px;
   color: $ink;
 }
 
-// Sub-nav between the portal's own pages (Oversikt / Bedriftsprofil / Leads)
-.portal-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 28px;
-
-  a {
-    display: inline-flex;
-    align-items: center;
-    border: 1.5px solid $line;
-    border-radius: $radiusPill;
-    padding: 8px 18px;
-    font-size: 14px;
-    font-weight: 500;
-    color: $inkMuted;
-    background: $surface;
-    transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
-
-    &:hover { border-color: rgba(26, 26, 26, 0.3); color: $ink; }
-
-    &.is-active {
-      border-color: $brand;
-      background: $brand;
-      color: $brandInk;
-    }
-  }
-}
 
 .portal-banner {
   margin-bottom: 24px;
@@ -169,6 +358,32 @@ $radiusPill: 9999px;
   &__fill { height: 100%; background: $brand; border-radius: $radiusPill; }
 }
 
+// Pairs two fields on one line (e.g. firmanavn + org.nr) instead of each
+// taking a full row — wraps back to stacked on narrow viewports since
+// it's just a flex row with wrapping, no separate breakpoint needed.
+.portal-form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+
+  > * { flex: 1 1 200px; }
+}
+
+.portal-form-section {
+  margin-bottom: 24px;
+
+  &:last-child { margin-bottom: 0; }
+
+  &__title {
+    margin: 0 0 12px;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: $inkMuted;
+  }
+}
+
 .portal-form__group {
   // Wraps each field as a real <label> now (for screen-reader/click-to-focus
   // association with the input inside), not a <div> — display:block was
@@ -183,8 +398,12 @@ $radiusPill: 9999px;
 
   // Bare Django-rendered widgets ({{ form.field }}) — no explicit CSS class
   // needed on each one, same convention as apps/dashboard's .dashboard-form__group.
+  // input[type="file"] deliberately excluded — every file upload on this
+  // page goes through .portal-upload-tile instead (a native file input's
+  // internal "Choose File"/"Browse" button can't be restyled with CSS at
+  // all, regardless of border/padding/background applied to it).
   input[type="text"], input[type="email"], input[type="url"], input[type="tel"],
-  input[type="file"], textarea, select {
+  textarea, select {
     width: 100%;
     border: 1.5px solid rgba(26, 26, 26, 0.1);
     border-radius: $radiusCard;
@@ -253,4 +472,85 @@ $radiusPill: 9999px;
   transition: background-color 0.2s ease, color 0.2s ease;
 
   &:hover { background: #d9534f; color: white; }
+}
+
+// ---------------------------------------------------------------
+// Custom file-upload tile — replaces the raw native <input type="file">
+// (OS-native "Choose File"/"Browse" button, unstylable by design in every
+// browser) with a click-anywhere dashed tile + live preview. The native
+// input stays functionally in charge (hidden, still what the form
+// submits) — see static/js/account-portal.js initUploadPreviews().
+// ---------------------------------------------------------------
+.portal-upload-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 140px;
+  height: 140px;
+  border: 1.5px dashed rgba(26, 26, 26, 0.2);
+  border-radius: $radiusCard;
+  background: #f7f5f1;
+  color: $inkMuted;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 0.2s ease;
+
+  &:hover { border-color: rgba(26, 26, 26, 0.4); }
+
+  input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 1px; height: 1px; }
+
+  [data-icon] { width: 22px; height: 22px; }
+
+  &.has-preview {
+    border-style: solid;
+    border-color: $line;
+    color: transparent;
+
+    [data-icon], span:not([data-upload-preview]) { opacity: 0; }
+  }
+}
+
+.portal-upload-tile--small { width: 100%; aspect-ratio: 1 / 1; height: auto; }
+
+[data-upload-preview] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.portal-upload-hint {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: $inkMuted;
+}
+
+// Coverage (Dekning) pill-button grid — reuses wizard.css's own
+// .pill-group/.pill-button classes verbatim (loaded alongside this file
+// on business_edit_profile.html) so it's pixel-identical to the
+// become-a-partner wizard's step 1/2, per that page's own requirement,
+// rather than a second hand-copied version of the same component.
+.portal-coverage-feedback-anchor { display: inline-block; }
+
+.portal-save-feedback {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  background: $ink;
+  color: $brandInk;
+  font-size: 11px;
+  font-weight: 600;
+  opacity: 0;
+  transform: translateY(2px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+
+  &.is-visible { opacity: 1; transform: translateY(0); }
+  &--error { background: #b3261e; }
 }

@@ -1,11 +1,10 @@
-{% extends 'core/base.html' %}
+{% extends 'core/accountPages/_account_base.html' %}
 {% load static %}
 
 {% block page_title %}Bedriftsprofil{% endblock %}
 
 {% block head %}
-  <link rel="stylesheet" href="{% static 'scss/pages/account/auth-forms.css' %}">
-  <link rel="stylesheet" href="{% static 'scss/pages/account/portal.css' %}">
+  <link rel="stylesheet" href="{% static 'scss/wizard.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -14,57 +13,102 @@
     <h1 class="portal-heading">Bedriftsprofil</h1>
   </div>
 
-  {% include "core/accountPages/_portal_nav.html" with active="profile" %}
-
-  {% if messages %}
-    {% for message in messages %}
-      <div class="portal-banner portal-banner--{{ message.tags|default:'success' }}">{{ message }}</div>
-    {% endfor %}
-  {% endif %}
-
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
 
     <div class="portal-card">
-      <p class="portal-card__title">Firmainformasjon</p>
+      <p class="portal-card__title">Om bedriften</p>
       {% if core_form.errors %}<div class="account-card__errors">{{ core_form.non_field_errors }}{% for field in core_form %}{{ field.errors }}{% endfor %}</div>{% endif %}
-      <label class="portal-form__group"><span class="field-label">Firmanavn</span>{{ core_form.company_name }}</label>
-      <label class="portal-form__group"><span class="field-label">Org.nr.</span>{{ core_form.company_number }}</label>
-      <label class="portal-form__group"><span class="field-label">Antall ansatte</span>{{ core_form.employees }}</label>
-      <label class="portal-form__group"><span class="field-label">Telefon</span>{{ core_form.phone }}</label>
-      <label class="portal-form__group"><span class="field-label">Nettside</span>{{ core_form.website }}</label>
-      <label class="portal-form__group"><span class="field-label">Adresse</span>{{ core_form.address }}</label>
-      <label class="portal-form__group"><span class="field-label">Postnummer</span>{{ core_form.postal_code }}</label>
-      <label class="portal-form__group"><span class="field-label">By</span>{{ core_form.city }}</label>
-      <label class="portal-form__group"><span class="field-label">Tiltaleform</span>{{ core_form.tiltaleform }}</label>
-      <label class="portal-form__group"><span class="field-label">Fornavn</span>{{ core_form.first_name }}</label>
-      <label class="portal-form__group"><span class="field-label">Etternavn</span>{{ core_form.last_name }}</label>
-      <p style="margin:0; font-size:12px; color:#8a8a8a;">Vil du endre e-postadressen din? Ta kontakt med Kobly.</p>
-    </div>
 
-    <div class="portal-card">
-      <p class="portal-card__title">Dekning</p>
-      <label class="portal-form__group"><span class="field-label">Byer (kommaseparert)</span>{{ core_form.cities }}</label>
-      <label class="portal-form__group"><span class="field-label">Flyttetype (kommaseparert)</span>{{ core_form.move_type }}</label>
-      <p style="margin:0; font-size:12px; color:#8a8a8a;">
-        Vil du endre hvor mange leads du mottar per dag/uke/måned? Det gjør du på <a href="{% url 'foresporsel_database' %}">Mine leads</a>.
-      </p>
+      <div class="portal-form-section">
+        <p class="portal-form-section__title">Firmainformasjon</p>
+        <div class="portal-form-row">
+          <label class="portal-form__group"><span class="field-label">Firmanavn</span>{{ core_form.company_name }}</label>
+          <label class="portal-form__group"><span class="field-label">Org.nr.</span>{{ core_form.company_number }}</label>
+        </div>
+        <div class="portal-form-row">
+          <label class="portal-form__group"><span class="field-label">Antall ansatte</span>{{ core_form.employees }}</label>
+          <label class="portal-form__group"><span class="field-label">Nettside</span>{{ core_form.website }}</label>
+        </div>
+      </div>
+
+      <div class="portal-form-section">
+        <p class="portal-form-section__title">Adresse</p>
+        <label class="portal-form__group"><span class="field-label">Adresse</span>{{ core_form.address }}</label>
+        <div class="portal-form-row">
+          <label class="portal-form__group"><span class="field-label">Postnummer</span>{{ core_form.postal_code }}</label>
+          <label class="portal-form__group"><span class="field-label">By</span>{{ core_form.city }}</label>
+        </div>
+      </div>
+
+      <div class="portal-form-section">
+        <p class="portal-form-section__title">Kontaktperson</p>
+        <div class="portal-form-row">
+          <label class="portal-form__group"><span class="field-label">Fornavn</span>{{ core_form.first_name }}</label>
+          <label class="portal-form__group"><span class="field-label">Etternavn</span>{{ core_form.last_name }}</label>
+        </div>
+        <div class="portal-form-row">
+          <label class="portal-form__group"><span class="field-label">Telefon</span>{{ core_form.phone }}</label>
+          <label class="portal-form__group"><span class="field-label">Tiltaleform</span>{{ core_form.tiltaleform }}</label>
+        </div>
+        <p style="margin:0; font-size:12px; color:#8a8a8a;">Vil du endre e-postadressen din? Ta kontakt med Kobly.</p>
+      </div>
     </div>
 
     <div class="portal-card">
       <p class="portal-card__title">Offentlig profil</p>
       {% if public_form.errors %}<div class="account-card__errors">{{ public_form.non_field_errors }}{% for field in public_form %}{{ field.errors }}{% endfor %}</div>{% endif %}
-      <label class="portal-form__group">
-        <span class="field-label">Logo</span>
-        {% if public_info.logo %}<img src="{{ public_info.logo.url }}" alt="" style="max-width:120px; display:block; margin-bottom:8px; border-radius:10px;">{% endif %}
-        {{ public_form.logo }}
-      </label>
-      <label class="portal-form__group"><span class="field-label">Om oss</span>{{ public_form.about_us }}</label>
-      <label class="portal-form__group"><span class="field-label">Ofte stilte spørsmål</span>{{ public_form.faq }}</label>
+
+      <div class="portal-form-section">
+        <p class="portal-form-section__title">Logo</p>
+        <label class="portal-upload-tile{% if public_info.logo %} has-preview{% endif %}" data-upload-tile>
+          {% if public_info.logo %}<img src="{{ public_info.logo.url }}" alt="" data-upload-preview>{% endif %}
+          <span data-icon="upload"></span>
+          <span>Last opp</span>
+          {{ public_form.logo }}
+        </label>
+        <p class="portal-upload-hint">PNG eller JPG. Vises på den offentlige profilen din og i søk.</p>
+      </div>
+
+      <div class="portal-form-section">
+        <p class="portal-form-section__title">Om oss</p>
+        <label class="portal-form__group">{{ public_form.about_us }}</label>
+      </div>
+
+      <div class="portal-form-section">
+        <p class="portal-form-section__title">Ofte stilte spørsmål</p>
+        <label class="portal-form__group">{{ public_form.faq }}</label>
+      </div>
     </div>
 
     <button type="submit" class="btn-primary">Lagre</button>
   </form>
+
+  <div class="portal-card">
+    <p class="portal-card__title">Dekning</p>
+    <p style="margin:0 0 16px; font-size:13px; color:#5c5c5c;">
+      Samme valg som da du søkte om partnerskap. Lagres automatisk når du huker av eller fjerner en hake.
+      <span class="portal-coverage-feedback-anchor" data-coverage-feedback-anchor></span>
+    </p>
+    <form data-coverage-form="{% url 'update_business_coverage' %}">
+      <div class="pill-group" data-pill-group="move_type">
+        <p class="pill-group__label">Tjenester dere tilbyr</p>
+        <div class="pill-group__grid pill-group__grid--2col">
+          {% for value, label in move_type_choices %}
+            <label class="pill-button"><input type="checkbox" name="move_type" value="{{ value }}" {% if value in current_move_types %}checked{% endif %}>{{ label }}</label>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="pill-group" data-pill-group="cities" style="margin-top:20px;">
+        <p class="pill-group__label">Byer dere dekker</p>
+        <div class="pill-group__grid pill-group__grid--3col">
+          {% for value, label in city_choices %}
+            <label class="pill-button"><input type="checkbox" name="cities" value="{{ value }}" {% if value in current_cities %}checked{% endif %}>{{ label }}</label>
+          {% endfor %}
+        </div>
+      </div>
+    </form>
+  </div>
 
   <div class="portal-card">
     <p class="portal-card__title">Bildegalleri ({{ images.count }}/6)</p>
@@ -78,14 +122,17 @@
           </form>
         </div>
       {% endfor %}
+      {% if images.count < 6 %}
+        <form method="post" action="{% url 'business_image_add' %}" enctype="multipart/form-data">
+          {% csrf_token %}
+          <label class="portal-upload-tile portal-upload-tile--small" data-upload-tile>
+            <span data-icon="upload"></span>
+            <span>Last opp</span>
+            <input type="file" name="image" accept="image/*" required onchange="this.form.requestSubmit()">
+          </label>
+        </form>
+      {% endif %}
     </div>
-    {% if images.count < 6 %}
-      <form method="post" action="{% url 'business_image_add' %}" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type="file" name="image" accept="image/*" required>
-        <button type="submit" class="btn-outline">Legg til bilde</button>
-      </form>
-    {% endif %}
   </div>
 
   <div class="portal-card">
@@ -105,4 +152,8 @@
 
   <a href="{{ public_url }}" target="_blank" rel="noopener" class="btn-outline">Vis offentlig profil</a>
 </section>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{% static 'js/account-portal.js' %}"></script>
 {% endblock %}

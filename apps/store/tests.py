@@ -101,6 +101,51 @@ class PublicBusinessProfilePrivacyTests(TestCase):
         response = self.client.get(f"/bedrift/{active_business.id}/")
         self.assertEqual(response.status_code, 200)
 
+    def test_back_link_points_to_the_real_business_directory(self):
+        """Regression test: this used to link back to /byraer/ — Kobly's own
+        curated demo Agency catalog, not a real listing a signed-up business
+        would ever appear in."""
+        active_business = _make_business(email="backlink@example.com", active=True)
+        response = self.client.get(f"/bedrift/{active_business.id}/")
+        self.assertContains(response, 'href="/bedrifter/"')
+
+
+class BusinessDirectoryTests(TestCase):
+    """Regression tests: a real, approved partner business gets a public profile
+    page the moment it's active, but nothing on the public site ever linked to
+    it — only the business's own account page and the staff dashboard did.
+    /bedrifter/ is the missing public "browse real partners" entry point
+    (distinct from /byraer/, which lists Kobly's own curated demo Agency
+    catalog, not real signed-up businesses)."""
+
+    def test_only_active_businesses_are_listed(self):
+        active = _make_business(email="active-dir@example.com", active=True, company_name="Aktiv Flytt")
+        _make_business(email="inactive-dir@example.com", active=False, company_name="Inaktiv Flytt")
+        response = self.client.get("/bedrifter/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Aktiv Flytt")
+        self.assertNotContains(response, "Inaktiv Flytt")
+
+    def test_each_card_links_to_the_real_public_profile(self):
+        business = _make_business(email="linked-dir@example.com", active=True, company_name="Lenket Flytt")
+        response = self.client.get("/bedrifter/")
+        self.assertContains(response, f'href="/bedrift/{business.id}/"')
+
+    def test_empty_state_when_no_businesses_are_active(self):
+        response = self.client.get("/bedrifter/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Ingen partnere er godkjent ennå")
+
+    def test_average_rating_reflects_real_reviews(self):
+        from apps.store.models import Review
+
+        business = _make_business(email="rated-dir@example.com", active=True, company_name="Vurdert Flytt")
+        Review.objects.create(business=business, name="Kari", rating=5, comment="Toppers.")
+        Review.objects.create(business=business, name="Ola", rating=3, comment="Grei.")
+        response = self.client.get("/bedrifter/")
+        self.assertContains(response, "4.0")
+        self.assertContains(response, "(2 anmeldelser)")
+
 
 class BusinessMatchesMoveTests(TestCase):
     """business_matches_move is the heuristic apps.leads.views.wizard uses to

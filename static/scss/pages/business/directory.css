@@ -1,0 +1,45 @@
+.business-card .business-card__logo-fallback {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #221814;
+  color: #faf9f6;
+  font-family: "Crimson Pro", Georgia, serif;
+  font-weight: 600;
+  font-size: 18px;
+  text-transform: uppercase;
+}
+.business-card .business-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.business-card .business-card__tags li {
+  padding: 4px 12px;
+  border-radius: 9999px;
+  background: rgba(26, 26, 26, 0.06);
+  color: #5c5c5c;
+  font-size: 13px;
+  font-weight: 500;
+}
+.business-card .business-card__rating--none {
+  color: #5c5c5c;
+  font-weight: 400;
+}
+
+.business-card__empty {
+  padding: 48px 0;
+  text-align: center;
+  color: #5c5c5c;
+  font-size: 16px;
+}
+.business-card__empty a {
+  color: #1a1a1a;
+  text-decoration: underline;
+}

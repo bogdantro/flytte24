@@ -70,7 +70,11 @@
     });
   }
 
-  /** Wires up every [data-postnummer-form] to validate a 4-digit postal code and redirect into the wizard. */
+  /** Wires up every [data-postnummer-form] to validate a 4-digit postal code and
+   * redirect into the wizard via the server-side resolver (apps.leads.views
+   * start_from_postal_code), which looks the code up against Kartverket's
+   * address registry and pre-fills "Fra adresse" with a real area name
+   * (e.g. "1170 Oslo") instead of the bare digits when it can. */
   function initPostnummerForms() {
     document.querySelectorAll("[data-postnummer-form]").forEach((form) => {
       const input = form.querySelector("[data-postnummer-input]");
@@ -82,7 +86,7 @@
         const isValid = /^\d{4}$/.test(value);
         error.hidden = isValid;
         if (!isValid) return;
-        window.location.href = `/flytteforesporsel/?fra=${encodeURIComponent(value)}`;
+        window.location.href = `/flytteforesporsel/start-fra-postnummer/${encodeURIComponent(value)}/`;
       });
 
       // Digits only, capped at 4 — matches the reference's onChange filter.

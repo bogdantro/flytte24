@@ -107,6 +107,7 @@ urlpatterns = [
     path("for-bedrifter/foresporsel-database/", foresporsel_database, name="foresporsel_database"),
     path("for-bedrifter/min-bruker/lead/<int:pk>/", business_lead_detail, name="business_lead_detail"),
 
+    path('bedrifter/', business_directory, name='business_directory'),
     path('bedrift/<int:business_id>/', public_business_profile, name='public_business_profile'),
 
 

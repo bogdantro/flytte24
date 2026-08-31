@@ -477,3 +477,50 @@ class ReceiptEmailTest(TestCase):
         )
         send_receipt_email(lead)
         self.assertIn("12. september 2026", mail.outbox[0].alternatives[0][0])
+
+
+class StartFromPostalCodeViewTests(TestCase):
+    """Regression tests: the homepage's postal-code quick-entry box used to
+    redirect straight into the wizard with the bare 4-digit code sitting in
+    "Fra adresse" ("1170"), never resolved to a real place (spec §4.4/§15's
+    own flagged "known quirk" — explicitly worth a deliberate decision
+    rather than silent copying). apps.leads.views.start_from_postal_code
+    resolves it against Kartverket's free address registry server-side."""
+
+    def test_successful_lookup_prefills_code_and_poststed(self):
+        from unittest.mock import Mock, patch
+
+        mock_response = Mock()
+        mock_response.json.return_value = {"adresser": [{"poststed": "OSLO"}]}
+        with patch("apps.leads.views.requests.get", return_value=mock_response) as mock_get:
+            response = self.client.get(reverse("leads:start_from_postal_code", args=["1170"]))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response["Location"], "/flytteforesporsel/?fra=1170+Oslo")
+        mock_get.assert_called_once()
+        self.assertEqual(mock_get.call_args.kwargs["params"]["postnummer"], "1170")
+
+    def test_no_results_falls_back_to_bare_digits(self):
+        from unittest.mock import Mock, patch
+
+        mock_response = Mock()
+        mock_response.json.return_value = {"adresser": []}
+        with patch("apps.leads.views.requests.get", return_value=mock_response):
+            response = self.client.get(reverse("leads:start_from_postal_code", args=["9999"]))
+        self.assertEqual(response["Location"], "/flytteforesporsel/?fra=9999")
+
+    def test_api_failure_falls_back_to_bare_digits_instead_of_erroring(self):
+        import requests
+        from unittest.mock import patch
+
+        with patch("apps.leads.views.requests.get", side_effect=requests.RequestException("timeout")):
+            response = self.client.get(reverse("leads:start_from_postal_code", args=["1170"]))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response["Location"], "/flytteforesporsel/?fra=1170")
+
+    def test_non_4_digit_input_skips_the_lookup_entirely(self):
+        from unittest.mock import patch
+
+        with patch("apps.leads.views.requests.get") as mock_get:
+            response = self.client.get(reverse("leads:start_from_postal_code", args=["abcd"]))
+        mock_get.assert_not_called()
+        self.assertEqual(response["Location"], "/flytteforesporsel/?fra=abcd")

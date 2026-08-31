@@ -77,3 +77,34 @@ def public_business_profile(request, business_id):
         "move_types": move_types,
         "images": public_info.images.all() if public_info else [],
     })
+
+
+def business_directory(request):
+    """Public directory of real, active signed-up partner businesses.
+
+    Regression note: every business gets a real public_business_profile
+    page the moment it's approved (active=True), but nothing on the public
+    site ever linked to it — only the business's own account page ("Vis
+    offentlig profil") and the staff dashboard did. A visitor had no way to
+    ever discover a real partner's profile at all. This is deliberately a
+    separate page from /byraer/ (apps.core.views.agency_list), which lists
+    Kobly's own curated, editorially-written Agency catalog — a different,
+    richer data shape (fixed taglines, curated "about us" copy, a fixed
+    review set) that real self-signup businesses don't have. Mixing the two
+    into one template would mean awkward branching for every field; two
+    focused pages is the simpler fix.
+    """
+    businesses = (
+        Bedrift_info.objects.filter(active=True)
+        .select_related("public_info")
+        .annotate(review_count=Count("reviews"), avg_rating=Avg("reviews__rating"))
+        .order_by("company_name")
+    )
+    cards = []
+    for business in businesses:
+        cards.append({
+            "business": business,
+            "cities": [c.strip() for c in (business.cities or "").split(",") if c.strip()],
+            "move_types": [m.strip() for m in (business.move_type or "").split(",") if m.strip()],
+        })
+    return render(request, "core/business_directory.html", {"cards": cards})

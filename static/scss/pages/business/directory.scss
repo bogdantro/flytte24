@@ -1,0 +1,72 @@
+// static/scss/pages/business/directory.scss
+// Page-specific styles for /bedrifter/ (apps/store/templates/core/business_directory.html).
+// Loaded alongside static/scss/base.css AND static/scss/pages/agencies/list.css
+// (this page reuses that page's .agency-grid/.agency-card system almost
+// verbatim — a real business directory card is structurally the same "card
+// in a grid" the curated agency directory already has) — this file only
+// adds the handful of things a real business doesn't have that an Agency
+// record does: no fixed tagline copy (falls back to the city name), no
+// logo asset guaranteed to exist (a text-letter fallback), and a
+// service-tag list instead of a one-line description.
+//
+// Compile after every edit with:
+//   sass static/scss/pages/business/directory.scss static/scss/pages/business/directory.css --style=expanded --no-source-map
+
+$ink: #1a1a1a;
+$inkMuted: #5c5c5c;
+$line: #e6e1d6;
+$brand: #221814;
+$brandInk: #faf9f6;
+$radiusPill: 9999px;
+
+.business-card {
+  .business-card__logo-fallback {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: $brand;
+    color: $brandInk;
+    font-family: "Crimson Pro", Georgia, serif;
+    font-weight: 600;
+    font-size: 18px;
+    text-transform: uppercase;
+  }
+
+  .business-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 14px 0 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+      padding: 4px 12px;
+      border-radius: $radiusPill;
+      background: rgba(26, 26, 26, 0.06);
+      color: $inkMuted;
+      font-size: 13px;
+      font-weight: 500;
+    }
+  }
+
+  .business-card__rating--none {
+    color: $inkMuted;
+    font-weight: 400;
+  }
+}
+
+.business-card__empty {
+  padding: 48px 0;
+  text-align: center;
+  color: $inkMuted;
+  font-size: 16px;
+
+  a {
+    color: $ink;
+    text-decoration: underline;
+  }
+}

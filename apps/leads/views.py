@@ -1,7 +1,10 @@
 import json
 import logging
+import re
 import uuid
+from urllib.parse import urlencode
 
+import requests
 from django.shortcuts import redirect, render
 from PIL import Image
 
@@ -148,3 +151,53 @@ def wizard(request):
 def wizard_thank_you(request):
     """Static thank-you screen shown after a successful submit (spec §5.10)."""
     return render(request, "leads/thank_you.html")
+
+
+POSTAL_CODE_LOOKUP_TIMEOUT_SECONDS = 3
+
+
+def start_from_postal_code(request, postal_code):
+    """Redirects the homepage's "Ditt postnummer" quick-entry box into the
+    wizard, pre-filling "Fra adresse" with the postal code's real area name
+    when it can be resolved, rather than the bare digits.
+
+    Regression note / spec §4.4, §15 "known quirk": the reference site's
+    PostnummerInput just does `router.push('/wizard?fra=' + value)` — a user
+    who types "1170" lands on step 1 with the literal text "1170" sitting in
+    the free-text address field, never resolved to a real place at all. The
+    spec explicitly flags this as worth a deliberate decision rather than
+    silent copying: "use it as an opportunity to actually resolve the
+    postcode server-side in Django." This view is that resolution — it
+    looks the code up against Kartverket's free, keyless address registry
+    (the same ws.geonorge.no API the wizard's own client-side address
+    autocomplete already calls, per spec §5.13) and redirects into the
+    wizard with "<code> <poststed>" (e.g. "1170 Oslo") when a match is
+    found.
+
+    Never blocks or 500s on the postal code itself: an invalid 4-digit
+    check happens client-side already (site.js), but a malformed value
+    reaching this view server-side, an API timeout, or zero results all
+    fall back to the old bare-digit behavior rather than erroring — a
+    slightly-worse prefill beats a broken homepage button.
+    """
+    fra_value = postal_code
+    if re.fullmatch(r"\d{4}", postal_code):
+        try:
+            response = requests.get(
+                "https://ws.geonorge.no/adresser/v1/sok",
+                params={"postnummer": postal_code, "treffPerSide": 1},
+                timeout=POSTAL_CODE_LOOKUP_TIMEOUT_SECONDS,
+            )
+            response.raise_for_status()
+            hits = response.json().get("adresser", [])
+            if hits:
+                poststed = hits[0].get("poststed")
+                if poststed:
+                    fra_value = f"{postal_code} {poststed.title()}"
+        except (requests.RequestException, ValueError):
+            # ValueError covers response.json() on a non-JSON body — the
+            # public API being briefly down or slow must never break this
+            # button, only degrade it back to the old bare-digit behavior.
+            logger.warning("Postal code lookup failed for %s; falling back to bare digits", postal_code)
+
+    return redirect(f"/flytteforesporsel/?{urlencode({'fra': fra_value})}")

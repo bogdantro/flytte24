@@ -16,7 +16,7 @@
 
 <section class="section agency-detail">
   <div class="content-width agency-detail__inner">
-    <a href="/byraer/" class="agency-detail__back">&larr; Tilbake til byråer</a>
+    <a href="{% url 'business_directory' %}" class="agency-detail__back">&larr; Tilbake til partnere</a>
 
     {% if not business.active %}
       <div class="business-profile-pending">

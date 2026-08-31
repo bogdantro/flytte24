@@ -1,0 +1,70 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block page_title %}Våre partnere — Kobly{% endblock %}
+
+{% block page_meta %}
+  <meta name="description" content="Bla gjennom flyttebyråene som er godkjente Kobly-partnere — se dekningsområde, tjenester og kundeomtaler før du ber om tilbud.">
+{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static 'scss/pages/agencies/list.css' %}">
+  <link rel="stylesheet" href="{% static 'scss/pages/business/directory.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- ===================== HERO ===================== -->
+<section class="hero agencies-hero">
+  <div class="content-width">
+    <p class="hero__eyebrow">Kobly-partnere</p>
+    <h1 class="agencies-hero__title">Våre partnere</h1>
+    <p class="agencies-hero__subline">Flyttebyråer som har blitt godkjent i Kobly-nettverket via egen partnersøknad — se dekningsområde, tjenester og kundeomtaler før du ber om tilbud.</p>
+  </div>
+</section>
+
+<!-- ===================== DIRECTORY GRID ===================== -->
+<section class="section agencies-index">
+  <div class="content-width">
+    {% if cards %}
+      <div class="agency-grid">
+        {% for card in cards %}
+          <article class="agency-card business-card">
+            <a href="{% url 'public_business_profile' card.business.id %}" class="agency-card__link">
+              <div class="agency-card__logo business-card__logo">
+                {% if card.business.public_info.logo %}
+                  <img src="{{ card.business.public_info.logo.url }}" alt="{{ card.business.company_name }}">
+                {% else %}
+                  <span class="business-card__logo-fallback">{{ card.business.company_name|slice:":1" }}</span>
+                {% endif %}
+              </div>
+              <h2 class="agency-card__name">{{ card.business.company_name }}</h2>
+              <p class="agency-card__tagline">{{ card.business.city }}</p>
+              {% if card.move_types %}
+                <ul class="business-card__tags">
+                  {% for move_type in card.move_types|slice:":3" %}
+                    <li>{{ move_type }}</li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+              <div class="agency-card__footer">
+                {% if card.business.avg_rating %}
+                  <span class="agency-card__rating">
+                    <span data-icon="star" class="agency-card__rating-icon"></span>
+                    {{ card.business.avg_rating|floatformat:1 }} <span class="agency-card__review-count">({{ card.business.review_count }} anmeldelser)</span>
+                  </span>
+                {% else %}
+                  <span class="agency-card__rating business-card__rating--none">Ingen anmeldelser ennå</span>
+                {% endif %}
+              </div>
+            </a>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="business-card__empty">Ingen partnere er godkjent ennå — <a href="{% url 'for_business_partner' %}">bli den første</a>.</p>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}

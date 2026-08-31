@@ -14,6 +14,19 @@ $accentAmber: #e8a87c;
 $fontSerif: "Crimson Pro", Georgia, "Times New Roman", serif;
 $radiusCard: 14px;
 
+.agencies-index__more-link{
+  margin: 32px 0 0;
+  text-align: center;
+  font-size: 15px;
+  color: $inkMuted;
+
+  a{
+    color: $ink;
+    font-weight: 600;
+    text-decoration: underline;
+  }
+}
+
 @media (max-width: 1049px) {
   .agencies-hero__title{
     margin: 12px 0 0;

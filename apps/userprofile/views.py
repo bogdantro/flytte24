@@ -1,3 +1,6 @@
+import json
+from datetime import timedelta
+
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
@@ -8,7 +11,13 @@ from django.urls import reverse
 from django.views.decorators.http import require_POST
 
 from apps.core.forms import CITY_CHOICES, MOVE_TYPE_CHOICES
-from apps.store.models import Bedrift_info, BusinessImage, PublicBusinessInformation
+from apps.store.coverage import (
+    REGION_GROUPS, cities_to_service_areas, normalize_service_areas,
+    service_areas_to_cities,
+)
+from apps.store.models import (
+    Bedrift_info, BusinessImage, CoverageChangeRequest, PublicBusinessInformation,
+)
 from apps.store.services import business_lead_entries, business_usage
 from apps.userprofile.models import Profile
 
@@ -54,9 +63,17 @@ def signup(request, backend='django.contrib.auth.backends.ModelBackend'):
         form = SignUpForm()
         userprofileform = UserprofileForm()
 
-        # Autofill email from URL if it exists
+        # Autofill email + contact person from the partner application the
+        # user just submitted (the wizard's "Kontaktperson" step, one step
+        # earlier in this same flow). Looked up by the ?email= the
+        # thank-you page carries over — the name fields on core/signup.html
+        # were otherwise left blank even though we already asked for them.
         if email_param:
             form.fields['username'].initial = email_param
+            business = Bedrift_info.objects.filter(email__iexact=email_param).last()
+            if business:
+                form.fields['first_name'].initial = business.first_name
+                form.fields['last_name'].initial = business.last_name
 
     return render(request, 'core/signup.html', {
         'form': form,
@@ -117,8 +134,15 @@ def edit_public_profile(request):
     public_path = reverse('public_business_profile', args=[business.id])
     public_url = request.build_absolute_uri(public_path)
 
-    current_move_types = {v.strip() for v in (business.move_type or "").split(",") if v.strip()}
-    current_cities = {v.strip() for v in (business.cities or "").split(",") if v.strip()}
+    # If a coverage change is awaiting approval, the pills should show what
+    # the business asked for (not the still-live values), with a banner.
+    pending_coverage = business.coverage_requests.filter(status="pending").first()
+    source = pending_coverage or business
+    current_move_types = {v.strip() for v in (source.move_type or "").split(",") if v.strip()}
+    current_cities = {v.strip() for v in (source.cities or "").split(",") if v.strip()}
+    service_areas = normalize_service_areas(
+        source.service_areas or cities_to_service_areas(source.cities)
+    )
 
     return render(request, "core/accountPages/business_edit_profile.html", {
         "core_form": core_form,
@@ -132,6 +156,10 @@ def edit_public_profile(request):
         "city_choices": CITY_CHOICES,
         "current_move_types": current_move_types,
         "current_cities": current_cities,
+        "pending_coverage": pending_coverage,
+        "region_groups_json": json.dumps(REGION_GROUPS, ensure_ascii=False),
+        "service_areas_json": json.dumps(service_areas),
+        "service_area_places": {a["place"]: a for a in service_areas},
         "active_nav": "profile",
     })
 
@@ -139,12 +167,13 @@ def edit_public_profile(request):
 @login_required(login_url="/for-bedrifter/bruker/logg-inn/")
 @require_POST
 def update_business_coverage(request):
-    """AJAX-only save for the Bedriftsprofil page's "Dekning" (coverage)
-    section — services offered + cities covered, as the exact same
-    pill-button checkboxes as the become-a-partner wizard's step 1/2
-    (apps.core.forms MOVE_TYPE_CHOICES/CITY_CHOICES — reused directly
-    rather than a second copy of the same lists), saved the instant a pill
-    is toggled instead of needing the page's main form submit/reload."""
+    """The Bedriftsprofil "Dekning" section — services + cities + structured
+    service areas. A business can no longer edit its own coverage directly:
+    this stages one pending CoverageChangeRequest (replacing any earlier
+    still-pending one) for an admin to approve. Same pill-button vocabulary
+    as the become-a-partner wizard (apps.core.forms MOVE_TYPE_CHOICES /
+    CITY_CHOICES); `service_areas` arrives as a JSON string from the
+    onboarding widget."""
     business = getattr(request.user, "bedrift_info", None)
     if not business:
         return JsonResponse({"ok": False}, status=403)
@@ -156,10 +185,39 @@ def update_business_coverage(request):
     if not set(move_type) <= valid_move_types or not set(cities) <= valid_cities:
         return JsonResponse({"ok": False, "error": "invalid_choice"}, status=400)
 
-    business.move_type = ", ".join(move_type)
-    business.cities = ", ".join(cities)
-    business.save(update_fields=["move_type", "cities"])
-    return JsonResponse({"ok": True})
+    try:
+        raw_areas = json.loads(request.POST.get("service_areas") or "[]")
+    except (ValueError, TypeError):
+        raw_areas = []
+    service_areas = normalize_service_areas(raw_areas)
+    # Keep the flat `cities` list in sync with the structured areas when the
+    # onboarding widget is in use, so admins see one coherent picture.
+    if service_areas:
+        cities = [c for c in service_areas_to_cities(service_areas).split(", ") if c]
+
+    def _norm_csv(raw):
+        return sorted(v.strip() for v in (raw or "").split(",") if v.strip())
+
+    # If the submitted coverage is identical to what's already live, there's
+    # nothing to approve — drop any pending request and tell the page to
+    # hide the "venter på godkjenning" banner.
+    unchanged = (
+        sorted(move_type) == _norm_csv(business.move_type)
+        and sorted(cities) == _norm_csv(business.cities)
+        and service_areas == normalize_service_areas(business.service_areas or [])
+    )
+    if unchanged:
+        CoverageChangeRequest.objects.filter(business=business, status="pending").delete()
+        return JsonResponse({"ok": True, "pending": False})
+
+    CoverageChangeRequest.objects.filter(business=business, status="pending").delete()
+    CoverageChangeRequest.objects.create(
+        business=business,
+        move_type=", ".join(move_type),
+        cities=", ".join(cities),
+        service_areas=service_areas,
+    )
+    return JsonResponse({"ok": True, "pending": True})
 
 
 @login_required(login_url="/for-bedrifter/bruker/logg-inn/")
@@ -215,12 +273,72 @@ def foresporsel_database(request):
         return redirect("login")
 
     lead_entries, movelead_count = business_lead_entries(business, lead_url_resolver=_business_lead_url)
+
+    from django.utils import timezone
+    from apps.leads.models import MoveLead
+    today = timezone.localdate()
+    week_start = today - timedelta(days=today.weekday())
+    month_start = today.replace(day=1)
+
+    def _since(cutoff):
+        return sum(1 for e in lead_entries if e["created_at"].date() >= cutoff)
+
+    # Same "days / type / boligtype / city" filters as the admin business page.
+    lf_days = request.GET.get("lf_days", "")
+    lf_type = request.GET.get("lf_type", "").strip()
+    lf_service = request.GET.get("lf_service", "").strip()
+    lf_city = request.GET.get("lf_city", "").strip()
+    filtered = lead_entries
+    if lf_days.isdigit():
+        cutoff = timezone.now() - timedelta(days=int(lf_days))
+        filtered = [e for e in filtered if e["created_at"] >= cutoff]
+    if lf_type:
+        filtered = [e for e in filtered if e["flytte_type"] == lf_type]
+    if lf_service:
+        filtered = [e for e in filtered if e["boligtype"] == lf_service]
+    if lf_city:
+        filtered = [e for e in filtered if lf_city.lower() in e["route"].lower()]
+
     return render(request, "core/accountPages/foresporsel_database.html", {
         "business": business,
-        "lead_entries": lead_entries,
+        "lead_entries": filtered,
+        "lead_entries_total": len(lead_entries),
         "total_received": business.total_leads_received + movelead_count,
+        "count_today": _since(today),
+        "count_week": _since(week_start),
+        "count_month": _since(month_start),
+        "credited_count": business.lead_credits.filter(status="approved").count(),
+        "lf_days": lf_days, "lf_type": lf_type, "lf_service": lf_service, "lf_city": lf_city,
+        "flytte_type_choices": MoveLead.FLYTTE_TYPE_CHOICES,
+        "boligtype_choices": MoveLead.BOLIGTYPE_CHOICES,
+        "city_choices": CITY_CHOICES,
         "active_nav": "leads",
     })
+
+
+@login_required(login_url="/for-bedrifter/bruker/logg-inn/")
+def my_invoice_pdf(request):
+    """The logged-in business's own lead invoice for a chosen period —
+    same builder/PDF as the admin's dashboard:business_invoice_pdf."""
+    from django.http import HttpResponse
+    from django.utils.dateparse import parse_date
+    from apps.store.invoicing import build_invoice, period_range, render_invoice_pdf
+
+    business = getattr(request.user, "bedrift_info", None)
+    if not business:
+        return redirect("myaccount")
+
+    date_from = parse_date(request.GET.get("from", "") or "")
+    date_to = parse_date(request.GET.get("to", "") or "")
+    if date_from and date_to:
+        start, end = date_from, date_to
+    else:
+        start, end, _label = period_range(request.GET.get("period", "month"))
+
+    pdf = render_invoice_pdf(build_invoice(business, start, end))
+    response = HttpResponse(pdf, content_type="application/pdf")
+    response["Content-Disposition"] = f'inline; filename="faktura-{start}-{end}.pdf"'
+    return response
 
 
 def _business_lead_url(lead):
@@ -251,4 +369,30 @@ def business_lead_detail(request, pk):
     )
     return render(request, "core/accountPages/lead_detail.html", {
         "business": business, "lead": lead, "active_nav": "leads",
+        "lead_credit": lead.credits.filter(business=business).first(),
     })
+
+
+@login_required(login_url="/for-bedrifter/bruker/logg-inn/")
+@require_POST
+def report_bad_lead(request, pk):
+    """A business flags a lead it was assigned as a bad lead — creates a
+    LeadCredit (status "requested") that an admin then approves so the
+    business isn't invoiced for it. One report per (lead, business)."""
+    from apps.leads.models import MoveLead
+    from apps.store.models import LeadCredit
+
+    business = getattr(request.user, "bedrift_info", None)
+    if not business:
+        return redirect("myaccount")
+
+    lead = get_object_or_404(
+        MoveLead.objects.filter(Q(business_1=business) | Q(business_2=business) | Q(business_3=business)),
+        pk=pk, archived=False,
+    )
+    LeadCredit.objects.get_or_create(
+        lead=lead, business=business,
+        defaults={"reason": request.POST.get("reason", "").strip(), "requested_by": request.user},
+    )
+    messages.success(request, "Takk — leaden er meldt inn og blir vurdert av Kobly.")
+    return redirect("business_lead_detail", pk=lead.pk)

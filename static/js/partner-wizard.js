@@ -13,12 +13,18 @@
 //   1. Icon sprite wiring
 //   2. Step navigation
 //   3. Per-step validity checks
-//   4. Logo upload (single file) + preview
+//   4. Postnummer -> By autofill (Bring)
+//   5. Logo upload (single file) + preview
+//
+// The "Firmanavn" -> Brønnøysundregistret lookup on step 1 lives in its own
+// shared module (static/js/brreg-lookup.js, also used by the staff
+// dashboard's business detail page) — for-business-partner.html loads it
+// alongside this file.
 
 (function () {
   "use strict";
 
-  const TOTAL_STEPS = 4;
+  const TOTAL_STEPS = 2;
   let currentStep = 1;
 
   /**
@@ -46,13 +52,7 @@
   function isStepValid(step) {
     const form = document.querySelector(".wizard-card");
     switch (step) {
-      case 1:
-        // At least one service selected.
-        return form.querySelectorAll('[name="move_type"]:checked').length > 0;
-      case 2:
-        // At least one city selected.
-        return form.querySelectorAll('[name="cities"]:checked').length > 0;
-      case 3: {
+      case 1: {
         const companyName = form.querySelector('[name="company_name"]').value.trim();
         const address = form.querySelector('[name="address"]').value.trim();
         const postalCode = form.querySelector('[name="postal_code"]').value.trim();
@@ -64,7 +64,7 @@
           city.length > 0
         );
       }
-      case 4: {
+      case 2: {
         const firstName = form.querySelector('[name="first_name"]').value.trim();
         const lastName = form.querySelector('[name="last_name"]').value.trim();
         const email = form.querySelector('[name="email"]').value.trim();
@@ -155,11 +155,9 @@
   // if a client bypasses this wizard's own step-by-step JS validation
   // (for-business-partner.html's data-error-fields).
   const FIELD_TO_STEP = {
-    move_type: 1,
-    cities: 2,
-    company_name: 3, company_number: 3, employees: 3, website: 3,
-    address: 3, postal_code: 3, city: 3,
-    first_name: 4, last_name: 4, email: 4, phone: 4, logo: 4,
+    company_name: 1, company_number: 1, employees: 1, website: 1,
+    address: 1, postal_code: 1, city: 1,
+    first_name: 2, last_name: 2, email: 2, phone: 2, logo: 2,
   };
 
   /** On reload after a server-side validation failure, jumps to the earliest step that actually
@@ -173,7 +171,7 @@
   }
 
   // ---------------------------------------------------------------
-  // Postnummer -> By autofill (step 3) — same free, keyless Norwegian
+  // Postnummer -> By autofill (step 1) — same free, keyless Norwegian
   // lookup pattern used elsewhere in this codebase for address autofill
   // (Geonorge, in the customer wizard), here using Bring's public
   // postal-code API. Fails silently on error/unknown code and just
@@ -209,7 +207,7 @@
   }
 
   // ---------------------------------------------------------------
-  // Logo upload (step 4) — same object-URL-preview technique as
+  // Logo upload (step 2) — same object-URL-preview technique as
   // wizard.js's photo grid, trimmed to a single file: selecting a new
   // file replaces (not appends to) the current selection, and the upload
   // tile hides itself once a logo is chosen (reappearing if it's removed).

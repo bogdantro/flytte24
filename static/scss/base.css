@@ -143,6 +143,18 @@
   .site-header .site-header__link:hover {
     color: rgba(26, 26, 26, 0.6);
   }
+  .site-header button {
+    padding: 16px 24px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #1a1a1a;
+    border: none;
+    outline: none;
+    background: none;
+  }
+  .site-header button:hover {
+    color: rgba(26, 26, 26, 0.6);
+  }
   .site-header .site-header__cta {
     display: inline-flex;
     align-items: center;
@@ -312,6 +324,7 @@
   .image-strip .image-strip__track {
     display: flex;
     gap: 16px;
+    width: -moz-max-content;
     width: max-content;
     animation: image-strip-scroll 100s linear infinite;
   }
@@ -326,7 +339,8 @@
   .image-strip .image-strip__tile img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    -o-object-fit: cover;
+       object-fit: cover;
   }
   .image-strip .image-strip__stats {
     margin-top: 40px;
@@ -347,6 +361,7 @@
     margin-top: 40px;
     display: grid;
     gap: 16px;
+    padding: 0;
   }
   .how-it-works .how-it-works__cta {
     display: flex;
@@ -383,7 +398,7 @@
   }
   .step-card .step-card__art img {
     width: 100%;
-    max-width: 140px;
+    max-width: 220px;
     height: auto;
     mix-blend-mode: multiply;
   }
@@ -413,15 +428,17 @@
   }
   .testimonial-card .testimonial-card__photo {
     position: relative;
-    aspect-ratio: 4/5;
     border-radius: 14px;
     overflow: hidden;
     background: #e6e1d6;
+    height: 310px;
+    width: 100%;
   }
   .testimonial-card .testimonial-card__photo img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: 310px;
+    -o-object-fit: cover;
+       object-fit: cover;
   }
   .testimonial-card .testimonial-card__quote {
     margin: 24px 0 0;
@@ -470,7 +487,8 @@
   .trust__logos img {
     height: 40px;
     width: auto;
-    object-fit: contain;
+    -o-object-fit: contain;
+       object-fit: contain;
     opacity: 0.8;
   }
   .trust__logos img:hover {
@@ -541,6 +559,7 @@
     margin-top: 40px;
     display: grid;
     gap: 16px;
+    padding: 0;
   }
   .city-card {
     display: flex;
@@ -569,7 +588,6 @@
   .faq {
     max-width: 768px;
     margin: 0 auto;
-    padding: 0 24px;
   }
   .faq .faq__title {
     margin: 0;
@@ -665,6 +683,9 @@
     font-family: "Moderat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     color: #1a1a1a;
   }
+  .postnummer-form .postnummer-form__field input::-moz-placeholder {
+    color: rgba(26, 26, 26, 0.4);
+  }
   .postnummer-form .postnummer-form__field input::placeholder {
     color: rgba(26, 26, 26, 0.4);
   }
@@ -674,6 +695,93 @@
     font-size: 15px;
   }
   .postnummer-form .postnummer-form__error {
+    margin: 8px 0 0;
+    font-size: 14px;
+    color: #5c5c5c;
+  }
+  .address-cta {
+    width: 100%;
+    max-width: 448px;
+    margin: 0 auto;
+  }
+  .address-cta .address-cta__row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .address-cta .address-cta__field {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border-radius: 9999px;
+    background: #ffffff;
+    border: 1px solid #e6e1d6;
+    padding: 12px 20px;
+  }
+  .address-cta .address-cta__input {
+    width: 100%;
+    border: none;
+    background: none;
+    outline: none;
+    font-size: 16px;
+    font-family: "Moderat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #1a1a1a;
+  }
+  .address-cta .address-cta__input::-moz-placeholder {
+    color: rgba(26, 26, 26, 0.4);
+  }
+  .address-cta .address-cta__input::placeholder {
+    color: rgba(26, 26, 26, 0.4);
+  }
+  .address-cta .address-cta__submit {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 24px;
+    font-size: 16px;
+  }
+  .address-cta .address-cta__suggestions {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    z-index: 50;
+    margin: 0;
+    padding: 6px;
+    list-style: none;
+    background: #ffffff;
+    border: 1px solid #e6e1d6;
+    border-radius: 16px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+    max-height: 260px;
+    overflow-y: auto;
+    text-align: left;
+  }
+  .address-cta .address-cta__suggestions[hidden] {
+    display: none;
+  }
+  .address-cta .address-cta__suggestions li button {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    width: 100%;
+    border: none;
+    background: none;
+    padding: 10px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: "Moderat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #1a1a1a;
+  }
+  .address-cta .address-cta__suggestions li button:hover {
+    background: #f4f1ea;
+  }
+  .address-cta .address-cta__meta {
+    font-size: 12px;
+    color: #5c5c5c;
+  }
+  .address-cta .address-cta__error {
     margin: 8px 0 0;
     font-size: 14px;
     color: #5c5c5c;
@@ -693,7 +801,8 @@
     line-height: 1.05;
     color: #1a1a1a;
   }
-  .footer-cta .postnummer-form {
+  .footer-cta .postnummer-form,
+  .footer-cta .address-cta {
     margin-top: 32px;
   }
   .inline-edit-banner {
@@ -904,7 +1013,8 @@
   .inline-edit-popover__preview {
     width: 100%;
     max-height: 100px;
-    object-fit: cover;
+    -o-object-fit: cover;
+       object-fit: cover;
     border-radius: 8px;
     margin-bottom: 6px;
   }
@@ -1100,7 +1210,9 @@
     line-height: 0.85;
     letter-spacing: -0.04em;
     color: rgba(250, 249, 246, 0.08);
-    user-select: none;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+            user-select: none;
   }
 }
 @media (min-width: 1050px) {
@@ -1239,10 +1351,11 @@
     cursor: pointer;
     font-family: inherit;
     -webkit-appearance: none;
-    appearance: none;
+    -moz-appearance: none;
+         appearance: none;
   }
   .hero {
-    padding: 80px 40px;
+    padding: 80px 25px;
   }
   .hero .hero__inner {
     max-width: 1152px;
@@ -1399,6 +1512,7 @@
   .image-strip .image-strip__track {
     display: flex;
     gap: 16px;
+    width: -moz-max-content;
     width: max-content;
     animation: image-strip-scroll 100s linear infinite;
   }
@@ -1413,7 +1527,8 @@
   .image-strip .image-strip__tile img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    -o-object-fit: cover;
+       object-fit: cover;
   }
   .image-strip .image-strip__stats {
     margin-top: 40px;
@@ -1435,6 +1550,7 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 24px;
+    padding: 0;
   }
   .how-it-works .how-it-works__cta {
     display: flex;
@@ -1510,7 +1626,8 @@
   .testimonial-card .testimonial-card__photo img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    -o-object-fit: cover;
+       object-fit: cover;
   }
   .testimonial-card .testimonial-card__quote {
     margin: 24px 0 0;
@@ -1559,7 +1676,8 @@
   .trust__logos img {
     height: 44px;
     width: auto;
-    object-fit: contain;
+    -o-object-fit: contain;
+       object-fit: contain;
     opacity: 0.8;
   }
   .trust__logos img:hover {
@@ -1762,6 +1880,9 @@
     font-family: "Moderat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     color: #1a1a1a;
   }
+  .postnummer-form .postnummer-form__field input::-moz-placeholder {
+    color: rgba(26, 26, 26, 0.4);
+  }
   .postnummer-form .postnummer-form__field input::placeholder {
     color: rgba(26, 26, 26, 0.4);
   }
@@ -1771,6 +1892,94 @@
     font-size: 16px;
   }
   .postnummer-form .postnummer-form__error {
+    margin: 8px 0 0;
+    font-size: 14px;
+    color: #5c5c5c;
+  }
+  .address-cta {
+    width: 100%;
+    max-width: 448px;
+    margin: 0 auto;
+  }
+  .address-cta .address-cta__row {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+  }
+  .address-cta .address-cta__field {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    border-radius: 9999px;
+    background: #ffffff;
+    border: 1px solid #e6e1d6;
+    padding: 12px 20px;
+  }
+  .address-cta .address-cta__input {
+    width: 100%;
+    border: none;
+    background: none;
+    outline: none;
+    font-size: 16px;
+    font-family: "Moderat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #1a1a1a;
+  }
+  .address-cta .address-cta__input::-moz-placeholder {
+    color: rgba(26, 26, 26, 0.4);
+  }
+  .address-cta .address-cta__input::placeholder {
+    color: rgba(26, 26, 26, 0.4);
+  }
+  .address-cta .address-cta__submit {
+    flex-shrink: 0;
+    width: auto;
+    padding: 14px 24px;
+    font-size: 16px;
+  }
+  .address-cta .address-cta__suggestions {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    z-index: 50;
+    margin: 0;
+    padding: 6px;
+    list-style: none;
+    background: #ffffff;
+    border: 1px solid #e6e1d6;
+    border-radius: 16px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+    max-height: 260px;
+    overflow-y: auto;
+    text-align: left;
+  }
+  .address-cta .address-cta__suggestions[hidden] {
+    display: none;
+  }
+  .address-cta .address-cta__suggestions li button {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    width: 100%;
+    border: none;
+    background: none;
+    padding: 10px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: "Moderat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #1a1a1a;
+  }
+  .address-cta .address-cta__suggestions li button:hover {
+    background: #f4f1ea;
+  }
+  .address-cta .address-cta__meta {
+    font-size: 12px;
+    color: #5c5c5c;
+  }
+  .address-cta .address-cta__error {
     margin: 8px 0 0;
     font-size: 14px;
     color: #5c5c5c;
@@ -1790,7 +1999,8 @@
     line-height: 1.05;
     color: #1a1a1a;
   }
-  .footer-cta .postnummer-form {
+  .footer-cta .postnummer-form,
+  .footer-cta .address-cta {
     margin-top: 40px;
   }
   .inline-edit-banner {
@@ -2001,7 +2211,8 @@
   .inline-edit-popover__preview {
     width: 100%;
     max-height: 100px;
-    object-fit: cover;
+    -o-object-fit: cover;
+       object-fit: cover;
     border-radius: 8px;
     margin-bottom: 6px;
   }
@@ -2201,6 +2412,8 @@
     line-height: 0.85;
     letter-spacing: -0.04em;
     color: rgba(250, 249, 246, 0.08);
-    user-select: none;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+            user-select: none;
   }
 }

@@ -1,10 +1,17 @@
 // static/js/dashboard.js
 //
-// Staff dashboard JS — sidebar icon hydration, and a confirm dialog in
-// front of every permanent-delete form across the dashboard.
+// Staff dashboard JS — sidebar icon hydration, a confirm dialog in front of
+// every permanent-delete form, and the business detail page's "Dekning"
+// pill grid (saved over AJAX on every toggle).
 
 (function () {
   "use strict";
+
+  /** Reads Django's CSRF cookie for the fetch() header. */
+  function getCsrfToken() {
+    const match = document.cookie.match(/(?:^|;\s*)csrftoken=([^;]+)/);
+    return match ? decodeURIComponent(match[1]) : "";
+  }
 
   /** Clones the matching <symbol> from _icon_sprite.html into every [data-icon] placeholder. Idempotent, same pattern as wizard.js/site.js. */
   function initIconSprite() {
@@ -63,7 +70,7 @@
   function initSelectAll() {
     document.querySelectorAll("[data-select-all]").forEach((selectAll) => {
       selectAll.addEventListener("change", () => {
-        document.querySelectorAll('input[name="lead_ids"]').forEach((box) => {
+        document.querySelectorAll('input[name="lead_ids"], input[name="business"]').forEach((box) => {
           box.checked = selectAll.checked;
         });
       });
@@ -108,11 +115,88 @@
     });
   }
 
+  /** Business detail "Dekning" grid: saves cities/services the instant a
+   * pill is toggled, via dashboard:business_update_coverage, with no
+   * submit/reload — the staff-side twin of the account portal's own
+   * coverage section (static/js/account-portal.js initCoverageAjaxSave). */
+  function initCoverageAjaxSave() {
+    const form = document.querySelector("[data-coverage-form]");
+    if (!form) return;
+    const anchor = form.querySelector("[data-coverage-feedback-anchor]");
+
+    const showFeedback = (ok) => {
+      if (!anchor) return;
+      anchor.textContent = ok ? "Lagret" : "Kunne ikke lagre";
+      anchor.classList.toggle("is-error", !ok);
+      anchor.classList.add("is-visible");
+      clearTimeout(showFeedback._timer);
+      showFeedback._timer = setTimeout(() => anchor.classList.remove("is-visible"), 1600);
+    };
+
+    // Abort any still-in-flight save before starting the next one, so two
+    // overlapping toggles can't resolve out of order and write a stale
+    // snapshot back over the newer one.
+    let inFlight = null;
+
+    const save = async () => {
+      if (inFlight) inFlight.abort();
+      const controller = new AbortController();
+      inFlight = controller;
+
+      const body = new FormData(form);
+      const areasInput = form.querySelector("[data-service-areas-input]");
+      if (areasInput) body.set("service_areas", areasInput.value || "[]");
+      try {
+        const response = await fetch(form.dataset.coverageForm, {
+          method: "POST",
+          headers: { "X-CSRFToken": getCsrfToken() },
+          body,
+          signal: controller.signal,
+        });
+        const data = response.ok ? await response.json() : { ok: false };
+        showFeedback(Boolean(data.ok));
+      } catch (err) {
+        if (err.name === "AbortError") return; // superseded by a newer toggle
+        showFeedback(false);
+      } finally {
+        if (inFlight === controller) inFlight = null;
+      }
+    };
+
+    form.addEventListener("change", (event) => {
+      if (event.target.matches('input[type="checkbox"]')) save();
+    });
+    // The structured-areas widget (coverage-onboarding.js) fires this.
+    form.addEventListener("coverage:changed", save);
+  }
+
+  /** The "Egendefinert" invoice-range button stays disabled until both the
+   *  from and to dates are picked (they're custom pickers writing hidden
+   *  inputs — a plain `required` on a hidden input blocks submit silently). */
+  function initInvoiceRangeForm() {
+    document.querySelectorAll("[data-invoice-range-form]").forEach((form) => {
+      const submit = form.querySelector("[data-invoice-range-submit]");
+      const from = form.querySelector('[name="from"]');
+      const to = form.querySelector('[name="to"]');
+      if (!submit || !from || !to) return;
+      const sync = () => { submit.disabled = !(from.value && to.value); };
+      form.addEventListener("input", sync);
+      form.addEventListener("change", sync);
+      sync();
+    });
+  }
+
+  // Exposed so add-on scripts (faq-editor.js, …) can hydrate [data-icon]
+  // placeholders they inject after load.
+  window.KoblyDashboard = { hydrateIcons: initIconSprite };
+
   document.addEventListener("DOMContentLoaded", () => {
     initIconSprite();
     initDeleteConfirm();
     initAssignSelects();
     initSelectAll();
     initCopyButtons();
+    initCoverageAjaxSave();
+    initInvoiceRangeForm();
   });
 })();

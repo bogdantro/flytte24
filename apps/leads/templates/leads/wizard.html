@@ -24,7 +24,7 @@
 <!-- ============================================================ -->
 <!-- WIZARD ROOT — fullscreen takeover, independent of page scroll -->
 <!-- ============================================================ -->
-<div class="wizard" data-total-steps="5">
+<div class="wizard" data-total-steps="6">
 
   <!-- Desktop background: fixed calm photo under a light wash (spec §5.3) -->
   <div class="wizard__background wizard__background--desktop" aria-hidden="true">
@@ -69,8 +69,9 @@
           <div class="wizard-progress__segment"></div>
           <div class="wizard-progress__segment"></div>
           <div class="wizard-progress__segment"></div>
+          <div class="wizard-progress__segment"></div>
         </div>
-        <span class="wizard-steplabel">Steg <span data-current-step-label>1</span> av 5</span>
+        <span class="wizard-steplabel">Steg <span data-current-step-label>1</span> av 6</span>
 
         <!-- ===================== STEP 1: address + map ===================== -->
         <section class="wizard-step is-active" data-step="1">
@@ -113,8 +114,73 @@
           </div>
         </section>
 
-        <!-- ===================== STEP 2: type & size ===================== -->
+        <!-- ===================== STEP 2: property / building lookup ===================== -->
         <section class="wizard-step" data-step="2">
+          <div class="step-header">
+            <h1 class="step-header__title">Fortell oss om boligen</h1>
+            <p class="step-header__subtitle">Vi henter opplysninger om boligen du flytter fra</p>
+          </div>
+
+          <div class="wizard-step__body">
+            <div class="property-step" data-property-step>
+
+              <!-- (a) address verify combobox -->
+              <div class="property-combobox" data-property-combobox>
+                <label class="field-label" for="property-address-input">Adresse</label>
+                <div class="property-combobox__control">
+                  <span class="property-combobox__icon" data-icon="search"></span>
+                  <input type="text" id="property-address-input" class="field-input"
+                         role="combobox" aria-expanded="false" aria-autocomplete="list"
+                         aria-controls="property-address-list" autocomplete="off"
+                         placeholder="Skriv inn adressen din …" data-property-input>
+                  <span class="property-combobox__spinner" data-property-search-spinner hidden></span>
+                </div>
+                <ul class="property-suggestions" id="property-address-list" role="listbox"
+                    data-property-list hidden></ul>
+                <p class="property-combobox__empty" data-property-empty hidden>Ingen adresser funnet</p>
+              </div>
+
+              <!-- (b) result region — loading / house / apartment / buildings / fallback / error -->
+              <div class="property-result" data-property-result aria-live="polite"></div>
+
+              <!-- (c) manual fallback — revealed by property-lookup.js when registry data is unavailable -->
+              <div class="property-manual" data-property-manual hidden>
+                <p class="property-manual__lead">Fyll inn opplysningene selv:</p>
+                <label class="text-field">
+                  <span class="field-label">Boligtype</span>
+                  <input type="text" class="field-input" name="bolig_type_manuell"
+                         placeholder="F.eks. Enebolig, Leilighet" value="{{ form.bolig_type_manuell.value|default:'' }}">
+                </label>
+                <div class="field-row">
+                  <label class="text-field">
+                    <span class="field-label">Størrelse (BRA)</span>
+                    <input type="number" inputmode="numeric" min="1" class="field-input" name="bolig_bra_manuell"
+                           placeholder="m²" value="{{ form.bolig_bra_manuell.value|default:'' }}">
+                  </label>
+                  <label class="text-field">
+                    <span class="field-label">Etasjer</span>
+                    <input type="number" inputmode="numeric" min="1" class="field-input" name="bolig_etasjer_manuell"
+                           value="{{ form.bolig_etasjer_manuell.value|default:'' }}">
+                  </label>
+                </div>
+                <label class="text-field" data-property-manual-unit hidden>
+                  <span class="field-label">Leilighet / boenhet</span>
+                  <input type="text" class="field-input" name="bolig_enhet_manuell"
+                         placeholder="F.eks. H0201" value="{{ form.bolig_enhet_manuell.value|default:'' }}">
+                </label>
+              </div>
+
+              <p class="property-source-note" data-property-source-note hidden></p>
+
+              <!-- Hidden state — the only things the server acts on (token is re-validated). -->
+              <input type="hidden" name="property_token" data-property-token value="{{ form.property_token.value|default:'' }}">
+              <input type="hidden" name="selected_unit" data-property-selected-unit value="{{ form.selected_unit.value|default:'' }}">
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== STEP 3: type & size ===================== -->
+        <section class="wizard-step" data-step="3">
           <div class="step-header">
             <h1 class="step-header__title">Hva slags flytting er det?</h1>
           </div>
@@ -145,8 +211,8 @@
           </div>
         </section>
 
-        <!-- ===================== STEP 3: date ===================== -->
-        <section class="wizard-step" data-step="3">
+        <!-- ===================== STEP 4: date ===================== -->
+        <section class="wizard-step" data-step="4">
           <div class="step-header">
             <h1 class="step-header__title">Når skal du flytte?</h1>
             <p class="step-header__subtitle">Velg en dato eller la oss vite om du er fleksibel</p>
@@ -175,8 +241,8 @@
           </div>
         </section>
 
-        <!-- ===================== STEP 4: goods / photos ===================== -->
-        <section class="wizard-step" data-step="4">
+        <!-- ===================== STEP 5: goods / photos ===================== -->
+        <section class="wizard-step" data-step="5">
           <div class="step-header">
             <h1 class="step-header__title">Hva skal du flytte?</h1>
             <p class="step-header__subtitle">Legg til bilder eller en beskrivelse av tingene dine.</p>
@@ -204,8 +270,8 @@
           </div>
         </section>
 
-        <!-- ===================== STEP 5: contact ===================== -->
-        <section class="wizard-step" data-step="5">
+        <!-- ===================== STEP 6: contact ===================== -->
+        <section class="wizard-step" data-step="6">
           <div class="step-header">
             <h1 class="step-header__title">La oss ta kontakt</h1>
             <p class="step-header__subtitle">Vi kobler deg med tre byråer. Du hører fra dem innen 24 timer.</p>
@@ -224,6 +290,29 @@
               <span class="field-label">E-post</span>
               <input type="email" name="epost" class="field-input" placeholder="ola@eksempel.no" value="{{ form.epost.value|default:'' }}">
             </label>
+
+            <!-- Repeat-submission warning. Shown by wizard.js when the live
+                 /api/duplikat-sjekk/ call finds a recent forespørsel, or
+                 pre-shown by the server when it rejected an unconfirmed repeat.
+                 The checkbox gates "Send forespørsel" until ticked. -->
+            <div class="text-field--full wizard-duplicate" data-duplicate-warning
+                 {% if not duplicate_warning %}hidden{% endif %}>
+              <p class="wizard-duplicate__title">
+                <span data-icon="alert-triangle"></span>
+                Du har nylig sendt inn en forespørsel
+              </p>
+              <p class="wizard-duplicate__body">
+                Vi ser at det allerede ligger en forespørsel
+                <strong data-duplicate-ref>{% if duplicate_warning %}{{ duplicate_warning.reference }}{% endif %}</strong>
+                registrert på denne e-posten eller dette telefonnummeret{% if duplicate_warning %} ({{ duplicate_warning.since|date:"d.m.Y" }}){% endif %}.
+                Byråene har allerede fått den. Er du sikker på at du vil sende en ny?
+              </p>
+              <label class="flex-toggle" data-duplicate-toggle>
+                <input type="checkbox" name="bekreft_duplikat" data-duplicate-confirm>
+                <span class="flex-toggle__dot"><span data-icon="check"></span></span>
+                Ja, jeg vil sende en ny forespørsel likevel
+              </label>
+            </div>
           </div>
         </section>
 
@@ -243,16 +332,10 @@
         </div>
         {% endif %}
 
-        <!-- Bottom nav: back link (hidden on step 1) + primary Neste/Send button -->
-        <div class="wizard-nav">
-          <button type="button" class="wizard-nav__back" data-wizard-back hidden>Tilbake</button>
-          <button type="button" class="wizard-nav__next btn-primary" data-wizard-next disabled>
-            <span data-next-label>Neste</span>
-            <span data-icon="arrow-right"></span>
-          </button>
-        </div>
       </div>
 
+      <!-- RIGHT COLUMN: on desktop it's a side panel; on mobile the map
+           (step 1) and the receipt (step 5) flow inline under the fields. -->
       <!-- RIGHT COLUMN: desktop only — map (step 1), step photo (2-4), summary (step 5) -->
       <div class="wizard-card__right">
         <!-- Step 1: live Leaflet map, built by wizard.js -->
@@ -284,19 +367,23 @@
           </div>
         </div>
 
-        <!-- Steps 2-4: static lifestyle photo -->
+        <!-- Steps 2-5: static lifestyle photo. Step 2's property result renders
+             inline in the left column (it's content, not a companion visual). -->
         <div class="step-art" data-step-panel="2">
-          <img src="{% static 'images/wizard/R1-07829-0034.jpg' %}" alt="">
+          <img src="{% static 'images/wizard/R1-09476-0028.jpg' %}" alt="">
         </div>
         <div class="step-art" data-step-panel="3">
-          <img src="{% static 'images/wizard/rull3_26.jpg' %}" alt="">
+          <img src="{% static 'images/wizard/R1-07829-0034.jpg' %}" alt="">
         </div>
         <div class="step-art" data-step-panel="4">
+          <img src="{% static 'images/wizard/rull3_26.jpg' %}" alt="">
+        </div>
+        <div class="step-art" data-step-panel="5">
           <img src="{% static 'images/wizard/R1-09476-0028.jpg' %}" alt="">
         </div>
 
-        <!-- Step 5: live summary/receipt panel, filled in by wizard.js as fields change -->
-        <div class="summary-panel" data-step-panel="5">
+        <!-- Step 6: live summary/receipt panel, filled in by wizard.js as fields change -->
+        <div class="summary-panel" data-step-panel="6">
           <span class="summary-panel__eyebrow">Kvittering</span>
           <h3 class="summary-panel__title">Din forespørsel</h3>
           <p class="summary-panel__intro">Vi sender denne til tre kvalitetssjekkede byråer i ditt område.</p>
@@ -304,6 +391,17 @@
             <!-- Rows injected by updateSummaryPanel() in wizard.js: Fra / Til / Flytting / Når / Innhold / Bilder -->
           </div>
         </div>
+      </div>
+
+      <!-- Bottom nav: back link (hidden on step 1) + primary Neste/Send button.
+           A direct child of __body (not __left) so it sits below the inline
+           map/receipt on mobile; positioned into the left column on desktop. -->
+      <div class="wizard-nav">
+        <button type="button" class="wizard-nav__back" data-wizard-back hidden>Tilbake</button>
+        <button type="button" class="wizard-nav__next btn-primary" data-wizard-next disabled>
+          <span data-next-label>Neste</span>
+          <span data-icon="arrow-right"></span>
+        </button>
       </div>
 
     </div>
@@ -381,18 +479,29 @@
 <script>
   // Server-computed context, read once by wizard.js on load.
   window.KOBLY_WIZARD_INITIAL_CENTER = {{ initial_center_json|safe }};
+  window.KOBLY_CARTO_API_KEY = "{{ CARTO_API_KEY }}";
   // Mobile background image per step (spec §5.3) — filenames are fixed, but the
   // URLs must come from the static template tag, so this map is built server-side and read
   // by wizard.js's mobile background crossfade logic.
   window.KOBLY_MOBILE_BACKGROUNDS = {
     1: "{% static 'images/wizard/boxes-and-plants.jpg' %}",
-    2: "{% static 'images/wizard/R1-07829-0034.jpg' %}",
-    3: "{% static 'images/wizard/rull3_26.jpg' %}",
-    4: "{% static 'images/wizard/R1-09476-0023-kopi.jpg' %}",
-    5: "{% static 'images/wizard/boxes-and-plants.jpg' %}"
+    2: "{% static 'images/wizard/R1-09476-0028.jpg' %}",
+    3: "{% static 'images/wizard/R1-07829-0034.jpg' %}",
+    4: "{% static 'images/wizard/rull3_26.jpg' %}",
+    5: "{% static 'images/wizard/R1-09476-0023-kopi.jpg' %}",
+    6: "{% static 'images/wizard/boxes-and-plants.jpg' %}"
   };
 </script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script src="{% static 'js/wizard.js' %}"></script>
+<script>
+  // Endpoints for property-lookup.js — reversed here so the JS module stays URL-agnostic.
+  window.KOBLY_PROPERTY_URLS = {
+    addressSearch: "{% url 'leads:api_address_search' %}",
+    lookup: "{% url 'leads:api_property_lookup' %}"
+  };
+  window.KOBLY_DUPLICATE_CHECK_URL = "{% url 'leads:api_duplicate_check' %}";
+</script>
+<script src="{% static 'js/property-lookup.js' %}"></script>
 </body>
 </html>

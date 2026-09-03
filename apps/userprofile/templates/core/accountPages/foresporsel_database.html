@@ -9,19 +9,61 @@
   </div>
 
   <div class="portal-card">
-    <p class="portal-card__title">Alle leads ({{ lead_entries|length }}) · {{ total_received }} mottatt totalt</p>
+    <p class="portal-card__title">Fakturering</p>
+    <div class="portal-row"><span class="portal-row__label">I dag</span><span class="portal-row__value">{{ count_today }} leads</span></div>
+    <div class="portal-row"><span class="portal-row__label">Denne uken</span><span class="portal-row__value">{{ count_week }} leads</span></div>
+    <div class="portal-row"><span class="portal-row__label">Denne måneden</span><span class="portal-row__value">{{ count_month }} leads</span></div>
+    <div class="portal-row"><span class="portal-row__label">Krediterte leads</span><span class="portal-row__value">{{ credited_count }}</span></div>
+    <p style="margin:12px 0 0;">
+      Last ned faktura:
+      <a href="{% url 'my_invoice_pdf' %}?period=day" target="_blank" rel="noopener">i dag</a> ·
+      <a href="{% url 'my_invoice_pdf' %}?period=week" target="_blank" rel="noopener">uke</a> ·
+      <a href="{% url 'my_invoice_pdf' %}?period=month" target="_blank" rel="noopener">måned</a>
+    </p>
+  </div>
+
+  <div class="portal-card">
+    <p class="portal-card__title">Alle leads ({{ lead_entries|length }}{% if lead_entries|length != lead_entries_total %} av {{ lead_entries_total }}{% endif %})</p>
+
+    <form method="get" class="portal-lead-filters">
+      <select name="lf_days" onchange="this.form.requestSubmit()">
+        <option value="">Når som helst</option>
+        <option value="7" {% if lf_days == '7' %}selected{% endif %}>Siste 7 dager</option>
+        <option value="30" {% if lf_days == '30' %}selected{% endif %}>Siste 30 dager</option>
+        <option value="90" {% if lf_days == '90' %}selected{% endif %}>Siste 90 dager</option>
+      </select>
+      <select name="lf_type" onchange="this.form.requestSubmit()">
+        <option value="">Alle flyttetyper</option>
+        {% for value, label in flytte_type_choices %}<option value="{{ label }}" {% if lf_type == label %}selected{% endif %}>{{ label }}</option>{% endfor %}
+      </select>
+      <select name="lf_service" onchange="this.form.requestSubmit()">
+        <option value="">Alle boligtyper</option>
+        {% for value, label in boligtype_choices %}<option value="{{ label }}" {% if lf_service == label %}selected{% endif %}>{{ label }}</option>{% endfor %}
+      </select>
+      <select name="lf_city" onchange="this.form.requestSubmit()">
+        <option value="">Alle byer</option>
+        {% for value, label in city_choices %}<option value="{{ label }}" {% if lf_city == label %}selected{% endif %}>{{ label }}</option>{% endfor %}
+      </select>
+      <noscript><button type="submit" class="btn-outline">Filtrer</button></noscript>
+    </form>
+
     {% if lead_entries %}
-      {% for entry in lead_entries %}
-        <div class="portal-row">
-          <span class="portal-row__label">{{ entry.created_at|date:"d.m.Y" }} · {{ entry.source }}</span>
-          <span class="portal-row__value">
-            {% if entry.url %}<a href="{{ entry.url }}">{{ entry.label }}</a>{% else %}{{ entry.label }}{% endif %}
-            {% if entry.status_display %}<span class="portal-badge portal-badge--{{ entry.status }}">{{ entry.status_display }}</span>{% endif %}
-          </span>
-        </div>
-      {% endfor %}
+      <ul class="portal-lead-list">
+        {% for entry in lead_entries %}
+          <li class="portal-lead-list__item{% if entry.url %} portal-lead-list__item--link{% endif %}"
+              {% if entry.url %}onclick="window.location='{{ entry.url }}'"{% endif %}>
+            <span class="portal-lead-list__main">
+              {{ entry.navn }}
+              {% if entry.reference %}<span class="portal-lead-ref">{{ entry.reference }}</span>{% endif %}
+            </span>
+            <span class="portal-lead-list__meta">
+              {% if entry.flytte_type %}{{ entry.flytte_type }}{% if entry.boligtype %} · {{ entry.boligtype }}{% endif %} · {% endif %}{{ entry.created_at|date:"d.m.Y" }}
+            </span>
+          </li>
+        {% endfor %}
+      </ul>
     {% else %}
-      <p class="portal-empty">Ingen leads mottatt ennå.</p>
+      <p class="portal-empty">Ingen leads {% if lf_days or lf_type or lf_service or lf_city %}matcher filteret{% else %}mottatt ennå{% endif %}.</p>
     {% endif %}
   </div>
 </section>

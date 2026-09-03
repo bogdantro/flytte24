@@ -16,7 +16,7 @@
 (function () {
   "use strict";
 
-  const TOTAL_STEPS = 5;
+  const TOTAL_STEPS = 6;
   let currentStep = 1;
 
   /**
@@ -49,31 +49,45 @@
         const til = form.querySelector('[name="til"]').value.trim();
         return fra.length > 2 && til.length > 2;
       }
-      case 2: {
+      case 2:
+        return true; // property lookup — always advanceable; the customer must never hit a dead end
+      case 3: {
         const type = form.querySelector('[name="flytte_type"]:checked');
         const bolig = form.querySelector('[name="boligtype"]:checked');
         return Boolean(type) && Boolean(bolig);
       }
-      case 3: {
+      case 4: {
         const date = form.querySelector('[name="flyttedato"]').value;
         const fleksibel = form.querySelector('[name="fleksibel"]').checked;
         return Boolean(date) || fleksibel;
       }
-      case 4:
+      case 5:
         return true; // always valid — goods/photos step is optional
-      case 5: {
+      case 6: {
         const navn = form.querySelector('[name="navn"]').value.trim();
         const telefon = form.querySelector('[name="telefon"]').value.trim();
         const epost = form.querySelector('[name="epost"]').value.trim();
         return (
           navn.length > 1 &&
           /^[\d\s+]{8,}$/.test(telefon) &&
-          /^\S+@\S+\.\S+$/.test(epost)
+          /^\S+@\S+\.\S+$/.test(epost) &&
+          !isDuplicateBlocking()
         );
       }
       default:
         return false;
     }
+  }
+
+  /**
+   * True when step 6's repeat-submission warning is showing and the customer
+   * hasn't ticked "Ja, send likevel" — the send button stays disabled until
+   * they do. (The server re-checks regardless; this is only the UX gate.)
+   */
+  function isDuplicateBlocking() {
+    const warning = document.querySelector("[data-duplicate-warning]");
+    const confirm = document.querySelector("[data-duplicate-confirm]");
+    return Boolean(warning && !warning.hidden && confirm && !confirm.checked);
   }
 
   /** Enables/disables the Neste button based on the current step's validity, and swaps its label on step 5. */
@@ -182,17 +196,20 @@
   // (leads/templates/leads/wizard.html's data-error-fields).
   const FIELD_TO_STEP = {
     fra: 1, til: 1,
-    flytte_type: 2, boligtype: 2,
-    flyttedato: 3, fleksibel: 3,
-    beskrivelse: 4, bilder: 4,
-    navn: 5, telefon: 5, epost: 5,
+    property_token: 2, selected_unit: 2,
+    bolig_type_manuell: 2, bolig_bra_manuell: 2, bolig_etasjer_manuell: 2, bolig_enhet_manuell: 2,
+    flytte_type: 3, boligtype: 3,
+    flyttedato: 4, fleksibel: 4,
+    beskrivelse: 5, bilder: 5,
+    navn: 6, telefon: 6, epost: 6,
     // WizardForm.clean()'s two cross-field checks (flyttedato/fleksibel
     // both set, or neither set) attach to Django's NON_FIELD_ERRORS key
     // ("__all__"), not either field name — without this entry,
     // FIELD_TO_STEP["__all__"] was undefined, .filter(Boolean) silently
     // dropped it, and the wizard reopened on step 1 while the actual
-    // problem was always on step 3.
-    __all__: 3,
+    // problem was always on step 4 (the date step, now that a property step
+    // sits at position 2).
+    __all__: 4,
   };
 
   /** On reload after a server-side validation failure, jumps to the earliest step that actually
@@ -213,6 +230,8 @@
     goToStep,
     getCurrentStep: () => currentStep,
     onStepChange: [], // array of function(step) — populated by later sections
+    hydrateIcons: initIconSprite, // reused by property-lookup.js for its injected markup
+    getPropertySummary: () => null, // overridden by property-lookup.js once it loads
   };
 
   // ---------------------------------------------------------------
@@ -443,7 +462,11 @@
 
   const PIN_COLOR_FROM = "#221814";
   const PIN_COLOR_TO = "#3D5507";
-  const TILE_URL = "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png";
+  // CARTO raster tiles now require an account API key (window.KOBLY_CARTO_API_KEY,
+  // set by wizard.html from settings.CARTO_API_KEY).
+  const TILE_URL =
+    "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" +
+    (window.KOBLY_CARTO_API_KEY ? `?key=${encodeURIComponent(window.KOBLY_CARTO_API_KEY)}` : "");
 
   /** Builds a Leaflet divIcon: a colored circle with a white house-pin glyph, matching the reference exactly. */
   function pinIcon(color) {
@@ -828,6 +851,10 @@
 
     if (fra) rows.appendChild(summaryRow("Fra", fra));
     if (til) rows.appendChild(summaryRow("Til", til));
+    // "Din bolig" — filled in by property-lookup.js (step 2) when a lookup or
+    // manual entry produced something worth showing.
+    const bolig = KoblyWizard.getPropertySummary && KoblyWizard.getPropertySummary();
+    if (bolig) rows.appendChild(summaryRow("Bolig", bolig));
     if (flytteType || boligtype) {
       const parts = [flytteType && FLYTTE_TYPE_LABELS[flytteType.value], boligtype && BOLIGTYPE_LABELS[boligtype.value]].filter(Boolean);
       rows.appendChild(summaryRow("Flytting", parts.join(" · ")));
@@ -1026,6 +1053,88 @@
     refreshTriggerLabel();
   }
 
+  // ---------------------------------------------------------------
+  // Repeat-submission check (step 6) — advisory. Asks the server
+  // "has this phone/email sent a forespørsel in the last 7 days?" and,
+  // if so, shows the warning + requires the "send likevel" checkbox.
+  // apps/leads/views.py re-checks on submit and is the real gate.
+  // ---------------------------------------------------------------
+  function initDuplicateCheck() {
+    const url = window.KOBLY_DUPLICATE_CHECK_URL;
+    const form = document.querySelector(".wizard-card");
+    const warning = document.querySelector("[data-duplicate-warning]");
+    if (!url || !form || !warning) return;
+
+    const telInput = form.querySelector('[name="telefon"]');
+    const epostInput = form.querySelector('[name="epost"]');
+    const refEl = warning.querySelector("[data-duplicate-ref]");
+    const confirmBox = warning.querySelector("[data-duplicate-confirm]");
+    let timer = null;
+    let lastKey = null;
+
+    function csrfToken() {
+      const el = document.querySelector('[name="csrfmiddlewaretoken"]');
+      return el ? el.value : "";
+    }
+
+    function showWarning(reference) {
+      if (reference && refEl) refEl.textContent = reference;
+      warning.hidden = false;
+      updateNavButton();
+    }
+    function hideWarning() {
+      if (warning.hidden) return;
+      warning.hidden = true;
+      if (confirmBox) confirmBox.checked = false;
+      updateNavButton();
+    }
+
+    function check() {
+      const telefon = telInput.value.trim();
+      const epost = epostInput.value.trim();
+      const telOk = /^[\d\s+]{8,}$/.test(telefon);
+      const epostOk = /^\S+@\S+\.\S+$/.test(epost);
+      if (!telOk && !epostOk) { hideWarning(); return; }
+      const key = telefon + "|" + epost;
+      if (key === lastKey) return;
+      lastKey = key;
+      fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrfToken(),
+          "Accept": "application/json",
+        },
+        body: JSON.stringify({ telefon: telefon, epost: epost }),
+      })
+        .then((r) => (r.ok ? r.json() : { duplicate: false }))
+        .then((data) => {
+          // Only act on the response for the values still in the fields.
+          if (key !== telInput.value.trim() + "|" + epostInput.value.trim()) return;
+          if (data && data.duplicate) showWarning(data.reference);
+          else hideWarning();
+        })
+        .catch(() => {});
+    }
+
+    function schedule() {
+      clearTimeout(timer);
+      timer = setTimeout(check, 500);
+    }
+
+    telInput.addEventListener("input", schedule);
+    epostInput.addEventListener("input", schedule);
+    if (confirmBox) confirmBox.addEventListener("change", updateNavButton);
+    KoblyWizard.onStepChange.push((step) => { if (step === 6) check(); });
+
+    // Server already rejected an unconfirmed repeat and re-rendered with the
+    // warning visible — make sure we land on step 6.
+    if (!warning.hidden) {
+      lastKey = telInput.value.trim() + "|" + epostInput.value.trim();
+      setTimeout(() => goToStep(6), 0);
+    }
+  }
+
   /** Entry point — runs everything this task owns once the DOM is ready. */
   function initWizard() {
     initIconSprite();
@@ -1037,8 +1146,9 @@
     initMobileMapPicker();
     initPhotoUpload();
     initDatePicker();
+    initDuplicateCheck();
     jumpToStepWithServerError();
-    KoblyWizard.onStepChange.push((step) => { if (step === 5) updateSummaryPanel(); });
+    KoblyWizard.onStepChange.push((step) => { if (step === TOTAL_STEPS) updateSummaryPanel(); });
     document.querySelector(".wizard-card").addEventListener("input", updateSummaryPanel);
     document.querySelector(".wizard-card").addEventListener("change", updateSummaryPanel);
   }

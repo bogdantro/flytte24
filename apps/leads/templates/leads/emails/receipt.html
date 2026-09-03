@@ -44,11 +44,19 @@ tjenester adaptation.
               </td>
             </tr>
             <tr>
-              <td style="padding:14px 0; {% if lead.beskrivelse %}border-bottom:1px solid #e6e1d6;{% endif %}">
+              <td style="padding:14px 0; {% if lead.bolig_type or lead.bolig_bra_m2 or lead.bolig_byggeaar or lead.beskrivelse %}border-bottom:1px solid #e6e1d6;{% endif %}">
                 <p style="margin:0; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size:13px; line-height:1.4; color:#5c5c5c;">Boligtype</p>
                 <p style="margin:4px 0 0; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size:16px; line-height:1.5; font-weight:600; color:#1a1a1a;">{{ lead.get_boligtype_display }}</p>
               </td>
             </tr>
+            {% if lead.bolig_type or lead.bolig_bra_m2 or lead.bolig_byggeaar %}
+            <tr>
+              <td style="padding:14px 0; {% if lead.beskrivelse %}border-bottom:1px solid #e6e1d6;{% endif %}">
+                <p style="margin:0; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size:13px; line-height:1.4; color:#5c5c5c;">Om boligen{% if lead.bolig_enhet %} ({{ lead.bolig_enhet }}){% endif %}</p>
+                <p style="margin:4px 0 0; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size:16px; line-height:1.5; font-weight:600; color:#1a1a1a;">{% if lead.bolig_type %}{{ lead.bolig_type }}{% endif %}{% if lead.bolig_bra_m2 %} · {{ lead.bolig_bra_m2 }} m²{% endif %}{% if lead.bolig_byggeaar %} · Byggeår {{ lead.bolig_byggeaar }}{% endif %}</p>
+              </td>
+            </tr>
+            {% endif %}
             {% if lead.beskrivelse %}
             <tr>
               <td style="padding:14px 0;">

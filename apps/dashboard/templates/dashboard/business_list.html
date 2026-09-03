@@ -1,5 +1,6 @@
 <!-- apps/dashboard/templates/dashboard/business_list.html -->
 {% extends "dashboard/_base.html" %}
+{% load static %}
 
 {% block title %}Bedrifter{% endblock %}
 
@@ -8,6 +9,7 @@
     <h1 class="dashboard-heading">Bedrifter</h1>
     <div class="dashboard-heading-row__actions">
       <a href="{% url 'dashboard:business_import' %}" class="btn-outline">Importer bedrifter</a>
+      <a href="{% url 'dashboard:business_add' %}" class="btn-primary">Ny bedrift</a>
     </div>
   </div>
 
@@ -20,6 +22,12 @@
       <span class="dashboard-stat__value">{{ active_count }}</span>
       <span class="dashboard-stat__label">Aktive</span>
     </div>
+    {% if pending_coverage_count %}
+    <div class="dashboard-stat">
+      <span class="dashboard-stat__value" style="color:#8a4a1f;">{{ pending_coverage_count }}</span>
+      <span class="dashboard-stat__label">Dekningsendringer venter</span>
+    </div>
+    {% endif %}
   </div>
 
   <div class="dashboard-filters">
@@ -28,17 +36,60 @@
     <a href="?active=0" class="filter-pill {% if active_filter == '0' %}is-active{% endif %}">Inaktive</a>
   </div>
 
-  <form method="get" style="margin-bottom: 1.5rem;">
+  <form method="get" class="dashboard-search-filters" style="margin-bottom: 1.5rem;">
     {% if active_filter %}<input type="hidden" name="active" value="{{ active_filter }}">{% endif %}
-    <input type="text" name="q" value="{{ query }}" placeholder="Søk på navn, e-post eller by …" class="dashboard-form__group" style="width:100%; max-width:360px; border:1.5px solid rgba(26,26,26,0.1); border-radius:10px; background:#f7f5f1; padding:0.75rem 0.875rem; font-size:0.9375rem;">
+    <input type="text" name="q" value="{{ query }}" placeholder="Søk på navn, e-post eller by …" class="dashboard-search-filters__text">
+    <select name="city" class="dashboard-search-filters__select" onchange="this.form.requestSubmit()">
+      <option value="">Alle dekningsbyer</option>
+      {% for value, label in city_choices %}
+        <option value="{{ value }}" {% if city_filter == value %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+    <select name="service" class="dashboard-search-filters__select" onchange="this.form.requestSubmit()">
+      <option value="">Alle tjenester</option>
+      {% for value, label in service_choices %}
+        <option value="{{ value }}" {% if service_filter == value %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+    <select name="cap" class="dashboard-search-filters__select" onchange="this.form.requestSubmit()">
+      <option value="">Grense: alle</option>
+      <option value="yes" {% if cap_filter == 'yes' %}selected{% endif %}>Har dagsgrense</option>
+      <option value="no" {% if cap_filter == 'no' %}selected{% endif %}>Uten dagsgrense</option>
+    </select>
+    <select name="priority" class="dashboard-search-filters__select" onchange="this.form.requestSubmit()">
+      <option value="">Prioritet: alle</option>
+      {% for bucket in priority_buckets %}
+        <option value="{{ bucket }}" {% if priority_filter == bucket %}selected{% endif %}>Prioritet {{ bucket }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit" class="btn-outline">Filtrer</button>
+    <a href="{% url 'dashboard:business_list' %}" class="btn-outline">Nullstill</a>
   </form>
 
   {% if businesses %}
+    <form method="get" action="{% url 'dashboard:business_invoices_pdf' %}" target="_blank" id="invoice-form" class="dashboard-bulk-bar">
+      <strong>Samlefaktura (PDF)</strong>
+      <span class="lead-table__muted">Huk av bedrifter, eller ingen for alle</span>
+      <span class="date-field date-field--inline" data-date-picker>
+        <button type="button" class="date-field__trigger field-input" data-date-picker-trigger>
+          <span data-date-picker-label>Fra</span><span data-icon="calendar"></span>
+        </button>
+        <input type="hidden" name="from" data-date-input>
+      </span>
+      <span class="date-field date-field--inline" data-date-picker>
+        <button type="button" class="date-field__trigger field-input" data-date-picker-trigger>
+          <span data-date-picker-label>Til</span><span data-icon="calendar"></span>
+        </button>
+        <input type="hidden" name="to" data-date-input>
+      </span>
+      <button type="submit" class="btn-outline">Last ned PDF</button>
+    </form>
+
     <table class="lead-table">
       <thead>
         <tr>
+          <th><input type="checkbox" data-select-all></th>
           <th>Bedrift</th>
-          <th>Tags</th>
           <th>By</th>
           <th>Dekker</th>
           <th>Type</th>
@@ -52,8 +103,8 @@
       <tbody>
         {% for business in businesses %}
           <tr onclick="window.location='{% url 'dashboard:business_detail' business.pk %}'">
-            <td>{{ business.company_name }}</td>
-            <td class="lead-table__muted">{{ business.tags|default:"—" }}</td>
+            <td onclick="event.stopPropagation();"><input type="checkbox" name="business" value="{{ business.pk }}" form="invoice-form"></td>
+            <td>{{ business.company_name }}{% if business.has_pending_coverage %}<br><span class="assign-pill assign-pill--warn" title="Venter på godkjenning av dekningsendring">⚠ Dekningsendring venter</span>{% endif %}</td>
             <td class="lead-table__muted">{{ business.city }}</td>
             <td class="lead-table__muted">{{ business.cities|default:"—" }}</td>
             <td class="lead-table__muted">{{ business.move_type|default:"—" }}</td>
@@ -74,6 +125,12 @@
     </table>
     {% include "dashboard/_pagination.html" with page_obj=businesses %}
   {% else %}
-    <p class="dashboard-empty">Ingen bedrifter {% if query or active_filter %}matcher søket{% else %}registrert ennå{% endif %}.</p>
+    <p class="dashboard-empty">Ingen bedrifter {% if query or active_filter or city_filter or service_filter or cap_filter or priority_filter %}matcher søket{% else %}registrert ennå{% endif %}.</p>
   {% endif %}
+
+  {% include "leads/_date_overlay.html" %}
+{% endblock %}
+
+{% block extra_scripts %}
+  <script src="{% static 'js/date-picker.js' %}"></script>
 {% endblock %}

@@ -404,11 +404,12 @@ class ValidatePhotosTest(TestCase):
 
 
 class WizardTemplateRenderTest(TestCase):
-    def test_renders_all_five_step_headings(self):
+    def test_renders_all_six_step_headings(self):
         response = self.client.get(reverse("leads:wizard"))
         content = response.content.decode()
         for heading in [
             "Hvor skal du flytte?",
+            "Fortell oss om boligen",
             "Hva slags flytting er det?",
             "Når skal du flytte?",
             "Hva skal du flytte?",
@@ -416,9 +417,15 @@ class WizardTemplateRenderTest(TestCase):
         ]:
             self.assertIn(heading, content)
 
-    def test_renders_five_progress_segments(self):
+    def test_renders_six_progress_segments(self):
         response = self.client.get(reverse("leads:wizard"))
-        self.assertContains(response, 'class="wizard-progress__segment"', count=5)
+        self.assertContains(response, 'class="wizard-progress__segment"', count=6)
+
+    def test_renders_property_lookup_step(self):
+        response = self.client.get(reverse("leads:wizard"))
+        self.assertContains(response, "data-property-step")
+        self.assertContains(response, 'name="property_token"')
+        self.assertContains(response, "property-lookup.js")
 
     def test_renders_csrf_token(self):
         response = self.client.get(reverse("leads:wizard"))

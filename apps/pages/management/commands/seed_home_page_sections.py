@@ -102,7 +102,7 @@ class Command(BaseCommand):
                         {"title": "Flyttehjelp", "body": "Pakking, bæring og transport, trygt fra dør til dør. Vi finner byråer som tar hele jobben. Du velger hvor mye hjelp du trenger."},
                         {"title": "Flyttevask", "body": "Godkjente vaskebyråer med garanti. Perfekt før innflytting eller når leiekontrakten krever en grundig sluttvask."},
                         {"title": "Lagring", "body": "Trygg kortsiktig eller langsiktig oppbevaring i ditt nærområde, med forsikring og fleksibel tilgang."},
-                        {"title": "Utlandsflytting", "body": "Spesialiserte byråer som håndterer toll, containere og papirarbeid. Både flytting ut av Norge og hjem igjen."},
+                        {"title": "Distansflytting", "body": "Byråer som er vant med lange flyttelass mellom byer og landsdeler — planlegging, mellomlagring og trygg transport over store avstander."},
                         {"title": "Kontorflytting", "body": "Erfarne partnere som flytter kontor, lager og næringslokaler utenom arbeidstid. IT, møbler og arkiv håndtert profesjonelt."},
                         {"title": "Dødsbo", "body": "Tømming og ryddighet med respekt. Byråer med erfaring fra bobehandling av innbo."},
                     ]

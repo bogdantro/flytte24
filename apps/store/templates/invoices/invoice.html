@@ -1,0 +1,67 @@
+{% load l10n %}
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+  <meta charset="utf-8">
+  <style>
+    @page { size: A4; margin: 2cm; }
+    body { font-family: Helvetica, Arial, sans-serif; color: #1a1a1a; font-size: 11px; }
+    h1 { font-size: 20px; margin: 0 0 4px; }
+    .muted { color: #6b6b6b; }
+    .head-row { width: 100%; margin-bottom: 24px; }
+    .head-row td { vertical-align: top; }
+    table.lines { width: 100%; border-collapse: collapse; margin-top: 12px; }
+    table.lines th { text-align: left; border-bottom: 1.5px solid #1a1a1a; padding: 6px 4px; }
+    table.lines td { border-bottom: 1px solid #ddd; padding: 6px 4px; }
+    .right { text-align: right; }
+    .credited { color: #6b6b6b; }
+    table.totals { margin-top: 16px; width: 40%; margin-left: 60%; }
+    table.totals td { padding: 4px; }
+    table.totals tr.grand td { border-top: 1.5px solid #1a1a1a; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <table class="head-row">
+    <tr>
+      <td>
+        <h1>Faktura</h1>
+        <div class="muted">Kobly AS &middot; Generert {{ generated_at|date:"d.m.Y H:i" }}</div>
+      </td>
+      <td class="right">
+        <strong>{{ business.company_name }}</strong><br>
+        {{ business.address }}<br>
+        {{ business.postal_code }} {{ business.city }}<br>
+        {% if business.company_number %}Org.nr. {{ business.company_number }}{% endif %}
+      </td>
+    </tr>
+  </table>
+
+  <p>Periode: <strong>{{ start|date:"d.m.Y" }} – {{ end|date:"d.m.Y" }}</strong><br>
+     Leads i perioden: {{ lead_count }} ({{ credited_count }} kreditert)<br>
+     Pris per lead: kr {{ price_per_lead|unlocalize }} eks. mva</p>
+
+  <table class="lines">
+    <thead>
+      <tr><th>Dato</th><th>Referanse</th><th>Kunde</th><th class="right">Beløp</th></tr>
+    </thead>
+    <tbody>
+      {% for line in lines %}
+        <tr class="{% if line.credited %}credited{% endif %}">
+          <td>{{ line.created_at|date:"d.m.Y" }}</td>
+          <td>{{ line.lead_reference }}</td>
+          <td>{{ line.lead_name }}{% if line.credited %} — kreditert{% endif %}</td>
+          <td class="right">kr {{ line.amount|unlocalize }}</td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="4" class="muted">Ingen leads i perioden.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <table class="totals">
+    <tr><td>Sum eks. mva</td><td class="right">kr {{ subtotal|unlocalize }}</td></tr>
+    <tr><td>Mva 25 %</td><td class="right">kr {{ vat|unlocalize }}</td></tr>
+    <tr class="grand"><td>Å betale</td><td class="right">kr {{ total|unlocalize }}</td></tr>
+  </table>
+</body>
+</html>

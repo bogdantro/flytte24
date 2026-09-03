@@ -140,8 +140,8 @@
         <p class="service-card__body">Trygg kortsiktig eller langsiktig oppbevaring i ditt nærområde, med forsikring og fleksibel tilgang.</p>
       </article>
       <article class="service-card">
-        <h3 class="service-card__title">Utlandsflytting</h3>
-        <p class="service-card__body">Spesialiserte byråer som håndterer toll, containere og papirarbeid. Både flytting ut av Norge og hjem igjen.</p>
+        <h3 class="service-card__title">Distansflytting</h3>
+        <p class="service-card__body">Byråer som er vant med lange flyttelass mellom byer og landsdeler — planlegging, mellomlagring og trygg transport over store avstander.</p>
       </article>
       <article class="service-card">
         <h3 class="service-card__title">Kontorflytting</h3>
@@ -225,18 +225,7 @@
   <div class="content-width">
     <div class="footer-cta__inner">
       <h2 class="footer-cta__title">Klar for å flytte?</h2>
-      <form class="postnummer-form" data-postnummer-form novalidate>
-        <div class="postnummer-form__row">
-          <label class="postnummer-form__field">
-            <input type="text" inputmode="numeric" maxlength="4" placeholder="Ditt postnummer" aria-label="Postnummer" data-postnummer-input>
-          </label>
-          <button type="submit" class="btn-primary postnummer-form__submit">
-            Få 3 tilbud gratis
-            <span data-icon="arrow-right"></span>
-          </button>
-        </div>
-        <p class="postnummer-form__error" data-postnummer-error hidden>Skriv inn et gyldig postnummer (4 siffer).</p>
-      </form>
+      {% include "core/_address_cta.html" %}
     </div>
   </div>
 </section>

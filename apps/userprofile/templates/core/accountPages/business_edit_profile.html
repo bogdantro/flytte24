@@ -81,13 +81,16 @@
       </div>
     </div>
 
-    <button type="submit" class="btn-primary">Lagre</button>
+    <button type="submit" style="margin-bottom: 45px; padding: 18px 50px;" class="btn-primary">Lagre</button>
   </form>
 
   <div class="portal-card">
     <p class="portal-card__title">Dekning</p>
+    <div class="portal-banner portal-banner--pending" data-coverage-pending-banner {% if not pending_coverage %}hidden{% endif %} style="margin-bottom:14px;">
+      Endringene i dekningen din er sendt til Kobly og venter på godkjenning. Til de er godkjent gjelder de forrige valgene.
+    </div>
     <p style="margin:0 0 16px; font-size:13px; color:#5c5c5c;">
-      Samme valg som da du søkte om partnerskap. Lagres automatisk når du huker av eller fjerner en hake.
+      Samme valg som da du søkte om partnerskap. Når du endrer noe, sendes det til Kobly for godkjenning.
       <span class="portal-coverage-feedback-anchor" data-coverage-feedback-anchor></span>
     </p>
     <form data-coverage-form="{% url 'update_business_coverage' %}">
@@ -99,12 +102,38 @@
           {% endfor %}
         </div>
       </div>
-      <div class="pill-group" data-pill-group="cities" style="margin-top:20px;">
-        <p class="pill-group__label">Byer dere dekker</p>
-        <div class="pill-group__grid pill-group__grid--3col">
-          {% for value, label in city_choices %}
-            <label class="pill-button"><input type="checkbox" name="cities" value="{{ value }}" {% if value in current_cities %}checked{% endif %}>{{ label }}</label>
-          {% endfor %}
+
+      <div class="coverage-onboarding" data-coverage-onboarding style="margin-top:24px;">
+        <div class="pill-group" data-pill-group="cities">
+          <p class="pill-group__label">Byer dere dekker</p>
+          <div class="pill-group__grid pill-group__grid--3col">
+            {% for value, label in city_choices %}
+              <label class="pill-button"><input type="checkbox" name="cities" value="{{ value }}" {% if value in current_cities %}checked{% endif %}>{{ label }}</label>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="coverage-summary" data-coverage-summary hidden></div>
+
+        <input type="hidden" name="service_areas" data-service-areas-input value="{{ service_areas_json }}">
+        <script type="application/json" data-coverage-config>
+          {"regions": {{ region_groups_json|safe }},
+           "selected": {
+             {% for place, entry in service_area_places.items %}"{{ place|escapejs }}": {"pickup": {{ entry.pickup|yesno:"true,false" }}, "dropoff": {{ entry.dropoff|yesno:"true,false" }}}{% if not forloop.last %},{% endif %}{% endfor %}
+           }}
+        </script>
+
+        <div class="coverage-modal" data-coverage-modal hidden>
+          <div class="coverage-modal__backdrop" data-coverage-modal-close></div>
+          <div class="coverage-modal__card">
+            <div class="coverage-modal__head">
+              <p class="coverage-modal__title" data-coverage-modal-title></p>
+              <button type="button" class="coverage-modal__close" data-coverage-modal-close aria-label="Lukk">&times;</button>
+            </div>
+            <p class="coverage-modal__hint">↔ til og fra &nbsp;·&nbsp; → kun fra &nbsp;·&nbsp; ← kun til</p>
+            <div class="coverage-modal__body" data-coverage-modal-body></div>
+            <button type="button" class="btn-primary coverage-modal__done" data-coverage-modal-done>Ferdig</button>
+          </div>
         </div>
       </div>
     </form>
@@ -155,5 +184,6 @@
 {% endblock %}
 
 {% block scripts %}
+  <script src="{% static 'js/coverage-onboarding.js' %}"></script>
   <script src="{% static 'js/account-portal.js' %}"></script>
 {% endblock %}

@@ -42,6 +42,20 @@ class SignupViewTests(TestCase):
         response = self.client.get("/reg/fullfor/lag-bruker/?email=ola@nordisk-flytt.no")
         self.assertContains(response, 'value="ola@nordisk-flytt.no"')
 
+    def test_get_prefills_contact_name_from_the_matching_partner_application(self):
+        Bedrift_info.objects.create(
+            company_name="Nordisk Flyttebyrå AS", email="ola@nordisk-flytt.no",
+            address="Storgata 1", postal_code="0153", city="Oslo",
+            first_name="Ola", last_name="Nordmann", phone="99999999",
+        )
+        response = self.client.get("/reg/fullfor/lag-bruker/?email=ola@nordisk-flytt.no")
+        self.assertContains(response, 'value="Ola"')
+        self.assertContains(response, 'value="Nordmann"')
+
+    def test_get_without_a_matching_application_leaves_the_name_fields_blank(self):
+        response = self.client.get("/reg/fullfor/lag-bruker/?email=nobody@example.com")
+        self.assertNotContains(response, 'value="Ola"')
+
     def test_valid_post_creates_user_and_logs_in(self):
         response = self.client.post("/reg/fullfor/lag-bruker/", _valid_signup_payload())
         self.assertRedirects(response, "/for-bedrifter/min-bruker/", fetch_redirect_response=False)
@@ -345,9 +359,10 @@ class EditPublicProfileViewTests(TestCase):
         self.client.force_login(user)
         response = self.client.get("/for-bedrifter/min-bruker/bedriftsinformasjon/")
         self.assertContains(response, 'data-pill-group="move_type"')
-        self.assertContains(response, 'data-pill-group="cities"')
         self.assertContains(response, 'name="move_type" value="Flyttehjelp"')
-        self.assertContains(response, 'name="cities" value="Oslo"')
+        # Cities are now the structured "hvor jobber dere" onboarding widget.
+        self.assertContains(response, "data-coverage-onboarding")
+        self.assertContains(response, "Oslo/Viken")
 
     def test_file_inputs_use_the_custom_upload_tile_not_a_bare_input(self):
         """Regression test: a native <input type="file"> can't be restyled — its
@@ -370,25 +385,39 @@ class BusinessCoverageAjaxSaveTests(TestCase):
         response = self.client.get("/for-bedrifter/min-bruker/dekning/")
         self.assertEqual(response.status_code, 405)
 
-    def test_valid_post_saves_and_returns_json(self):
-        user, business = _make_business_user()
+    def test_valid_post_stages_a_pending_change_request_not_an_instant_save(self):
+        user, business = _make_business_user(move_type="Flyttehjelp", cities="Oslo")
         self.client.force_login(user)
         response = self.client.post("/for-bedrifter/min-bruker/dekning/", {
             "move_type": ["Flyttehjelp", "Pakking"], "cities": ["Oslo", "Bergen"],
         })
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {"ok": True})
+        self.assertEqual(response.json(), {"ok": True, "pending": True})
+        # The live business is untouched until an admin approves.
         business.refresh_from_db()
-        self.assertEqual(business.move_type, "Flyttehjelp, Pakking")
-        self.assertEqual(business.cities, "Oslo, Bergen")
+        self.assertEqual(business.move_type, "Flyttehjelp")
+        change = business.coverage_requests.get()
+        self.assertEqual(change.status, "pending")
+        self.assertEqual(change.move_type, "Flyttehjelp, Pakking")
+        self.assertEqual(change.cities, "Oslo, Bergen")
 
-    def test_empty_selection_clears_the_fields(self):
+    def test_a_second_edit_replaces_the_still_pending_request(self):
+        user, business = _make_business_user()
+        self.client.force_login(user)
+        self.client.post("/for-bedrifter/min-bruker/dekning/", {"cities": ["Oslo"]})
+        self.client.post("/for-bedrifter/min-bruker/dekning/", {"cities": ["Bergen"]})
+        change = business.coverage_requests.get()
+        self.assertEqual(change.cities, "Bergen")
+
+    def test_reverting_to_the_live_values_clears_the_pending_request(self):
         user, business = _make_business_user(move_type="Flyttehjelp", cities="Oslo")
         self.client.force_login(user)
-        self.client.post("/for-bedrifter/min-bruker/dekning/", {})
-        business.refresh_from_db()
-        self.assertEqual(business.move_type, "")
-        self.assertEqual(business.cities, "")
+        # Change, then change back to exactly the live values.
+        self.client.post("/for-bedrifter/min-bruker/dekning/", {"move_type": ["Flyttehjelp", "Pakking"], "cities": ["Oslo"]})
+        self.assertTrue(business.coverage_requests.filter(status="pending").exists())
+        response = self.client.post("/for-bedrifter/min-bruker/dekning/", {"move_type": ["Flyttehjelp"], "cities": ["Oslo"]})
+        self.assertEqual(response.json(), {"ok": True, "pending": False})
+        self.assertFalse(business.coverage_requests.filter(status="pending").exists())
 
     def test_rejects_a_value_outside_the_known_choices(self):
         user, business = _make_business_user(move_type="Flyttehjelp")
@@ -397,8 +426,7 @@ class BusinessCoverageAjaxSaveTests(TestCase):
             "move_type": ["Flyttehjelp", "<script>alert(1)</script>"],
         })
         self.assertEqual(response.status_code, 400)
-        business.refresh_from_db()
-        self.assertEqual(business.move_type, "Flyttehjelp")
+        self.assertFalse(business.coverage_requests.exists())
 
 
 class BusinessImageSelfServiceTests(TestCase):
@@ -488,7 +516,8 @@ class ForesporselDatabaseViewTests(TestCase):
         )
         self.client.force_login(user)
         response = self.client.get("/for-bedrifter/foresporsel-database/")
-        self.assertContains(response, f'href="/for-bedrifter/min-bruker/lead/{lead.pk}/"')
+        # The whole row is clickable now, not just a link on the name.
+        self.assertContains(response, f"window.location='/for-bedrifter/min-bruker/lead/{lead.pk}/'")
 
 
 class BusinessLeadDetailViewTests(TestCase):
@@ -515,6 +544,14 @@ class BusinessLeadDetailViewTests(TestCase):
         self.assertContains(response, "90000000")
         self.assertContains(response, "per@example.com")
         self.assertContains(response, "3 esker og en sofa")
+
+    def test_shows_a_read_only_from_to_map(self):
+        self.client.force_login(self.user)
+        response = self.client.get(f"/for-bedrifter/min-bruker/lead/{self.lead.pk}/")
+        self.assertContains(response, "data-lead-map")
+        self.assertContains(response, 'data-fra="Storgata 1, Oslo"')
+        # Read-only: the business can't edit a lead's coordinates.
+        self.assertNotContains(response, "data-editable")
 
     def test_a_different_businesss_user_gets_404(self):
         other_user, _other_business = _make_business_user(username="annen-bedrift", email="annen@example.com")

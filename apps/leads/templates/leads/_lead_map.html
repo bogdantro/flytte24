@@ -1,0 +1,32 @@
+{% load l10n %}
+{% comment %}
+Shared from/to Leaflet map for a single lead — the same map component as
+the customer wizard's step 1 (static/scss/wizard.scss .map-panel, ported
+to static/js/lead-map.js). Included on:
+  - the staff dashboard lead detail (dashboard/detail.html) with
+    map_editable=True — pins drag + save via dashboard:lead_update_coords
+  - the business portal lead detail (core/accountPages/lead_detail.html)
+    read-only.
+The including page is responsible for loading Leaflet + lead-map.js.
+
+The lat/lon values MUST go through |unlocalize — with the site's Norwegian
+locale active, a bare {{ lead.fra_lat }} renders "59,905…" (comma decimal),
+which parseFloat() in lead-map.js truncates to "59", dropping every pin
+onto a whole-degree position.
+{% endcomment %}
+<div class="map-panel map-panel--standalone is-active" data-lead-map
+     data-fra="{{ lead.fra }}" data-fra-lat="{{ lead.fra_lat|default_if_none:''|unlocalize }}" data-fra-lon="{{ lead.fra_lon|default_if_none:''|unlocalize }}"
+     data-til="{{ lead.til }}" data-til-lat="{{ lead.til_lat|default_if_none:''|unlocalize }}" data-til-lon="{{ lead.til_lon|default_if_none:''|unlocalize }}"
+     {% if map_editable %}data-editable data-save-url="{% url 'dashboard:lead_update_coords' lead.pk %}"{% endif %}>
+  <div class="map-panel__map" data-map-container></div>
+  <div class="map-panel__chip" data-map-chip hidden>
+    <span class="map-panel__chip-prefix">Fra</span>
+    <span data-map-chip-from>—</span>
+    <span aria-hidden="true">&rarr;</span>
+    <span data-map-chip-to>—</span>
+  </div>
+  <div class="map-panel__zoom">
+    <button type="button" class="map-panel__zoom-btn" data-map-zoom-in aria-label="Zoom inn"><span data-icon="zoom-in"></span></button>
+    <button type="button" class="map-panel__zoom-btn" data-map-zoom-out aria-label="Zoom ut"><span data-icon="zoom-out"></span></button>
+  </div>
+</div>

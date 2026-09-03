@@ -1,4 +1,7 @@
 @media (max-width: 1049px) {
+  .for-bedrifter-hero {
+    padding: 25px 0px;
+  }
   .for-bedrifter-hero__title {
     margin: 12px 0 0;
     max-width: 680px;

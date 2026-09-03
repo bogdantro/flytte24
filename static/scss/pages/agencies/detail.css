@@ -1,354 +1,288 @@
-@media (max-width: 1049px) {
-  .agency-detail__inner {
-    max-width: 840px;
-    margin: 0 auto;
-  }
-  .agency-detail__back {
-    display: inline-block;
-    margin-bottom: 24px;
-    font-size: 14px;
-    font-weight: 500;
-    color: #5c5c5c;
-  }
-  .agency-detail__back:hover {
-    color: #1a1a1a;
-  }
-  .agency-detail__header {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-  .agency-detail__logo {
-    flex-shrink: 0;
-    width: 72px;
-    height: 72px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 14px;
-    background: #faf9f6;
-    border: 1px solid #e6e1d6;
-    padding: 12px;
-  }
-  .agency-detail__logo img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-  }
-  .agency-detail__logo.agency-detail__logo--blend img {
-    mix-blend-mode: multiply;
-  }
-  .agency-detail__name {
-    margin: 0;
-    font-family: "Crimson Pro", Georgia, "Times New Roman", serif;
-    font-weight: 600;
-    font-size: 30px;
-    color: #1a1a1a;
-  }
-  .agency-detail__tagline {
-    margin: 6px 0 0;
-    font-size: 16px;
-    color: #5c5c5c;
-  }
-  .agency-detail__stats {
-    margin-top: 32px;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-  }
-  .agency-detail__stat {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    border-radius: 14px;
-    background: #faf9f6;
-    border: 1px solid #e6e1d6;
-    padding: 20px;
-  }
-  .agency-detail__stat-value {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 20px;
-    font-weight: 700;
-    color: #1a1a1a;
-  }
-  .agency-detail__stat-icon {
-    color: #e8a87c;
-  }
-  .agency-detail__stat-label {
-    font-size: 13px;
-    color: #5c5c5c;
-  }
-  .agency-detail__about {
-    margin-top: 40px;
-  }
-  .agency-detail__about p {
-    margin: 16px 0 0;
-    font-size: 16px;
-    line-height: 1.7;
-    color: #5c5c5c;
-  }
-  .agency-detail__about p:first-child {
-    margin-top: 0;
-  }
-  .agency-detail__lists {
-    margin-top: 40px;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-  .agency-detail__list-title {
-    margin: 0;
-    font-size: 18px;
-    font-weight: 600;
-    color: #1a1a1a;
-  }
-  .agency-detail__tags {
-    margin: 16px 0 0;
-    padding: 0;
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  .agency-detail__tags li {
-    border-radius: 9999px;
-    background: #faf9f6;
-    border: 1px solid #e6e1d6;
-    padding: 8px 14px;
-    font-size: 14px;
-    color: #1a1a1a;
-  }
-  .agency-detail__contact {
-    margin-top: 32px;
-    border-radius: 14px;
-    background: #faf9f6;
-    border: 1px solid #e6e1d6;
-    padding: 20px 24px;
-  }
-  .agency-detail__contact-name {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 600;
-    color: #1a1a1a;
-  }
-  .agency-detail__contact-role {
-    margin: 4px 0 0;
-    font-size: 14px;
-    color: #5c5c5c;
-  }
-  .agency-detail__reviews {
-    margin-top: 56px;
-  }
-  .agency-detail__reviews-title {
-    margin: 0;
-    font-size: 26px;
-    font-weight: 600;
-    color: #1a1a1a;
-  }
-  .agency-reviews-grid {
-    margin-top: 24px;
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-  .review-card .review-card__stars {
-    display: flex;
-    gap: 4px;
-    margin-bottom: 4px;
-  }
-  .review-card .review-card__star--filled {
-    color: #e8a87c;
-  }
-  .review-card .review-card__star--empty {
-    color: #e6e1d6;
-  }
-  .review-card .review-card__comment {
-    margin-top: 12px;
-    font-size: 16px;
-    line-height: 1.6;
-  }
-  .agency-detail__cta {
-    margin-top: 48px;
-    display: flex;
-    justify-content: center;
+.agency-page__back {
+  display: inline-block;
+  margin-bottom: 40px;
+  font-size: 15px;
+  color: #5c5c5c;
+  text-decoration: none;
+}
+.agency-page__back:hover {
+  color: #1a1a1a;
+}
+.agency-page__top {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  margin-bottom: 72px;
+}
+@media (min-width: 900px) {
+  .agency-page__top {
+    grid-template-columns: minmax(0, 1fr) 380px;
+    align-items: start;
   }
 }
-@media (min-width: 1050px) {
-  .agency-detail__inner {
-    max-width: 840px;
-    margin: 0 auto;
+.agency-page__name {
+  margin: 0 0 8px;
+  font-family: "Crimson Pro", Georgia, "Times New Roman", serif;
+  font-size: 44px;
+  font-weight: 500;
+  line-height: 1.05;
+  max-width: 350px;
+}
+.agency-page__tagline {
+  margin: 0 0 28px;
+  font-size: 18px;
+  color: #5c5c5c;
+}
+.agency-page__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.agency-page__about p {
+  margin: 0 0 18px;
+  max-width: 60ch;
+  font-size: 16px;
+  line-height: 1.7;
+  color: #1a1a1a;
+}
+.agency-page__about p:last-child {
+  margin-bottom: 0;
+}
+
+.agency-chip {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #e6e1d6;
+  border-radius: 9999px;
+  padding: 8px 16px;
+  font-size: 14px;
+  color: #1a1a1a;
+  background: #faf9f6;
+}
+
+.agency-offer {
+  border: 1px solid #e6e1d6;
+  border-radius: 16px;
+  background: #faf9f6;
+  padding: 28px;
+  width: -moz-max-content;
+  width: max-content;
+  max-width: 550px;
+}
+@media (max-width: 1049px) {
+  .agency-offer {
+    padding: 32px 10px;
+    width: 100%;
   }
-  .agency-detail__back {
-    display: inline-block;
-    margin-bottom: 24px;
-    font-size: 14px;
-    font-weight: 500;
-    color: #5c5c5c;
+}
+.agency-offer__logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  margin-bottom: 20px;
+}
+.agency-offer__logo img {
+  max-height: 44px;
+  max-width: 70%;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+.agency-offer__logo--blend img {
+  mix-blend-mode: multiply;
+}
+.agency-offer__text {
+  margin: 0 0 22px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #5c5c5c;
+  text-align: center;
+  width: auto;
+}
+@media (max-width: 1049px) {
+  .agency-offer__text {
+    padding: 32px 10px;
+    width: 100%;
+    max-width: 400px;
   }
-  .agency-detail__back:hover {
-    color: #1a1a1a;
+}
+.agency-offer__cta {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
+  min-width: -moz-max-content;
+  min-width: max-content;
+}
+@media (max-width: 1049px) {
+  .agency-offer__cta {
+    min-width: unset;
+    max-width: 350px;
+    font-size: 15px;
   }
-  .agency-detail__header {
-    display: flex;
+}
+.agency-offer__cta [data-icon] {
+  flex-shrink: 0;
+}
+
+.agency-section {
+  margin-bottom: 64px;
+}
+.agency-section__title {
+  margin: 0 0 24px;
+  font-family: "Crimson Pro", Georgia, "Times New Roman", serif;
+  font-size: 28px;
+  font-weight: 500;
+  color: #1a1a1a;
+}
+.agency-section__title--inline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 16px;
+}
+.agency-section__meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Crimson Pro", Georgia, "Times New Roman", serif;
+  font-size: 15px;
+  color: #5c5c5c;
+}
+
+.agency-taglist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.agency-taglist__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #e6e1d6;
+  border-radius: 9999px;
+  padding: 8px 16px;
+  font-size: 14px;
+  color: #1a1a1a;
+  background: #faf9f6;
+}
+.agency-taglist__item [data-icon] {
+  color: #5c5c5c;
+}
+.agency-taglist__item [data-icon] svg {
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+
+.agency-stars {
+  display: inline-flex;
+  gap: 2px;
+}
+.agency-stars__star {
+  color: rgba(26, 26, 26, 0.22);
+}
+.agency-stars__star svg {
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+.agency-stars__star.is-filled {
+  color: #1a1a1a;
+}
+
+.agency-reviews {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+@media (min-width: 760px) {
+  .agency-reviews {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.agency-review {
+  border: 1px solid #e6e1d6;
+  border-radius: 16px;
+  background: #faf9f6;
+  padding: 24px;
+}
+.agency-review__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.agency-review__date {
+  font-size: 13px;
+  color: #5c5c5c;
+}
+.agency-review__comment {
+  margin: 0 0 16px;
+  font-size: 15px;
+  line-height: 1.65;
+  color: #1a1a1a;
+}
+.agency-review__byline {
+  margin: 0;
+  font-size: 14px;
+  color: #1a1a1a;
+}
+.agency-review__byline span {
+  color: #5c5c5c;
+}
+
+.agency-cta {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  border-radius: 20px;
+  background: #221814;
+  color: #f4f1ea;
+  padding: 44px;
+  margin-top: 24px;
+}
+@media (min-width: 760px) {
+  .agency-cta {
+    flex-direction: row;
     align-items: center;
-    flex-wrap: wrap;
-    gap: 24px;
+    justify-content: space-between;
   }
-  .agency-detail__logo {
-    flex-shrink: 0;
-    width: 88px;
-    height: 88px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 14px;
-    background: #faf9f6;
-    border: 1px solid #e6e1d6;
-    padding: 14px;
-  }
-  .agency-detail__logo img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-  }
-  .agency-detail__logo.agency-detail__logo--blend img {
-    mix-blend-mode: multiply;
-  }
-  .agency-detail__name {
-    margin: 0;
-    font-family: "Crimson Pro", Georgia, "Times New Roman", serif;
-    font-weight: 600;
-    font-size: 36px;
-    color: #1a1a1a;
-  }
-  .agency-detail__tagline {
-    margin: 6px 0 0;
-    font-size: 17px;
-    color: #5c5c5c;
-  }
-  .agency-detail__stats {
-    margin-top: 40px;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-  }
-  .agency-detail__stat {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    border-radius: 14px;
-    background: #faf9f6;
-    border: 1px solid #e6e1d6;
-    padding: 20px;
-  }
-  .agency-detail__stat-value {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 22px;
-    font-weight: 700;
-    color: #1a1a1a;
-  }
-  .agency-detail__stat-icon {
-    color: #e8a87c;
-  }
-  .agency-detail__stat-label {
-    font-size: 13px;
-    color: #5c5c5c;
-  }
-  .agency-detail__about {
-    margin-top: 48px;
-  }
-  .agency-detail__about p {
-    margin: 16px 0 0;
-    font-size: 17px;
-    line-height: 1.75;
-    color: #5c5c5c;
-  }
-  .agency-detail__about p:first-child {
-    margin-top: 0;
-  }
-  .agency-detail__lists {
-    margin-top: 48px;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 32px;
-  }
-  .agency-detail__list-title {
-    margin: 0;
-    font-size: 18px;
-    font-weight: 600;
-    color: #1a1a1a;
-  }
-  .agency-detail__tags {
-    margin: 16px 0 0;
-    padding: 0;
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  .agency-detail__tags li {
-    border-radius: 9999px;
-    background: #faf9f6;
-    border: 1px solid #e6e1d6;
-    padding: 8px 14px;
-    font-size: 14px;
-    color: #1a1a1a;
-  }
-  .agency-detail__contact {
-    margin-top: 40px;
-    border-radius: 14px;
-    background: #faf9f6;
-    border: 1px solid #e6e1d6;
-    padding: 24px 28px;
-  }
-  .agency-detail__contact-name {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 600;
-    color: #1a1a1a;
-  }
-  .agency-detail__contact-role {
-    margin: 4px 0 0;
-    font-size: 14px;
-    color: #5c5c5c;
-  }
-  .agency-detail__reviews {
-    margin-top: 64px;
-  }
-  .agency-detail__reviews-title {
-    margin: 0;
-    font-size: 32px;
-    font-weight: 600;
-    color: #1a1a1a;
-  }
-  .agency-reviews-grid {
-    margin-top: 32px;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
-  }
-  .review-card .review-card__stars {
-    display: flex;
-    gap: 4px;
-    margin-bottom: 4px;
-  }
-  .review-card .review-card__star--filled {
-    color: #e8a87c;
-  }
-  .review-card .review-card__star--empty {
-    color: #e6e1d6;
-  }
-  .review-card .review-card__comment {
-    margin-top: 12px;
-    font-size: 16px;
-    line-height: 1.6;
-  }
-  .agency-detail__cta {
-    margin-top: 56px;
-    display: flex;
-    justify-content: flex-start;
-  }
+}
+.agency-cta__title {
+  margin: 0 0 10px;
+  font-family: "Crimson Pro", Georgia, "Times New Roman", serif;
+  font-size: 26px;
+  font-weight: 500;
+}
+.agency-cta__text p {
+  margin: 0;
+  max-width: 52ch;
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(244, 241, 234, 0.72);
+}
+.agency-cta__button {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-primary--light {
+  background: #faf9f6;
+  color: #1a1a1a;
+}
+.btn-primary--light:hover {
+  background: #fff;
+}
+.btn-primary--light [data-icon] svg {
+  width: 15px;
+  height: 15px;
 }

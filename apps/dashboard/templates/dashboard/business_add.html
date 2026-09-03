@@ -1,0 +1,187 @@
+<!-- apps/dashboard/templates/dashboard/business_add.html -->
+{% extends "dashboard/_base.html" %}
+{% load static %}
+
+{% block title %}Ny bedrift{% endblock %}
+
+{% block content %}
+  <a href="{% url 'dashboard:business_list' %}" class="lead-detail__back">← Alle bedrifter</a>
+
+  <div class="lead-detail__header">
+    <h1 class="lead-detail__title">Ny bedrift</h1>
+    <span class="status-badge status-badge--inactive">Inaktiv</span>
+  </div>
+
+  <div class="business-add">
+    <div class="business-add__form">
+      <!-- One plain <form> that creates the business with everything set at
+           once — same cards as the edit page (dashboard/business_detail.html),
+           but here Dekning is part of the create form instead of its own
+           AJAX save. -->
+      <form method="post" enctype="multipart/form-data" data-business-form>
+        {% csrf_token %}
+        {% if core_form.non_field_errors %}<div class="dashboard-form__error">{{ core_form.non_field_errors }}</div>{% endif %}
+
+        <div class="lead-card" style="margin-bottom: 3rem;">
+          <p class="lead-card__title">Dekning</p>
+          <p style="margin: 0 0 1rem; font-size: 0.8125rem; color: #8a8a8a;">Byer, tjenester og hvilke steder bedriften kjører til/fra.</p>
+          <div class="pill-group" data-pill-group="cities">
+            <p class="pill-group__label">Byer dere dekker</p>
+            <div class="pill-group__grid pill-group__grid--3col">
+              {% for value, label in city_choices %}
+                <label class="pill-button"><input type="checkbox" name="cities" value="{{ value }}" {% if value in current_cities %}checked{% endif %}>{{ label }}</label>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="pill-group" data-pill-group="move_type" style="margin-top: 1.25rem;">
+            <p class="pill-group__label">Tjenester dere tilbyr</p>
+            <div class="pill-group__grid pill-group__grid--2col">
+              {% for value, label in move_type_choices %}
+                <label class="pill-button"><input type="checkbox" name="move_type" value="{{ value }}" {% if value in current_move_types %}checked{% endif %}>{{ label }}</label>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="coverage-onboarding" data-coverage-onboarding style="margin-top: 1.5rem;">
+            <div class="coverage-summary" data-coverage-summary hidden></div>
+            <input type="hidden" name="service_areas" data-service-areas-input value="[]">
+            <script type="application/json" data-coverage-config>
+              {"regions": {{ region_groups_json|safe }},
+               "selected": {
+                 {% for place, entry in service_area_places.items %}"{{ place|escapejs }}": {"pickup": {{ entry.pickup|yesno:"true,false" }}, "dropoff": {{ entry.dropoff|yesno:"true,false" }}}{% if not forloop.last %},{% endif %}{% endfor %}
+               }}
+            </script>
+            <div class="coverage-modal" data-coverage-modal hidden>
+              <div class="coverage-modal__backdrop" data-coverage-modal-close></div>
+              <div class="coverage-modal__card">
+                <div class="coverage-modal__head">
+                  <p class="coverage-modal__title" data-coverage-modal-title></p>
+                  <button type="button" class="coverage-modal__close" data-coverage-modal-close aria-label="Lukk">&times;</button>
+                </div>
+                <p class="coverage-modal__hint">↔ til og fra &nbsp;·&nbsp; → kun fra &nbsp;·&nbsp; ← kun til</p>
+                <div class="coverage-modal__body" data-coverage-modal-body></div>
+                <button type="button" class="btn-primary coverage-modal__done" data-coverage-modal-done>Ferdig</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lead-card" style="margin-bottom: 1.5rem;">
+          <p class="lead-card__title">Firmainformasjon</p>
+          <div class="dashboard-form__group" data-brreg-field>
+            <label class="dashboard-form__label">Firmanavn</label>
+            {{ core_form.company_name }}{{ core_form.company_name.errors }}
+            <ul class="brreg-suggestions" data-brreg-suggestions hidden></ul>
+          </div>
+          <div class="dashboard-form__group"><label class="dashboard-form__label">Org.nr.</label>{{ core_form.company_number }}</div>
+          <div class="dashboard-form__group"><label class="dashboard-form__label">E-post</label>{{ core_form.email }}{{ core_form.email.errors }}</div>
+          <div class="dashboard-form__group"><label class="dashboard-form__label">Telefon</label>{{ core_form.phone }}{{ core_form.phone.errors }}</div>
+          <div class="dashboard-form__group"><label class="dashboard-form__label">Nettside</label>{{ core_form.website }}</div>
+          <div class="dashboard-form__group"><label class="dashboard-form__label">Adresse</label>{{ core_form.address }}{{ core_form.address.errors }}</div>
+          <div class="dashboard-form__group"><label class="dashboard-form__label">Postnummer</label>{{ core_form.postal_code }}{{ core_form.postal_code.errors }}</div>
+          <div class="dashboard-form__group"><label class="dashboard-form__label">By</label>{{ core_form.city }}{{ core_form.city.errors }}</div>
+          <div class="dashboard-form__group"><label class="dashboard-form__label">Tiltaleform</label>{{ core_form.tiltaleform }}</div>
+          <div class="dashboard-form__group"><label class="dashboard-form__label">Fornavn</label>{{ core_form.first_name }}{{ core_form.first_name.errors }}</div>
+          <div class="dashboard-form__group"><label class="dashboard-form__label">Etternavn</label>{{ core_form.last_name }}{{ core_form.last_name.errors }}</div>
+        </div>
+
+        <div class="lead-card" style="margin-bottom: 1.5rem;">
+          <p class="lead-card__title">Lead-innstillinger</p>
+          <div class="dashboard-form__group"><label class="dashboard-form__label">Maks leads per dag</label>{{ core_form.leads_per_day }}</div>
+          <div class="dashboard-form__group">
+            <label class="dashboard-form__label">Prioritet (1–10)</label>
+            {{ core_form.priority_score }}{{ core_form.priority_score.errors }}
+            <p style="margin:0.375rem 0 0; font-size:0.75rem; color:#8a8a8a;">OBS: brukes foreløpig ikke av matching-algoritmen.</p>
+          </div>
+        </div>
+
+        <div class="lead-card" style="margin-bottom: 1.5rem;">
+          <p class="lead-card__title">Interne notater</p>
+          <div class="dashboard-form__group"><label class="dashboard-form__label">Tags (kommaseparert, f.eks. "VIP, treg respons")</label>{{ core_form.tags }}</div>
+          <div class="dashboard-form__group"><label class="dashboard-form__label">Notater (kun synlig for admin)</label>{{ core_form.internal_notes }}</div>
+        </div>
+
+        <div class="lead-card" style="margin-bottom: 1.5rem;">
+          <p class="lead-card__title">Offentlig profil</p>
+          <div class="dashboard-form__group">
+            <label class="dashboard-form__label">Logo</label>
+            <label class="upload-tile" data-upload-tile>
+              <span data-icon="upload"></span>
+              <span class="upload-tile__label">Velg logo</span>
+              <input type="file" name="{{ public_form.logo.html_name }}" accept="image/*">
+            </label>
+          </div>
+          <div class="dashboard-form__group"><label class="dashboard-form__label">Om oss</label>{{ public_form.about_us }}</div>
+          <div class="dashboard-form__group">
+            <label class="dashboard-form__label">Spørsmål og svar</label>
+            <div class="faq-editor" data-faq-editor>
+              <div class="faq-editor__list" data-faq-list></div>
+              <button type="button" class="btn-outline faq-editor__add" data-faq-add>
+                <span data-icon="plus"></span> Legg til spørsmål
+              </button>
+              <textarea name="{{ public_form.faq.html_name }}" data-faq-store hidden>{{ public_form.faq.value|default:'' }}</textarea>
+            </div>
+          </div>
+        </div>
+
+        <p style="margin:0 0 1rem; font-size:0.8125rem; color:#8a8a8a;">Bedriften opprettes som inaktiv. Aktiver den fra detaljsiden når den er klar.</p>
+        <button type="submit" class="btn-primary">Opprett bedrift</button>
+      </form>
+    </div>
+
+    <!-- Live preview — sticky, updated by business-add-preview.js as the form
+         is filled in. Purely visual; nothing here is submitted. -->
+    <aside class="business-add__aside">
+      <div class="business-preview" data-business-preview>
+        <p class="business-preview__eyebrow">Forhåndsvisning</p>
+
+        <div class="business-preview__head">
+          <div class="business-preview__logo" data-preview-logo-wrap hidden>
+            <img alt="" data-preview-logo>
+          </div>
+          <div class="business-preview__logo business-preview__logo--placeholder" data-preview-logo-fallback>
+            <span data-preview-initials>B</span>
+          </div>
+          <div>
+            <h2 class="business-preview__name" data-preview-name>Bedriftsnavn</h2>
+            <p class="business-preview__meta" data-preview-meta hidden></p>
+          </div>
+        </div>
+
+        <span class="status-badge status-badge--inactive business-preview__status">Inaktiv</span>
+
+        <div class="business-preview__section" data-preview-cities-wrap hidden>
+          <p class="business-preview__label">Dekker</p>
+          <div class="business-preview__chips" data-preview-cities></div>
+        </div>
+
+        <div class="business-preview__section" data-preview-services-wrap hidden>
+          <p class="business-preview__label">Tjenester</p>
+          <div class="business-preview__chips" data-preview-services></div>
+        </div>
+
+        <div class="business-preview__section" data-preview-areas-wrap hidden>
+          <p class="business-preview__label">Kjører også til/fra</p>
+          <p class="business-preview__areas" data-preview-areas></p>
+        </div>
+
+        <p class="business-preview__about" data-preview-about hidden></p>
+
+        <div class="business-preview__contact" data-preview-contact hidden></div>
+
+        <div class="business-preview__stats">
+          <span class="business-preview__stat" data-preview-priority>Prioritet 0</span>
+          <span class="business-preview__stat" data-preview-cap hidden></span>
+        </div>
+      </div>
+    </aside>
+  </div>
+{% endblock %}
+
+{% block extra_scripts %}
+  <script src="{% static 'js/brreg-lookup.js' %}"></script>
+  <script src="{% static 'js/coverage-onboarding.js' %}"></script>
+  <script src="{% static 'js/upload-tile.js' %}"></script>
+  <script src="{% static 'js/faq-editor.js' %}"></script>
+  <script src="{% static 'js/business-add-preview.js' %}"></script>
+{% endblock %}

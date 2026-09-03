@@ -8,20 +8,37 @@ from apps.store.models import Bedrift_info, PublicBusinessInformation
 ARTICLE_BLOCK_TYPES = {"h2", "p", "list", "image", "cta"}
 
 
+def _split_coverage(value):
+    """Bedrift_info.cities / .move_type are comma-separated CharFields — turn
+    one into the list of trimmed values the pill checkboxes work with."""
+    return [v.strip() for v in (value or "").split(",") if v.strip()]
+
+
 class BusinessCoreForm(forms.ModelForm):
     """Everything editable on Bedrift_info except `active` (its own
-    dedicated toggle endpoint) and `total_leads_received` (a
-    system-incremented counter, read-only here)."""
+    dedicated toggle endpoint), `total_leads_received` (a system-incremented
+    counter, read-only here) and `cities` / `move_type` — the "Dekning"
+    pill-button checkboxes save themselves the instant a pill is toggled,
+    via dashboard:business_update_coverage, exactly like the account
+    portal's own coverage section. Only a daily lead cap is configurable
+    now (`leads_per_day`); the weekly/monthly caps were dropped."""
 
     class Meta:
         model = Bedrift_info
         fields = [
             "company_name", "company_number", "email", "phone", "website",
             "address", "postal_code", "city", "tiltaleform", "first_name", "last_name",
-            "cities", "move_type",
-            "leads_per_day", "leads_per_week", "leads_per_month", "priority_score",
+            "leads_per_day", "priority_score",
             "tags", "internal_notes",
         ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # "Firmanavn" is a Brønnøysundregistret lookup here too — same
+        # static/js/brreg-lookup.js as the become-a-partner wizard, which
+        # keys off [data-brreg-input] and fills company_number / website /
+        # address / postal_code / city from the picked company.
+        self.fields["company_name"].widget.attrs["data-brreg-input"] = ""
 
 
 class BusinessPublicInfoForm(forms.ModelForm):

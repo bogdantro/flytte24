@@ -1,5 +1,9 @@
 // static/scss/pages/agencies/detail.scss
 // Page-specific styles for /byraer/<slug>/ (apps/core/templates/pages/agencies/detail.html).
+// Rebuilt to match the reference layout: a two-column intro (name + chips
+// on the left, a soft "offer" card on the right), full-width content
+// sections below, and a dark call-to-action card at the foot.
+//
 // Loaded alongside static/scss/base.css — shared classes this page also
 // uses (.section, .content-width, .btn-primary) stay in base.scss.
 //
@@ -10,367 +14,285 @@ $ink: #1a1a1a;
 $inkMuted: #5c5c5c;
 $line: #e6e1d6;
 $surfaceSoft: #faf9f6;
-$accentAmber: #e8a87c;
+$bg: #f4f1ea;
+$brand: #221814;
+$brandInk: #f4f1ea;
 $fontSerif: "Crimson Pro", Georgia, "Times New Roman", serif;
-$radiusCard: 14px;
+$radiusCard: 16px;
 $radiusPill: 9999px;
 
-@media (max-width: 1049px) {
-  .agency-detail__inner{
-    max-width: 840px;
-    margin: 0 auto;
-  }
-  .agency-detail__back{
+.agency-page {
+  &__back {
     display: inline-block;
-    margin-bottom: 24px;
-    font-size: 14px;
-    font-weight: 500;
+    margin-bottom: 40px;
+    font-size: 15px;
     color: $inkMuted;
-    &:hover{
-      color: $ink;
+    text-decoration: none;
+
+    &:hover { color: $ink; }
+  }
+
+  &__top {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    margin-bottom: 72px;
+
+    @media (min-width: 900px) {
+      grid-template-columns: minmax(0, 1fr) 380px;
+      align-items: start;
     }
   }
-  .agency-detail__header{
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-  .agency-detail__logo{
-    flex-shrink: 0;
-    width: 72px;
-    height: 72px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: $radiusCard;
-    background: $surfaceSoft;
-    border: 1px solid $line;
-    padding: 12px;
-    img{
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-    }
-    &.agency-detail__logo--blend img{
-      mix-blend-mode: multiply;
-    }
-  }
-  .agency-detail__name{
-    margin: 0;
+
+  &__name {
+    margin: 0 0 8px;
     font-family: $fontSerif;
-    font-weight: 600;
-    font-size: 30px;
-    color: $ink;
+    font-size: 44px;
+    font-weight: 500;
+    line-height: 1.05;
+    max-width: 350px;
   }
-  .agency-detail__tagline{
-    margin: 6px 0 0;
-    font-size: 16px;
-    color: $inkMuted;
-  }
-  .agency-detail__stats{
-    margin-top: 32px;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-  }
-  .agency-detail__stat{
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    border-radius: $radiusCard;
-    background: $surfaceSoft;
-    border: 1px solid $line;
-    padding: 20px;
-  }
-  .agency-detail__stat-value{
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 20px;
-    font-weight: 700;
-    color: $ink;
-  }
-  .agency-detail__stat-icon{
-    color: $accentAmber;
-  }
-  .agency-detail__stat-label{
-    font-size: 13px;
-    color: $inkMuted;
-  }
-  .agency-detail__about{
-    margin-top: 40px;
-    p{
-      margin: 16px 0 0;
-      font-size: 16px;
-      line-height: 1.7;
-      color: $inkMuted;
-      &:first-child{
-        margin-top: 0;
-      }
-    }
-  }
-  .agency-detail__lists{
-    margin-top: 40px;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-  .agency-detail__list-title{
-    margin: 0;
+
+  &__tagline {
+    margin: 0 0 28px;
     font-size: 18px;
-    font-weight: 600;
-    color: $ink;
+    color: $inkMuted;
   }
-  .agency-detail__tags{
-    margin: 16px 0 0;
-    padding: 0;
-    list-style: none;
+
+  &__chips {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    li{
-      border-radius: $radiusPill;
-      background: $surfaceSoft;
-      border: 1px solid $line;
-      padding: 8px 14px;
-      font-size: 14px;
-      color: $ink;
-    }
+    gap: 10px;
   }
-  .agency-detail__contact{
-    margin-top: 32px;
-    border-radius: $radiusCard;
-    background: $surfaceSoft;
-    border: 1px solid $line;
-    padding: 20px 24px;
-  }
-  .agency-detail__contact-name{
-    margin: 0;
+
+  &__about p {
+    margin: 0 0 18px;
+    max-width: 60ch;
     font-size: 16px;
-    font-weight: 600;
+    line-height: 1.7;
     color: $ink;
-  }
-  .agency-detail__contact-role{
-    margin: 4px 0 0;
-    font-size: 14px;
-    color: $inkMuted;
-  }
-  .agency-detail__reviews{
-    margin-top: 56px;
-  }
-  .agency-detail__reviews-title{
-    margin: 0;
-    font-size: 26px;
-    font-weight: 600;
-    color: $ink;
-  }
-  .agency-reviews-grid{
-    margin-top: 24px;
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-  .review-card{
-    .review-card__stars{
-      display: flex;
-      gap: 4px;
-      margin-bottom: 4px;
-    }
-    .review-card__star--filled{
-      color: $accentAmber;
-    }
-    .review-card__star--empty{
-      color: $line;
-    }
-    .review-card__comment{
-      margin-top: 12px;
-      font-size: 16px;
-      line-height: 1.6;
-    }
-  }
-  .agency-detail__cta{
-    margin-top: 48px;
-    display: flex;
-    justify-content: center;
+
+    &:last-child { margin-bottom: 0; }
   }
 }
 
-@media (min-width: 1050px) {
-  .agency-detail__inner{
-    max-width: 840px;
-    margin: 0 auto;
+.agency-chip {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid $line;
+  border-radius: $radiusPill;
+  padding: 8px 16px;
+  font-size: 14px;
+  color: $ink;
+  background: $surfaceSoft;
+}
+
+// ---- Offer card (top-right) ----
+.agency-offer {
+  border: 1px solid $line;
+  border-radius: $radiusCard;
+  background: $surfaceSoft;
+  padding: 28px;
+  width: max-content;
+  max-width: 550px;
+  @media (max-width: 1049px) {
+    padding: 32px 10px;
+    width: 100%;
   }
-  .agency-detail__back{
-    display: inline-block;
-    margin-bottom: 24px;
-    font-size: 14px;
-    font-weight: 500;
-    color: $inkMuted;
-    &:hover{
-      color: $ink;
-    }
-  }
-  .agency-detail__header{
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 24px;
-  }
-  .agency-detail__logo{
-    flex-shrink: 0;
-    width: 88px;
-    height: 88px;
+
+  &__logo {
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: $radiusCard;
-    background: $surfaceSoft;
-    border: 1px solid $line;
-    padding: 14px;
-    img{
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-    }
-    &.agency-detail__logo--blend img{
-      mix-blend-mode: multiply;
-    }
+    height: 44px;
+    margin-bottom: 20px;
+
+    img { max-height: 44px; max-width: 70%; object-fit: contain; }
+    &--blend img { mix-blend-mode: multiply; }
   }
-  .agency-detail__name{
-    margin: 0;
-    font-family: $fontSerif;
-    font-weight: 600;
-    font-size: 36px;
-    color: $ink;
-  }
-  .agency-detail__tagline{
-    margin: 6px 0 0;
-    font-size: 17px;
+
+  &__text {
+    margin: 0 0 22px;
+    font-size: 14px;
+    line-height: 1.6;
     color: $inkMuted;
+    text-align: center;
+    width: auto;
+    @media (max-width: 1049px) {
+      padding: 32px 10px;
+      width: 100%;
+      max-width: 400px;
+    }
   }
-  .agency-detail__stats{
-    margin-top: 40px;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-  }
-  .agency-detail__stat{
+
+  &__cta {
     display: flex;
-    flex-direction: column;
-    gap: 4px;
-    border-radius: $radiusCard;
-    background: $surfaceSoft;
-    border: 1px solid $line;
-    padding: 20px;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-align: center;
+    min-width: max-content;
+    @media (max-width: 1049px)  {
+      min-width: unset;
+      max-width: 350px;
+      font-size: 15px;
+    }
+
+    [data-icon] { flex-shrink: 0; }
   }
-  .agency-detail__stat-value{
+}
+
+// ---- Content sections ----
+.agency-section {
+  margin-bottom: 64px;
+
+  &__title {
+    margin: 0 0 24px;
+    font-family: $fontSerif;
+    font-size: 28px;
+    font-weight: 500;
+    color: $ink;
+
+    &--inline {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 16px;
+    }
+  }
+
+  &__meta {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    font-size: 22px;
-    font-weight: 700;
-    color: $ink;
-  }
-  .agency-detail__stat-icon{
-    color: $accentAmber;
-  }
-  .agency-detail__stat-label{
-    font-size: 13px;
-    color: $inkMuted;
-  }
-  .agency-detail__about{
-    margin-top: 48px;
-    p{
-      margin: 16px 0 0;
-      font-size: 17px;
-      line-height: 1.75;
-      color: $inkMuted;
-      &:first-child{
-        margin-top: 0;
-      }
-    }
-  }
-  .agency-detail__lists{
-    margin-top: 48px;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 32px;
-  }
-  .agency-detail__list-title{
-    margin: 0;
-    font-size: 18px;
-    font-weight: 600;
-    color: $ink;
-  }
-  .agency-detail__tags{
-    margin: 16px 0 0;
-    padding: 0;
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
     gap: 8px;
-    li{
-      border-radius: $radiusPill;
-      background: $surfaceSoft;
-      border: 1px solid $line;
-      padding: 8px 14px;
-      font-size: 14px;
-      color: $ink;
-    }
-  }
-  .agency-detail__contact{
-    margin-top: 40px;
-    border-radius: $radiusCard;
-    background: $surfaceSoft;
-    border: 1px solid $line;
-    padding: 24px 28px;
-  }
-  .agency-detail__contact-name{
-    margin: 0;
-    font-size: 16px;
-    font-weight: 600;
-    color: $ink;
-  }
-  .agency-detail__contact-role{
-    margin: 4px 0 0;
-    font-size: 14px;
+    font-family: $fontSerif;
+    font-size: 15px;
     color: $inkMuted;
   }
-  .agency-detail__reviews{
-    margin-top: 64px;
+}
+
+.agency-taglist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  &__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid $line;
+    border-radius: $radiusPill;
+    padding: 8px 16px;
+    font-size: 14px;
+    color: $ink;
+    background: $surfaceSoft;
+
+    [data-icon] { color: $inkMuted; }
+    [data-icon] svg { width: 14px; height: 14px; display: block; }
   }
-  .agency-detail__reviews-title{
-    margin: 0;
-    font-size: 32px;
-    font-weight: 600;
+}
+
+.agency-stars {
+  display: inline-flex;
+  gap: 2px;
+
+  &__star {
+    color: rgba(26, 26, 26, 0.22);
+    svg { width: 14px; height: 14px; display: block; }
+    &.is-filled { color: $ink; }
+  }
+}
+
+// ---- Reviews grid ----
+.agency-reviews {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+
+  @media (min-width: 760px) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.agency-review {
+  border: 1px solid $line;
+  border-radius: $radiusCard;
+  background: $surfaceSoft;
+  padding: 24px;
+
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  &__date { font-size: 13px; color: $inkMuted; }
+
+  &__comment {
+    margin: 0 0 16px;
+    font-size: 15px;
+    line-height: 1.65;
     color: $ink;
   }
-  .agency-reviews-grid{
-    margin-top: 32px;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
+
+  &__byline {
+    margin: 0;
+    font-size: 14px;
+    color: $ink;
+
+    span { color: $inkMuted; }
   }
-  .review-card{
-    .review-card__stars{
-      display: flex;
-      gap: 4px;
-      margin-bottom: 4px;
-    }
-    .review-card__star--filled{
-      color: $accentAmber;
-    }
-    .review-card__star--empty{
-      color: $line;
-    }
-    .review-card__comment{
-      margin-top: 12px;
-      font-size: 16px;
-      line-height: 1.6;
-    }
+}
+
+// ---- Dark CTA ----
+.agency-cta {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  border-radius: 20px;
+  background: $brand;
+  color: $brandInk;
+  padding: 44px;
+  margin-top: 24px;
+
+  @media (min-width: 760px) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
   }
-  .agency-detail__cta{
-    margin-top: 56px;
-    display: flex;
-    justify-content: flex-start;
+
+  &__title {
+    margin: 0 0 10px;
+    font-family: $fontSerif;
+    font-size: 26px;
+    font-weight: 500;
   }
+
+  &__text p {
+    margin: 0;
+    max-width: 52ch;
+    font-size: 15px;
+    line-height: 1.6;
+    color: rgba(244, 241, 234, 0.72);
+  }
+
+  &__button {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+}
+
+.btn-primary--light {
+  background: $surfaceSoft;
+  color: $ink;
+
+  &:hover { background: #fff; }
+  [data-icon] svg { width: 15px; height: 15px; }
 }

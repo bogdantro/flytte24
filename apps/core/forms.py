@@ -20,7 +20,7 @@ class FlytteforesporselForm(forms.ModelForm):
 MOVE_TYPE_CHOICES = [
     (v, v) for v in [
         "Flyttehjelp", "Pakking", "Flyttevask", "Lagring",
-        "Montering", "Kontorflytting", "Utlandsflytting", "Dødsbo",
+        "Montering", "Kontorflytting", "Distansflytting", "Dødsbo",
     ]
 ]
 CITY_CHOICES = [
@@ -31,27 +31,27 @@ POSTNUMMER_PATTERN = re.compile(r"^\d{4}$")
 
 class PartnerWizardForm(forms.Form):
     """
-    Server-side validation for the 4-step business-signup wizard at
-    /for-bedrifter/bli-partner/. A plain Form (not a ModelForm against
-    Bedrift_info) since move_type/cities arrive as lists here and are only
-    joined into that model's comma-separated CharFields on save — see
+    Server-side validation for the 2-step business-signup wizard at
+    /for-bedrifter/bli-partner/ ("Om bedriften", then "Kontaktperson og
+    logo"). A plain Form (not a ModelForm against Bedrift_info) since
+    move_type/cities may arrive as lists here and are only joined into that
+    model's comma-separated CharFields on save — see
     apps.core.views.for_business_partner. Error message style mirrors
     apps.leads.forms.WizardForm (clean_* methods, Norwegian messages).
     """
 
-    # --- Step 1: services ---
-    move_type = forms.MultipleChoiceField(
-        choices=MOVE_TYPE_CHOICES,
-        error_messages={"required": "Velg minst én tjeneste."},
-    )
+    # --- Services / cities covered ---
+    # No longer collected in the wizard itself (steps 1 & 2 were removed —
+    # the wizard now opens straight on "Om bedriften"). A partner sets their
+    # coverage right after signing up, from the "Dekning" section of the
+    # account portal (apps.userprofile.views.update_business_coverage), and
+    # staff can set it on the dashboard business page. Kept as optional
+    # fields here only so a hand-crafted POST that still sends them keeps
+    # working.
+    move_type = forms.MultipleChoiceField(choices=MOVE_TYPE_CHOICES, required=False)
+    cities = forms.MultipleChoiceField(choices=CITY_CHOICES, required=False)
 
-    # --- Step 2: cities covered ---
-    cities = forms.MultipleChoiceField(
-        choices=CITY_CHOICES,
-        error_messages={"required": "Velg minst én by."},
-    )
-
-    # --- Step 3: about the company ---
+    # --- Step 1: about the company ---
     company_name = forms.CharField(error_messages={"required": "Firmanavn er påkrevd."})
     company_number = forms.CharField(required=False)
     employees = forms.CharField(required=False)

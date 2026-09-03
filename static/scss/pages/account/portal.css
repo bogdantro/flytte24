@@ -212,6 +212,304 @@
   display: block;
 }
 
+.portal-lead-detail {
+  display: grid;
+  gap: 24px;
+}
+@media (min-width: 900px) {
+  .portal-lead-detail {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    align-items: stretch;
+  }
+}
+.portal-lead-detail__aside {
+  display: flex;
+}
+.portal-lead-detail__aside .portal-card {
+  flex: 1;
+  position: sticky;
+  top: 24px;
+}
+
+.portal-lead-ref,
+.portal-heading__ref {
+  font-size: 0.5em;
+  font-weight: 400;
+  color: #5c5c5c;
+  white-space: nowrap;
+  margin-left: 6px;
+}
+
+.portal-lead-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.portal-lead-filters select {
+  border: 1px solid #e6e1d6;
+  border-radius: 10px;
+  background: #ffffff;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-family: "Moderat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #1a1a1a;
+}
+
+.portal-lead-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.portal-lead-list__item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px;
+  margin: 0 -12px;
+  border-radius: 10px;
+  border-bottom: 1px solid #e6e1d6;
+}
+.portal-lead-list__item:last-child {
+  border-bottom: none;
+}
+.portal-lead-list__item--link {
+  cursor: pointer;
+}
+.portal-lead-list__item--link:hover {
+  background: #faf9f6;
+}
+.portal-lead-list__main {
+  font-size: 15px;
+  color: #1a1a1a;
+}
+.portal-lead-list__meta {
+  font-size: 13px;
+  color: #5c5c5c;
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.coverage-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+.coverage-summary[hidden] {
+  display: none;
+}
+.coverage-summary__group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.coverage-summary__region {
+  border: none;
+  background: none;
+  padding: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1a1a1a;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.coverage-summary__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid #e6e1d6;
+  border-radius: 9999px;
+  padding: 6px 12px;
+  font-size: 13px;
+  color: #1a1a1a;
+  background: #faf9f6;
+  cursor: pointer;
+}
+.coverage-summary__chip span {
+  color: #5c5c5c;
+}
+
+.coverage-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.coverage-modal[hidden] {
+  display: none;
+}
+.coverage-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(26, 26, 26, 0.5);
+}
+.coverage-modal__card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 440px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.3);
+  padding: 24px;
+}
+.coverage-modal__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+.coverage-modal__title {
+  margin: 0;
+  font-family: "Crimson Pro", Georgia, serif;
+  font-size: 20px;
+  font-weight: 500;
+  color: #1a1a1a;
+}
+.coverage-modal__close {
+  flex-shrink: 0;
+  border: none;
+  background: none;
+  font-size: 24px;
+  line-height: 1;
+  color: #5c5c5c;
+  cursor: pointer;
+  padding: 0 4px;
+}
+.coverage-modal__close:hover {
+  color: #1a1a1a;
+}
+.coverage-modal__hint {
+  margin: 4px 0 16px;
+  font-size: 12px;
+  color: #5c5c5c;
+}
+.coverage-modal__body {
+  overflow-y: auto;
+  flex: 1;
+}
+.coverage-modal__done {
+  align-self: stretch;
+  justify-content: center;
+  margin-top: 20px;
+}
+.coverage-modal__all {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  border: 1.5px solid #e6e1d6;
+  border-radius: 10px;
+  background: none;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  font-family: "Moderat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 13px;
+  color: #1a1a1a;
+  cursor: pointer;
+}
+.coverage-modal__all span:last-child {
+  color: #5c5c5c;
+}
+.coverage-modal__all.is-on {
+  border-color: #221814;
+  background: rgba(34, 24, 20, 0.04);
+}
+.coverage-modal__all:hover {
+  border-color: #221814;
+}
+
+.coverage-place-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.coverage-place-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid #e6e1d6;
+}
+.coverage-place-row:last-child {
+  border-bottom: none;
+}
+.coverage-place-row__toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: none;
+  background: none;
+  padding: 4px 0;
+  font-family: "Moderat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 15px;
+  color: #1a1a1a;
+  cursor: pointer;
+}
+.coverage-place-row__check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 1.5px solid #e6e1d6;
+  font-size: 13px;
+  color: #f4f1ea;
+}
+.coverage-place-row.is-on .coverage-place-row__check {
+  background: #221814;
+  border-color: #221814;
+}
+.coverage-place-row__dirs {
+  display: inline-flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.coverage-dir {
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid #e6e1d6;
+  border-radius: 8px;
+  background: #ffffff;
+  font-size: 15px;
+  color: #5c5c5c;
+  cursor: pointer;
+}
+.coverage-dir.is-active {
+  border-color: #221814;
+  background: #221814;
+  color: #f4f1ea;
+}
+.coverage-dir:hover {
+  border-color: #221814;
+}
+
+.portal-card--map {
+  display: flex;
+  flex-direction: column;
+}
+.portal-card--map .map-panel--standalone {
+  display: block;
+  flex: 1;
+  min-height: 420px;
+  margin-top: 12px;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
 .portal-heading-row {
   display: flex;
   align-items: center;
@@ -227,6 +525,12 @@
   font-size: 32px;
   font-weight: 500;
   color: #1a1a1a;
+}
+.portal-heading__ref {
+  font-size: 0.5em;
+  font-weight: 400;
+  color: #5c5c5c;
+  white-space: nowrap;
 }
 
 .portal-banner {

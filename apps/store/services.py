@@ -40,8 +40,13 @@ def business_lead_entries(business, lead_url_resolver=None):
             "created_at": dist.created_at,
             "source": "Skjema",
             "label": str(dist.inquiry),
+            "navn": str(dist.inquiry),
+            "reference": "",
             "url": None,
             "status_display": None,
+            "flytte_type": "",
+            "boligtype": "",
+            "route": "",
         })
     movelead_qs = MoveLead.objects.filter(
         Q(business_1=business) | Q(business_2=business) | Q(business_3=business),
@@ -52,9 +57,14 @@ def business_lead_entries(business, lead_url_resolver=None):
             "created_at": lead.created_at,
             "source": "Veiviser",
             "label": f"{lead.reference} — {lead.navn}",
+            "navn": lead.navn,
+            "reference": lead.reference,
             "url": lead_url_resolver(lead) if lead_url_resolver else None,
             "status_display": lead.get_status_display(),
             "status": lead.status,
+            "flytte_type": lead.get_flytte_type_display(),
+            "boligtype": lead.get_boligtype_display(),
+            "route": f"{lead.fra} → {lead.til}",
         })
     entries.sort(key=lambda entry: entry["created_at"], reverse=True)
     return entries, movelead_qs.count()
@@ -103,7 +113,7 @@ def business_usage(business, lead_entries):
 
 # MoveLead.flytte_type ("privat"/"bedrift"/"internasjonal" — what KIND of
 # customer this is) and Bedrift_info.move_type ("Flyttehjelp"/"Pakking"/
-# "Flyttevask"/"Lagring"/"Montering"/"Kontorflytting"/"Utlandsflytting"/
+# "Flyttevask"/"Lagring"/"Montering"/"Kontorflytting"/"Distansflytting"/
 # "Dødsbo" — which SERVICES a business offers, free text from the become-a-
 # partner wizard's pill buttons) are two different vocabularies that never
 # literally overlap — comparing flytte_type against move_type directly (the
@@ -116,7 +126,7 @@ def business_usage(business, lead_entries):
 FLYTTE_TYPE_TO_SERVICE = {
     "privat": "flyttehjelp",
     "bedrift": "kontorflytting",
-    "internasjonal": "utlandsflytting",
+    "internasjonal": "distansflytting",
 }
 
 
@@ -136,20 +146,32 @@ def business_matches_move(business, fra, til, flytte_type):
     between the shared "i" and "e"), while "oslo" itself still matches "oslo"
     exactly.
     """
-    business_cities = [c.strip().lower() for c in (business.cities or "").split(",") if c.strip()]
     business_move_types = [m.strip().lower() for m in (business.move_type or "").split(",") if m.strip()]
-    if not business_cities or not business_move_types:
+    if not business_move_types:
+        return False
+
+    wanted_service = FLYTTE_TYPE_TO_SERVICE.get((flytte_type or "").lower())
+    type_match = wanted_service is not None and wanted_service in business_move_types
+    if not type_match:
+        return False
+
+    # Prefer the structured, direction-aware coverage when the business has
+    # completed the onboarding; otherwise fall back to the flat `cities` list.
+    areas = business.service_areas or []
+    if areas:
+        from apps.store.coverage import business_serves_move
+        return business_serves_move(areas, fra, til)
+
+    business_cities = [c.strip().lower() for c in (business.cities or "").split(",") if c.strip()]
+    if not business_cities:
         return False
     destination = (til or "").lower()
     origin = (fra or "").lower()
-    city_match = any(
+    return any(
         re.search(r"\b" + re.escape(city) + r"\b", destination)
         or re.search(r"\b" + re.escape(city) + r"\b", origin)
         for city in business_cities
     )
-    wanted_service = FLYTTE_TYPE_TO_SERVICE.get((flytte_type or "").lower())
-    type_match = wanted_service is not None and wanted_service in business_move_types
-    return city_match and type_match
 
 
 def find_matching_businesses(fra, til, flytte_type, limit=3):

@@ -1,0 +1,39 @@
+{% comment %}
+Shared calendar-modal markup for static/js/date-picker.js — one per page,
+paired with any number of <div class="date-field" data-date-picker> fields.
+Same structure as the customer wizard's own date overlay; the standalone
+date-picker.js drives it without the wizard's "fleksibel" coupling.
+{% endcomment %}
+<div class="date-overlay" data-date-overlay role="dialog" aria-modal="true" hidden>
+  <div class="date-overlay__backdrop" data-date-overlay-backdrop></div>
+
+  <div class="date-overlay__card">
+    <div class="date-overlay__header">
+      <button type="button" class="date-overlay__nav" data-date-overlay-prev aria-label="Forrige måned">
+        <span data-icon="arrow-left"></span>
+      </button>
+      <p class="date-overlay__month" data-date-overlay-month>—</p>
+      <button type="button" class="date-overlay__nav" data-date-overlay-next aria-label="Neste måned">
+        <span data-icon="arrow-right"></span>
+      </button>
+      <button type="button" class="date-overlay__close" data-date-overlay-close aria-label="Lukk">
+        <span data-icon="x"></span>
+      </button>
+    </div>
+
+    <div class="date-overlay__weekdays" data-date-overlay-weekdays></div>
+    <div class="date-overlay__grid" data-date-overlay-grid></div>
+
+    <div class="date-overlay__time" data-date-overlay-time hidden>
+      <span>Klokkeslett</span>
+      <input type="number" min="0" max="23" data-date-overlay-hours aria-label="Time" placeholder="00">
+      <span>:</span>
+      <input type="number" min="0" max="59" data-date-overlay-minutes aria-label="Minutt" placeholder="00">
+    </div>
+
+    <button type="button" class="date-overlay__confirm btn-primary" data-date-overlay-confirm disabled>
+      <span data-icon="check"></span>
+      Bruk denne datoen
+    </button>
+  </div>
+</div>

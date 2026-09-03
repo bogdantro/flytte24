@@ -5,6 +5,46 @@ from django.db import models
 from django.utils import timezone
 
 
+class PropertyLookup(models.Model):
+    """One completed address-verification + building-information lookup for the
+    wizard's step 2 ("Din nåværende bolig").
+
+    The wizard submits only `token` (opaque). The server reloads this row at
+    submit time and never trusts hidden form JSON — see apps.leads.views.wizard.
+    Only the NORMALIZED structure is stored, never the raw provider response
+    (privacy: no owner/occupant data is ever kept even if a provider returns it).
+    """
+
+    token = models.CharField(max_length=32, unique=True, editable=False)
+    # Which BuildingDataProvider produced `normalized` ("mock" | "norkart" | …).
+    provider = models.CharField(max_length=20)
+    # The Kartverket-verified origin address this lookup ran for
+    # (kartverket.verify_address output: {address, property, unit_numbers}).
+    verified_address = models.JSONField()
+    # {address, property, building, buildings, floors, units} — our internal
+    # shape, provider-agnostic. Never the upstream payload.
+    normalized = models.JSONField()
+    # Set when the building had several boenheter and the customer picked one.
+    selected_unit_number = models.CharField(max_length=20, blank=True, default="")
+    # "api" — every value came from the registry. "user" — the customer
+    # corrected at least one value (manual_overrides holds which).
+    data_source = models.CharField(max_length=10, default="api")
+    manual_overrides = models.JSONField(default=dict, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        addr = (self.verified_address or {}).get("address", {}).get("formatted")
+        return addr or self.token
+
+    def save(self, *args, **kwargs):
+        if not self.token:
+            self.token = uuid.uuid4().hex
+        super().save(*args, **kwargs)
+
+
 class MoveLead(models.Model):
     """
     One submitted /wizard request. Field set and validation rules mirror
@@ -61,7 +101,31 @@ class MoveLead(models.Model):
     telefon = models.CharField(max_length=50)
     epost = models.EmailField()
 
+    # Normalized copies of telefon/epost (digits-only phone, lowercased email),
+    # maintained in save(). Indexed so repeat-submission detection
+    # (apps.leads.duplicates) is an exact index lookup, not a fuzzy scan.
+    telefon_normalisert = models.CharField(max_length=20, blank=True, default="", db_index=True)
+    epost_normalisert = models.CharField(max_length=254, blank=True, default="", db_index=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
+
+    # Step 2 — property / building information for the origin address, looked up
+    # via apps.leads.property. All optional: a lead whose lookup failed (or who
+    # skipped it) still saves. `property_lookup` is the full record;
+    # the bolig_* columns are the denormalized headline values so the dashboard,
+    # receipt email, and any future matching don't have to dig through JSON.
+    property_lookup = models.ForeignKey(
+        "PropertyLookup", null=True, blank=True, on_delete=models.SET_NULL, related_name="leads"
+    )
+    bolig_adresse = models.CharField(max_length=255, blank=True, default="")
+    bolig_type = models.CharField(max_length=100, blank=True, default="")
+    bolig_bra_m2 = models.PositiveIntegerField(null=True, blank=True)
+    bolig_byggeaar = models.PositiveIntegerField(null=True, blank=True)
+    bolig_etasjer = models.PositiveIntegerField(null=True, blank=True)
+    bolig_enhet = models.CharField(max_length=20, blank=True, default="")  # e.g. "H0201"
+    bolig_datakilde = models.CharField(max_length=10, blank=True, default="")  # "api" | "user" | ""
+    bolig_gnr = models.CharField(max_length=10, blank=True, default="")
+    bolig_bnr = models.CharField(max_length=10, blank=True, default="")
 
     # Staff-only fields — never part of WizardForm, never shown to the customer.
     internal_notes = models.TextField(blank=True, default="")
@@ -72,6 +136,16 @@ class MoveLead(models.Model):
     # genuine, permanent delete is only available from there.
     archived = models.BooleanField(default=False)
     archived_at = models.DateTimeField(null=True, blank=True)
+
+    # Repeat submission: the same person (phone OR email) sent another
+    # forespørsel within apps.leads.duplicates.DUPLICATE_WINDOW and confirmed
+    # they wanted a new one anyway. A flagged duplicate is NEVER auto-assigned
+    # (apps.leads.views.wizard) — a staff member must decide, from the lead
+    # detail page, whether to assign it or clear the flag.
+    is_duplicate = models.BooleanField(default=False)
+    duplicate_of = models.ForeignKey(
+        "self", null=True, blank=True, on_delete=models.SET_NULL, related_name="duplicate_submissions"
+    )
 
     # Manual staff assignment to up to 3 businesses (dashboard:lead_detail).
     # MoveLead is the live lead pipeline; store.JobDistribution's FK is
@@ -122,6 +196,11 @@ class MoveLead(models.Model):
         # this field's unique constraint.
         if not self.reference:
             self.reference = f"KOB-{timezone.now().year}-{uuid.uuid4().hex[:8].upper()}"
+        # Keep the normalized contact columns in sync on every save — cheap,
+        # and it means a lead edited in /admin/ stays detectable too.
+        from .duplicates import normalize_email, normalize_phone
+        self.telefon_normalisert = normalize_phone(self.telefon)
+        self.epost_normalisert = normalize_email(self.epost)
         super().save(*args, **kwargs)
 
 

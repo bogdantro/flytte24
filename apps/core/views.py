@@ -345,7 +345,7 @@ from .forms import PartnerWizardForm
 
 def for_business_partner(request):
     """
-    Renders the 4-step business-signup wizard (GET) and processes the final
+    Renders the 2-step business-signup wizard (GET) and processes the final
     submission (POST) — a real form POST + 302 redirect, mirroring
     apps.leads.views.wizard's own pattern (not the JSON/AJAX response this
     view used to return, which no JS on the page ever called).
@@ -370,8 +370,8 @@ def for_business_partner(request):
             # uncaught 500.
             try:
                 company = Bedrift_info.objects.create(
-                    move_type=", ".join(form.cleaned_data["move_type"]),
-                    cities=", ".join(form.cleaned_data["cities"]),
+                    move_type=", ".join(form.cleaned_data.get("move_type") or []),
+                    cities=", ".join(form.cleaned_data.get("cities") or []),
                     company_name=form.cleaned_data["company_name"],
                     company_number=form.cleaned_data["company_number"],
                     employees=form.cleaned_data["employees"],

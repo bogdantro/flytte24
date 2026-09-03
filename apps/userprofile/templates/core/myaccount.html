@@ -48,11 +48,11 @@
       {% if recent_leads %}
         {% for entry in recent_leads %}
           <div class="portal-row">
-            <span class="portal-row__label">{{ entry.created_at|date:"d.m.Y" }} · {{ entry.source }}</span>
             <span class="portal-row__value">
-              {% if entry.url %}<a href="{{ entry.url }}">{{ entry.label }}</a>{% else %}{{ entry.label }}{% endif %}
-              {% if entry.status_display %}<span class="portal-badge portal-badge--{{ entry.status }}">{{ entry.status_display }}</span>{% endif %}
+              {% if entry.url %}<a href="{{ entry.url }}">{{ entry.navn }}</a>{% else %}{{ entry.navn }}{% endif %}
+              {% if entry.reference %}<span class="portal-lead-ref">{{ entry.reference }}</span>{% endif %}
             </span>
+            <span class="portal-row__label">{{ entry.created_at|date:"d.m.Y" }}</span>
           </div>
         {% endfor %}
       {% else %}

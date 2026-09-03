@@ -27,7 +27,19 @@ class WizardForm(forms.Form):
     til_lat = forms.FloatField(required=False)
     til_lon = forms.FloatField(required=False)
 
-    # --- Step 2: type & size ---
+    # --- Step 2: property / building (all optional — the wizard step never
+    # blocks "Neste", so a lookup that failed or was skipped must still submit).
+    # property_token points at a PropertyLookup row; the view reloads it and
+    # never trusts these values as-is. The *_manuell fields are the fallback /
+    # correction inputs. ---
+    property_token = forms.CharField(required=False, max_length=64)
+    selected_unit = forms.CharField(required=False, max_length=20)
+    bolig_type_manuell = forms.CharField(required=False, max_length=100)
+    bolig_bra_manuell = forms.IntegerField(required=False, min_value=1, max_value=100000)
+    bolig_etasjer_manuell = forms.IntegerField(required=False, min_value=1, max_value=200)
+    bolig_enhet_manuell = forms.CharField(required=False, max_length=20)
+
+    # --- Step 3: type & size ---
     flytte_type = forms.ChoiceField(choices=MoveLead.FLYTTE_TYPE_CHOICES)
     boligtype = forms.ChoiceField(choices=MoveLead.BOLIGTYPE_CHOICES)
 
@@ -38,10 +50,14 @@ class WizardForm(forms.Form):
     # --- Step 4: goods (always optional) ---
     beskrivelse = forms.CharField(required=False, widget=forms.Textarea)
 
-    # --- Step 5: contact ---
+    # --- Step 6: contact ---
     navn = forms.CharField()
     telefon = forms.CharField()
     epost = forms.CharField()
+    # Ticked by the wizard's own JS (and only shown) when the live duplicate
+    # check found a recent forespørsel from the same person. The server does
+    # its own check regardless — see apps.leads.views.wizard.
+    bekreft_duplikat = forms.BooleanField(required=False)
 
     def clean_fra(self):
         value = self.cleaned_data["fra"].strip()

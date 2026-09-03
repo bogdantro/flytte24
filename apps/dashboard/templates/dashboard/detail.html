@@ -1,16 +1,40 @@
 <!-- apps/dashboard/templates/dashboard/detail.html -->
 {% extends "dashboard/_base.html" %}
-{% load static %}
+{% load static l10n %}
 
 {% block title %}{{ lead.reference }}{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+{% endblock %}
 
 {% block content %}
   <a href="{% url 'dashboard:lead_list' %}" class="lead-detail__back">← Alle forespørsler</a>
 
   <div class="lead-detail__header">
-    <h1 class="lead-detail__title">{{ lead.reference }} — {{ lead.navn }}</h1>
-    <span class="status-badge status-badge--{{ lead.status }}">{{ lead.get_status_display }}</span>
+    <h1 class="lead-detail__title">{{ lead.navn }} <span class="lead-detail__ref">— {{ lead.reference }}</span></h1>
+    {% if lead.is_duplicate %}<span class="assign-pill assign-pill--danger">Duplikat — tildel manuelt</span>
+    {% elif assigned_business_count == 0 %}<span class="assign-pill assign-pill--danger">Ingen bedrift tildelt</span>
+    {% elif assigned_business_count < 3 %}<span class="assign-pill assign-pill--warn">{{ assigned_business_count }} / 3 bedrifter</span>{% endif %}
   </div>
+
+  {% if lead.is_duplicate %}
+  <div class="lead-card" style="margin-bottom: 1.5rem; border-color:#c0392b; max-width: 560px;">
+    <p class="lead-card__title" style="color:#a5281b;">⚠ Mulig duplikat — må tildeles manuelt</p>
+    <p style="margin:0 0 0.75rem; font-size:0.875rem;">
+      Samme telefon/e-post sendte inn
+      {% if lead.duplicate_of %}<a href="{% url 'dashboard:lead_detail' lead.duplicate_of.pk %}">{{ lead.duplicate_of.reference }}</a>
+      ({{ lead.duplicate_of.created_at|date:"d.m.Y H:i" }}){% else %}en tidligere forespørsel{% endif %}
+      innen 7 dager. Kunden bekreftet at de ville sende en ny.
+      Denne forespørselen er <strong>ikke</strong> automatisk tildelt noen bedrift.
+    </p>
+    <form method="post" action="{% url 'dashboard:lead_clear_duplicate' lead.pk %}">
+      {% csrf_token %}
+      <button type="submit" class="btn-outline">Ikke et duplikat — fjern merking</button>
+    </form>
+  </div>
+  {% endif %}
 
   <div class="lead-detail">
     <!-- Left column: everything the customer submitted -->
@@ -19,11 +43,11 @@
         <p class="lead-card__title">Flytting</p>
         <div class="lead-row">
           <span class="lead-row__label">Fra</span>
-          <span class="lead-row__value">{{ lead.fra }}{% if lead.fra_lat %} <span style="color:#8a8a8a;">({{ lead.fra_lat }}, {{ lead.fra_lon }})</span>{% endif %}</span>
+          <span class="lead-row__value">{{ lead.fra }}{% if lead.fra_lat %} <span style="color:#8a8a8a;">({{ lead.fra_lat|unlocalize }}, {{ lead.fra_lon|unlocalize }})</span>{% endif %}</span>
         </div>
         <div class="lead-row">
           <span class="lead-row__label">Til</span>
-          <span class="lead-row__value">{{ lead.til }}{% if lead.til_lat %} <span style="color:#8a8a8a;">({{ lead.til_lat }}, {{ lead.til_lon }})</span>{% endif %}</span>
+          <span class="lead-row__value">{{ lead.til }}{% if lead.til_lat %} <span style="color:#8a8a8a;">({{ lead.til_lat|unlocalize }}, {{ lead.til_lon|unlocalize }})</span>{% endif %}</span>
         </div>
         <div class="lead-row">
           <span class="lead-row__label">Type</span>
@@ -44,6 +68,23 @@
         </div>
         {% endif %}
       </div>
+
+      {% if lead.bolig_adresse or lead.bolig_type or lead.bolig_bra_m2 or lead.property_lookup_id %}
+      <div class="lead-card" style="margin-bottom: 1.5rem;">
+        <p class="lead-card__title">
+          Boligen (fra-adresse)
+          {% if lead.bolig_datakilde == "user" %}<span class="lead-table__muted">· oppgitt av kunden</span>
+          {% elif lead.bolig_datakilde == "api" %}<span class="lead-table__muted">· offentlige registre</span>{% endif %}
+        </p>
+        {% if lead.bolig_adresse %}<div class="lead-row"><span class="lead-row__label">Adresse</span><span class="lead-row__value">{{ lead.bolig_adresse }}</span></div>{% endif %}
+        {% if lead.bolig_enhet %}<div class="lead-row"><span class="lead-row__label">Boenhet</span><span class="lead-row__value">{{ lead.bolig_enhet }}</span></div>{% endif %}
+        <div class="lead-row"><span class="lead-row__label">Boligtype</span><span class="lead-row__value">{{ lead.bolig_type|default:"—" }}</span></div>
+        <div class="lead-row"><span class="lead-row__label">BRA</span><span class="lead-row__value">{% if lead.bolig_bra_m2 %}{{ lead.bolig_bra_m2 }} m²{% else %}—{% endif %}</span></div>
+        <div class="lead-row"><span class="lead-row__label">Etasjer</span><span class="lead-row__value">{{ lead.bolig_etasjer|default:"—" }}</span></div>
+        <div class="lead-row"><span class="lead-row__label">Byggeår</span><span class="lead-row__value">{{ lead.bolig_byggeaar|default:"—" }}</span></div>
+        {% if lead.bolig_gnr or lead.bolig_bnr %}<div class="lead-row"><span class="lead-row__label">Gnr/Bnr</span><span class="lead-row__value">{{ lead.bolig_gnr|default:"—" }} / {{ lead.bolig_bnr|default:"—" }}</span></div>{% endif %}
+      </div>
+      {% endif %}
 
       <div class="lead-card" style="margin-bottom: 1.5rem;">
         <p class="lead-card__title">Kontakt</p>
@@ -95,19 +136,9 @@
 
     <!-- Right column: internal actions -->
     <div>
-      <div class="lead-card" style="margin-bottom: 1.5rem;">
-        <p class="lead-card__title">Status</p>
-        <div class="status-form">
-          {% for value, display in status_choices %}
-            <form method="post" action="{% url 'dashboard:update_status' lead.pk %}">
-              {% csrf_token %}
-              <input type="hidden" name="status" value="{{ value }}">
-              <button type="submit" class="status-pill-btn {% if lead.status == value %}is-current{% endif %}" {% if lead.status == value %}disabled{% endif %}>
-                {{ display }}
-              </button>
-            </form>
-          {% endfor %}
-        </div>
+      <div class="lead-card lead-card--map" style="margin-bottom: 1.5rem;">
+        <p class="lead-card__title">Kart</p>
+        {% include "leads/_lead_map.html" with map_editable=True %}
       </div>
 
       <div class="lead-card" style="margin-bottom: 1.5rem;">
@@ -115,12 +146,18 @@
         <form method="post" action="{% url 'dashboard:lead_update_internal' lead.pk %}">
           {% csrf_token %}
           <div class="dashboard-form__group">
-            <label class="dashboard-form__label">Notater (kun synlig for staben)</label>
+            <label class="dashboard-form__label">Notater (kun synlig for admin)</label>
             <textarea name="internal_notes" rows="4">{{ lead.internal_notes }}</textarea>
           </div>
           <div class="dashboard-form__group">
             <label class="dashboard-form__label">Oppfølgingsdato</label>
-            <input type="date" name="follow_up_at" value="{{ lead.follow_up_at|date:'Y-m-d' }}">
+            <div class="date-field" data-date-picker data-min-today>
+              <button type="button" class="date-field__trigger field-input" data-date-picker-trigger>
+                <span data-date-picker-label>Velg dato</span>
+                <span data-icon="calendar"></span>
+              </button>
+              <input type="hidden" name="follow_up_at" data-date-input value="{{ lead.follow_up_at|date:'Y-m-d' }}">
+            </div>
           </div>
           <button type="submit" class="btn-primary">Lagre notater</button>
         </form>
@@ -154,6 +191,46 @@
         </form>
       </div>
 
+      <div class="lead-card" style="margin-bottom: 1.5rem;">
+        <p class="lead-card__title">Kreditt / dårlige leads</p>
+        {% for credit in lead_credits %}
+          <div class="lead-row">
+            <span class="lead-row__label">
+              {{ credit.business.company_name }}
+              <span class="status-badge status-badge--{{ credit.status }}">{{ credit.get_status_display }}</span>
+            </span>
+            <span class="lead-row__value">
+              {{ credit.reason|default:"—" }}
+              {% if credit.status == 'requested' %}
+                <form method="post" action="{% url 'dashboard:lead_credit_review' credit.pk %}" style="display:inline; margin-left:0.5rem;">
+                  {% csrf_token %}
+                  <button type="submit" name="decision" value="approve" class="btn-outline">Godkjenn</button>
+                  <button type="submit" name="decision" value="reject" class="btn-outline">Avslå</button>
+                </form>
+              {% endif %}
+            </span>
+          </div>
+        {% empty %}
+          <p class="dashboard-empty" style="margin:0 0 0.75rem;">Ingen kredittmeldinger.</p>
+        {% endfor %}
+        {% if creditable_businesses %}
+          <form method="post" action="{% url 'dashboard:lead_credit_create' lead.pk %}" style="margin-top:0.75rem;">
+            {% csrf_token %}
+            <div class="dashboard-form__group">
+              <label class="dashboard-form__label">Krediter denne leaden for</label>
+              <select name="business" class="dashboard-form__select">
+                {% for business in creditable_businesses %}
+                  <option value="{{ business.pk }}">{{ business.company_name }}</option>
+                {% endfor %}
+                {% if assigned_business_count > 1 %}<option value="all">Alle tildelte bedrifter</option>{% endif %}
+              </select>
+            </div>
+            <div class="dashboard-form__group"><input type="text" name="reason" placeholder="Begrunnelse (valgfritt)"></div>
+            <button type="submit" class="btn-outline">Krediter</button>
+          </form>
+        {% endif %}
+      </div>
+
       <div class="lead-card">
         <p class="lead-card__title">Farlig sone</p>
         <form method="post" action="{% url 'dashboard:lead_archive' lead.pk %}">
@@ -164,4 +241,14 @@
       </div>
     </div>
   </div>
+
+  {% include "leads/_date_overlay.html" %}
+{% endblock %}
+
+{% block extra_scripts %}
+  <script>window.KOBLY_CARTO_API_KEY = "{{ CARTO_API_KEY }}";</script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="{% static 'js/lead-map.js' %}"></script>
+  <script src="{% static 'js/date-picker.js' %}"></script>
 {% endblock %}

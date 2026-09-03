@@ -305,8 +305,8 @@
           <p class="service-card__body">Trygg kortsiktig eller langsiktig oppbevaring i ditt nærområde, med forsikring og fleksibel tilgang.</p>
         </article>
         <article class="service-card">
-          <h3 class="service-card__title">Utlandsflytting</h3>
-          <p class="service-card__body">Spesialiserte byråer som håndterer toll, containere og papirarbeid. Både flytting ut av Norge og hjem igjen.</p>
+          <h3 class="service-card__title">Distansflytting</h3>
+          <p class="service-card__body">Byråer som er vant med lange flyttelass mellom byer og landsdeler — planlegging, mellomlagring og trygg transport over store avstander.</p>
         </article>
         <article class="service-card">
           <h3 class="service-card__title">Kontorflytting</h3>
@@ -329,7 +329,7 @@
     <ul class="cities__grid">
       {% if "items" in sections.cities.extra_json %}
         {% for city in sections.cities.extra_json.items %}
-          <li{% if is_editable %} data-list-item data-inline-section="{{ sections.cities.id }}" data-section-type="cities" data-item-index="{{ forloop.counter0 }}" data-field-name="{{ city.name }}" data-field-href="{{ city.href }}"{% endif %}>
+          <li style="list-style: none;"{% if is_editable %} data-list-item data-inline-section="{{ sections.cities.id }}" data-section-type="cities" data-item-index="{{ forloop.counter0 }}" data-field-name="{{ city.name }}" data-field-href="{{ city.href }}"{% endif %}>
             <a href="{{ city.href }}" class="city-card"><span class="city-card__name">{{ city.name }}</span><span class="city-card__arrow" data-icon="arrow-up-right"></span></a>
             {% if is_editable %}{% include "core/_list_item_controls.html" %}{% endif %}
           </li>
@@ -425,18 +425,7 @@
            an inline edit into here yet — heading stays read-only until a
            cta section exists (see seed_home_page_sections.py). -->
       <h2 class="footer-cta__title">{{ sections.cta.heading|default:"Klar for å flytte?" }}</h2>
-      <form class="postnummer-form" data-postnummer-form novalidate>
-        <div class="postnummer-form__row">
-          <label class="postnummer-form__field">
-            <input type="text" inputmode="numeric" maxlength="4" placeholder="Ditt postnummer" aria-label="Postnummer" data-postnummer-input>
-          </label>
-          <button type="submit" class="btn-primary postnummer-form__submit">
-            Få 3 tilbud gratis
-            <span data-icon="arrow-right"></span>
-          </button>
-        </div>
-        <p class="postnummer-form__error" data-postnummer-error hidden>Skriv inn et gyldig postnummer (4 siffer).</p>
-      </form>
+      {% include "core/_address_cta.html" %}
     </div>
   </div>
 </section>

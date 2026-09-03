@@ -15,7 +15,6 @@
         <tr>
           <th>Referanse</th>
           <th>Navn</th>
-          <th>Status</th>
           <th>Arkivert</th>
           <th>Handling</th>
         </tr>
@@ -23,9 +22,8 @@
       <tbody>
         {% for lead in leads %}
           <tr>
-            <td class="lead-table__reference">{{ lead.reference }}</td>
+            <td class="lead-table__reference lead-table__muted">{{ lead.reference }}</td>
             <td>{{ lead.navn }}</td>
-            <td><span class="status-badge status-badge--{{ lead.status }}">{{ lead.get_status_display }}</span></td>
             <td class="lead-table__muted">{{ lead.archived_at|date:"d.m.Y H:i" }}</td>
             <td>
               <form method="post" action="{% url 'dashboard:lead_restore' lead.pk %}" style="display:inline;">

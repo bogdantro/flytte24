@@ -12,39 +12,61 @@
     </div>
   </div>
 
-  <!-- Quick stats: total, how many still need a first response, how many are due for follow-up -->
   <div class="dashboard-stats">
     <div class="dashboard-stat">
       <span class="dashboard-stat__value">{{ total_count }}</span>
       <span class="dashboard-stat__label">Totalt</span>
     </div>
     <div class="dashboard-stat">
-      <span class="dashboard-stat__value">{{ new_count }}</span>
-      <span class="dashboard-stat__label">Nye, ikke kontaktet</span>
+      <span class="dashboard-stat__value" style="color:#b3261e;">{{ unassigned_count }}</span>
+      <span class="dashboard-stat__label">Uten bedrift</span>
     </div>
     <div class="dashboard-stat">
       <span class="dashboard-stat__value">{{ follow_up_count }}</span>
       <span class="dashboard-stat__label">Trenger oppfølging</span>
     </div>
+    {% if duplicate_count %}
+    <div class="dashboard-stat">
+      <span class="dashboard-stat__value" style="color:#b3261e;">{{ duplicate_count }}</span>
+      <span class="dashboard-stat__label">Duplikater</span>
+    </div>
+    {% endif %}
   </div>
 
-  <!-- Status filter pills -->
   <div class="dashboard-filters">
-    <a href="?{{ status_pill_qs|slice:'1:' }}" class="filter-pill {% if not status_filter %}is-active{% endif %}">Alle</a>
-    {% for value, display in status_choices %}
-      <a href="?status={{ value }}{{ status_pill_qs }}" class="filter-pill {% if status_filter == value %}is-active{% endif %}">{{ display }}</a>
-    {% endfor %}
-    <a href="?follow_up=1{{ status_pill_qs }}{% if status_filter %}&status={{ status_filter }}{% endif %}" class="filter-pill {% if follow_up_filter == '1' %}is-active{% endif %}">Trenger oppfølging</a>
+    <a href="?{{ status_pill_qs|slice:'1:' }}" class="filter-pill {% if not follow_up_filter and not duplicate_filter %}is-active{% endif %}">Alle</a>
+    <a href="?follow_up=1{{ status_pill_qs }}" class="filter-pill {% if follow_up_filter == '1' %}is-active{% endif %}">Trenger oppfølging</a>
+    <a href="?duplicate=1{{ status_pill_qs }}" class="filter-pill {% if duplicate_filter == '1' %}is-active{% endif %}">Duplikater</a>
   </div>
 
-  <!-- Search + business + date-range filters -->
+  <!-- Search + business + city + type + date-range filters -->
   <form method="get" class="dashboard-search-filters">
     {% if status_filter %}<input type="hidden" name="status" value="{{ status_filter }}">{% endif %}
+    {% if follow_up_filter == '1' %}<input type="hidden" name="follow_up" value="1">{% endif %}
+    {% if duplicate_filter == '1' %}<input type="hidden" name="duplicate" value="1">{% endif %}
     <input type="text" name="q" value="{{ query }}" placeholder="Søk på navn, telefon, e-post eller referanse …" class="dashboard-search-filters__text">
-    <select name="business" class="dashboard-search-filters__select">
+    <select name="business" class="dashboard-search-filters__select" onchange="this.form.requestSubmit()">
       <option value="">Alle bedrifter</option>
       {% for business in businesses %}
         <option value="{{ business.pk }}" {% if business_filter == business.pk|stringformat:"s" %}selected{% endif %}>{{ business.company_name }}</option>
+      {% endfor %}
+    </select>
+    <select name="city" class="dashboard-search-filters__select" onchange="this.form.requestSubmit()">
+      <option value="">Alle byer</option>
+      {% for value, label in city_choices %}
+        <option value="{{ value }}" {% if city_filter == value %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+    <select name="flytte_type" class="dashboard-search-filters__select" onchange="this.form.requestSubmit()">
+      <option value="">Alle flyttetyper</option>
+      {% for value, label in flytte_type_choices %}
+        <option value="{{ value }}" {% if flytte_type_filter == value %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+    <select name="boligtype" class="dashboard-search-filters__select" onchange="this.form.requestSubmit()">
+      <option value="">Alle boligtyper</option>
+      {% for value, label in boligtype_choices %}
+        <option value="{{ value }}" {% if boligtype_filter == value %}selected{% endif %}>{{ label }}</option>
       {% endfor %}
     </select>
     <label class="dashboard-search-filters__date">Fra <input type="date" name="from" value="{{ date_from }}"></label>
@@ -73,26 +95,37 @@
         <thead>
           <tr>
             <th><input type="checkbox" data-select-all></th>
-            <th>Referanse</th>
             <th>Navn</th>
-            <th>Type</th>
+            <th>Tildeling</th>
+            <th>Flyttetype</th>
+            <th>Boligtype</th>
             <th>Fra → Til</th>
-            <th>Status</th>
             <th>Oppfølging</th>
             <th>Mottatt</th>
+            <th>Referanse</th>
           </tr>
         </thead>
         <tbody>
           {% for lead in leads %}
-            <tr onclick="window.location='{% url 'dashboard:lead_detail' lead.pk %}'">
+            <tr class="lead-table__row{% if lead.is_duplicate or lead.assigned_count == 0 %} lead-table__row--danger{% elif lead.assigned_count < 3 %} lead-table__row--warn{% endif %}" onclick="window.location='{% url 'dashboard:lead_detail' lead.pk %}'">
               <td onclick="event.stopPropagation();"><input type="checkbox" name="lead_ids" value="{{ lead.pk }}"></td>
-              <td class="lead-table__reference">{{ lead.reference }}</td>
-              <td>{{ lead.navn }}</td>
+              <td>
+                {{ lead.navn }}
+                {% if lead.is_duplicate %}<span class="assign-pill assign-pill--danger" title="Duplikat — må tildeles manuelt">⚠ Duplikat</span>{% endif %}
+                {% if lead.open_credit_count %}<span class="assign-pill assign-pill--danger" title="Bedrift har meldt inn dårlig lead">⚠ Meldt dårlig</span>{% endif %}
+              </td>
+              <td>
+                {% if lead.is_duplicate %}<span class="assign-pill assign-pill--danger">Tildel manuelt</span>
+                {% elif lead.assigned_count == 0 %}<span class="assign-pill assign-pill--danger">Ingen bedrift</span>
+                {% elif lead.assigned_count < 3 %}<span class="assign-pill assign-pill--warn">{{ lead.assigned_count }} / 3 bedrifter</span>
+                {% else %}<span class="assign-pill">3 / 3 bedrifter</span>{% endif %}
+              </td>
               <td>{{ lead.get_flytte_type_display }}</td>
+              <td>{{ lead.get_boligtype_display }}</td>
               <td class="lead-table__muted">{{ lead.fra }} → {{ lead.til }}</td>
-              <td><span class="status-badge status-badge--{{ lead.status }}">{{ lead.get_status_display }}</span></td>
               <td class="lead-table__muted">{% if lead.follow_up_at %}{{ lead.follow_up_at|date:"d.m.Y" }}{% else %}—{% endif %}</td>
               <td class="lead-table__muted">{{ lead.created_at|date:"d.m.Y H:i" }}</td>
+              <td class="lead-table__reference lead-table__muted">{{ lead.reference }}</td>
             </tr>
           {% endfor %}
         </tbody>
@@ -100,6 +133,6 @@
     </form>
     {% include "dashboard/_pagination.html" with page_obj=leads %}
   {% else %}
-    <p class="dashboard-empty">Ingen forespørsler {% if status_filter or query or business_filter or date_from or date_to or follow_up_filter %}matcher filteret{% else %}ennå{% endif %}.</p>
+    <p class="dashboard-empty">Ingen forespørsler {% if status_filter or query or business_filter or date_from or date_to or follow_up_filter or city_filter or flytte_type_filter or boligtype_filter or duplicate_filter %}matcher filteret{% else %}ennå{% endif %}.</p>
   {% endif %}
 {% endblock %}

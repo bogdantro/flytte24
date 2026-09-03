@@ -266,10 +266,10 @@ class AgencyPageTests(TestCase):
 
     def test_agency_detail_renders_a_real_review_date_not_blank(self):
         """Regression test: review.date is a plain "YYYY-MM-DD" string inside a JSONField,
-        not a real date object, so Django's |date:"d.m.Y" filter used to silently render ''
+        not a real date object, so Django's |date filter used to silently render ''
         instead of erroring — every review's date was blank on every agency page."""
-        response = self.client.get("/byraer/loft/")
-        self.assertContains(response, "18.07.2026")
+        response = self.client.get("/byraer/loft/", HTTP_ACCEPT_LANGUAGE="nb")
+        self.assertContains(response, "18. juli 2026")
 
     def test_agency_detail_404s_on_unknown_slug(self):
         response = self.client.get("/byraer/dette-finnes-ikke/")
@@ -443,9 +443,11 @@ def _make_valid_logo_upload(name="logo.jpg"):
 
 
 def _valid_partner_payload(**overrides):
+    # move_type / cities are no longer collected in the wizard (steps 1 & 2
+    # were removed) — a partner sets coverage from the account portal after
+    # signing up. The form still accepts them if a hand-built POST sends
+    # them, but the real form never does.
     payload = {
-        "move_type": ["Flyttehjelp", "Pakking"],
-        "cities": ["Oslo", "Bergen"],
         "company_name": "Nordisk Flyttebyrå AS",
         "company_number": "123456789",
         "employees": "12",
@@ -465,20 +467,22 @@ def _valid_partner_payload(**overrides):
 class ForBusinessPartnerWizardTests(TestCase):
     """/for-bedrifter/bli-partner/ — the business-signup wizard (apps.core.views.for_business_partner)."""
 
-    def test_get_200_shows_all_four_step_headings(self):
+    def test_get_200_shows_both_step_headings_and_drops_the_removed_ones(self):
         response = self.client.get("/for-bedrifter/bli-partner/")
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Hvilke tjenester tilbyr dere?")
-        self.assertContains(response, "Hvilke byer dekker dere?")
         self.assertContains(response, "Om bedriften")
         self.assertContains(response, "Kontaktperson og logo")
+        self.assertContains(response, "av 2")
+        self.assertNotContains(response, "Hvilke tjenester tilbyr dere?")
+        self.assertNotContains(response, "Hvilke byer dekker dere?")
 
-    def test_valid_post_creates_bedrift_info_with_joined_move_type_and_cities(self):
+    def test_valid_post_creates_bedrift_info_with_empty_coverage(self):
         self.client.post("/for-bedrifter/bli-partner/", _valid_partner_payload())
         self.assertEqual(Bedrift_info.objects.count(), 1)
         company = Bedrift_info.objects.get()
-        self.assertEqual(company.move_type, "Flyttehjelp, Pakking")
-        self.assertEqual(company.cities, "Oslo, Bergen")
+        # Coverage isn't asked for in the wizard anymore — set later in the portal.
+        self.assertEqual(company.move_type, "")
+        self.assertEqual(company.cities, "")
         self.assertEqual(company.company_name, "Nordisk Flyttebyrå AS")
         self.assertEqual(company.email, "ola@nordisk-flytt.no")
 
@@ -502,9 +506,14 @@ class ForBusinessPartnerWizardTests(TestCase):
     def test_invalid_post_tags_the_failed_field_for_the_step_jump(self):
         """Regression test: partner-wizard.js used to always reopen on step 1 after a
         bypassed-validation POST re-render — data-error-fields is what lets it jump to
-        the step the failing field (company_name, a step-3 field) actually lives on."""
+        the step the failing field (company_name, a step-1 field) actually lives on."""
         response = self.client.post("/for-bedrifter/bli-partner/", _valid_partner_payload(company_name=""))
         self.assertContains(response, 'data-error-fields="company_name"')
+
+    def test_firmanavn_is_wired_up_as_a_brreg_lookup(self):
+        response = self.client.get("/for-bedrifter/bli-partner/")
+        self.assertContains(response, "data-brreg-input")
+        self.assertContains(response, "data-brreg-suggestions")
 
     def test_valid_post_redirects_to_thank_you_page_with_company_email_and_name(self):
         response = self.client.post("/for-bedrifter/bli-partner/", _valid_partner_payload())

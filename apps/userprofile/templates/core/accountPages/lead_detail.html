@@ -1,74 +1,124 @@
 {% extends 'core/accountPages/_account_base.html' %}
+{% load static %}
 
 {% block page_title %}{{ lead.reference }} — Mine leads{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <!-- .map-panel* styles — same reuse of wizard.css as business_edit_profile.html. -->
+  <link rel="stylesheet" href="{% static 'scss/wizard.css' %}">
+{% endblock %}
 
 {% block content %}
 <section class="portal-page">
   <div class="portal-heading-row">
-    <h1 class="portal-heading">{{ lead.reference }} — {{ lead.navn }}</h1>
+    <h1 class="portal-heading">{{ lead.navn }} <span class="portal-heading__ref">— {{ lead.reference }}</span></h1>
   </div>
 
   <p style="margin:0 0 20px;"><a href="{% url 'foresporsel_database' %}">&larr; Tilbake til mine leads</a></p>
 
-  <div class="portal-card">
-    <p class="portal-card__title">Flyttedetaljer</p>
-    <div class="portal-row">
-      <span class="portal-row__label">Fra</span>
-      <span class="portal-row__value">{{ lead.fra }}</span>
-    </div>
-    <div class="portal-row">
-      <span class="portal-row__label">Til</span>
-      <span class="portal-row__value">{{ lead.til }}</span>
-    </div>
-    <div class="portal-row">
-      <span class="portal-row__label">Type</span>
-      <span class="portal-row__value">{{ lead.get_flytte_type_display }}</span>
-    </div>
-    <div class="portal-row">
-      <span class="portal-row__label">Boligtype</span>
-      <span class="portal-row__value">{{ lead.get_boligtype_display }}</span>
-    </div>
-    <div class="portal-row">
-      <span class="portal-row__label">Dato</span>
-      <span class="portal-row__value">{% if lead.fleksibel %}Fleksibel dato{% elif lead.flyttedato %}{{ lead.flyttedato|date:"d.m.Y" }}{% else %}—{% endif %}</span>
-    </div>
-    {% if lead.beskrivelse %}
-      <div class="portal-row">
-        <span class="portal-row__label">Beskrivelse</span>
-        <span class="portal-row__value">{{ lead.beskrivelse }}</span>
+  <div class="portal-lead-detail">
+    <div class="portal-lead-detail__main">
+      <div class="portal-card">
+        <p class="portal-card__title">Flyttedetaljer</p>
+        <div class="portal-row">
+          <span class="portal-row__label">Fra</span>
+          <span class="portal-row__value">{{ lead.fra }}</span>
+        </div>
+        <div class="portal-row">
+          <span class="portal-row__label">Til</span>
+          <span class="portal-row__value">{{ lead.til }}</span>
+        </div>
+        <div class="portal-row">
+          <span class="portal-row__label">Type</span>
+          <span class="portal-row__value">{{ lead.get_flytte_type_display }}</span>
+        </div>
+        <div class="portal-row">
+          <span class="portal-row__label">Boligtype</span>
+          <span class="portal-row__value">{{ lead.get_boligtype_display }}</span>
+        </div>
+        <div class="portal-row">
+          <span class="portal-row__label">Dato</span>
+          <span class="portal-row__value">{% if lead.fleksibel %}Fleksibel dato{% elif lead.flyttedato %}{{ lead.flyttedato|date:"d.m.Y" }}{% else %}—{% endif %}</span>
+        </div>
+        {% if lead.beskrivelse %}
+          <div class="portal-row">
+            <span class="portal-row__label">Beskrivelse</span>
+            <span class="portal-row__value">{{ lead.beskrivelse }}</span>
+          </div>
+        {% endif %}
+        <div class="portal-row">
+          <span class="portal-row__label">Mottatt</span>
+          <span class="portal-row__value">{{ lead.created_at|date:"d.m.Y H:i" }}</span>
+        </div>
       </div>
-    {% endif %}
-    <div class="portal-row">
-      <span class="portal-row__label">Mottatt</span>
-      <span class="portal-row__value">{{ lead.created_at|date:"d.m.Y H:i" }}</span>
+
+      <div class="portal-card">
+        <p class="portal-card__title">Kontaktperson</p>
+        <div class="portal-row">
+          <span class="portal-row__label">Navn</span>
+          <span class="portal-row__value">{{ lead.navn }}</span>
+        </div>
+        <div class="portal-row">
+          <span class="portal-row__label">Telefon</span>
+          <span class="portal-row__value"><a href="tel:{{ lead.telefon }}">{{ lead.telefon }}</a></span>
+        </div>
+        <div class="portal-row">
+          <span class="portal-row__label">E-post</span>
+          <span class="portal-row__value"><a href="mailto:{{ lead.epost }}">{{ lead.epost }}</a></span>
+        </div>
+      </div>
+
+      {% if lead.images.all %}
+        <div class="portal-card">
+          <p class="portal-card__title">Bilder</p>
+          <div class="portal-photo-grid">
+            {% for image in lead.images.all %}
+              <div><img src="{{ image.image.url }}" alt=""></div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+
+      <div class="portal-card">
+        <p class="portal-card__title">Dårlig lead?</p>
+        {% if lead_credit %}
+          <p style="margin:0; font-size:14px;">
+            {% if lead_credit.status == 'requested' %}
+              Meldt inn {{ lead_credit.created_at|date:"d.m.Y" }} — Kobly vurderer den.
+            {% elif lead_credit.status == 'approved' %}
+              ✓ Kreditert — du blir ikke fakturert for denne leaden.
+            {% else %}
+              Meldingen ble avslått. Ta kontakt med Kobly hvis du er uenig.
+            {% endif %}
+          </p>
+        {% else %}
+          <p style="margin:0 0 10px; font-size:13px; color:#5c5c5c;">Feil nummer, useriøs henvendelse eller dobbel? Meld fra, så vurderer vi å kreditere den.</p>
+          <form method="post" action="{% url 'report_bad_lead' lead.pk %}">
+            {% csrf_token %}
+            <div class="portal-form__group">
+              <textarea name="reason" rows="3" placeholder="Kort begrunnelse (valgfritt)"></textarea>
+            </div>
+            <button type="submit" class="btn-outline">Meld leaden</button>
+          </form>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="portal-lead-detail__aside">
+      <div class="portal-card portal-card--map">
+        <p class="portal-card__title">Kart</p>
+        {% include "leads/_lead_map.html" %}
+      </div>
     </div>
   </div>
-
-  <div class="portal-card">
-    <p class="portal-card__title">Kontaktperson</p>
-    <div class="portal-row">
-      <span class="portal-row__label">Navn</span>
-      <span class="portal-row__value">{{ lead.navn }}</span>
-    </div>
-    <div class="portal-row">
-      <span class="portal-row__label">Telefon</span>
-      <span class="portal-row__value"><a href="tel:{{ lead.telefon }}">{{ lead.telefon }}</a></span>
-    </div>
-    <div class="portal-row">
-      <span class="portal-row__label">E-post</span>
-      <span class="portal-row__value"><a href="mailto:{{ lead.epost }}">{{ lead.epost }}</a></span>
-    </div>
-  </div>
-
-  {% if lead.images.all %}
-    <div class="portal-card">
-      <p class="portal-card__title">Bilder</p>
-      <div class="portal-photo-grid">
-        {% for image in lead.images.all %}
-          <div><img src="{{ image.image.url }}" alt=""></div>
-        {% endfor %}
-      </div>
-    </div>
-  {% endif %}
 </section>
+{% endblock %}
+
+{% block scripts %}
+  <script>window.KOBLY_CARTO_API_KEY = "{{ CARTO_API_KEY }}";</script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="{% static 'js/lead-map.js' %}"></script>
 {% endblock %}

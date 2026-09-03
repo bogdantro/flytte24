@@ -9,6 +9,33 @@
 
 * { box-sizing: border-box; }
 
+// The `hidden` HTML attribute must always win. Several components below set an
+// explicit `display` (flex/grid/block) on a class, which ties `[hidden]`'s
+// specificity and — since author rules come after the UA sheet — would leave a
+// [hidden] element visible (e.g. the step-2 manual-entry fallback, the
+// duplicate-submission warning). JS toggles visibility via `el.hidden`, so this
+// keeps that honest everywhere.
+[hidden] { display: none !important; }
+
+// Hide the scrollbars on every scroll container the wizard uses — scrolling
+// itself stays fully functional (wheel, drag, keyboard, touch), only the
+// visible bar is removed. Keeps the fullscreen card looking clean instead of
+// showing the OS's chunky scrollbar chrome over the layout.
+.wizard,
+.wizard-card,
+.wizard-card__body,
+.wizard-card__left,
+.wizard-card__right {
+  scrollbar-width: none;          // Firefox
+  -ms-overflow-style: none;       // old Edge / IE
+
+  &::-webkit-scrollbar {          // Chromium, Safari
+    width: 0;
+    height: 0;
+    display: none;
+  }
+}
+
 body {
   margin: 0;
   font-family: $font-sans;
@@ -170,55 +197,72 @@ body {
   // container with justify-content:center whose content overflows is a
   // well-known case where the browser can't reliably be scrolled to reach
   // what's pushed off the far edge, which was cutting off the nav bar.
-  max-height: calc(100vh - 2rem);
+
+
+  // max-height: calc(100vh - 2rem);
+  //     @media (max-width: 1049px) {
+  //       max-height: 100%;
+  //       min-height: 100%;
+  //     }
+
+
   // Without this, a flex child that refuses to shrink below its content's
   // natural size (e.g. the step photo's own pixel dimensions) can render
   // past the card's rounded edge instead of being clipped to it — this
   // guarantees the card's rounded-rect boundary always wins.
   overflow: hidden;
+  overflow-y: scroll;
   border-radius: $radius-card;
   background: $color-surface-soft;
   box-shadow: $shadow-card-elevated;
   display: flex;
   flex-direction: column;
 
+  // Mobile: the whole body scrolls (fields → inline map/receipt → nav)
+  // inside the fixed-height card. Desktop switches to a side-by-side row
+  // where __left scrolls on its own (see the min-width:1024 block).
   &__body {
     display: flex;
     flex: 1;
     flex-direction: column;
     min-width: 0;
-    // A flex item's height defaults to its content's natural size (not 0)
-    // even inside a height-constrained parent — without this, .wizard-card's
-    // new max-height can't actually make this shrink, so nothing would
-    // ever reach __left's overflow-y:auto below.
     min-height: 0;
+    overflow-y: auto;
   }
 
   // --- Left column: form content ---
   &__left {
     position: relative;
     display: flex;
-    flex: 1;
+    flex-direction: column;
+    overflow-y: scroll;
+    min-width: 0;
+    min-height: max-content;
+    @media (max-width: 1049px)  {
+          min-height: max-content;
+          .map-picker-btn{
+            display: none;
+          }
+        }
+
+    padding: 1.5rem 1.5rem 0;
+  }
+
+  // --- Right column: on mobile it flows under the fields and shows only
+  //     the step-1 map + step-5 receipt; the step-2–4 photos stay hidden
+  //     (the mobile background already carries a per-step photo). ---
+  &__right {
+    display: flex;
     flex-direction: column;
     min-width: 0;
     min-height: 0;
-    padding: 1.5rem 1.5rem 6rem;
-    // The card clips overflow to its rounded corners (see .wizard-card's
-    // own overflow:hidden above) — without this, a step with more fields
-    // than fit the card's fixed height (e.g. a step with 7 inputs) just
-    // gets cut off with no way to reach the rest, instead of scrolling.
-    overflow-y: auto;
-  }
+    z-index: 100;
+      @media (max-width: 1049px)  {
+          min-height: max-content;
+        }
+    padding: 0 1.5rem;
 
-  // --- Right column: map / photo / summary (desktop only) ---
-  &__right {
-    display: none;
-    // Flex items default to a minimum size of their content's natural
-    // dimensions unless told otherwise — without this, the step photo's
-    // own intrinsic size can force this column (and the row it's in)
-    // wider/taller than intended instead of scaling down to fit.
-    min-width: 0;
-    min-height: 0;
+    .step-art { display: none; }
   }
 }
 
@@ -308,6 +352,9 @@ body {
     margin: 0;
     font-family: $font-serif;
     font-size: 44px;
+    @media (max-width: 1049px) {
+      font-size: 34px;
+    }
     font-weight: 500;
     line-height: 1.15;
     letter-spacing: -0.01em;
@@ -333,6 +380,10 @@ body {
     font-weight: 500;
     color: $color-ink;
     margin-bottom: 0.25rem;
+  }
+
+  &__optional {
+    color: rgba(26, 26, 26, 0.35);
   }
 }
 
@@ -378,11 +429,8 @@ textarea.field-input { resize: none; }
   position: relative;
 
   .address-suggestions {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    z-index: 50;
+    position: relative;
+  
     margin: 0.25rem 0 0;
     padding: 0;
     list-style: none;
@@ -448,7 +496,321 @@ textarea.field-input { resize: none; }
 }
 
 // =================================================================
-// STEP 2 — pill groups (type/size selection)
+// STEP 2 — property / building information lookup
+// (address verify combobox + result card + manual fallback)
+// =================================================================
+.property-step {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.property-combobox {
+  position: relative;
+
+  &__control {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    .field-input { padding-left: 2.5rem; padding-right: 2.5rem; }
+  }
+
+  &__icon {
+    position: absolute;
+    left: 0.875rem;
+    display: inline-flex;
+    color: rgba(26, 26, 26, 0.4);
+    pointer-events: none;
+  }
+
+  &__spinner {
+    position: absolute;
+    right: 0.875rem;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(26, 26, 26, 0.15);
+    border-top-color: $color-brand;
+    border-radius: 50%;
+    animation: property-spin 0.7s linear infinite;
+  }
+
+  &.is-selected .field-input {
+    border-color: $color-olive;
+    background: rgba(214, 232, 168, 0.18);
+  }
+
+  &__empty {
+    margin: 0.5rem 0 0;
+    font-size: 0.8125rem;
+    color: rgba(26, 26, 26, 0.5);
+  }
+}
+
+@keyframes property-spin { to { transform: rotate(360deg); } }
+
+.property-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  margin: 0.25rem 0 0;
+  padding: 0;
+  list-style: none;
+  max-height: 18rem;
+  overflow-y: auto;
+  border: 1px solid rgba(26, 26, 26, 0.1);
+  border-radius: $radius-card;
+  background: $color-surface;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.125rem;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+
+    &.is-active,
+    &:hover { background: #f3eee3; }
+  }
+
+  &__meta { font-size: 0.75rem; color: rgba(26, 26, 26, 0.5); }
+}
+
+.property-result { display: block; }
+
+.property-card {
+  margin-top: 0.25rem;
+  border: 1px solid $color-line;
+  border-radius: $radius-card;
+  background: $color-surface;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  animation: wizard-fade-in 0.2s ease both;
+
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    margin: 0;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: $color-olive;
+
+    [data-icon] { display: inline-flex; }
+
+    &--muted { color: rgba(26, 26, 26, 0.55); }
+  }
+
+  &__address {
+    margin: 0;
+    font-family: $font-serif;
+    font-size: 1.375rem;
+    font-weight: 500;
+    line-height: 1.2;
+    color: $color-ink;
+  }
+
+  &__unit {
+    margin: -0.25rem 0 0;
+    font-size: 0.875rem;
+    color: $color-ink-muted;
+  }
+
+  &__prompt {
+    margin: 0;
+    font-size: 0.9375rem;
+    color: $color-ink;
+  }
+
+  &__status {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.9375rem;
+    color: $color-ink;
+  }
+
+  &__hint {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: rgba(26, 26, 26, 0.5);
+  }
+
+  &--error { border-color: rgba(179, 38, 30, 0.35); }
+}
+
+.property-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.625rem;
+  margin-top: 0.25rem;
+}
+
+.property-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  padding: 0.875rem;
+  border-radius: 10px;
+  background: $color-surface-soft;
+  border: 1px solid $color-line;
+
+  &__value {
+    font-family: $font-serif;
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: $color-ink;
+  }
+
+  &__label {
+    font-size: 0.75rem;
+    color: rgba(26, 26, 26, 0.5);
+  }
+}
+
+.property-units {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.property-unit {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  min-height: 52px;
+  padding: 0.75rem 1rem;
+  border: 1px solid $color-line;
+  border-radius: 10px;
+  background: $color-surface-soft;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+
+  &:hover { border-color: $color-brand; background: #f3eee3; }
+
+  &__code { font-weight: 600; font-size: 0.9375rem; color: $color-ink; }
+  &__meta { font-size: 0.8125rem; color: rgba(26, 26, 26, 0.5); }
+  &__arrow { margin-left: auto; display: inline-flex; color: rgba(26, 26, 26, 0.4); }
+}
+
+.property-details {
+  border-top: 1px solid $color-line;
+  padding-top: 0.75rem;
+
+  summary {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: $color-ink-muted;
+    cursor: pointer;
+    list-style: none;
+
+    &::-webkit-details-marker { display: none; }
+    [data-icon] { transition: transform 0.15s ease; }
+  }
+
+  &[open] summary [data-icon] { transform: rotate(180deg); }
+
+  &__list { margin: 0.75rem 0 0; display: flex; flex-direction: column; gap: 0.375rem; }
+
+  &__row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 0.8125rem;
+
+    dt { color: rgba(26, 26, 26, 0.5); margin: 0; }
+    dd { margin: 0; color: $color-ink; text-align: right; }
+  }
+}
+
+.property-change {
+  align-self: flex-start;
+  margin-top: 0.25rem;
+  border: none;
+  background: none;
+  padding: 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: $color-brand;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.property-retry {
+  align-self: flex-start;
+  min-height: 40px;
+  padding: 0 1rem;
+  border: 1px solid $color-line;
+  border-radius: $radius-pill;
+  background: $color-surface;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover { background: #f3eee3; }
+}
+
+.property-manual {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  padding: 1rem;
+  border: 1px dashed rgba(26, 26, 26, 0.2);
+  border-radius: $radius-card;
+  background: rgba(250, 249, 246, 0.6);
+
+  &__lead {
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: $color-ink;
+  }
+}
+
+.property-source-note {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: rgba(26, 26, 26, 0.4);
+}
+
+.property-skeleton {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.625rem;
+
+  span {
+    height: 64px;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #efece4 25%, #f7f5f1 37%, #efece4 63%);
+    background-size: 400% 100%;
+    animation: property-shimmer 1.4s ease infinite;
+  }
+}
+
+@keyframes property-shimmer {
+  from { background-position: 100% 0; }
+  to { background-position: -100% 0; }
+}
+
+// =================================================================
+// STEP 3 — pill groups (type/size selection)
 // =================================================================
 .pill-group {
   &__label {
@@ -621,23 +983,60 @@ textarea.field-input { resize: none; }
 }
 
 // =================================================================
-// STEP 5 — contact fields
+// STEP 6 — contact fields
 // =================================================================
 .text-field {
   display: block;
   &--full { grid-column: 1 / -1; }
 }
 
+// Repeat-submission warning shown under the contact fields on step 6.
+.wizard-duplicate {
+  border: 1px solid rgba(232, 168, 124, 0.6); // $color-accent-amber
+  background: rgba(232, 168, 124, 0.12);
+  border-radius: $radius-card;
+  padding: 1rem 1.125rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  animation: wizard-fade-in 0.2s ease both;
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    margin: 0;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: #8a4a1f;
+
+    [data-icon] { display: inline-flex; }
+  }
+
+  &__body {
+    margin: 0;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: rgba(26, 26, 26, 0.7);
+  }
+
+  .flex-toggle { margin-top: 0.25rem; }
+}
+
 // =================================================================
 // .wizard-nav — bottom "Tilbake" / "Neste" bar
 // =================================================================
 .wizard-nav {
-  position: absolute;
-  left: 1.5rem;
-  right: 1.5rem;
-  bottom: 1.5rem;
+  // Mobile: flows at the very bottom of the scrolling card, under the
+  // inline map / receipt. Desktop pins it into the left column (see the
+  // min-width:1024 block below).
   display: flex;
   align-items: center;
+  border-top: 1px solid rgba(26, 26, 26, 0.08);
+  padding: 45px 0px;
+      @media (max-width: 1049px) {
+        padding: 30px 24px;
+      }
   // margin-left: auto on __next (not justify-content: space-between on the
   // container) keeps Neste pinned to the right even when Tilbake is
   // [hidden] on step 1 — space-between collapses to flex-start with a
@@ -671,6 +1070,12 @@ textarea.field-input { resize: none; }
   }
 }
 
+// The become-a-partner wizard has no right-column map/receipt, so its nav
+// stays in normal flow at every width (never the desktop absolute pin).
+.wizard--partner {
+  .wizard-card__left { padding-bottom: 1.5rem; }
+}
+
 // =================================================================
 // RIGHT COLUMN PANELS (desktop only, see media query below)
 // =================================================================
@@ -683,6 +1088,21 @@ textarea.field-input { resize: none; }
   background: $color-bg;
 
   &.is-active { display: flex; animation: wizard-fade-in 0.26s ease both; }
+}
+
+// Mobile: the inline map / receipt need an explicit size (there's no
+// flex:1 parent height to fill), and get spacing from the fields above.
+.map-panel.is-active {
+  flex: none;
+  height: 300px;
+  margin: 1.25rem 0 0.5rem;
+}
+.summary-panel.is-active {
+  flex: none;
+  height: auto;
+  margin: 1.25rem 0 0.5rem;
+  padding: 1.5rem;
+  flex-direction: column;
 }
 
 // Absolutely positioned against .step-art's own (position: relative) box,
@@ -1229,25 +1649,110 @@ textarea.field-input { resize: none; }
     margin: 1.5rem 0;
     max-height: calc(100vh - 3rem);
 
-    &__body { flex-direction: row; }
-    &__left { flex: 0 0 58%; padding: 2.75rem 2.75rem 6rem; }
+    &__body {
+      flex-direction: row;
+      overflow: visible;
+      position: relative;
+    }
+    &__left {
+      flex: 0 0 58%;
+      padding: 2.75rem 2.75rem 6rem;
+      overflow-y: auto;
+      position: relative;
+    }
     &__right {
-      display: flex;
       flex: 1;
       padding: 1rem 1rem 1rem 0;
+
+      .step-art { display: none; }
+      .step-art.is-active { display: flex; }
     }
   }
 
+  // Desktop: side panels fill the right column again; nav is pinned into
+  // the left column's footer area.
+  .map-panel.is-active,
+  .summary-panel.is-active {
+    flex: 1;
+    height: auto;
+    margin: 0;
+    padding: 0;
+  }
+  .summary-panel.is-active { padding: 2rem; }
+
+  // Partner wizard keeps the absolute-pinned nav (its .wizard-nav is inside
+  // __left and its steps are short). The customer wizard uses a grid layout
+  // instead — see the `.wizard:not(.wizard--partner)` block below.
   .wizard-nav {
-    left: 2.75rem;
-    right: 2.75rem;
+    position: absolute;
+    left: 45px;
     bottom: 1.75rem;
+    width: calc(58% - 5.5rem);
+    padding: 0;
+    border-top: none;
+    &.business {
+      left: unset !important;
+      right: 45px !important;
+    }
+  }
+
+  // -----------------------------------------------------------------
+  // Customer wizard desktop layout (.wizard, not .wizard--partner).
+  //
+  // The card is a fixed-height grid: the left column scrolls its step
+  // content, the nav sits in its OWN grid row directly beneath it (never
+  // overlapping, no matter how tall the step — property lookup, manual
+  // fallback, the step-6 duplicate warning), and the right-column
+  // photo/map spans the full height alongside both.
+  // -----------------------------------------------------------------
+  .wizard:not(.wizard--partner) {
+    .wizard-card {
+      height: calc(100vh - 3rem);
+      overflow: hidden;
+    }
+
+    .wizard-card__body {
+      display: grid;
+      grid-template-columns: 58% 1fr;
+      grid-template-rows: minmax(0, 1fr) auto;
+      overflow: hidden;
+      position: static;
+    }
+
+    .wizard-card__left {
+      grid-column: 1;
+      grid-row: 1;
+      min-height: 0;
+      overflow-y: auto;
+      padding: 2.75rem 2.75rem 1.5rem;
+    }
+
+    .wizard-card__right {
+      grid-column: 2;
+      grid-row: 1 / 3;
+      min-height: 0;
+      overflow: hidden;
+      padding: 1rem 1rem 1rem 0;
+    }
+
+    .wizard-nav {
+      position: static;
+      grid-column: 1;
+      grid-row: 2;
+      left: auto;
+      bottom: auto;
+      width: auto;
+      padding: 1.25rem 2.75rem 1.75rem;
+      border-top: 1px solid rgba(26, 26, 26, 0.08);
+      background: $color-surface-soft;
+    }
   }
 
   .map-picker-btn { display: none; } // desktop uses the right-column map instead
 }
 
 @media (min-width: 640px) and (max-width: 1023.98px) {
-  .wizard-card__left { padding: 2.25rem 2.25rem 6rem; }
-  .wizard-nav { left: 2.25rem; right: 2.25rem; bottom: 1.75rem; }
+  .wizard-card__left { padding: 2.25rem 2.25rem 0; }
+  .wizard-card__right { padding: 0 2.25rem; }
+  .wizard-nav { padding: 1.25rem 2.25rem 1.5rem; }
 }

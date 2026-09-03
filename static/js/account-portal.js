@@ -20,11 +20,11 @@
     return match ? decodeURIComponent(match[1]) : "";
   }
 
-  /** Briefly shows a small "Lagret"/"Kunne ikke lagre" pill next to `el`. */
-  function showSaveFeedback(el, ok) {
+  /** Briefly shows a small status pill next to `el`. `okText` overrides the default "Lagret". */
+  function showSaveFeedback(el, ok, okText) {
     const pill = document.createElement("span");
     pill.className = "portal-save-feedback" + (ok ? "" : " portal-save-feedback--error");
-    pill.textContent = ok ? "Lagret" : "Kunne ikke lagre";
+    pill.textContent = ok ? (okText || "Lagret") : "Kunne ikke lagre";
     el.insertAdjacentElement("afterend", pill);
     requestAnimationFrame(() => pill.classList.add("is-visible"));
     setTimeout(() => {
@@ -71,15 +71,16 @@
     // any still-in-flight request before firing the next one means only
     // the latest snapshot can ever actually complete and reach the server.
     let inFlightController = null;
+    const pendingBanner = document.querySelector("[data-coverage-pending-banner]");
 
-    form.addEventListener("change", async (event) => {
-      if (!event.target.matches('input[type="checkbox"]')) return;
-
+    const submit = async () => {
       if (inFlightController) inFlightController.abort();
       const controller = new AbortController();
       inFlightController = controller;
 
       const formData = new FormData(form);
+      const areasInput = form.querySelector("[data-service-areas-input]");
+      if (areasInput) formData.set("service_areas", areasInput.value || "[]");
       try {
         const response = await fetch(form.dataset.coverageForm, {
           method: "POST",
@@ -88,14 +89,23 @@
           signal: controller.signal,
         });
         const data = response.ok ? await response.json() : { ok: false };
-        showSaveFeedback(feedbackAnchor, Boolean(data.ok));
+        showSaveFeedback(feedbackAnchor, Boolean(data.ok), data.pending ? "Sendt til godkjenning" : "Lagret");
+        // pending:false means the change was reverted to the live values —
+        // there's nothing awaiting approval, so drop the banner.
+        if (pendingBanner && data.ok) pendingBanner.hidden = !data.pending;
       } catch (err) {
-        if (err.name === "AbortError") return; // superseded by a newer toggle — not a real failure
+        if (err.name === "AbortError") return; // superseded by a newer change — not a real failure
         showSaveFeedback(feedbackAnchor, false);
       } finally {
         if (inFlightController === controller) inFlightController = null;
       }
+    };
+
+    form.addEventListener("change", (event) => {
+      if (event.target.matches('input[type="checkbox"], select')) submit();
     });
+    // The structured-areas widget dispatches this after any direction toggle.
+    form.addEventListener("coverage:changed", submit);
   }
 
   document.addEventListener("DOMContentLoaded", () => {

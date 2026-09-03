@@ -355,7 +355,7 @@ a { color: inherit; text-decoration: none; }
 .dashboard-main {
   flex: 1;
   min-width: 0;
-  max-width: 1100px;
+  // Full width of the space left of the sidebar — no artificial cap.
   padding: 2rem 2.5rem 4rem;
 }
 
@@ -477,6 +477,11 @@ a { color: inherit; text-decoration: none; }
 
   &__value { display: block; font-family: $font-serif; font-size: 1.75rem; font-weight: 500; }
   &__label { display: block; margin-top: 0.25rem; font-size: 0.8125rem; color: $color-ink-muted; }
+
+  &--link {
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+    &:hover { border-color: $color-brand; background: $color-surface-soft; }
+  }
 }
 
 // ---------------------------------------------------------------
@@ -587,6 +592,14 @@ a { color: inherit; text-decoration: none; }
   }
 
   &__title { margin: 0; font-family: $font-serif; font-size: 1.5rem; font-weight: 500; }
+
+  // Reference number trails the customer name at half size.
+  &__ref {
+    font-size: 0.5em;
+    font-weight: 400;
+    color: $color-ink-muted;
+    white-space: nowrap;
+  }
 }
 
 .lead-card {
@@ -689,19 +702,35 @@ a { color: inherit; text-decoration: none; }
 .dashboard-form__group input[type="tel"],
 .dashboard-form__group input[type="date"],
 .dashboard-form__group input[type="number"],
+.dashboard-form__group input[type="password"],
+.dashboard-form__group input:not([type]),
 .dashboard-form__group textarea,
 .dashboard-form__group select {
   width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
   border: 1.5px solid rgba(26, 26, 26, 0.1);
   border-radius: 10px;
   background: #f7f5f1;
   padding: 0.75rem 0.875rem;
   font-size: 0.9375rem;
   font-family: $font-sans;
+  color: $color-ink;
   outline: none;
   transition: border-color 0.2s ease;
 
   &:focus { border-color: $color-brand; }
+  &::placeholder { color: rgba(26, 26, 26, 0.35); }
+}
+
+// select gets the CSS-drawn chevron (appearance:none above already stripped
+// the native one) — same glyph as .dashboard-form__select.
+.dashboard-form__group select {
+  padding-right: 2.25rem;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%235c5c5c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.875rem center;
 }
 
 .dashboard-form__group textarea { min-height: 100px; resize: vertical; }
@@ -735,6 +764,402 @@ a { color: inherit; text-decoration: none; }
   &:focus { border-color: $color-brand; }
 }
 
+.dashboard-form__error {
+  margin: 0 0 0.75rem;
+  color: #b3261e;
+  font-size: 0.8125rem;
+}
+
+// ---------------------------------------------------------------
+// NATIVE-CONTROL RESET — everything inside the dashboard content
+// area is drawn by us, never by the browser. Covers number-input
+// spinners, the date-field picker button, and checkboxes / radios.
+// ---------------------------------------------------------------
+.dashboard-main {
+  // Number inputs: no spin buttons, no reserved gutter for them.
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  // Date/time inputs: recolor the built-in picker glyph to match, strip the
+  // rest of the native chrome (spin arrows, clear button).
+  input[type="date"],
+  input[type="time"],
+  input[type="datetime-local"] {
+    &::-webkit-calendar-picker-indicator {
+      filter: grayscale(1) opacity(0.55);
+      cursor: pointer;
+    }
+    &::-webkit-inner-spin-button,
+    &::-webkit-clear-button { display: none; }
+  }
+
+  // Custom checkbox + radio — a small filled box/dot in the brand color,
+  // no OS rendering.
+  input[type="checkbox"],
+  input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    flex: none;
+    width: 1.05rem;
+    height: 1.05rem;
+    margin: 0;
+    border: 1.5px solid rgba(26, 26, 26, 0.3);
+    background: $color-surface;
+    cursor: pointer;
+    display: inline-grid;
+    place-content: center;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+    vertical-align: middle;
+
+    &::before {
+      content: "";
+      width: 0.6rem;
+      height: 0.6rem;
+      transform: scale(0);
+      transition: transform 0.12s ease;
+      background: $color-brand-ink;
+    }
+
+    &:focus-visible { outline: 2px solid rgba(34, 24, 20, 0.35); outline-offset: 2px; }
+    &:checked {
+      border-color: $color-brand;
+      background: $color-brand;
+      &::before { transform: scale(1); }
+    }
+  }
+
+  input[type="checkbox"] { border-radius: 5px; }
+  input[type="checkbox"]::before {
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+  }
+  input[type="radio"] {
+    border-radius: 50%;
+    &::before { border-radius: 50%; }
+  }
+}
+
+// Filter-row selects (lead / business lists) — same CSS chevron as the
+// form selects, no native dropdown arrow.
+.dashboard-search-filters__select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 2rem;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%235c5c5c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+}
+
+// Custom file input (static/js/upload-tile.js) — no native "Choose File" chrome.
+.upload-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  min-height: 7rem;
+  border: 1.5px dashed rgba(26, 26, 26, 0.2);
+  border-radius: 12px;
+  background: #f7f5f1;
+  padding: 1rem;
+  font-size: 0.875rem;
+  color: $color-ink-muted;
+  cursor: pointer;
+  text-align: center;
+
+  &:hover { border-color: $color-brand; }
+
+  input[type="file"] {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  [data-icon] { color: rgba(26, 26, 26, 0.4); }
+  &__label { word-break: break-word; }
+
+  [data-upload-tile-preview] {
+    max-width: 120px;
+    max-height: 90px;
+    object-fit: contain;
+    border-radius: 8px;
+    margin-bottom: 0.25rem;
+  }
+}
+
+// Inline "Lagret" / "Kunne ikke lagre" note next to the "Dekning" title,
+// shown for ~1.5s after each AJAX pill save (dashboard.js initCoverageAjaxSave).
+.dashboard-save-feedback {
+  margin-left: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #3f7d3f;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+
+  &.is-visible { opacity: 1; }
+  &.is-error { color: #b3261e; }
+}
+
+// ---------------------------------------------------------------
+// COVERAGE PILLS (business_detail.html "Dekning") — same pill-button
+// checkboxes as the become-a-partner wizard (static/scss/wizard.scss) and
+// the account portal, ported here so staff edit coverage the same way a
+// partner does instead of a raw comma-separated text field.
+// ---------------------------------------------------------------
+.pill-group {
+  &__label {
+    margin: 0 0 0.5rem;
+    font-size: 0.875rem;
+    color: rgba(26, 26, 26, 0.5);
+  }
+
+  &__grid {
+    display: grid;
+    gap: 0.5rem;
+
+    &--3col { grid-template-columns: repeat(3, 1fr); }
+    &--2col { grid-template-columns: repeat(2, 1fr); }
+  }
+}
+
+.pill-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $radius-card;
+  border: 1.5px solid transparent;
+  background: #f3eee3;
+  color: rgba(26, 26, 26, 0.6);
+  padding: 0.75rem;
+  font-size: 0.875rem;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  input { position: absolute; opacity: 0; pointer-events: none; }
+
+  &:hover { background: #e8e0d0; }
+
+  &:has(input:checked) {
+    border-color: $color-brand;
+    background: $color-brand;
+    color: $color-brand-ink;
+  }
+}
+
+@media (max-width: 560px) {
+  .pill-group__grid--3col,
+  .pill-group__grid--2col { grid-template-columns: repeat(2, 1fr); }
+}
+
+// Structured "hvor jobber dere" coverage widget (static/js/coverage-onboarding.js)
+.coverage-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+
+  &[hidden] { display: none; }
+  &__group { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+  &__region {
+    border: none; background: none; padding: 0;
+    font-size: 0.8125rem; font-weight: 600; color: $color-ink;
+    cursor: pointer; text-decoration: underline;
+  }
+  &__chip {
+    display: inline-flex; align-items: center; gap: 0.375rem;
+    border: 1px solid $color-line; border-radius: $radius-pill;
+    padding: 0.375rem 0.75rem; font-size: 0.8125rem; color: $color-ink;
+    background: $color-surface; cursor: pointer;
+    span { color: $color-ink-muted; }
+  }
+}
+
+.coverage-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+
+  &[hidden] { display: none; }
+  &__backdrop { position: absolute; inset: 0; background: rgba(26, 26, 26, 0.5); }
+  &__card {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 440px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    border-radius: $radius-card;
+    background: $color-surface;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.3);
+    padding: 1.5rem;
+  }
+  &__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  &__title {
+    margin: 0;
+    font-family: $font-serif;
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: $color-ink;
+  }
+  &__close {
+    flex-shrink: 0;
+    border: none;
+    background: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: $color-ink-muted;
+    cursor: pointer;
+    padding: 0 0.25rem;
+    &:hover { color: $color-ink; }
+  }
+  &__hint { margin: 0.25rem 0 1rem; font-size: 0.75rem; color: $color-ink-muted; }
+  &__body { overflow-y: auto; flex: 1; }
+  &__done { align-self: stretch; justify-content: center; margin-top: 1.25rem; }
+
+  &__all {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    border: 1.5px solid $color-line;
+    border-radius: 10px;
+    background: none;
+    padding: 0.625rem 0.875rem;
+    margin-bottom: 0.75rem;
+    font-family: $font-sans;
+    font-size: 0.8125rem;
+    color: $color-ink;
+    cursor: pointer;
+
+    span:last-child { color: $color-ink-muted; }
+    &.is-on { border-color: $color-brand; background: rgba(34, 24, 20, 0.04); }
+    &:hover { border-color: $color-brand; }
+  }
+}
+
+.coverage-place-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.coverage-place-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid $color-line;
+
+  &:last-child { border-bottom: none; }
+
+  &__toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    border: none;
+    background: none;
+    padding: 0.25rem 0;
+    font-family: $font-sans;
+    font-size: 0.9375rem;
+    color: $color-ink;
+    cursor: pointer;
+  }
+  &__check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 6px;
+    border: 1.5px solid $color-line;
+    font-size: 0.8125rem;
+    color: $color-brand-ink;
+  }
+  &.is-on &__check { background: $color-brand; border-color: $color-brand; }
+
+  &__dirs { display: inline-flex; gap: 0.25rem; flex-shrink: 0; }
+}
+.coverage-dir {
+  width: 2rem;
+  height: 2rem;
+  border: 1.5px solid $color-line;
+  border-radius: 8px;
+  background: $color-surface;
+  font-size: 0.9375rem;
+  color: $color-ink-muted;
+  cursor: pointer;
+
+  &.is-active { border-color: $color-brand; background: $color-brand; color: $color-brand-ink; }
+  &:hover { border-color: $color-brand; }
+}
+
+// Brønnøysundregistret "Firmanavn" lookup dropdown (business_detail.html,
+// static/js/brreg-lookup.js) — same behaviour as the become-a-partner wizard.
+[data-brreg-field] { position: relative; }
+
+.brreg-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  margin: 0.25rem 0 0;
+  padding: 0;
+  list-style: none;
+  max-height: 18rem;
+  overflow-y: auto;
+  border: 1px solid rgba(26, 26, 26, 0.1);
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+
+  &[hidden] { display: none; }
+
+  li button {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.125rem;
+    border: none;
+    background: none;
+    padding: 0.625rem 0.875rem;
+    text-align: left;
+    font-size: 0.875rem;
+    font-family: $font-sans;
+    cursor: pointer;
+
+    &:hover { background: #f3eee3; }
+  }
+
+  &__meta {
+    font-size: 0.75rem;
+    color: rgba(26, 26, 26, 0.5);
+  }
+}
+
 .lead-photo-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
@@ -751,8 +1176,285 @@ a { color: inherit; text-decoration: none; }
 
 @media (min-width: 900px) {
   .lead-detail {
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
     align-items: start;
+  }
+}
+
+// Lead assignment warnings — no bedrift = red, 1–2 = yellow.
+.assign-pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: $radius-pill;
+  padding: 0.15rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: #e8e2d4;
+  color: rgba(26, 26, 26, 0.65);
+
+  &--danger { background: #f6d9d5; color: #8a2b1f; }
+  &--warn { background: #f6e6cc; color: #8a5a1f; }
+}
+
+.lead-table__row--danger td:first-child { box-shadow: inset 3px 0 0 #b3261e; }
+.lead-table__row--warn td:first-child { box-shadow: inset 3px 0 0 #c98a3c; }
+.lead-table__row--danger:hover td,
+.lead-table__row--warn:hover td { background: rgba(0, 0, 0, 0.02); }
+
+.lead-row--flat {
+  display: block;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid $color-line;
+  &:last-child { border-bottom: none; }
+}
+.lead-row--link {
+  cursor: pointer;
+  border-radius: 8px;
+  margin: 0 -0.5rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  &:hover { background: rgba(0, 0, 0, 0.03); }
+}
+.lead-row--danger { box-shadow: inset 3px 0 0 #b3261e; padding-left: 0.6rem; }
+.lead-row--warn { box-shadow: inset 3px 0 0 #c98a3c; padding-left: 0.6rem; }
+
+// Extra breathing room between the main "Lagre" form and the Dekning card.
+.business-detail-coverage-gap { margin-top: 2.5rem; }
+
+// ---------------------------------------------------------------
+// LEAD MAP + DATE PICKER (dashboard/detail.html) — the same from/to
+// Leaflet map and custom calendar as the customer wizard, ported from
+// static/scss/wizard.scss so this page doesn't have to pull in all of
+// wizard.css (colliding .btn-primary / .field-input / … base rules).
+// ---------------------------------------------------------------
+@keyframes lead-overlay-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.lead-card--map .map-panel--standalone { margin-top: 0.25rem; }
+
+.map-panel {
+  position: relative;
+  overflow: hidden;
+  border-radius: $radius-card;
+  background: $color-bg;
+
+  &--standalone {
+    display: block;
+    height: 360px;
+  }
+
+  &__map { position: absolute; inset: 0; }
+
+  &__chip {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 1000;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    max-width: calc(100% - 4.5rem);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+    line-height: 1.3;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+
+    &[hidden] { display: none; }
+    &-prefix { color: rgba(26, 26, 26, 0.45); }
+  }
+
+  &__zoom {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  &__zoom-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border: none;
+    border-radius: 8px;
+    background: $color-surface;
+    color: rgba(26, 26, 26, 0.7);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+
+    &:hover { background: #f7f6f3; }
+  }
+}
+
+.date-field {
+  display: block;
+
+  &--inline {
+    display: inline-block;
+    width: auto;
+
+    .date-field__trigger { width: auto; min-width: 9rem; }
+  }
+
+  &__trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    width: 100%;
+    border: 1.5px solid rgba(26, 26, 26, 0.1);
+    border-radius: 10px;
+    background: #f7f5f1;
+    padding: 0.75rem 0.875rem;
+    font-family: $font-sans;
+    font-size: 0.9375rem;
+    color: $color-ink;
+    text-align: left;
+    cursor: pointer;
+
+    [data-icon] { flex-shrink: 0; color: rgba(26, 26, 26, 0.4); }
+    &:hover { border-color: rgba(26, 26, 26, 0.2); }
+  }
+}
+
+.date-overlay__time {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  color: $color-ink-muted;
+
+  &[hidden] { display: none; }
+
+  input {
+    width: 3.5rem;
+    border: 1.5px solid rgba(26, 26, 26, 0.15);
+    border-radius: 8px;
+    padding: 0.5rem;
+    font-size: 0.9375rem;
+    text-align: center;
+    font-family: $font-sans;
+  }
+}
+
+.date-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+
+  &[hidden] { display: none; }
+
+  &__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(26, 26, 26, 0.45);
+    animation: lead-overlay-fade-in 0.2s ease both;
+  }
+
+  &__card {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 360px;
+    border-radius: $radius-card;
+    background: $color-surface;
+    box-shadow: $shadow-card-elevated;
+    padding: 1.25rem;
+    animation: lead-overlay-fade-in 0.2s ease both;
+  }
+
+  &__header {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  &__month {
+    margin: 0;
+    text-align: center;
+    font-family: $font-serif;
+    font-size: 1.0625rem;
+    font-weight: 500;
+    color: $color-ink;
+    text-transform: capitalize;
+  }
+
+  &__nav, &__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border: none;
+    border-radius: 50%;
+    background: none;
+    color: $color-ink-muted;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover { background: rgba(26, 26, 26, 0.06); }
+  }
+
+  &__close { margin-left: 0.5rem; }
+
+  &__weekdays, &__grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+  }
+
+  &__weekdays {
+    margin-top: 0.75rem;
+
+    span {
+      padding: 0.375rem 0;
+      text-align: center;
+      font-size: 0.75rem;
+      color: rgba(26, 26, 26, 0.4);
+      text-transform: capitalize;
+    }
+  }
+
+  &__grid { row-gap: 0.125rem; }
+
+  &__day {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1 / 1;
+    border: none;
+    border-radius: 50%;
+    background: none;
+    font-family: $font-sans;
+    font-size: 0.875rem;
+    color: $color-ink;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover:not(:disabled) { background: rgba(26, 26, 26, 0.06); }
+    &.is-today { font-weight: 600; }
+    &.is-selected { background: $color-brand; color: $color-brand-ink; }
+    &:disabled { color: rgba(26, 26, 26, 0.25); cursor: not-allowed; }
+    &:empty { cursor: default; }
+  }
+
+  &__confirm {
+    width: 100%;
+    justify-content: center;
+    margin-top: 1rem;
   }
 }
 
@@ -800,4 +1502,423 @@ a { color: inherit; text-decoration: none; }
   font-size: 0.8125rem;
   color: $color-ink-muted;
   margin-right: 0.5rem;
+}
+
+// ---------------------------------------------------------------
+// NY BEDRIFT — two-column: form left, sticky live preview right
+// (dashboard/business_add.html + static/js/business-add-preview.js)
+// ---------------------------------------------------------------
+.business-add {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 2rem;
+  align-items: start;
+
+  @media (max-width: 1100px) {
+    grid-template-columns: 1fr;
+  }
+
+  &__aside {
+    position: sticky;
+    top: 1.5rem;
+
+    @media (max-width: 1100px) {
+      position: static;
+      order: -1; // show the preview above the form on narrow screens
+    }
+  }
+}
+
+.business-preview {
+  border-radius: $radius-card;
+  background: $color-surface;
+  border: 1px solid $color-line;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  &__eyebrow {
+    margin: 0;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: rgba(26, 26, 26, 0.35);
+  }
+
+  &__head {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+  }
+
+  &__logo {
+    flex: none;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 12px;
+    overflow: hidden;
+    background: $color-surface-soft;
+    border: 1px solid $color-line;
+
+    img { width: 100%; height: 100%; object-fit: contain; }
+
+    &--placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: $font-serif;
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: $color-ink-muted;
+    }
+  }
+
+  &__name {
+    margin: 0;
+    font-family: $font-serif;
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: 1.2;
+
+    &.is-placeholder { color: rgba(26, 26, 26, 0.3); }
+  }
+
+  &__meta {
+    margin: 0.25rem 0 0;
+    font-size: 0.8125rem;
+    color: $color-ink-muted;
+  }
+
+  &__status { align-self: flex-start; }
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  &__label {
+    margin: 0;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: rgba(26, 26, 26, 0.4);
+  }
+
+  &__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+  }
+
+  &__chip {
+    display: inline-flex;
+    align-items: center;
+    border-radius: $radius-pill;
+    background: $color-surface-soft;
+    border: 1px solid $color-line;
+    padding: 0.25rem 0.625rem;
+    font-size: 0.75rem;
+    color: $color-ink;
+  }
+
+  &__areas {
+    margin: 0;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: $color-ink-muted;
+  }
+
+  &__about {
+    margin: 0;
+    font-size: 0.8125rem;
+    line-height: 1.55;
+    color: rgba(26, 26, 26, 0.7);
+    border-top: 1px solid $color-line;
+    padding-top: 0.875rem;
+  }
+
+  &__contact {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+
+    p { margin: 0; font-size: 0.8125rem; color: $color-ink-muted; }
+  }
+
+  &__stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    border-top: 1px solid $color-line;
+    padding-top: 0.875rem;
+  }
+
+  &__stat {
+    font-size: 0.75rem;
+    color: $color-ink-muted;
+    background: $color-surface-soft;
+    border: 1px solid $color-line;
+    border-radius: $radius-pill;
+    padding: 0.25rem 0.625rem;
+  }
+}
+
+// ---------------------------------------------------------------
+// FAQ EDITOR — repeatable question/answer rows (static/js/faq-editor.js),
+// replacing the plain "Spørsmål og svar" textarea on the business forms.
+// ---------------------------------------------------------------
+.faq-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  &__empty {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: rgba(26, 26, 26, 0.4);
+  }
+
+  &__row {
+    display: grid;
+    grid-template-columns: 1.75rem 1fr 2rem;
+    align-items: start;
+    gap: 0.625rem;
+    padding: 0.875rem;
+    border: 1px solid $color-line;
+    border-radius: 12px;
+    background: $color-surface-soft;
+  }
+
+  &__num {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: $color-ink-muted;
+    line-height: 2.4;
+    text-align: center;
+  }
+
+  &__fields {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+
+  &__q,
+  &__a {
+    width: 100%;
+    appearance: none;
+    border: 1.5px solid rgba(26, 26, 26, 0.1);
+    border-radius: 10px;
+    background: $color-surface;
+    padding: 0.625rem 0.75rem;
+    font-size: 0.875rem;
+    font-family: $font-sans;
+    color: $color-ink;
+    outline: none;
+    transition: border-color 0.15s ease;
+
+    &:focus { border-color: $color-brand; }
+  }
+
+  &__q { font-weight: 600; }
+  &__a { resize: vertical; min-height: 3rem; }
+
+  &__remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border: none;
+    border-radius: 8px;
+    background: none;
+    color: rgba(26, 26, 26, 0.4);
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+
+    &:hover { background: rgba(179, 38, 30, 0.1); color: #b3261e; }
+  }
+
+  &__add {
+    align-self: flex-start;
+    font-size: 0.8125rem;
+    padding: 0.5rem 0.875rem;
+
+    [data-icon] { width: 0.875rem; height: 0.875rem; }
+  }
+}
+
+// ---------------------------------------------------------------
+// ØKONOMI (revenue dashboard) — dashboard/economy.html
+// ---------------------------------------------------------------
+.btn-outline--sm {
+  padding: 0.4rem 0.85rem;
+  font-size: 0.75rem;
+}
+
+.economy-note {
+  margin: 0 0 1.5rem;
+  max-width: 60ch;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: $color-ink-muted;
+
+  a { color: $color-brand; font-weight: 600; }
+}
+
+.economy-kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.economy-kpi {
+  border-radius: $radius-card;
+  background: $color-surface;
+  border: 1px solid $color-line;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+
+  &--accent {
+    background: $color-brand;
+    border-color: $color-brand;
+    color: $color-brand-ink;
+
+    .economy-kpi__label,
+    .economy-kpi__sub { color: rgba(255, 255, 255, 0.75); }
+  }
+
+  &__label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: $color-ink-muted;
+  }
+
+  &__value {
+    font-family: $font-serif;
+    font-size: 1.75rem;
+    font-weight: 500;
+    line-height: 1.1;
+
+    &--loss { color: #b3261e; }
+  }
+
+  &__sub { font-size: 0.75rem; color: $color-ink-muted; }
+}
+
+.economy-trend {
+  font-weight: 700;
+
+  &--up { color: #1c7a3f; }
+  &--down { color: #b3261e; }
+
+  .economy-kpi--accent & { color: #fff; }
+}
+
+.economy-card {
+  margin-bottom: 1.5rem;
+
+  &__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+
+    .lead-card__title { margin: 0; }
+  }
+}
+
+.economy-range {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.625rem;
+  font-size: 0.75rem;
+  color: $color-ink-muted;
+
+  label { display: flex; flex-direction: column; gap: 0.25rem; }
+
+  input[type="date"] {
+    border: 1.5px solid rgba(26, 26, 26, 0.1);
+    border-radius: 10px;
+    background: #f7f5f1;
+    padding: 0.45rem 0.6rem;
+    font-size: 0.8125rem;
+    font-family: $font-sans;
+    outline: none;
+
+    &:focus { border-color: $color-brand; }
+  }
+
+  &__reset { align-self: center; color: $color-brand; font-weight: 600; }
+}
+
+.economy-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+  height: 200px;
+  padding-top: 1.25rem;
+
+  .economy-bar {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    gap: 0.35rem;
+    position: relative;
+
+    &__amount { font-size: 0.6875rem; color: $color-ink-muted; }
+
+    &__fill {
+      width: 100%;
+      max-width: 3.5rem;
+      min-height: 3px;
+      border-radius: 6px 6px 0 0;
+      background: $color-brand;
+      transition: height 0.3s ease;
+    }
+
+    &:last-child &__fill { background: #1c7a3f; }
+
+    &__label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: $color-ink-muted;
+    }
+  }
+}
+
+.economy-total-row td {
+  background: $color-surface-soft;
+  font-weight: 600;
+  border-top: 2px solid $color-line;
+
+  &.lead-table__muted { font-weight: 400; }
+}
+
+.economy-total-row--vat td {
+  border-top: none;
+  font-weight: 400;
+  font-size: 0.8125rem;
+  color: $color-ink-muted;
 }

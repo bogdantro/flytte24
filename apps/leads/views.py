@@ -9,9 +9,17 @@ from django.shortcuts import redirect, render
 from PIL import Image
 
 from .cities import CITIES
+from .duplicates import find_double_submit, find_recent_lead
 from .emails import send_receipt_email
 from .forms import WizardForm
-from .models import LeadImage, MoveLead
+from .models import LeadImage, MoveLead, PropertyLookup
+
+# Wizard fields that belong to step 2's property lookup, not to MoveLead —
+# popped out of cleaned_data before MoveLead.objects.create(**...).
+PROPERTY_FORM_FIELDS = (
+    "property_token", "selected_unit", "bolig_type_manuell",
+    "bolig_bra_manuell", "bolig_etasjer_manuell", "bolig_enhet_manuell",
+)
 from apps.store.services import (
     find_matching_businesses, notify_business_of_assignment, record_business_assignment,
 )
@@ -65,6 +73,81 @@ def _validate_photos(files):
     return errors
 
 
+_PROPERTY_LEAD_FIELDS = [
+    "property_lookup", "bolig_adresse", "bolig_type", "bolig_bra_m2",
+    "bolig_byggeaar", "bolig_etasjer", "bolig_enhet", "bolig_datakilde",
+    "bolig_gnr", "bolig_bnr",
+]
+
+
+def _apply_property_to_lead(lead, property_data):
+    """Resolve step 2's property inputs onto an already-saved MoveLead.
+
+    Trust model: `property_token` is the only identifier we act on — the row is
+    reloaded from the DB and `selected_unit` is validated against its stored
+    units. The *_manuell fields are the customer's own corrections/fallback and
+    win over registry values where filled in; any manual value flips
+    bolig_datakilde (and the PropertyLookup) to "user".
+    """
+    token = (property_data.get("property_token") or "").strip()
+    manual = {
+        "bolig_type": (property_data.get("bolig_type_manuell") or "").strip()[:100],
+        "bolig_bra_m2": property_data.get("bolig_bra_manuell"),
+        "bolig_etasjer": property_data.get("bolig_etasjer_manuell"),
+        "bolig_enhet": (property_data.get("bolig_enhet_manuell") or "").strip()[:20],
+    }
+    has_manual = any(value not in (None, "") for value in manual.values())
+
+    lookup = PropertyLookup.objects.filter(token=token).first() if token else None
+
+    if lookup:
+        normalized = lookup.normalized or {}
+        address = normalized.get("address") or {}
+        building = normalized.get("building") or {}
+        prop = normalized.get("property") or {}
+        units = normalized.get("units") or []
+
+        selected = (property_data.get("selected_unit") or "").strip()
+        unit = next((u for u in units if u.get("unit_number") == selected), None) if selected else None
+
+        lead.property_lookup = lookup
+        lead.bolig_adresse = address.get("formatted") or ""
+        lead.bolig_type = building.get("building_type") or ""
+        lead.bolig_bra_m2 = (unit or {}).get("bra_m2") or building.get("bra_m2")
+        lead.bolig_byggeaar = building.get("construction_year")
+        lead.bolig_etasjer = building.get("number_of_floors")
+        lead.bolig_enhet = (unit or {}).get("unit_number") or ""
+        lead.bolig_gnr = prop.get("gnr") or ""
+        lead.bolig_bnr = prop.get("bnr") or ""
+        lead.bolig_datakilde = "api"
+
+        if unit and lookup.selected_unit_number != selected:
+            lookup.selected_unit_number = selected
+            lookup.save(update_fields=["selected_unit_number"])
+
+    if has_manual:
+        if manual["bolig_type"]:
+            lead.bolig_type = manual["bolig_type"]
+        if manual["bolig_bra_m2"] is not None:
+            lead.bolig_bra_m2 = manual["bolig_bra_m2"]
+        if manual["bolig_etasjer"] is not None:
+            lead.bolig_etasjer = manual["bolig_etasjer"]
+        if manual["bolig_enhet"]:
+            lead.bolig_enhet = manual["bolig_enhet"]
+        lead.bolig_datakilde = "user"
+        if not lead.bolig_adresse:
+            lead.bolig_adresse = lead.fra[:255]
+        if lookup:
+            lookup.data_source = "user"
+            lookup.manual_overrides = {
+                key: value for key, value in manual.items() if value not in (None, "")
+            }
+            lookup.save(update_fields=["data_source", "manual_overrides"])
+
+    if lookup or has_manual:
+        lead.save(update_fields=_PROPERTY_LEAD_FIELDS)
+
+
 def wizard(request):
     """
     Renders the 5-step lead-capture wizard (GET) and processes the final
@@ -87,7 +170,54 @@ def wizard(request):
         photo_files = request.FILES.getlist("bilder")
         photo_errors = _validate_photos(photo_files)
         if form.is_valid() and not photo_errors:
-            lead = MoveLead.objects.create(**form.cleaned_data)
+            lead_data = dict(form.cleaned_data)
+            property_data = {key: lead_data.pop(key) for key in PROPERTY_FORM_FIELDS}
+            duplicate_confirmed = lead_data.pop("bekreft_duplikat", False)
+
+            telefon = lead_data.get("telefon", "")
+            epost = lead_data.get("epost", "")
+
+            # (a) Accidental double-submit (double-click, back-button resubmit):
+            # an identical lead seconds ago — just send them to the receipt,
+            # don't create a second row.
+            recent_identical = find_double_submit(telefon, epost)
+            if recent_identical is not None:
+                logger.info("Wizard: treating submission as a double-submit of %s", recent_identical.reference)
+                return redirect("leads:wizard_thank_you")
+
+            # (b) Deliberate repeat within the 7-day window. Block unless the
+            # customer explicitly confirmed on the (re-rendered) contact step.
+            recent_lead = find_recent_lead(telefon, epost)
+            if recent_lead is not None and not duplicate_confirmed:
+                context = {
+                    "form": form,
+                    "photo_errors": photo_errors,
+                    "initial_center_json": json.dumps(None),
+                    "duplicate_warning": {
+                        "reference": recent_lead.reference,
+                        "since": recent_lead.created_at,
+                    },
+                }
+                return render(request, "leads/wizard.html", context)
+
+            lead = MoveLead.objects.create(**lead_data)
+
+            if recent_lead is not None:
+                # Confirmed repeat — flag it and make sure the auto-assign block
+                # below leaves it for a staff member.
+                lead.is_duplicate = True
+                lead.duplicate_of = recent_lead
+                lead.save(update_fields=["is_duplicate", "duplicate_of"])
+                logger.info(
+                    "Wizard: lead %s flagged as duplicate of %s (manual assignment required)",
+                    lead.reference, recent_lead.reference,
+                )
+            # Property/building info (step 2) — never blocks; a bad token or
+            # missing lookup just leaves the bolig_* fields blank.
+            try:
+                _apply_property_to_lead(lead, property_data)
+            except Exception:
+                logger.exception("Failed to attach property lookup to lead %s", lead.reference)
 
             # Automatic assignment — matches the receipt email's own promise
             # ("vi matcher deg med 3 kvalitetssjekkede byråer") which, before
@@ -104,7 +234,9 @@ def wizard(request):
             # never turn an already-saved lead into a 500 for the customer
             # (who'd then likely resubmit, creating a duplicate MoveLead).
             try:
-                matched_businesses = find_matching_businesses(lead.fra, lead.til, lead.flytte_type)
+                matched_businesses = [] if lead.is_duplicate else find_matching_businesses(
+                    lead.fra, lead.til, lead.flytte_type
+                )
                 if matched_businesses:
                     for field, business in zip(("business_1", "business_2", "business_3"), matched_businesses):
                         setattr(lead, field, business)
@@ -144,6 +276,7 @@ def wizard(request):
         "form": form,
         "photo_errors": photo_errors,
         "initial_center_json": json.dumps(initial_center),
+        "duplicate_warning": None,
     }
     return render(request, "leads/wizard.html", context)
 

@@ -1,0 +1,21 @@
+{% comment %}
+"Hvor skal du flytte fra?" CTA — a Geonorge address search box that sends
+the visitor into the lead wizard at /flytteforesporsel/?fra=<address>,
+where it drops straight into "Fra adresse". Driven by
+static/js/address-cta.js. Pass `cta_label` to override the button text.
+{% endcomment %}
+<form class="address-cta" data-address-cta novalidate>
+  <div class="address-cta__row">
+    <div class="address-cta__field">
+      <input type="text" class="address-cta__input" placeholder="Hvor skal du flytte fra?"
+             aria-label="Adressen du flytter fra" autocomplete="off"
+             data-address-cta-input role="combobox" aria-autocomplete="list" aria-expanded="false">
+      <ul class="address-cta__suggestions" data-address-cta-suggestions hidden></ul>
+    </div>
+    <button type="submit" class="btn-primary address-cta__submit">
+      {{ cta_label|default:"Få 3 tilbud gratis" }}
+      <span data-icon="arrow-right"></span>
+    </button>
+  </div>
+  <p class="address-cta__error" data-address-cta-error hidden>Skriv inn adressen du flytter fra.</p>
+</form>

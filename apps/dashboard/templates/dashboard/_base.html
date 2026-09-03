@@ -9,6 +9,7 @@
   <link rel="icon" type="image/svg+xml" href="{% static 'images/favicon.svg' %}">
   <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'scss/dashboard.css' %}">
+  {% block head %}{% endblock %}
 </head>
 <body>
 
@@ -36,6 +37,10 @@
       <a href="{% url 'dashboard:lead_list' %}" class="dashboard-sidebar__link {% if '/dashboard/leads/' in request.path or '/dashboard/lead/' in request.path or '/dashboard/papirkurv/' in request.path %}is-active{% endif %}">
         <span class="dashboard-sidebar__icon" data-icon="inbox"></span>
         Leads
+      </a>
+      <a href="{% url 'dashboard:economy_dashboard' %}" class="dashboard-sidebar__link {% if '/dashboard/okonomi/' in request.path %}is-active{% endif %}">
+        <span class="dashboard-sidebar__icon" data-icon="trending-up"></span>
+        Økonomi
       </a>
       <a href="{% url 'dashboard:page_list' %}" class="dashboard-sidebar__link {% if '/dashboard/sider/' in request.path %}is-active{% endif %}">
         <span class="dashboard-sidebar__icon" data-icon="file-text"></span>
@@ -81,5 +86,6 @@
 
 {% include "dashboard/_icon_sprite.html" %}
 <script src="{% static 'js/dashboard.js' %}"></script>
+{% block extra_scripts %}{% endblock %}
 </body>
 </html>

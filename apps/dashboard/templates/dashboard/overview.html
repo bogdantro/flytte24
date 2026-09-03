@@ -7,36 +7,93 @@
   <h1 class="dashboard-heading">Oversikt</h1>
 
   <div class="dashboard-stats">
+    <a href="{% url 'dashboard:economy_dashboard' %}" class="dashboard-stat dashboard-stat--link">
+      <span class="dashboard-stat__value">{{ revenue_month|floatformat:0 }} kr</span>
+      <span class="dashboard-stat__label">Netto {{ revenue_month_label|lower }} · eks. mva</span>
+    </a>
     <div class="dashboard-stat">
       <span class="dashboard-stat__value">{{ new_today }}</span>
       <span class="dashboard-stat__label">Nye i dag</span>
     </div>
     <div class="dashboard-stat">
-      <span class="dashboard-stat__value">{{ new_not_contacted }}</span>
-      <span class="dashboard-stat__label">Ikke kontaktet</span>
+      <span class="dashboard-stat__value" style="color:#b3261e;">{{ unassigned }}</span>
+      <span class="dashboard-stat__label">Uten bedrift</span>
+    </div>
+    <div class="dashboard-stat">
+      <span class="dashboard-stat__value" style="color:#c98a3c;">{{ partly_assigned }}</span>
+      <span class="dashboard-stat__label">1–2 bedrifter</span>
     </div>
     <div class="dashboard-stat">
       <span class="dashboard-stat__value">{{ follow_up_due }}</span>
       <span class="dashboard-stat__label">Trenger oppfølging</span>
     </div>
+    {% if pending_coverage_count %}
     <div class="dashboard-stat">
-      <span class="dashboard-stat__value">{{ unassigned }}</span>
-      <span class="dashboard-stat__label">Ikke tildelt bedrift</span>
+      <span class="dashboard-stat__value" style="color:#c98a3c;">{{ pending_coverage_count }}</span>
+      <span class="dashboard-stat__label">Dekningsendringer venter</span>
     </div>
+    {% endif %}
+    {% if duplicate_count %}
     <div class="dashboard-stat">
-      <span class="dashboard-stat__value">{{ active_business_count }}</span>
-      <span class="dashboard-stat__label">Aktive bedrifter</span>
+      <span class="dashboard-stat__value" style="color:#b3261e;">{{ duplicate_count }}</span>
+      <span class="dashboard-stat__label">Duplikater — tildel manuelt</span>
     </div>
+    {% endif %}
   </div>
+
+  {% if duplicate_leads %}
+    <div class="lead-card" style="margin-bottom:1.5rem; border-color:#c0392b; max-width:520px;">
+      <p class="lead-card__title" style="color:#a5281b;">⚠ Duplikater — må tildeles manuelt</p>
+      {% for lead in duplicate_leads %}
+        <div class="lead-row lead-row--link lead-row--danger" onclick="window.location='{% url 'dashboard:lead_detail' lead.pk %}'">
+          <span class="lead-row__label"><strong>{{ lead.navn }}</strong> · {{ lead.reference }}</span>
+          <span class="lead-row__value lead-table__muted">
+            Samme kunde som {% if lead.duplicate_of %}{{ lead.duplicate_of.reference }}{% else %}en tidligere forespørsel{% endif %}
+            · {{ lead.fra }} → {{ lead.til }} · {{ lead.created_at|date:"d.m.Y H:i" }}
+          </span>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% if pending_coverage_requests %}
+    <div class="lead-card" style="margin-bottom:1.5rem; border-color:#c98a3c;">
+      <p class="lead-card__title" style="color:#8a4a1f;">⚠ Dekningsendringer venter på godkjenning</p>
+      {% for change in pending_coverage_requests %}
+        <div class="lead-row lead-row--link" onclick="window.location='{% url 'dashboard:business_detail' change.business.pk %}'">
+          <span class="lead-row__label"><strong>{{ change.business.company_name }}</strong></span>
+          <span class="lead-row__value lead-table__muted">Byer: {{ change.cities|default:"—" }}{% if change.areas_label %} ({{ change.areas_label }}){% endif %} · Tjenester: {{ change.move_type|default:"—" }} · {{ change.created_at|date:"d.m.Y H:i" }}</span>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% if open_credits %}
+    <div class="lead-card" style="margin-bottom:1.5rem; border-color:#c98a3c;">
+      <p class="lead-card__title" style="color:#8a4a1f;">⚠ Dårlige leads meldt inn</p>
+      {% for credit in open_credits %}
+        <div class="lead-row lead-row--link" onclick="window.location='{% url 'dashboard:lead_detail' credit.lead.pk %}'">
+          <span class="lead-row__label">{{ credit.lead.navn }}</span>
+          <span class="lead-row__value lead-table__muted">{{ credit.business.company_name }}{% if credit.reason %} — {{ credit.reason }}{% endif %}</span>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
 
   <div class="lead-detail">
     <div class="lead-card" style="margin-bottom: 1.5rem;">
       <p class="lead-card__title">Siste forespørsler</p>
       {% if recent_leads %}
         {% for lead in recent_leads %}
-          <div class="lead-row">
-            <span class="lead-row__label">{{ lead.created_at|date:"d.m.Y H:i" }}</span>
-            <span class="lead-row__value"><a href="{% url 'dashboard:lead_detail' lead.pk %}">{{ lead.reference }} — {{ lead.navn }}</a> <span class="status-badge status-badge--{{ lead.status }}">{{ lead.get_status_display }}</span></span>
+          <div class="lead-row lead-row--flat lead-row--link{% if lead.is_duplicate or lead.assigned_count == 0 %} lead-row--danger{% elif lead.assigned_count < 3 %} lead-row--warn{% endif %}"
+               onclick="window.location='{% url 'dashboard:lead_detail' lead.pk %}'">
+            <span class="lead-row__value">
+              {{ lead.navn }}
+              {% if lead.is_duplicate %}<span class="assign-pill assign-pill--danger">Duplikat</span>
+              {% elif lead.assigned_count == 0 %}<span class="assign-pill assign-pill--danger">Ingen bedrift</span>
+              {% elif lead.assigned_count < 3 %}<span class="assign-pill assign-pill--warn">{{ lead.assigned_count }} / 3</span>{% endif %}
+              <span class="lead-table__muted"> · {{ lead.created_at|date:"d.m.Y H:i" }}</span>
+            </span>
           </div>
         {% endfor %}
       {% else %}
@@ -49,8 +106,8 @@
       <p class="lead-card__title">Bedrifter nær dagsgrensen</p>
       {% if businesses_near_cap %}
         {% for entry in businesses_near_cap %}
-          <div class="lead-row">
-            <span class="lead-row__label"><a href="{% url 'dashboard:business_detail' entry.business.pk %}">{{ entry.business.company_name }}</a></span>
+          <div class="lead-row lead-row--link" onclick="window.location='{% url 'dashboard:business_detail' entry.business.pk %}'">
+            <span class="lead-row__label">{{ entry.business.company_name }}</span>
             <span class="lead-row__value">{{ entry.count }} / {{ entry.cap }} i dag</span>
           </div>
         {% endfor %}

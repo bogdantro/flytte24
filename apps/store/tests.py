@@ -167,7 +167,7 @@ class BusinessMatchesMoveTests(TestCase):
 
     def test_flytte_type_vocabulary_is_bridged_to_move_type_vocabulary(self):
         """Regression test: MoveLead.flytte_type ("privat"/"bedrift"/"internasjonal") and
-        Bedrift_info.move_type ("Flyttehjelp"/"Kontorflytting"/"Utlandsflytting"/...) are
+        Bedrift_info.move_type ("Flyttehjelp"/"Kontorflytting"/"Distansflytting"/...) are
         two different vocabularies that never literally overlap — comparing flytte_type
         against move_type directly (the original version of this function) could only
         ever match by accident, since no business's move_type can contain the literal
@@ -176,8 +176,8 @@ class BusinessMatchesMoveTests(TestCase):
         self.assertFalse(business_matches_move(business, "A, Oslo", "B, Oslo", "privat"))
         self.assertTrue(business_matches_move(business, "A, Oslo", "B, Oslo", "bedrift"))
 
-    def test_international_move_maps_to_utlandsflytting(self):
-        business = _make_business(active=True, cities="Oslo", move_type="Utlandsflytting")
+    def test_international_move_maps_to_distansflytting(self):
+        business = _make_business(active=True, cities="Oslo", move_type="Distansflytting")
         self.assertTrue(business_matches_move(business, "A, Oslo", "B, Oslo", "internasjonal"))
 
     def test_no_match_with_no_coverage_set(self):
@@ -255,3 +255,41 @@ class NotifyBusinessOfAssignmentTests(TestCase):
         self.assertIn(lead.reference, sent.subject)
         self.assertIn("Kari Nordmann", sent.body)
         self.assertIn("90000000", sent.body)
+
+
+class CoverageHelpersTests(TestCase):
+    def test_normalize_service_areas_drops_unknown_and_empty_entries(self):
+        from apps.store.coverage import normalize_service_areas
+        out = normalize_service_areas([
+            {"place": "Oslo", "pickup": True, "dropoff": True},
+            {"place": "Gotham", "pickup": True, "dropoff": True},
+            {"place": "Drammen", "pickup": False, "dropoff": False},
+            {"place": "Bergen", "pickup": True, "dropoff": False},
+        ])
+        self.assertEqual(
+            out,
+            [
+                {"place": "Oslo", "pickup": True, "dropoff": True},
+                {"place": "Bergen", "pickup": True, "dropoff": False},
+            ],
+        )
+
+    def test_service_areas_to_cities_lists_only_named_main_cities(self):
+        from apps.store.coverage import service_areas_to_cities
+        areas = [
+            {"place": "Oslo", "pickup": True, "dropoff": True},
+            {"place": "Drammen", "pickup": True, "dropoff": True},
+            {"place": "Bergen", "pickup": True, "dropoff": True},
+        ]
+        self.assertEqual(service_areas_to_cities(areas), "Oslo, Bergen")
+
+    def test_business_serves_move_respects_direction(self):
+        from apps.store.coverage import business_serves_move
+        areas = [
+            {"place": "Oslo", "pickup": True, "dropoff": True},
+            {"place": "Drammen", "pickup": False, "dropoff": True},  # only jobs ending in Drammen
+        ]
+        self.assertTrue(business_serves_move(areas, "Storgata 1, 0155 Oslo", "Sjakta 27, 3030 Drammen"))
+        self.assertFalse(business_serves_move(areas, "Sjakta 27, 3030 Drammen", "Storgata 1, 0155 Oslo"))
+        # No structured areas at all -> unconfigured business matches everything.
+        self.assertTrue(business_serves_move([], "Anywhere", "Elsewhere"))

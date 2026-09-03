@@ -244,6 +244,280 @@ $radiusPill: 9999px;
   display: block;
 }
 
+// Lead detail — two columns on desktop: the submitted details on the left,
+// the from/to map (leads/_lead_map.html, .map-panel from wizard.css) pinned
+// top-right. Single column below 900px.
+.portal-lead-detail {
+  display: grid;
+  gap: 24px;
+
+  @media (min-width: 900px) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    align-items: stretch;
+  }
+
+  &__aside {
+    display: flex;
+
+    .portal-card { flex: 1; position: sticky; top: 24px; }
+  }
+}
+
+// Lead reference shown small, trailing the name.
+.portal-lead-ref,
+.portal-heading__ref {
+  font-size: 0.5em;
+  font-weight: 400;
+  color: $inkMuted;
+  white-space: nowrap;
+  margin-left: 6px;
+}
+
+.portal-lead-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+
+  select {
+    border: 1px solid $line;
+    border-radius: 10px;
+    background: $surface;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-family: $fontSans;
+    color: $ink;
+  }
+}
+
+.portal-lead-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  &__item {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px;
+    margin: 0 -12px;
+    border-radius: 10px;
+    border-bottom: 1px solid $line;
+
+    &:last-child { border-bottom: none; }
+
+    &--link { cursor: pointer; }
+    &--link:hover { background: $surfaceSoft; }
+  }
+  &__main { font-size: 15px; color: $ink; }
+  &__meta { font-size: 13px; color: $inkMuted; flex-shrink: 0; text-align: right; }
+}
+
+// "Hvor jobber dere?" structured coverage widget (static/js/coverage-onboarding.js)
+.coverage-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+
+  &[hidden] { display: none; }
+
+  &__group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__region {
+    border: none;
+    background: none;
+    padding: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: $ink;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  &__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid $line;
+    border-radius: $radiusPill;
+    padding: 6px 12px;
+    font-size: 13px;
+    color: $ink;
+    background: $surfaceSoft;
+    cursor: pointer;
+
+    span { color: $inkMuted; }
+  }
+}
+
+.coverage-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+
+  &[hidden] { display: none; }
+
+  &__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(26, 26, 26, 0.5);
+  }
+
+  &__card {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 440px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    border-radius: $radiusCard;
+    background: $surface;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.3);
+    padding: 24px;
+  }
+
+  &__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  &__title {
+    margin: 0;
+    font-family: $fontSerif;
+    font-size: 20px;
+    font-weight: 500;
+    color: $ink;
+  }
+
+  &__close {
+    flex-shrink: 0;
+    border: none;
+    background: none;
+    font-size: 24px;
+    line-height: 1;
+    color: $inkMuted;
+    cursor: pointer;
+    padding: 0 4px;
+    &:hover { color: $ink; }
+  }
+
+  &__hint {
+    margin: 4px 0 16px;
+    font-size: 12px;
+    color: $inkMuted;
+  }
+
+  &__body { overflow-y: auto; flex: 1; }
+  &__done { align-self: stretch; justify-content: center; margin-top: 20px; }
+
+  &__all {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    border: 1.5px solid $line;
+    border-radius: 10px;
+    background: none;
+    padding: 10px 14px;
+    margin-bottom: 12px;
+    font-family: $fontSans;
+    font-size: 13px;
+    color: $ink;
+    cursor: pointer;
+
+    span:last-child { color: $inkMuted; }
+    &.is-on { border-color: $brand; background: rgba(34, 24, 20, 0.04); }
+    &:hover { border-color: $brand; }
+  }
+}
+
+.coverage-place-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.coverage-place-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid $line;
+
+  &:last-child { border-bottom: none; }
+
+  &__toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: none;
+    background: none;
+    padding: 4px 0;
+    font-family: $fontSans;
+    font-size: 15px;
+    color: $ink;
+    cursor: pointer;
+  }
+
+  &__check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    border: 1.5px solid $line;
+    font-size: 13px;
+    color: $brandInk;
+  }
+  &.is-on &__check { background: $brand; border-color: $brand; }
+
+  &__dirs { display: inline-flex; gap: 4px; flex-shrink: 0; }
+}
+
+.coverage-dir {
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid $line;
+  border-radius: 8px;
+  background: $surface;
+  font-size: 15px;
+  color: $inkMuted;
+  cursor: pointer;
+
+  &.is-active { border-color: $brand; background: $brand; color: $brandInk; }
+  &:hover { border-color: $brand; }
+}
+
+.portal-card--map {
+  display: flex;
+  flex-direction: column;
+
+  .map-panel--standalone {
+    display: block;
+    flex: 1;
+    min-height: 420px;
+    margin-top: 12px;
+    border-radius: $radiusCard;
+    overflow: hidden;
+  }
+}
+
 .portal-heading-row {
   display: flex;
   align-items: center;
@@ -259,6 +533,13 @@ $radiusPill: 9999px;
   font-size: 32px;
   font-weight: 500;
   color: $ink;
+
+  &__ref {
+    font-size: 0.5em;
+    font-weight: 400;
+    color: $inkMuted;
+    white-space: nowrap;
+  }
 }
 
 

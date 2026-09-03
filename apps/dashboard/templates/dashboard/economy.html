@@ -1,0 +1,158 @@
+<!-- apps/dashboard/templates/dashboard/economy.html -->
+{% extends "dashboard/_base.html" %}
+
+{% block title %}Økonomi{% endblock %}
+
+{% block content %}
+  <h1 class="dashboard-heading">Økonomi</h1>
+  <p class="economy-note">
+    Inntekt fra flyttebyrå-leads (wizard-pipeline). Hver bedrift en lead
+    sendes til faktureres {{ price_per_lead|floatformat:0 }} kr eks. mva; godkjente
+    kredittmeldinger trekkes fra. Beløp er eks. mva der ikke annet er nevnt.
+  </p>
+
+  <!-- KPI ROW -->
+  <div class="economy-kpis">
+    <div class="economy-kpi economy-kpi--accent">
+      <span class="economy-kpi__label">Netto · {{ this_month_label }}</span>
+      <span class="economy-kpi__value">{{ this_month.net|floatformat:0 }} kr</span>
+      <span class="economy-kpi__sub">
+        {% if delta_pct is not None %}
+          {% if delta >= 0 %}<span class="economy-trend economy-trend--up">▲ +{{ delta_pct }} %</span>
+          {% else %}<span class="economy-trend economy-trend--down">▼ {{ delta_pct }} %</span>{% endif %}
+          mot {{ last_month_label }} ({{ last_month.net|floatformat:0 }} kr)
+        {% else %}
+          {{ last_month_label }}: {{ last_month.net|floatformat:0 }} kr
+        {% endif %}
+      </span>
+    </div>
+
+    <div class="economy-kpi">
+      <span class="economy-kpi__label">Projeksjon · måneden</span>
+      {% if projection %}
+        <span class="economy-kpi__value">{{ projection.projected|floatformat:0 }} kr</span>
+        <span class="economy-kpi__sub">
+          {{ projection.so_far|floatformat:0 }} kr hittil ({{ projection.days_elapsed }}/{{ projection.days_in_month }} dager)
+        </span>
+      {% else %}
+        <span class="economy-kpi__value">—</span>
+        <span class="economy-kpi__sub">Ikke nok data ennå denne måneden.</span>
+      {% endif %}
+    </div>
+
+    <div class="economy-kpi">
+      <span class="economy-kpi__label">Kreditert · {{ this_month_label }}</span>
+      <span class="economy-kpi__value economy-kpi__value--loss">
+        −{{ this_month.credited_amount|floatformat:0 }} kr
+      </span>
+      <span class="economy-kpi__sub">{{ this_month.credited_pairs }} krediterte leads</span>
+    </div>
+
+    <div class="economy-kpi">
+      <span class="economy-kpi__label">Ikke fakturert</span>
+      <span class="economy-kpi__value">{{ uninvoiced.total|floatformat:0 }} kr</span>
+      <span class="economy-kpi__sub">levert, ikke på en generert faktura ennå</span>
+    </div>
+  </div>
+
+  <!-- 6-MONTH TREND -->
+  <div class="lead-card economy-card">
+    <p class="lead-card__title">Netto inntekt · siste 6 måneder</p>
+    <div class="economy-bars">
+      {% for row in series %}
+        <div class="economy-bar" title="{{ row.full_label }}: {{ row.net|floatformat:0 }} kr ({{ row.leads }} leads)">
+          <span class="economy-bar__amount">{{ row.net|floatformat:0 }}</span>
+          <span class="economy-bar__fill" style="height: {% widthratio row.net series_max 100 %}%;"></span>
+          <span class="economy-bar__label">{{ row.label }}</span>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- DELIVERED, NOT YET INVOICED -->
+  <div class="lead-card economy-card">
+    <p class="lead-card__title">Ikke fakturert — levert, ikke billet</p>
+    {% if uninvoiced.rows %}
+      <table class="lead-table">
+        <thead>
+          <tr><th>Bedrift</th><th>Leads</th><th>Kreditert</th><th>Fakturert t.o.m.</th><th>Beløp</th><th></th></tr>
+        </thead>
+        <tbody>
+          {% for row in uninvoiced.rows %}
+            <tr onclick="window.location='{% url 'dashboard:business_detail' row.business_id %}'">
+              <td class="lead-table__reference">{{ row.name }}</td>
+              <td>{{ row.leads }}</td>
+              <td class="lead-table__muted">{% if row.credited %}−{{ row.credited }}{% else %}—{% endif %}</td>
+              <td class="lead-table__muted">{% if row.since %}{{ row.since|date:"d.m.Y" }}{% else %}aldri fakturert{% endif %}</td>
+              <td>{{ row.amount|floatformat:0 }} kr</td>
+              <td><a href="{% url 'dashboard:business_invoice_pdf' row.business_id %}?period=month" class="btn-outline btn-outline--sm" onclick="event.stopPropagation();">Faktura</a></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="dashboard-empty">Alt levert er fakturert.</p>
+    {% endif %}
+  </div>
+
+  <!-- PER-BUSINESS BREAKDOWN -->
+  <div class="lead-card economy-card">
+    <div class="economy-card__head">
+      <p class="lead-card__title">Inntekt per bedrift · {{ range_label }}</p>
+      <form method="get" class="economy-range">
+        <label>Fra <input type="date" name="from" value="{{ range_from }}"></label>
+        <label>Til <input type="date" name="to" value="{{ range_to }}"></label>
+        <button type="submit" class="btn-outline btn-outline--sm">Vis</button>
+        {% if range_from %}<a href="{% url 'dashboard:economy_dashboard' %}" class="economy-range__reset">Nullstill</a>{% endif %}
+      </form>
+    </div>
+    {% if breakdown.by_business %}
+      <table class="lead-table">
+        <thead>
+          <tr><th>Bedrift</th><th>Leads</th><th>Kreditert</th><th>Brutto</th><th>Netto</th><th></th></tr>
+        </thead>
+        <tbody>
+          {% for row in breakdown.by_business %}
+            <tr onclick="window.location='{% url 'dashboard:business_detail' row.business_id %}'">
+              <td class="lead-table__reference">
+                {{ row.name }}{% if not row.active %} <span class="lead-table__muted">(inaktiv)</span>{% endif %}
+              </td>
+              <td>{{ row.leads }}</td>
+              <td class="lead-table__muted">{% if row.credited %}−{{ row.credited }} ({{ row.credited_amount|floatformat:0 }} kr){% else %}—{% endif %}</td>
+              <td class="lead-table__muted">{{ row.gross|floatformat:0 }} kr</td>
+              <td><strong>{{ row.net|floatformat:0 }} kr</strong></td>
+              <td>
+                {% if range_from %}
+                  <a href="{% url 'dashboard:business_invoice_pdf' row.business_id %}?from={{ range_from }}&to={{ range_to }}" class="btn-outline btn-outline--sm" onclick="event.stopPropagation();">Faktura</a>
+                {% else %}
+                  <a href="{% url 'dashboard:business_invoice_pdf' row.business_id %}?period=month" class="btn-outline btn-outline--sm" onclick="event.stopPropagation();">Faktura</a>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+        <tfoot>
+          <tr class="economy-total-row">
+            <td>Sum</td>
+            <td>{{ breakdown.lead_pairs }}</td>
+            <td class="lead-table__muted">−{{ breakdown.credited_pairs }}</td>
+            <td class="lead-table__muted">{{ breakdown.gross|floatformat:0 }} kr</td>
+            <td><strong>{{ breakdown.net|floatformat:0 }} kr</strong></td>
+            <td></td>
+          </tr>
+          <tr class="economy-total-row economy-total-row--vat">
+            <td colspan="4">Herav mva (25 %)</td>
+            <td>{{ breakdown.vat|floatformat:0 }} kr</td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+      <p class="economy-note">
+        Samlefaktura for perioden:
+        <a href="{% url 'dashboard:business_invoices_pdf' %}{% if range_from %}?from={{ range_from }}&to={{ range_to }}{% else %}?period=month{% endif %}">last ned PDF</a>
+      </p>
+    {% else %}
+      <p class="dashboard-empty">Ingen fakturerbare leads i perioden.</p>
+    {% endif %}
+  </div>
+{% endblock %}

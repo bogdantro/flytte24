@@ -2,7 +2,8 @@ import csv
 import io
 import json
 import logging
-from datetime import timedelta
+import uuid
+from datetime import datetime, timedelta
 from functools import wraps
 
 from django.contrib import messages
@@ -25,10 +26,21 @@ from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
 
 from apps.core.models import Article
-from apps.dashboard.forms import ArticleForm, BusinessCoreForm, BusinessPublicInfoForm
+from apps.core.forms import CITY_CHOICES, MOVE_TYPE_CHOICES
+from apps.store.coverage import (
+    REGION_GROUPS, normalize_service_areas, service_areas_to_cities,
+)
+from apps.dashboard.forms import ArticleForm, BusinessCoreForm, BusinessPublicInfoForm, _split_coverage
 from apps.leads.models import MoveLead
 from apps.pages.models import Page, PageSection, PageSectionRevision, publish_due_pages
-from apps.store.models import Bedrift_info, BusinessImage, PublicBusinessInformation, Review
+from apps.store.models import (
+    Bedrift_info, BusinessImage, CoverageChangeRequest, LeadCredit,
+    PublicBusinessInformation, Review,
+)
+from apps.dashboard.economy import record_invoice_run
+from apps.store.invoicing import (
+    build_invoice, period_range, render_bulk_invoice_pdf, render_invoice_pdf,
+)
 from apps.store.services import (
     business_lead_entries, business_matches_move, business_usage,
     notify_business_of_assignment, parse_cap, record_business_assignment, usage_stat,
@@ -199,6 +211,10 @@ def _lead_filters(request):
         "date_from": request.GET.get("from", ""),
         "date_to": request.GET.get("to", ""),
         "follow_up": request.GET.get("follow_up", ""),
+        "city": request.GET.get("city", "").strip(),
+        "flytte_type": request.GET.get("flytte_type", ""),
+        "boligtype": request.GET.get("boligtype", ""),
+        "duplicate": request.GET.get("duplicate", ""),
     }
 
 
@@ -226,6 +242,17 @@ def _apply_lead_filters(queryset, filters):
             queryset = queryset.filter(created_at__date__lte=parsed)
     if filters["follow_up"] == "1":
         queryset = queryset.filter(follow_up_at__isnull=False, follow_up_at__lte=timezone.localdate())
+    if filters["city"]:
+        # Leads have no structured city field — fra/til are free-text
+        # addresses ("Storgata 1, 0153 Oslo"), so match the name in either end.
+        city = filters["city"]
+        queryset = queryset.filter(Q(fra__icontains=city) | Q(til__icontains=city))
+    if filters["flytte_type"] in dict(MoveLead.FLYTTE_TYPE_CHOICES):
+        queryset = queryset.filter(flytte_type=filters["flytte_type"])
+    if filters["boligtype"] in dict(MoveLead.BOLIGTYPE_CHOICES):
+        queryset = queryset.filter(boligtype=filters["boligtype"])
+    if filters["duplicate"] == "1":
+        queryset = queryset.filter(is_duplicate=True)
     return queryset
 
 
@@ -253,7 +280,7 @@ def _leads_csv_response(leads):
     writer = csv.writer(response)
     writer.writerow([
         "Referanse", "Navn", "Telefon", "E-post", "Type", "Fra", "Til",
-        "Boligtype", "Flyttedato", "Fleksibel", "Status", "Mottatt",
+        "Boligtype", "Flyttedato", "Fleksibel", "Status", "Duplikat", "Mottatt",
         "Bedrift 1", "Bedrift 2", "Bedrift 3",
     ])
     for lead in leads:
@@ -264,6 +291,7 @@ def _leads_csv_response(leads):
             lead.flyttedato.isoformat() if lead.flyttedato else "",
             "Ja" if lead.fleksibel else "Nei",
             lead.get_status_display(),
+            "Ja" if lead.is_duplicate else "Nei",
             lead.created_at.strftime("%Y-%m-%d %H:%M"),
             lead.business_1.company_name if lead.business_1 else "",
             lead.business_2.company_name if lead.business_2 else "",
@@ -281,7 +309,15 @@ def dashboard_overview(request):
     today = timezone.localdate()
     active_leads = MoveLead.objects.filter(archived=False)
 
+    recent = _annotate_assignment(active_leads).order_by("-created_at")[:8]
+
+    from apps.dashboard import economy
+
+    month_start, _month_end = economy.month_bounds(today)
+
     context = {
+        "revenue_month": economy.compute(month_start, today)["net"],
+        "revenue_month_label": economy.month_label(today),
         "new_today": active_leads.filter(created_at__date=today).count(),
         "new_not_contacted": active_leads.filter(status="new").count(),
         "follow_up_due": active_leads.filter(
@@ -290,8 +326,25 @@ def dashboard_overview(request):
         "unassigned": active_leads.filter(
             business_1__isnull=True, business_2__isnull=True, business_3__isnull=True
         ).count(),
+        "partly_assigned": _annotate_assignment(active_leads).filter(
+            assigned_count__gt=0, assigned_count__lt=3
+        ).count(),
+        "pending_coverage_count": CoverageChangeRequest.objects.filter(status="pending").count(),
+        "pending_coverage_requests": CoverageChangeRequest.objects.filter(
+            status="pending"
+        ).select_related("business").order_by("-created_at"),
+        "open_credits": LeadCredit.objects.filter(status="requested").select_related(
+            "lead", "business"
+        ).order_by("-created_at"),
         "active_business_count": Bedrift_info.objects.filter(active=True).count(),
-        "recent_leads": active_leads.order_by("-created_at")[:5],
+        "recent_leads": recent,
+        "duplicate_count": active_leads.filter(is_duplicate=True).count(),
+        "duplicate_leads": _annotate_assignment(active_leads).filter(
+            is_duplicate=True
+        ).select_related("duplicate_of").order_by("-created_at")[:8],
+        "follow_up_leads": _annotate_assignment(active_leads).filter(
+            follow_up_at__isnull=False, follow_up_at__lte=today
+        ).order_by("follow_up_at")[:8],
         "businesses_near_cap": _businesses_near_cap(),
     }
     return render(request, "dashboard/overview.html", context)
@@ -357,16 +410,36 @@ def global_search(request):
     })
 
 
+def _annotate_assignment(queryset):
+    """Adds `assigned_count` (0–3) — how many of business_1/2/3 are set — and
+    `open_credit_count` (business-reported "bad lead" reports awaiting an
+    admin decision). Used for the row warnings on the lead list / overview."""
+    from django.db.models import Case, Count, IntegerField, Value, When
+
+    def slot(field):
+        return Case(When(**{f"{field}__isnull": False}, then=Value(1)), default=Value(0), output_field=IntegerField())
+
+    return queryset.annotate(
+        assigned_count=slot("business_1") + slot("business_2") + slot("business_3"),
+        open_credit_count=Count("credits", filter=Q(credits__status="requested")),
+    )
+
+
 @staff_required
 def lead_list(request):
     """Filterable, searchable list of every non-archived lead, newest first."""
     filters = _lead_filters(request)
-    leads = _apply_lead_filters(MoveLead.objects.filter(archived=False), filters)
+    leads = _annotate_assignment(
+        _apply_lead_filters(MoveLead.objects.filter(archived=False), filters)
+    ).order_by("-created_at")
     active_base = MoveLead.objects.filter(archived=False)
+    unassigned_count = active_base.filter(
+        business_1__isnull=True, business_2__isnull=True, business_3__isnull=True
+    ).count()
 
     status_pill_qs = request.GET.copy()
-    status_pill_qs.pop("status", None)
-    status_pill_qs.pop("page", None)
+    for key in ("status", "page", "follow_up", "duplicate"):
+        status_pill_qs.pop(key, None)
     encoded_pill_qs = status_pill_qs.urlencode()
 
     context = {
@@ -380,13 +453,22 @@ def lead_list(request):
         "date_from": filters["date_from"],
         "date_to": filters["date_to"],
         "follow_up_filter": filters["follow_up"],
+        "city_filter": filters["city"],
+        "flytte_type_filter": filters["flytte_type"],
+        "boligtype_filter": filters["boligtype"],
+        "duplicate_filter": filters["duplicate"],
         "status_choices": MoveLead.STATUS_CHOICES,
+        "city_choices": CITY_CHOICES,
+        "flytte_type_choices": MoveLead.FLYTTE_TYPE_CHOICES,
+        "boligtype_choices": MoveLead.BOLIGTYPE_CHOICES,
         "businesses": Bedrift_info.objects.filter(active=True).order_by("company_name"),
         "total_count": active_base.count(),
+        "unassigned_count": unassigned_count,
         "new_count": active_base.filter(status="new").count(),
         "follow_up_count": active_base.filter(
             follow_up_at__isnull=False, follow_up_at__lte=timezone.localdate()
         ).count(),
+        "duplicate_count": active_base.filter(is_duplicate=True).count(),
     }
     return render(request, "dashboard/list.html", context)
 
@@ -470,6 +552,10 @@ def lead_detail(request, pk):
         content_type=ContentType.objects.get_for_model(MoveLead), object_id=lead.pk
     ).select_related("user").order_by("-action_time")
 
+    credits = list(lead.credits.select_related("business").all())
+    credited_business_ids = {c.business_id for c in credits}
+    assigned = [b for b in (lead.business_1, lead.business_2, lead.business_3) if b]
+
     return render(
         request,
         "dashboard/detail.html",
@@ -484,8 +570,217 @@ def lead_detail(request, pk):
                 ("business_3", lead.business_3),
             ],
             "activity": activity,
+            "map_editable": True,
+            "lead_credits": credits,
+            "creditable_businesses": [b for b in assigned if b.pk not in credited_business_ids],
+            "assigned_business_count": len(assigned),
         },
     )
+
+
+@staff_required
+@require_POST
+def lead_credit_create(request, pk):
+    """Staff raises a credit on a lead — for one assigned business, or for
+    every assigned business at once (business="all"). Already approved (a
+    staff decision), unlike a business's own report_bad_lead."""
+    lead = get_object_or_404(MoveLead, pk=pk)
+    reason = request.POST.get("reason", "").strip()
+    target = request.POST.get("business")
+
+    if target == "all":
+        businesses = [b for b in (lead.business_1, lead.business_2, lead.business_3) if b]
+    else:
+        businesses = [get_object_or_404(Bedrift_info, pk=target)]
+
+    credited = []
+    for business in businesses:
+        _credit, created = LeadCredit.objects.get_or_create(
+            lead=lead, business=business,
+            defaults={
+                "reason": reason,
+                "status": "approved",
+                "requested_by": request.user,
+                "reviewed_by": request.user,
+                "reviewed_at": timezone.now(),
+            },
+        )
+        if created:
+            credited.append(business.company_name)
+    if credited:
+        messages.success(request, f"Leaden er kreditert for {', '.join(credited)}.")
+    return redirect("dashboard:lead_detail", pk=lead.pk)
+
+
+def _parse_invoice_bound(raw, end_of_day=False):
+    """Parse an invoice date/datetime bound. Accepts "YYYY-MM-DDTHH:MM"
+    (exact instant) or "YYYY-MM-DD" (start, or end-of-day for the upper
+    bound). Returns a timezone-aware datetime or None."""
+    raw = (raw or "").strip()
+    if not raw:
+        return None
+    has_time = "T" in raw or ":" in raw
+    dt = parse_datetime(raw) if has_time else None
+    if dt is None:
+        d = parse_date(raw[:10])
+        if d is None:
+            return None
+        t = datetime.max.time() if end_of_day else datetime.min.time()
+        dt = datetime.combine(d, t)
+    if timezone.is_naive(dt):
+        dt = timezone.make_aware(dt, timezone.get_current_timezone())
+    return dt
+
+
+def _invoice_range(request):
+    """(start, end) as aware datetimes — from ?from=&to= (date or datetime)
+    or ?period=day|week|month."""
+    start = _parse_invoice_bound(request.GET.get("from"))
+    end = _parse_invoice_bound(request.GET.get("to"), end_of_day=True)
+    if start and end:
+        return start, end
+    d_start, d_end, _label = period_range(request.GET.get("period", "month"))
+    tz = timezone.get_current_timezone()
+    return (
+        timezone.make_aware(datetime.combine(d_start, datetime.min.time()), tz),
+        timezone.make_aware(datetime.combine(d_end, datetime.max.time()), tz),
+    )
+
+
+@staff_required
+def business_invoice_pdf(request, pk):
+    business = get_object_or_404(Bedrift_info, pk=pk)
+    start, end = _invoice_range(request)
+    invoice = build_invoice(business, start, end)
+    pdf = render_invoice_pdf(invoice)
+    # Ledger the run so the Økonomi page can tell billed leads from
+    # delivered-but-unbilled ones (the PDF endpoint is otherwise stateless).
+    record_invoice_run(invoice, user=request.user, kind="single")
+    response = HttpResponse(pdf, content_type="application/pdf")
+    response["Content-Disposition"] = f'inline; filename="faktura-{business.pk}.pdf"'
+    return response
+
+
+@staff_required
+def business_invoices_pdf(request):
+    """Bulk invoice PDF for every business, or just ?business=<pk>&business=…,
+    over ?from=&to= (date or datetime). Linked from the business list."""
+    ids = request.GET.getlist("business")
+    qs = Bedrift_info.objects.all().order_by("company_name")
+    if ids:
+        qs = qs.filter(pk__in=ids)
+    businesses = list(qs)
+    start, end = _invoice_range(request)
+    pdf = render_bulk_invoice_pdf(businesses, start, end)
+    batch = uuid.uuid4().hex
+    for business in businesses:
+        invoice = build_invoice(business, start, end)
+        if invoice["lead_count"]:
+            record_invoice_run(invoice, user=request.user, kind="bulk", batch=batch)
+    response = HttpResponse(pdf, content_type="application/pdf")
+    response["Content-Disposition"] = 'inline; filename="samlefaktura.pdf"'
+    return response
+
+
+@staff_required
+def economy_dashboard(request):
+    """Økonomi — revenue at a glance from the wizard lead pipeline: this
+    month vs. last, a 6-month trend, a month-end projection, a per-business
+    breakdown for any date range, and delivered-but-unbilled leads."""
+    from apps.dashboard import economy
+
+    today = timezone.localdate()
+    this_start, _this_end = economy.month_bounds(today)
+    this_month = economy.compute(this_start, today)
+
+    last_anchor = this_start - timedelta(days=1)
+    last_start, last_end = economy.month_bounds(last_anchor)
+    last_month = economy.compute(last_start, last_end)
+
+    range_from = parse_date(request.GET.get("from", "") or "")
+    range_to = parse_date(request.GET.get("to", "") or "")
+    if range_from and range_to and range_from <= range_to:
+        breakdown = economy.compute(range_from, range_to)
+        range_label = f"{range_from:%d.%m.%Y}–{range_to:%d.%m.%Y}"
+    else:
+        breakdown = this_month
+        range_from = range_to = None
+        range_label = economy.month_label(today)
+
+    series = economy.monthly_series(6, today=today)
+    series_max = max((row["net"] for row in series), default=0) or 1
+
+    delta = this_month["net"] - last_month["net"]
+    delta_pct = round((delta / last_month["net"]) * 100) if last_month["net"] else None
+
+    context = {
+        "today": today,
+        "this_month": this_month,
+        "this_month_label": economy.month_label(today),
+        "last_month": last_month,
+        "last_month_label": economy.month_label(last_anchor),
+        "delta": delta,
+        "delta_pct": delta_pct,
+        "projection": economy.projection(today=today),
+        "series": series,
+        "series_max": series_max,
+        "breakdown": breakdown,
+        "range_label": range_label,
+        "range_from": range_from.isoformat() if range_from else "",
+        "range_to": range_to.isoformat() if range_to else "",
+        "uninvoiced": economy.uninvoiced(today=today),
+        "price_per_lead": economy.PRICE_PER_LEAD,
+    }
+    return render(request, "dashboard/economy.html", context)
+
+
+@staff_required
+@require_POST
+def lead_credit_review(request, pk):
+    """Approve or reject a business-reported LeadCredit."""
+    credit = get_object_or_404(LeadCredit, pk=pk)
+    decision = request.POST.get("decision")
+    if credit.status == "requested" and decision in ("approve", "reject"):
+        credit.status = "approved" if decision == "approve" else "rejected"
+        credit.reviewed_by = request.user
+        credit.reviewed_at = timezone.now()
+        credit.save(update_fields=["status", "reviewed_by", "reviewed_at"])
+        messages.success(request, "Kredittmeldingen er behandlet.")
+    return redirect("dashboard:lead_detail", pk=credit.lead_id)
+
+
+@staff_required
+@require_POST
+def lead_update_coords(request, pk):
+    """AJAX save for a from/to pin dragged on the lead detail map
+    (dashboard/detail.html -> static/js/lead-map.js). Writes the new
+    coordinate and, when the drag's reverse-geocode produced one, the
+    refreshed address string for that end of the move."""
+    lead = get_object_or_404(MoveLead, pk=pk)
+    which = request.POST.get("which")
+    if which not in ("fra", "til"):
+        return JsonResponse({"ok": False, "error": "bad_which"}, status=400)
+    try:
+        lat = float(request.POST["lat"])
+        lon = float(request.POST["lon"])
+    except (KeyError, ValueError, TypeError):
+        return JsonResponse({"ok": False, "error": "bad_coord"}, status=400)
+
+    address = request.POST.get("address", "").strip()
+    if which == "fra":
+        lead.fra_lat, lead.fra_lon = lat, lon
+        fields = ["fra_lat", "fra_lon"]
+        if address:
+            lead.fra = address
+            fields.append("fra")
+    else:
+        lead.til_lat, lead.til_lon = lat, lon
+        fields = ["til_lat", "til_lon"]
+        if address:
+            lead.til = address
+            fields.append("til")
+    lead.save(update_fields=fields)
+    return JsonResponse({"ok": True})
 
 
 @staff_required
@@ -525,6 +820,20 @@ def lead_archive(request, pk):
     lead.save(update_fields=["archived", "archived_at"])
     _log_change(request, lead, "Arkivert")
     return redirect("dashboard:lead_list")
+
+
+@staff_required
+@require_POST
+def lead_clear_duplicate(request, pk):
+    """Staff decided this flagged lead isn't a problematic duplicate after all
+    — clears is_duplicate so it can be assigned / auto-matched normally. The
+    duplicate_of link is kept for context."""
+    lead = get_object_or_404(MoveLead, pk=pk)
+    if lead.is_duplicate:
+        lead.is_duplicate = False
+        lead.save(update_fields=["is_duplicate"])
+        _log_change(request, lead, "Duplikatmerking fjernet")
+    return redirect("dashboard:lead_detail", pk=lead.pk)
 
 
 @staff_required
@@ -791,9 +1100,14 @@ def article_delete(request, pk):
 
 @staff_required
 def business_list(request):
-    """Every registered business, filterable by active status and searchable by name/email/city."""
+    """Every registered business, filterable by active status / coverage
+    city / service / daily lead cap / priority, searchable by name/email/city."""
     active_filter = request.GET.get("active", "")
     query = request.GET.get("q", "").strip()
+    city_filter = request.GET.get("city", "").strip()
+    service_filter = request.GET.get("service", "").strip()
+    cap_filter = request.GET.get("cap", "")  # "" | "yes" | "no"
+    priority_filter = request.GET.get("priority", "")  # "" | "0-5" | "6-7" | "8-9" | "10"
 
     # Annotate with MoveLead-pipeline counts so "Leads mottatt" reflects both
     # live pipelines (see _business_lead_entries) without an N+1 query per
@@ -821,12 +1135,40 @@ def business_list(request):
         businesses = businesses.filter(
             Q(company_name__icontains=query) | Q(email__icontains=query) | Q(city__icontains=query)
         )
+    if city_filter:
+        # Coverage city (Bedrift_info.cities is a comma-separated CharField).
+        businesses = businesses.filter(cities__icontains=city_filter)
+    if service_filter:
+        businesses = businesses.filter(move_type__icontains=service_filter)
+    if cap_filter == "yes":
+        businesses = businesses.exclude(leads_per_day__isnull=True).exclude(leads_per_day="")
+    elif cap_filter == "no":
+        businesses = businesses.filter(Q(leads_per_day__isnull=True) | Q(leads_per_day=""))
+    PRIORITY_BUCKETS = {"0-5": (0, 5), "6-7": (6, 7), "8-9": (8, 9), "10": (10, 10)}
+    if priority_filter in PRIORITY_BUCKETS:
+        low, high = PRIORITY_BUCKETS[priority_filter]
+        businesses = businesses.filter(priority_score__gte=low, priority_score__lte=high)
+
+    pending_ids = set(
+        CoverageChangeRequest.objects.filter(status="pending").values_list("business_id", flat=True)
+    )
+    page = _paginate(request, businesses)
+    for b in page:
+        b.has_pending_coverage = b.pk in pending_ids
 
     context = {
-        "businesses": _paginate(request, businesses),
+        "businesses": page,
         "page_qs": _page_qs(request),
         "active_filter": active_filter,
         "query": query,
+        "pending_coverage_count": len(pending_ids),
+        "city_filter": city_filter,
+        "service_filter": service_filter,
+        "cap_filter": cap_filter,
+        "priority_filter": priority_filter,
+        "priority_buckets": ["0-5", "6-7", "8-9", "10"],
+        "city_choices": CITY_CHOICES,
+        "service_choices": MOVE_TYPE_CHOICES,
         "total_count": Bedrift_info.objects.count(),
         "active_count": Bedrift_info.objects.filter(active=True).count(),
     }
@@ -840,9 +1182,67 @@ def business_list(request):
 BUSINESS_IMPORT_COLUMNS = [
     "company_name", "company_number", "email", "phone", "website",
     "address", "postal_code", "city", "tiltaleform", "first_name", "last_name",
-    "cities", "move_type", "leads_per_day", "leads_per_week", "leads_per_month",
+    "cities", "move_type", "leads_per_day",
 ]
 MAX_IMPORT_CSV_SIZE_BYTES = 5 * 1024 * 1024  # the whole file is read into memory as a string, unlike a streamed upload
+
+
+@staff_required
+def business_add(request):
+    """Create a single business by hand (the non-CSV path). Renders the exact
+    same cards as the edit page (dashboard/business_detail.html) — Dekning
+    (cities / services / one-way–two-way places), Firmainformasjon,
+    Lead-innstillinger, Interne notater, Offentlig profil — just as one plain
+    <form> that saves everything at once instead of the detail page's split
+    AJAX-coverage + "Lagre" setup. Starts inactive (model default)."""
+    if request.method == "POST":
+        core_form = BusinessCoreForm(request.POST)
+        public_form = BusinessPublicInfoForm(request.POST, request.FILES)
+        if core_form.is_valid() and public_form.is_valid():
+            business = core_form.save(commit=False)
+
+            # Same coverage payload as dashboard:business_update_coverage —
+            # move_type / cities pill checkboxes + the structured service_areas
+            # JSON from the coverage-onboarding widget.
+            move_type = request.POST.getlist("move_type")
+            cities = request.POST.getlist("cities")
+            valid_move_types = {value for value, _ in MOVE_TYPE_CHOICES}
+            valid_cities = {value for value, _ in CITY_CHOICES}
+            move_type = [m for m in move_type if m in valid_move_types]
+            cities = [c for c in cities if c in valid_cities]
+            try:
+                raw_areas = json.loads(request.POST.get("service_areas") or "[]")
+            except (ValueError, TypeError):
+                raw_areas = []
+            service_areas = normalize_service_areas(raw_areas)
+            if service_areas:
+                cities = [c for c in service_areas_to_cities(service_areas).split(", ") if c]
+            business.move_type = ", ".join(move_type)
+            business.cities = ", ".join(cities)
+            business.service_areas = service_areas
+            business.save()
+
+            public_info = public_form.save(commit=False)
+            public_info.business = business
+            public_info.save()
+
+            messages.success(request, f"{business.company_name} er opprettet.")
+            return redirect("dashboard:business_detail", pk=business.pk)
+    else:
+        core_form = BusinessCoreForm(initial={"priority_score": 0})
+        public_form = BusinessPublicInfoForm()
+
+    context = {
+        "core_form": core_form,
+        "public_form": public_form,
+        "city_choices": CITY_CHOICES,
+        "move_type_choices": MOVE_TYPE_CHOICES,
+        "current_cities": set(),
+        "current_move_types": set(),
+        "region_groups_json": json.dumps(REGION_GROUPS, ensure_ascii=False),
+        "service_area_places": {},
+    }
+    return render(request, "dashboard/business_add.html", context)
 
 
 @staff_required
@@ -884,7 +1284,13 @@ def business_import(request):
             data["priority_score"] = row.get("priority_score") or "0"
             form = BusinessCoreForm(data)
             if form.is_valid():
-                form.save()
+                business = form.save(commit=False)
+                # cities / move_type aren't on the form (the detail page saves
+                # them over AJAX) — a CSV cell is one comma-separated string,
+                # normalised through the same splitter the pills use.
+                business.cities = ", ".join(_split_coverage(row.get("cities")))
+                business.move_type = ", ".join(_split_coverage(row.get("move_type")))
+                business.save()
                 created += 1
             else:
                 errors.append(f"Rad {row_number}: {form.errors.as_text()}")
@@ -933,14 +1339,48 @@ def business_detail(request, pk):
 
     lead_entries, movelead_count = _business_lead_entries(business)
 
+    # "Mottatte leads" card filters — applied in Python since the list is a
+    # merge of two pipelines, not one queryset.
+    lf_days = request.GET.get("lf_days", "")
+    lf_service = request.GET.get("lf_service", "").strip()
+    lf_type = request.GET.get("lf_type", "").strip()
+    lf_city = request.GET.get("lf_city", "").strip()
+    filtered_entries = lead_entries
+    if lf_days.isdigit():
+        cutoff = timezone.now() - timedelta(days=int(lf_days))
+        filtered_entries = [e for e in filtered_entries if e["created_at"] >= cutoff]
+    if lf_type:
+        filtered_entries = [e for e in filtered_entries if e["flytte_type"] == lf_type]
+    if lf_service:  # leads have no service list — boligtype is the closest structured attribute
+        filtered_entries = [e for e in filtered_entries if e["boligtype"] == lf_service]
+    if lf_city:
+        filtered_entries = [e for e in filtered_entries if lf_city.lower() in e["route"].lower()]
+
     context = {
         "business": business,
         "public_info": public_info,
         "core_form": core_form,
         "public_form": public_form,
+        # Same pill-button checkboxes as the become-a-partner wizard / account
+        # portal "Dekning" section — rendered by hand in the template against
+        # these choice lists + the business's current selections.
+        "city_choices": CITY_CHOICES,
+        "move_type_choices": MOVE_TYPE_CHOICES,
+        "current_cities": set(_split_coverage(business.cities)),
+        "current_move_types": set(_split_coverage(business.move_type)),
+        "pending_coverage": business.coverage_requests.filter(status="pending").first(),
+        "credited_lead_count": business.lead_credits.filter(status="approved").count(),
+        "region_groups_json": json.dumps(REGION_GROUPS, ensure_ascii=False),
+        "service_area_places": {
+            a["place"]: a for a in normalize_service_areas(business.service_areas or [])
+        },
         "images": public_info.images.all(),
         "reviews": business.reviews.all(),
-        "lead_entries": lead_entries,
+        "lead_entries": filtered_entries,
+        "lead_entries_total": len(lead_entries),
+        "lf_days": lf_days, "lf_service": lf_service, "lf_type": lf_type, "lf_city": lf_city,
+        "flytte_type_choices": MoveLead.FLYTTE_TYPE_CHOICES,
+        "boligtype_choices": MoveLead.BOLIGTYPE_CHOICES,
         # total_leads_received is only ever incremented for the JobDistribution
         # pipeline (apps/core/views.py send_flytteforesporsel) — add the
         # MoveLead-pipeline count on top so this reflects real combined volume.
@@ -948,6 +1388,67 @@ def business_detail(request, pk):
         "usage": _business_usage(business, lead_entries),
     }
     return render(request, "dashboard/business_detail.html", context)
+
+
+@staff_required
+@require_POST
+def business_update_coverage(request, pk):
+    """AJAX-only save for the business detail page's "Dekning" section —
+    cities covered + services offered, as pill-button checkboxes that save
+    the instant one is toggled instead of waiting for the main form's
+    "Lagre". The staff-side twin of
+    apps.userprofile.views.update_business_coverage (same request/response
+    shape, same MOVE_TYPE_CHOICES / CITY_CHOICES vocabulary), just keyed by
+    business pk and gated on staff instead of "is this my own business"."""
+    business = get_object_or_404(Bedrift_info, pk=pk)
+
+    move_type = request.POST.getlist("move_type")
+    cities = request.POST.getlist("cities")
+    valid_move_types = {value for value, _label in MOVE_TYPE_CHOICES}
+    valid_cities = {value for value, _label in CITY_CHOICES}
+    if not set(move_type) <= valid_move_types or not set(cities) <= valid_cities:
+        return JsonResponse({"ok": False, "error": "invalid_choice"}, status=400)
+
+    try:
+        raw_areas = json.loads(request.POST.get("service_areas") or "[]")
+    except (ValueError, TypeError):
+        raw_areas = []
+    service_areas = normalize_service_areas(raw_areas)
+    if service_areas:
+        cities = [c for c in service_areas_to_cities(service_areas).split(", ") if c]
+
+    business.move_type = ", ".join(move_type)
+    business.cities = ", ".join(cities)
+    business.service_areas = service_areas
+    business.save(update_fields=["move_type", "cities", "service_areas"])
+    return JsonResponse({"ok": True})
+
+
+@staff_required
+@require_POST
+def business_coverage_review(request, pk):
+    """Approve or reject a pending Dekning change request
+    (apps.store.models.CoverageChangeRequest, raised from the account
+    portal). On approve the proposed move_type / cities / service_areas are
+    written onto the business."""
+    change = get_object_or_404(CoverageChangeRequest, pk=pk)
+    decision = request.POST.get("decision")
+    if change.status == "pending" and decision in ("approve", "reject"):
+        if decision == "approve":
+            business = change.business
+            business.move_type = change.move_type
+            business.cities = change.cities
+            business.service_areas = change.service_areas or []
+            business.save(update_fields=["move_type", "cities", "service_areas"])
+            change.status = "approved"
+            messages.success(request, f"Dekningen til {change.business.company_name} er oppdatert.")
+        else:
+            change.status = "rejected"
+            messages.success(request, f"Dekningsendringen til {change.business.company_name} er avvist.")
+        change.reviewed_at = timezone.now()
+        change.reviewed_by = request.user
+        change.save(update_fields=["status", "reviewed_at", "reviewed_by"])
+    return redirect("dashboard:business_detail", pk=change.business_id)
 
 
 @staff_required

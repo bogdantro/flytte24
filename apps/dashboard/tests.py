@@ -144,6 +144,33 @@ class DashboardLeadListTest(TestCase):
         self.assertEqual(response.context["total_count"], 3)
         self.assertEqual(response.context["new_count"], 2)
 
+    def test_name_column_comes_first_and_reference_last(self):
+        _make_lead(navn="Kari Nordmann")
+        response = self.client.get(reverse("dashboard:lead_list"))
+        body = response.content.decode()
+        self.assertLess(body.index("<th>Navn</th>"), body.index("<th>Flyttetype</th>"))
+        self.assertLess(body.index("<th>Mottatt</th>"), body.index("<th>Referanse</th>"))
+
+    def test_city_filter_matches_either_end_of_the_move(self):
+        keep = _make_lead(navn="Bergensflytt", fra="Torgallmenningen 1, 5014 Bergen", til="Storgata 1, 0155 Oslo")
+        _make_lead(navn="Trondheimsflytt", fra="Munkegata 1, 7011 Trondheim", til="Elgeseter 2, 7030 Trondheim")
+        response = self.client.get(reverse("dashboard:lead_list"), {"city": "Bergen"})
+        matching = [lead.pk for lead in response.context["leads"]]
+        self.assertEqual(matching, [keep.pk])
+
+    def test_flytte_type_and_boligtype_filters(self):
+        bedrift = _make_lead(navn="Kontorflytt", flytte_type="bedrift", boligtype="annet")
+        _make_lead(navn="Privatflytt", flytte_type="privat", boligtype="leilighet")
+        by_type = self.client.get(reverse("dashboard:lead_list"), {"flytte_type": "bedrift"})
+        self.assertEqual([l.pk for l in by_type.context["leads"]], [bedrift.pk])
+        by_bolig = self.client.get(reverse("dashboard:lead_list"), {"boligtype": "annet"})
+        self.assertEqual([l.pk for l in by_bolig.context["leads"]], [bedrift.pk])
+
+    def test_boligtype_is_shown_as_a_column(self):
+        _make_lead(navn="Kari", boligtype="enebolig")
+        response = self.client.get(reverse("dashboard:lead_list"))
+        self.assertContains(response, "Enebolig")
+
 
 class DashboardLeadDetailTest(TestCase):
     def setUp(self):
@@ -156,6 +183,75 @@ class DashboardLeadDetailTest(TestCase):
         self.assertContains(response, "Kari Nordmann")
         self.assertContains(response, "+47 911 22 333")
         self.assertContains(response, lead.reference)
+
+    def test_shows_the_editable_from_to_map_and_custom_date_picker(self):
+        lead = _make_lead()
+        response = self.client.get(reverse("dashboard:lead_detail", args=[lead.pk]))
+        self.assertContains(response, "data-lead-map")
+        self.assertContains(response, "data-editable")
+        self.assertContains(response, f'data-save-url="{reverse("dashboard:lead_update_coords", args=[lead.pk])}"')
+        self.assertContains(response, "data-date-picker")
+        self.assertContains(response, "data-date-overlay")
+        self.assertNotContains(response, 'type="date"')
+        # CARTO tiles need the account API key wired through to the map JS.
+        self.assertContains(response, "window.KOBLY_CARTO_API_KEY")
+
+    def test_map_coordinates_use_a_dot_decimal_even_under_a_comma_locale(self):
+        """Regression: with LocaleMiddleware active and a Norwegian Accept-Language,
+        a bare {{ lead.fra_lat }} renders "61,10…" — parseFloat() in lead-map.js
+        then truncates it to "61", dropping every pin onto a whole-degree spot."""
+        lead = _make_lead(fra_lat=61.105, fra_lon=10.436, til_lat=59.906, til_lon=10.768)
+        response = self.client.get(
+            reverse("dashboard:lead_detail", args=[lead.pk]), HTTP_ACCEPT_LANGUAGE="nb"
+        )
+        self.assertContains(response, 'data-fra-lat="61.105"')
+        self.assertContains(response, 'data-til-lon="10.768"')
+        self.assertNotContains(response, 'data-fra-lat="61,105"')
+
+    def test_lead_update_coords_saves_pin_and_address(self):
+        lead = _make_lead()
+        response = self.client.post(reverse("dashboard:lead_update_coords", args=[lead.pk]), {
+            "which": "fra", "lat": "59.913", "lon": "10.752", "address": "Ny gate 2, 0151 Oslo",
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(response.content, {"ok": True})
+        lead.refresh_from_db()
+        self.assertAlmostEqual(lead.fra_lat, 59.913)
+        self.assertAlmostEqual(lead.fra_lon, 10.752)
+        self.assertEqual(lead.fra, "Ny gate 2, 0151 Oslo")
+
+    def test_lead_update_coords_without_address_keeps_the_old_text(self):
+        lead = _make_lead(fra="Kongens gate 1, 0153 Oslo")
+        self.client.post(reverse("dashboard:lead_update_coords", args=[lead.pk]), {
+            "which": "til", "lat": "59.9", "lon": "10.7",
+        })
+        lead.refresh_from_db()
+        self.assertAlmostEqual(lead.til_lat, 59.9)
+        self.assertEqual(lead.fra, "Kongens gate 1, 0153 Oslo")
+
+    def test_lead_update_coords_rejects_bad_input_and_get(self):
+        lead = _make_lead()
+        self.assertEqual(
+            self.client.get(reverse("dashboard:lead_update_coords", args=[lead.pk])).status_code, 405
+        )
+        bad = self.client.post(reverse("dashboard:lead_update_coords", args=[lead.pk]), {
+            "which": "sideways", "lat": "1", "lon": "2",
+        })
+        self.assertEqual(bad.status_code, 400)
+        bad_coord = self.client.post(reverse("dashboard:lead_update_coords", args=[lead.pk]), {
+            "which": "fra", "lat": "abc", "lon": "2",
+        })
+        self.assertEqual(bad_coord.status_code, 400)
+
+    def test_lead_update_coords_requires_staff(self):
+        self.client.logout()
+        lead = _make_lead()
+        response = self.client.post(reverse("dashboard:lead_update_coords", args=[lead.pk]), {
+            "which": "fra", "lat": "59.9", "lon": "10.7",
+        })
+        self.assertEqual(response.status_code, 302)
+        lead.refresh_from_db()
+        self.assertIsNone(lead.fra_lat)
 
     def test_update_status_changes_lead(self):
         lead = _make_lead(status="new")
@@ -812,6 +908,35 @@ class BusinessListViewTests(TestCase):
         self.assertContains(response, "Inaktiv Flytt AS")
         self.assertNotContains(response, "Aktiv Flytt AS")
 
+    def test_filters_by_coverage_city_service_cap_and_priority(self):
+        self.client.force_login(self.staff)
+        self.active_biz.cities = "Oslo, Bergen"
+        self.active_biz.move_type = "Flyttehjelp, Pakking"
+        self.active_biz.leads_per_day = "5"
+        self.active_biz.priority_score = 8
+        self.active_biz.save()
+        self.inactive_biz.cities = "Trondheim"
+        self.inactive_biz.move_type = "Flyttevask"
+        self.inactive_biz.priority_score = 2
+        self.inactive_biz.save()
+
+        url = reverse("dashboard:business_list")
+        r = self.client.get(url, {"city": "Bergen"})
+        self.assertContains(r, "Aktiv Flytt AS")
+        self.assertNotContains(r, "Inaktiv Flytt AS")
+
+        r = self.client.get(url, {"service": "Flyttevask"})
+        self.assertContains(r, "Inaktiv Flytt AS")
+        self.assertNotContains(r, "Aktiv Flytt AS")
+
+        r = self.client.get(url, {"cap": "yes"})
+        self.assertContains(r, "Aktiv Flytt AS")
+        self.assertNotContains(r, "Inaktiv Flytt AS")
+
+        r = self.client.get(url, {"priority": "8-9"})
+        self.assertContains(r, "Aktiv Flytt AS")
+        self.assertNotContains(r, "Inaktiv Flytt AS")
+
     def test_movelead_count_excludes_archived_leads(self):
         """Regression test: these Count() annotations had no archived=False filter,
         unlike every other MoveLead listing in the dashboard — archiving a lead never
@@ -850,26 +975,248 @@ class BusinessDetailViewTests(TestCase):
         self.assertContains(response, "7")
         self.assertTrue(PublicBusinessInformation.objects.filter(business=self.business).exists())
 
-    def test_post_updates_core_and_public_fields_but_not_active_or_total(self):
+    def test_post_updates_core_and_public_fields_but_not_active_total_or_coverage(self):
         self.client.force_login(self.staff)
+        self.business.cities = "Oslo, Bergen"
+        self.business.move_type = "Flyttehjelp"
+        self.business.save()
         url = reverse("dashboard:business_detail", args=[self.business.pk])
         response = self.client.post(url, {
             "company_name": "Flytt AS", "company_number": "", "email": "ny@example.com",
             "phone": "12345678", "website": "", "address": "Gate 1", "postal_code": "0001",
             "city": "Oslo", "tiltaleform": "", "first_name": "Ola", "last_name": "Nordmann",
-            "cities": "Oslo, Bergen", "move_type": "privat",
-            "leads_per_day": "5", "leads_per_week": "", "leads_per_month": "", "priority_score": "8",
+            "leads_per_day": "5", "priority_score": "8",
             "about_us": "Vi flytter deg trygt.", "faq": "",
         })
         self.assertRedirects(response, url)
         self.business.refresh_from_db()
         self.assertEqual(self.business.email, "ny@example.com")
-        self.assertEqual(self.business.cities, "Oslo, Bergen")
         self.assertEqual(self.business.leads_per_day, "5")
         self.assertEqual(self.business.priority_score, 8)
         self.assertFalse(self.business.active)
         self.assertEqual(self.business.total_leads_received, 7)
         self.assertEqual(self.business.public_info.about_us, "Vi flytter deg trygt.")
+        # Coverage isn't part of this form — the "Lagre" button must leave it alone.
+        self.assertEqual(self.business.cities, "Oslo, Bergen")
+        self.assertEqual(self.business.move_type, "Flyttehjelp")
+
+    def test_coverage_renders_as_pill_checkboxes_in_its_own_ajax_form(self):
+        self.client.force_login(self.staff)
+        self.business.cities = "Oslo, Bergen"
+        self.business.move_type = "Flyttehjelp"
+        self.business.save()
+        url = reverse("dashboard:business_detail", args=[self.business.pk])
+        response = self.client.get(url)
+        self.assertContains(response, f'data-coverage-form="{reverse("dashboard:business_update_coverage", args=[self.business.pk])}"')
+        self.assertContains(response, 'name="cities" value="Oslo" checked')
+        self.assertContains(response, 'name="cities" value="Stavanger"')  # rendered, not checked
+        self.assertNotContains(response, 'name="cities" value="Stavanger" checked')
+
+    def test_weekly_and_monthly_lead_caps_are_gone_from_the_page(self):
+        self.client.force_login(self.staff)
+        response = self.client.get(reverse("dashboard:business_detail", args=[self.business.pk]))
+        self.assertNotContains(response, "Leads per uke")
+        self.assertNotContains(response, "Leads per måned")
+        self.assertNotContains(response, "Denne uken")
+
+    def test_firmanavn_is_wired_up_as_a_brreg_lookup(self):
+        self.client.force_login(self.staff)
+        response = self.client.get(reverse("dashboard:business_detail", args=[self.business.pk]))
+        self.assertContains(response, "data-brreg-field")
+        self.assertContains(response, "data-brreg-input")
+        self.assertContains(response, "data-brreg-suggestions")
+        self.assertContains(response, "brreg-lookup.js")
+
+
+class LeadCreditAndInvoiceTests(TestCase):
+    def setUp(self):
+        self.staff = User.objects.create_user("staff7i", password="pw", is_staff=True)
+        self.client.force_login(self.staff)
+        self.business = Bedrift_info.objects.create(
+            company_name="Flytt AS", email="flytt@example.com", phone="12345678",
+            address="Gate 1", postal_code="0001", city="Oslo",
+            first_name="Ola", last_name="Nordmann",
+        )
+        self.lead = _make_lead(business_1=self.business)
+
+    def test_staff_can_credit_a_lead_and_it_shows_on_the_page(self):
+        self.client.post(reverse("dashboard:lead_credit_create", args=[self.lead.pk]), {
+            "business": self.business.pk, "reason": "Feil nummer",
+        })
+        from apps.store.models import LeadCredit
+        credit = LeadCredit.objects.get()
+        self.assertEqual(credit.status, "approved")
+        response = self.client.get(reverse("dashboard:lead_detail", args=[self.lead.pk]))
+        self.assertContains(response, "Feil nummer")
+
+    def test_credit_for_all_assigned_businesses_at_once(self):
+        b2 = Bedrift_info.objects.create(
+            company_name="Rask AS", email="rask@example.com", phone="12345678",
+            address="Gate 2", postal_code="0002", city="Oslo", first_name="Per", last_name="Hansen",
+        )
+        self.lead.business_2 = b2
+        self.lead.save()
+        self.client.post(reverse("dashboard:lead_credit_create", args=[self.lead.pk]), {
+            "business": "all", "reason": "Tullete henvendelse",
+        })
+        from apps.store.models import LeadCredit
+        self.assertEqual(LeadCredit.objects.filter(lead=self.lead, status="approved").count(), 2)
+
+    def test_lead_detail_no_longer_has_the_status_pill_card(self):
+        response = self.client.get(reverse("dashboard:lead_detail", args=[self.lead.pk]))
+        self.assertNotContains(response, "status-pill-btn")
+
+    def test_business_report_becomes_a_requested_credit_admin_can_approve(self):
+        from apps.store.models import LeadCredit
+        credit = LeadCredit.objects.create(lead=self.lead, business=self.business, status="requested")
+        self.client.post(reverse("dashboard:lead_credit_review", args=[credit.pk]), {"decision": "approve"})
+        credit.refresh_from_db()
+        self.assertEqual(credit.status, "approved")
+
+    def test_invoice_pdf_renders_and_excludes_credited_leads(self):
+        from apps.store.models import LeadCredit
+        _make_lead(business_1=self.business)  # a second, chargeable lead
+        LeadCredit.objects.create(lead=self.lead, business=self.business, status="approved")
+        response = self.client.get(
+            reverse("dashboard:business_invoice_pdf", args=[self.business.pk]) + "?period=month"
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response["Content-Type"], "application/pdf")
+        self.assertTrue(response.content.startswith(b"%PDF"))
+
+    def test_bulk_invoice_pdf_for_selected_businesses(self):
+        b2 = Bedrift_info.objects.create(
+            company_name="Rask AS", email="rask@example.com", phone="12345678",
+            address="G", postal_code="0001", city="Oslo", first_name="P", last_name="H",
+        )
+        _make_lead(business_1=b2)
+        response = self.client.get(
+            reverse("dashboard:business_invoices_pdf"),
+            {"business": [self.business.pk, b2.pk], "period": "month"},
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.content.startswith(b"%PDF"))
+
+    def test_bulk_invoice_with_no_selection_covers_all_businesses(self):
+        response = self.client.get(reverse("dashboard:business_invoices_pdf"), {"period": "month"})
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.content.startswith(b"%PDF"))
+
+    def test_invoice_range_accepts_a_datetime_bound(self):
+        from apps.dashboard.views import _parse_invoice_bound
+        dt = _parse_invoice_bound("2026-09-01T08:30")
+        self.assertIsNotNone(dt)
+        self.assertEqual((dt.hour, dt.minute), (8, 30))
+        # A bare date as the upper bound stretches to end-of-day.
+        end = _parse_invoice_bound("2026-09-01", end_of_day=True)
+        self.assertEqual(end.hour, 23)
+
+    def test_invoice_totals_price_only_non_credited_leads(self):
+        from datetime import date
+        from apps.store.invoicing import build_invoice, PRICE_PER_LEAD
+        from apps.store.models import LeadCredit
+        _make_lead(business_1=self.business)
+        LeadCredit.objects.create(lead=self.lead, business=self.business, status="approved")
+        today = date.today()
+        inv = build_invoice(self.business, today.replace(day=1), today)
+        self.assertEqual(inv["lead_count"], 2)
+        self.assertEqual(inv["credited_count"], 1)
+        self.assertEqual(inv["subtotal"], PRICE_PER_LEAD)
+
+
+class BusinessCoverageReviewTests(TestCase):
+    def setUp(self):
+        self.staff = User.objects.create_user("staff7r", password="pw", is_staff=True)
+        self.client.force_login(self.staff)
+        self.business = Bedrift_info.objects.create(
+            company_name="Flytt AS", email="flytt@example.com", phone="12345678",
+            address="Gate 1", postal_code="0001", city="Oslo",
+            first_name="Ola", last_name="Nordmann", cities="Oslo", move_type="Flyttehjelp",
+        )
+        from apps.store.models import CoverageChangeRequest
+        self.change = CoverageChangeRequest.objects.create(
+            business=self.business, cities="Oslo, Bergen", move_type="Flyttehjelp, Pakking",
+        )
+
+    def test_detail_page_warns_about_a_pending_request(self):
+        response = self.client.get(reverse("dashboard:business_detail", args=[self.business.pk]))
+        self.assertContains(response, "Venter på godkjenning")
+        self.assertContains(response, "Oslo, Bergen")
+
+    def test_approve_applies_the_change_to_the_business(self):
+        self.client.post(
+            reverse("dashboard:business_coverage_review", args=[self.change.pk]), {"decision": "approve"}
+        )
+        self.business.refresh_from_db()
+        self.change.refresh_from_db()
+        self.assertEqual(self.business.cities, "Oslo, Bergen")
+        self.assertEqual(self.business.move_type, "Flyttehjelp, Pakking")
+        self.assertEqual(self.change.status, "approved")
+        self.assertEqual(self.change.reviewed_by, self.staff)
+
+    def test_reject_leaves_the_business_untouched(self):
+        self.client.post(
+            reverse("dashboard:business_coverage_review", args=[self.change.pk]), {"decision": "reject"}
+        )
+        self.business.refresh_from_db()
+        self.change.refresh_from_db()
+        self.assertEqual(self.business.cities, "Oslo")
+        self.assertEqual(self.change.status, "rejected")
+
+    def test_requires_staff(self):
+        self.client.logout()
+        response = self.client.post(
+            reverse("dashboard:business_coverage_review", args=[self.change.pk]), {"decision": "approve"}
+        )
+        self.assertEqual(response.status_code, 302)
+        self.change.refresh_from_db()
+        self.assertEqual(self.change.status, "pending")
+
+
+class BusinessUpdateCoverageViewTests(TestCase):
+    def setUp(self):
+        self.staff = User.objects.create_user("staff7c", password="pw", is_staff=True)
+        self.business = Bedrift_info.objects.create(
+            company_name="Flytt AS", email="flytt@example.com", phone="12345678",
+            address="Gate 1", postal_code="0001", city="Oslo",
+            first_name="Ola", last_name="Nordmann", cities="Oslo", move_type="Flyttehjelp",
+        )
+        self.url = reverse("dashboard:business_update_coverage", args=[self.business.pk])
+
+    def test_requires_staff_login(self):
+        response = self.client.post(self.url, {"cities": ["Oslo"], "move_type": ["Flyttehjelp"]})
+        self.assertEqual(response.status_code, 302)
+        self.business.refresh_from_db()
+        self.assertEqual(self.business.cities, "Oslo")
+
+    def test_get_is_not_allowed(self):
+        self.client.force_login(self.staff)
+        self.assertEqual(self.client.get(self.url).status_code, 405)
+
+    def test_post_saves_the_new_coverage_snapshot(self):
+        self.client.force_login(self.staff)
+        response = self.client.post(self.url, {
+            "cities": ["Oslo", "Bergen"], "move_type": ["Flyttehjelp", "Pakking"],
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(response.content, {"ok": True})
+        self.business.refresh_from_db()
+        self.assertEqual(self.business.cities, "Oslo, Bergen")
+        self.assertEqual(self.business.move_type, "Flyttehjelp, Pakking")
+
+    def test_posting_nothing_clears_coverage(self):
+        self.client.force_login(self.staff)
+        self.client.post(self.url, {})
+        self.business.refresh_from_db()
+        self.assertEqual(self.business.cities, "")
+        self.assertEqual(self.business.move_type, "")
+
+    def test_an_unknown_choice_is_rejected_and_nothing_is_saved(self):
+        self.client.force_login(self.staff)
+        response = self.client.post(self.url, {"cities": ["Gotham"], "move_type": ["Flyttehjelp"]})
+        self.assertEqual(response.status_code, 400)
+        self.business.refresh_from_db()
+        self.assertEqual(self.business.cities, "Oslo")
 
 
 class BusinessToggleActiveViewTests(TestCase):
@@ -1122,11 +1469,27 @@ class BusinessDetailCombinedLeadsTests(TestCase):
         response = self.client.get(reverse("dashboard:business_detail", args=[self.business.pk]))
         self.assertEqual(response.context["total_received"], 4)
 
-    def test_lead_entries_lists_movelead_assignments(self):
+    def test_lead_entries_lists_movelead_assignments_by_name_without_the_reference(self):
         lead = _make_lead(navn="Kari Nordmann", business_1=self.business)
         response = self.client.get(reverse("dashboard:business_detail", args=[self.business.pk]))
         self.assertContains(response, "Kari Nordmann")
-        self.assertContains(response, lead.reference)
+        self.assertNotContains(response, lead.reference)
+
+    def test_received_leads_can_be_filtered_by_type_and_period(self):
+        from datetime import timedelta
+        from django.utils import timezone
+        old = _make_lead(navn="Gammel Kunde", flytte_type="bedrift", business_1=self.business)
+        MoveLead.objects.filter(pk=old.pk).update(created_at=timezone.now() - timedelta(days=120))
+        _make_lead(navn="Ny Kunde", flytte_type="privat", business_1=self.business)
+
+        url = reverse("dashboard:business_detail", args=[self.business.pk])
+        r = self.client.get(url, {"lf_type": "Privat"})
+        self.assertContains(r, "Ny Kunde")
+        self.assertNotContains(r, "Gammel Kunde")
+
+        r = self.client.get(url, {"lf_days": "30"})
+        self.assertContains(r, "Ny Kunde")
+        self.assertNotContains(r, "Gammel Kunde")
 
 
 class StatusBadgeClassTests(TestCase):
@@ -1365,8 +1728,10 @@ class BusinessTagsAndNotesTests(TestCase):
         self.client.force_login(self.staff)
         self.business = _make_business(tags="VIP, treg respons")
 
-    def test_tags_shown_in_business_list(self):
-        response = self.client.get(reverse("dashboard:business_list"))
+    def test_tags_editable_on_the_business_detail_page(self):
+        # Tags were dropped from the business list table but are still
+        # staff-editable on the detail page's "Interne notater" card.
+        response = self.client.get(reverse("dashboard:business_detail", args=[self.business.pk]))
         self.assertContains(response, "VIP, treg respons")
 
     def test_internal_notes_not_shown_on_public_profile(self):
@@ -1401,7 +1766,7 @@ class BusinessImportTests(TestCase):
         self.client.force_login(self.staff)
         self.header = (
             "company_name,company_number,email,phone,website,address,postal_code,city,"
-            "tiltaleform,first_name,last_name,cities,move_type,leads_per_day,leads_per_week,leads_per_month"
+            "tiltaleform,first_name,last_name,cities,move_type,leads_per_day"
         )
 
     def test_requires_staff_login(self):
@@ -1410,16 +1775,18 @@ class BusinessImportTests(TestCase):
         self.assertEqual(response.status_code, 302)
 
     def test_imports_valid_rows(self):
-        csv_content = self.header + "\nNy Flytt AS,,ny@example.com,12345678,,Gate 1,0001,Oslo,,Ola,Nordmann,Oslo,privat,,,"
+        csv_content = self.header + "\nNy Flytt AS,,ny@example.com,12345678,,Gate 1,0001,Oslo,,Ola,Nordmann,Oslo,Flyttehjelp,"
         upload = SimpleUploadedFile("businesses.csv", csv_content.encode("utf-8"), content_type="text/csv")
         response = self.client.post(reverse("dashboard:business_import"), {"csv_file": upload}, follow=True)
         self.assertTrue(Bedrift_info.objects.filter(company_name="Ny Flytt AS").exists())
         imported = Bedrift_info.objects.get(company_name="Ny Flytt AS")
         self.assertFalse(imported.active)
+        self.assertEqual(imported.cities, "Oslo")
+        self.assertEqual(imported.move_type, "Flyttehjelp")
         self.assertContains(response, "1 bedrifter importert")
 
     def test_skips_and_reports_invalid_rows(self):
-        csv_content = self.header + "\n,,not-an-email,bad-phone!!!,,,,,,,,,,,,"
+        csv_content = self.header + "\n,,not-an-email,bad-phone!!!,,,,,,,,,,"
         upload = SimpleUploadedFile("businesses.csv", csv_content.encode("utf-8"), content_type="text/csv")
         response = self.client.post(reverse("dashboard:business_import"), {"csv_file": upload}, follow=True)
         self.assertEqual(Bedrift_info.objects.count(), 0)
@@ -1428,6 +1795,75 @@ class BusinessImportTests(TestCase):
     def test_no_file_shows_error(self):
         response = self.client.post(reverse("dashboard:business_import"), {}, follow=True)
         self.assertContains(response, "Ingen fil valgt")
+
+
+class BusinessAddViewTests(TestCase):
+    def setUp(self):
+        self.staff = User.objects.create_user("staffadd", password="pw", is_staff=True)
+        self.client.force_login(self.staff)
+
+    def test_requires_staff_login(self):
+        self.client.logout()
+        response = self.client.get(reverse("dashboard:business_add"))
+        self.assertEqual(response.status_code, 302)
+
+    def test_get_renders_form(self):
+        response = self.client.get(reverse("dashboard:business_add"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Ny bedrift")
+
+    def test_get_renders_coverage_widget_like_the_edit_page(self):
+        response = self.client.get(reverse("dashboard:business_add"))
+        self.assertContains(response, "data-coverage-onboarding")
+        self.assertContains(response, 'name="cities"')
+        self.assertContains(response, 'name="move_type"')
+        self.assertContains(response, "coverage-onboarding.js")
+
+    def test_list_page_links_to_add(self):
+        response = self.client.get(reverse("dashboard:business_list"))
+        self.assertContains(response, reverse("dashboard:business_add"))
+
+    def test_post_creates_inactive_business_and_redirects_to_detail(self):
+        response = self.client.post(
+            reverse("dashboard:business_add"),
+            {
+                "company_name": "Håndlagd Flytt AS",
+                "email": "hand@example.com",
+                "phone": "12345678",
+                "address": "Gate 1",
+                "postal_code": "0001",
+                "city": "Oslo",
+                "first_name": "Ola",
+                "last_name": "Nordmann",
+                "priority_score": 0,
+                "leads_per_day": "",
+            },
+        )
+        business = Bedrift_info.objects.get(company_name="Håndlagd Flytt AS")
+        self.assertFalse(business.active)
+        self.assertRedirects(response, reverse("dashboard:business_detail", kwargs={"pk": business.pk}))
+
+    def test_post_saves_coverage_cities_services_and_places(self):
+        self.client.post(
+            reverse("dashboard:business_add"),
+            {
+                "company_name": "Dekning Flytt AS",
+                "email": "dekning@example.com",
+                "phone": "12345678",
+                "address": "Gate 2",
+                "postal_code": "0002",
+                "city": "Oslo",
+                "first_name": "Kari",
+                "last_name": "Nordmann",
+                "priority_score": 0,
+                "cities": ["Oslo"],
+                "move_type": ["Flyttehjelp"],
+                "service_areas": json.dumps([{"place": "Drammen", "pickup": True, "dropoff": False}]),
+            },
+        )
+        business = Bedrift_info.objects.get(company_name="Dekning Flytt AS")
+        self.assertIn("Flyttehjelp", business.move_type)
+        self.assertEqual(business.service_areas, [{"place": "Drammen", "pickup": True, "dropoff": False}])
 
 
 class LeadAssignmentNotificationTests(TestCase):
